@@ -1,0 +1,273 @@
+[
+  {
+    "id": "vfx-greek-norse-egyptian",
+    "groups": [
+      [
+        "greek",
+        "Greek royal blue and warm gold, laurel/lightning energy"
+      ],
+      [
+        "norse",
+        "Norse icy cyan and silver, frost shards and rune energy"
+      ],
+      [
+        "egyptian",
+        "Egyptian amber and lapis, sun dust and geometric light"
+      ]
+    ],
+    "kind": "vfx-atlas",
+    "cols": 4,
+    "rows": 3,
+    "entries": [
+      {
+        "id": "fx_greek_burst",
+        "name": "greek impact burst",
+        "cell": 0,
+        "motif": "Greek royal blue and warm gold, laurel/lightning energy small radial impact burst, no dark smoke, isolated energy puff"
+      },
+      {
+        "id": "fx_greek_ward",
+        "name": "greek ward",
+        "cell": 1,
+        "motif": "Greek royal blue and warm gold, laurel/lightning energy luminous upright domed shield membrane, hollow see-through center"
+      },
+      {
+        "id": "fx_greek_trail",
+        "name": "greek trail",
+        "cell": 2,
+        "motif": "Greek royal blue and warm gold, laurel/lightning energy horizontal energy comet moving RIGHT, tapered trail ending on left, stays inside cell"
+      },
+      {
+        "id": "fx_greek_seal",
+        "name": "greek ground seal",
+        "cell": 3,
+        "motif": "Greek royal blue and warm gold, laurel/lightning energy top-down circular luminous ground seal, hollow center, no letters, no text"
+      },
+      {
+        "id": "fx_norse_burst",
+        "name": "norse impact burst",
+        "cell": 4,
+        "motif": "Norse icy cyan and silver, frost shards and rune energy small radial impact burst, no dark smoke, isolated energy puff"
+      },
+      {
+        "id": "fx_norse_ward",
+        "name": "norse ward",
+        "cell": 5,
+        "motif": "Norse icy cyan and silver, frost shards and rune energy luminous upright domed shield membrane, hollow see-through center"
+      },
+      {
+        "id": "fx_norse_trail",
+        "name": "norse trail",
+        "cell": 6,
+        "motif": "Norse icy cyan and silver, frost shards and rune energy horizontal energy comet moving RIGHT, tapered trail ending on left, stays inside cell"
+      },
+      {
+        "id": "fx_norse_seal",
+        "name": "norse ground seal",
+        "cell": 7,
+        "motif": "Norse icy cyan and silver, frost shards and rune energy top-down circular luminous ground seal, hollow center, no letters, no text"
+      },
+      {
+        "id": "fx_egyptian_burst",
+        "name": "egyptian impact burst",
+        "cell": 8,
+        "motif": "Egyptian amber and lapis, sun dust and geometric light small radial impact burst, no dark smoke, isolated energy puff"
+      },
+      {
+        "id": "fx_egyptian_ward",
+        "name": "egyptian ward",
+        "cell": 9,
+        "motif": "Egyptian amber and lapis, sun dust and geometric light luminous upright domed shield membrane, hollow see-through center"
+      },
+      {
+        "id": "fx_egyptian_trail",
+        "name": "egyptian trail",
+        "cell": 10,
+        "motif": "Egyptian amber and lapis, sun dust and geometric light horizontal energy comet moving RIGHT, tapered trail ending on left, stays inside cell"
+      },
+      {
+        "id": "fx_egyptian_seal",
+        "name": "egyptian ground seal",
+        "cell": 11,
+        "motif": "Egyptian amber and lapis, sun dust and geometric light top-down circular luminous ground seal, hollow center, no letters, no text"
+      }
+    ],
+    "prompt": "Use case: stylized-concept. A production transparent VFX MATERIAL ATLAS for an isometric painterly mythological strategy game. Landscape canvas 4:3 aspect, exactly FOUR columns and THREE rows of equally sized square cells. Twelve separate non-overlapping effect textures, not an animation sequence. All backgrounds and gaps truly alpha-transparent, no black rectangles. Painterly magical effects with precise bright core, soft luminous alpha edges and restrained particles; match polished gold and deep blue fantasy game art, colored accents below. No icon frames or card backs. Each effect centered and contained in central 65% of its cell; leave at least 15% of each cell blank around it. No words or numbers or visible grid. Material order left-to-right top-to-bottom:\nCell 1: Greek royal blue and warm gold, laurel/lightning energy small radial impact burst, no dark smoke, isolated energy puff.\nCell 2: Greek royal blue and warm gold, laurel/lightning energy luminous upright domed shield membrane, hollow see-through center.\nCell 3: Greek royal blue and warm gold, laurel/lightning energy horizontal energy comet moving RIGHT, tapered trail ending on left, stays inside cell.\nCell 4: Greek royal blue and warm gold, laurel/lightning energy top-down circular luminous ground seal, hollow center, no letters, no text.\nCell 5: Norse icy cyan and silver, frost shards and rune energy small radial impact burst, no dark smoke, isolated energy puff.\nCell 6: Norse icy cyan and silver, frost shards and rune energy luminous upright domed shield membrane, hollow see-through center.\nCell 7: Norse icy cyan and silver, frost shards and rune energy horizontal energy comet moving RIGHT, tapered trail ending on left, stays inside cell.\nCell 8: Norse icy cyan and silver, frost shards and rune energy top-down circular luminous ground seal, hollow center, no letters, no text.\nCell 9: Egyptian amber and lapis, sun dust and geometric light small radial impact burst, no dark smoke, isolated energy puff.\nCell 10: Egyptian amber and lapis, sun dust and geometric light luminous upright domed shield membrane, hollow see-through center.\nCell 11: Egyptian amber and lapis, sun dust and geometric light horizontal energy comet moving RIGHT, tapered trail ending on left, stays inside cell.\nCell 12: Egyptian amber and lapis, sun dust and geometric light top-down circular luminous ground seal, hollow center, no letters, no text.\nVery important: no shared lighting or connecting trails, no cropping, no sparks spilling into adjacent cells. Effects are reusable sprite textures for real-time scale/opacity animation. Render native 2048x1536 if available, otherwise largest native 4:3."
+  },
+  {
+    "id": "vfx-japanese-celtic-mesoamerican",
+    "groups": [
+      [
+        "japanese",
+        "Japanese ivory, vermilion and soft blue, paper petals and shrine light"
+      ],
+      [
+        "celtic",
+        "Celtic emerald and warm gold, leaves and knotlike energy"
+      ],
+      [
+        "mesoamerican",
+        "Mesoamerican turquoise and red gold, feather sparks and stepped geometry"
+      ]
+    ],
+    "kind": "vfx-atlas",
+    "cols": 4,
+    "rows": 3,
+    "entries": [
+      {
+        "id": "fx_japanese_burst",
+        "name": "japanese impact burst",
+        "cell": 0,
+        "motif": "Japanese ivory, vermilion and soft blue, paper petals and shrine light small radial impact burst, no dark smoke, isolated energy puff"
+      },
+      {
+        "id": "fx_japanese_ward",
+        "name": "japanese ward",
+        "cell": 1,
+        "motif": "Japanese ivory, vermilion and soft blue, paper petals and shrine light luminous upright domed shield membrane, hollow see-through center"
+      },
+      {
+        "id": "fx_japanese_trail",
+        "name": "japanese trail",
+        "cell": 2,
+        "motif": "Japanese ivory, vermilion and soft blue, paper petals and shrine light horizontal energy comet moving RIGHT, tapered trail ending on left, stays inside cell"
+      },
+      {
+        "id": "fx_japanese_seal",
+        "name": "japanese ground seal",
+        "cell": 3,
+        "motif": "Japanese ivory, vermilion and soft blue, paper petals and shrine light top-down circular luminous ground seal, hollow center, no letters, no text"
+      },
+      {
+        "id": "fx_celtic_burst",
+        "name": "celtic impact burst",
+        "cell": 4,
+        "motif": "Celtic emerald and warm gold, leaves and knotlike energy small radial impact burst, no dark smoke, isolated energy puff"
+      },
+      {
+        "id": "fx_celtic_ward",
+        "name": "celtic ward",
+        "cell": 5,
+        "motif": "Celtic emerald and warm gold, leaves and knotlike energy luminous upright domed shield membrane, hollow see-through center"
+      },
+      {
+        "id": "fx_celtic_trail",
+        "name": "celtic trail",
+        "cell": 6,
+        "motif": "Celtic emerald and warm gold, leaves and knotlike energy horizontal energy comet moving RIGHT, tapered trail ending on left, stays inside cell"
+      },
+      {
+        "id": "fx_celtic_seal",
+        "name": "celtic ground seal",
+        "cell": 7,
+        "motif": "Celtic emerald and warm gold, leaves and knotlike energy top-down circular luminous ground seal, hollow center, no letters, no text"
+      },
+      {
+        "id": "fx_mesoamerican_burst",
+        "name": "mesoamerican impact burst",
+        "cell": 8,
+        "motif": "Mesoamerican turquoise and red gold, feather sparks and stepped geometry small radial impact burst, no dark smoke, isolated energy puff"
+      },
+      {
+        "id": "fx_mesoamerican_ward",
+        "name": "mesoamerican ward",
+        "cell": 9,
+        "motif": "Mesoamerican turquoise and red gold, feather sparks and stepped geometry luminous upright domed shield membrane, hollow see-through center"
+      },
+      {
+        "id": "fx_mesoamerican_trail",
+        "name": "mesoamerican trail",
+        "cell": 10,
+        "motif": "Mesoamerican turquoise and red gold, feather sparks and stepped geometry horizontal energy comet moving RIGHT, tapered trail ending on left, stays inside cell"
+      },
+      {
+        "id": "fx_mesoamerican_seal",
+        "name": "mesoamerican ground seal",
+        "cell": 11,
+        "motif": "Mesoamerican turquoise and red gold, feather sparks and stepped geometry top-down circular luminous ground seal, hollow center, no letters, no text"
+      }
+    ],
+    "prompt": "Use case: stylized-concept. A production transparent VFX MATERIAL ATLAS for an isometric painterly mythological strategy game. Landscape canvas 4:3 aspect, exactly FOUR columns and THREE rows of equally sized square cells. Twelve separate non-overlapping effect textures, not an animation sequence. All backgrounds and gaps truly alpha-transparent, no black rectangles. Painterly magical effects with precise bright core, soft luminous alpha edges and restrained particles; match polished gold and deep blue fantasy game art, colored accents below. No icon frames or card backs. Each effect centered and contained in central 65% of its cell; leave at least 15% of each cell blank around it. No words or numbers or visible grid. Material order left-to-right top-to-bottom:\nCell 1: Japanese ivory, vermilion and soft blue, paper petals and shrine light small radial impact burst, no dark smoke, isolated energy puff.\nCell 2: Japanese ivory, vermilion and soft blue, paper petals and shrine light luminous upright domed shield membrane, hollow see-through center.\nCell 3: Japanese ivory, vermilion and soft blue, paper petals and shrine light horizontal energy comet moving RIGHT, tapered trail ending on left, stays inside cell.\nCell 4: Japanese ivory, vermilion and soft blue, paper petals and shrine light top-down circular luminous ground seal, hollow center, no letters, no text.\nCell 5: Celtic emerald and warm gold, leaves and knotlike energy small radial impact burst, no dark smoke, isolated energy puff.\nCell 6: Celtic emerald and warm gold, leaves and knotlike energy luminous upright domed shield membrane, hollow see-through center.\nCell 7: Celtic emerald and warm gold, leaves and knotlike energy horizontal energy comet moving RIGHT, tapered trail ending on left, stays inside cell.\nCell 8: Celtic emerald and warm gold, leaves and knotlike energy top-down circular luminous ground seal, hollow center, no letters, no text.\nCell 9: Mesoamerican turquoise and red gold, feather sparks and stepped geometry small radial impact burst, no dark smoke, isolated energy puff.\nCell 10: Mesoamerican turquoise and red gold, feather sparks and stepped geometry luminous upright domed shield membrane, hollow see-through center.\nCell 11: Mesoamerican turquoise and red gold, feather sparks and stepped geometry horizontal energy comet moving RIGHT, tapered trail ending on left, stays inside cell.\nCell 12: Mesoamerican turquoise and red gold, feather sparks and stepped geometry top-down circular luminous ground seal, hollow center, no letters, no text.\nVery important: no shared lighting or connecting trails, no cropping, no sparks spilling into adjacent cells. Effects are reusable sprite textures for real-time scale/opacity animation. Render native 2048x1536 if available, otherwise largest native 4:3."
+  },
+  {
+    "id": "vfx-utility",
+    "kind": "vfx-atlas",
+    "cols": 4,
+    "rows": 3,
+    "entries": [
+      {
+        "id": "fx_frost_patch",
+        "name": "frost patch",
+        "cell": 0,
+        "motif": "icy cracked patch with sparse crystals, top-down, transparent surrounding"
+      },
+      {
+        "id": "fx_crystal_barrier",
+        "name": "crystal barrier",
+        "cell": 1,
+        "motif": "three tall translucent pale blue crystal shards forming a short barricade, isometric"
+      },
+      {
+        "id": "fx_thorn_bind",
+        "name": "thorn bind",
+        "cell": 2,
+        "motif": "curled emerald thorn vines forming an open circle, top-down"
+      },
+      {
+        "id": "fx_cleanse",
+        "name": "cleanse",
+        "cell": 3,
+        "motif": "ascending white-gold cleansing star particles in a soft spiral"
+      },
+      {
+        "id": "fx_shadow_echo",
+        "name": "shadow echo",
+        "cell": 4,
+        "motif": "abstract purple translucent spectral wisp silhouette, no humanoid anatomy"
+      },
+      {
+        "id": "fx_water_ring",
+        "name": "water ring",
+        "cell": 5,
+        "motif": "turquoise ripple ring viewed top-down, transparent center"
+      },
+      {
+        "id": "fx_gold_motes",
+        "name": "gold motes",
+        "cell": 6,
+        "motif": "small loose cluster of five separated golden sparks"
+      },
+      {
+        "id": "fx_sand_hush",
+        "name": "sand hush",
+        "cell": 7,
+        "motif": "swirl of golden sand fading into blue night mist"
+      },
+      {
+        "id": "fx_portal",
+        "name": "portal",
+        "cell": 8,
+        "motif": "violet-gold circular portal, front view, transparent center"
+      },
+      {
+        "id": "fx_fire_ember",
+        "name": "fire ember",
+        "cell": 9,
+        "motif": "three small warm red flames and orange embers"
+      },
+      {
+        "id": "fx_ward_break",
+        "name": "ward break",
+        "cell": 10,
+        "motif": "broken white-blue magical shield fragments flying outward"
+      },
+      {
+        "id": "fx_delivery_seal",
+        "name": "delivery seal",
+        "cell": 11,
+        "motif": "small gold winged wax seal with violet shimmer, no writing"
+      }
+    ],
+    "prompt": "Use case: stylized-concept. A production transparent VFX MATERIAL ATLAS for an isometric painterly mythological strategy game. Landscape canvas 4:3 aspect, exactly FOUR columns and THREE rows of equally sized square cells. Twelve separate non-overlapping effect textures, not an animation sequence. All backgrounds and gaps truly alpha-transparent, no black rectangles. Painterly magical effects with precise bright core, soft luminous alpha edges and restrained particles; match polished gold and deep blue fantasy game art, colored accents below. No icon frames or card backs. Each effect centered and contained in central 65% of its cell; leave at least 15% of each cell blank around it. No words or numbers or visible grid. Material order left-to-right top-to-bottom:\nCell 1: icy cracked patch with sparse crystals, top-down, transparent surrounding.\nCell 2: three tall translucent pale blue crystal shards forming a short barricade, isometric.\nCell 3: curled emerald thorn vines forming an open circle, top-down.\nCell 4: ascending white-gold cleansing star particles in a soft spiral.\nCell 5: abstract purple translucent spectral wisp silhouette, no humanoid anatomy.\nCell 6: turquoise ripple ring viewed top-down, transparent center.\nCell 7: small loose cluster of five separated golden sparks.\nCell 8: swirl of golden sand fading into blue night mist.\nCell 9: violet-gold circular portal, front view, transparent center.\nCell 10: three small warm red flames and orange embers.\nCell 11: broken white-blue magical shield fragments flying outward.\nCell 12: small gold winged wax seal with violet shimmer, no writing.\nVery important: no shared lighting or connecting trails, no cropping, no sparks spilling into adjacent cells. Effects are reusable sprite textures for real-time scale/opacity animation. Render native 2048x1536 if available, otherwise largest native 4:3."
+  }
+]

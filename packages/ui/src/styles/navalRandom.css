@@ -1,0 +1,130 @@
+/*
+ * Naval random-map templates (2026-10-17): the "Ships required" tag on the two type cards, the
+ * selected type's facts and readiness, the locked portal option and the loading painting shown while
+ * the islands are generated. Shared kit tokens only; the paintings are decorative (cover, centred)
+ * and every word stays live text over a gradient.
+ */
+
+.fe-choice__tag {
+  align-self: flex-start;
+  margin-top: 0.15rem;
+  padding: 0.05rem 0.4rem;
+  border: 1px solid var(--gold-400);
+  border-radius: 2px;
+  background: rgba(10, 32, 58, 0.85);
+  color: var(--gold-100, #f6e7b8);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.naval-type {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.naval-type__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.naval-type__tag {
+  padding: 0.05rem 0.45rem;
+  border: 1px solid rgba(90, 62, 22, 0.7);
+  border-radius: 2px;
+  background: rgba(255, 248, 225, 0.55);
+  color: var(--gui-ink-head);
+  font-size: 0.8rem;
+}
+.naval-type__tag--ships {
+  border-color: #1d4f7a;
+  background: #1d4f7a;
+  color: #f4ead0;
+}
+.naval-type__text {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: var(--gui-ink);
+}
+.naval-type__ready {
+  margin: 0;
+  color: var(--gui-ink-faint);
+}
+.naval-type__ready.is-missing {
+  color: #8a2b1d;
+  font-weight: 600;
+}
+.naval-portal-lock .toggle {
+  opacity: 0.6;
+}
+
+/* The loading painting: full window, cover, centred focal point; text on a gradient. */
+.naval-loading {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-end;
+  background: #06101c;
+}
+.naval-loading__art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+.naval-loading__shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(4, 10, 18, 0.15) 0%, rgba(4, 10, 18, 0.05) 45%, rgba(4, 10, 18, 0.78) 78%, rgba(4, 10, 18, 0.94) 100%);
+}
+.naval-loading__text {
+  position: relative;
+  max-width: 52rem;
+  margin: 0 auto 6vh;
+  padding: 0 1.5rem;
+  text-align: center;
+  color: #f4ead0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+}
+.naval-loading__kicker {
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-200, #f2cf6e);
+}
+.naval-loading__title {
+  margin: 0.25rem 0 0.4rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+  letter-spacing: 0.06em;
+}
+.naval-loading__summary {
+  margin: 0 0 0.6rem;
+  font-size: 1.05rem;
+  line-height: 1.45;
+}
+.naval-loading__status {
+  margin: 0;
+  font-style: italic;
+  color: var(--gold-200, #f2cf6e);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .naval-loading {
+    animation: naval-loading-in 240ms ease-out;
+  }
+}
+@keyframes naval-loading-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

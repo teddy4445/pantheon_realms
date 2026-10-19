@@ -144,7 +144,8 @@ test('adventure map, tile panel markers, hero, town, Pantheon, interventions, Jo
   let d = base();
   await load(page, writeSave(d, 'b13 map'));
   await hoverHex(page, d.state.towns['westharbor']!.coord.q, d.state.towns['westharbor']!.coord.r);
-  await expect(page.locator('.adv-tile img.marker-icon')).toHaveAttribute('src', /icon\.marker\.town\.png$/);
+  // The tile panel can also show an objective's quest marker (campaign v2, 2026-10-15): look for the site's own marker.
+  await expect(page.locator('.adv-tile img.marker-icon[src$="icon.marker.town.png"]')).toBeVisible();
   await check(page, 'map-own-town');
 
   // Hostile and neutral town, the mines, the gold mine, a cache, a claimed cache.
@@ -170,7 +171,7 @@ test('adventure map, tile panel markers, hero, town, Pantheon, interventions, Jo
     h.position = approachTile(d, at(site), h.id);
     await load(page, writeSave(d, `b13 ${marker}`));
     await hoverHex(page, at(site).q, at(site).r);
-    await expect(page.locator('.adv-tile img.marker-icon'), marker).toHaveAttribute('src', new RegExp(`icon\\.marker\\.${marker}\\.png$`));
+    await expect(page.locator(`.adv-tile img.marker-icon[src$="icon.marker.${marker}.png"]`), marker).toBeVisible();
     await check(page, `marker-${marker}`);
   }
 

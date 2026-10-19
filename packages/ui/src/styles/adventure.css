@@ -507,6 +507,19 @@
 .rr-all__breakdown li { display: flex; justify-content: space-between; gap: 1rem; white-space: nowrap; }
 .rr-all:hover .rr-all__breakdown, .rr-all:focus-within .rr-all__breakdown { opacity: 1; visibility: visible; }
 .rr-dock__recruit.btn { display: none; }
+/* City dedications (app 1.5.0): the god's medallion on the favored family's card, its growth line and the saving. */
+.rr-tier__god { position: absolute; top: 0.2rem; right: 0.2rem; width: max(22px, 1.9rem); height: max(22px, 1.9rem); border-radius: 50%; box-shadow: 0 0 0 2px #e6c983, 0 0.15rem 0.4rem rgba(0, 0, 0, 0.6); background: #0a1522; overflow: hidden; }
+.rr-tier__god .portrait { width: 100% !important; height: 100% !important; }
+.rr-tier__god.is-dormant { box-shadow: 0 0 0 2px #8f8670; }
+.rr-growth { cursor: help; border-radius: 2px; }
+.rr-growth:focus-visible { outline: 2px solid #fff1b0; outline-offset: 1px; }
+.rr-normal { font-size: var(--rr-small); }
+.rr-favor { display: flex; align-items: center; gap: 0.45rem; margin: 0; color: #d6f0cc; font-size: var(--rr-small); line-height: 1.25; }
+.rr-favor .portrait { flex: none; }
+.rr-favor.is-dormant { color: #f0c28a; }
+.rr-favor__sum { color: #d8c9a8; }
+.rr .ded-saving { font-size: var(--rr-small); margin: 0; }
+.rr-all__save { color: #d6f0cc; }
 
 :root[data-motion='reduced'] .rr-tier, :root[data-motion='reduced'] .rr-medal__face, :root[data-motion='reduced'] .rr-all__btn, :root[data-motion='reduced'] .rr-dest__opt { transition: none; transform: none !important; }
 @media (prefers-reduced-motion: reduce) {
@@ -534,3 +547,67 @@
   .rr:not([data-view='train']) .rr-army, .rr:not([data-view='train']) .rr-train { display: none; }
   .rr-all__sub { display: none; }
 }
+
+/* ---------------------------------------------------------------------------
+ * Scouting intel (expedition kit §05/§11, scoutingIntelV1): ArmyIntelPanel —
+ * stage, owner banner, strength band, identified creatures, ranges, LAST KNOWN.
+ * ------------------------------------------------------------------------- */
+.army-intel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0.4rem 0;
+  padding: 0.5rem 0.55rem;
+  border: 1px solid var(--gold-600);
+  border-radius: var(--radius-s);
+  background: radial-gradient(circle at 50% 0%, rgba(42, 75, 116, 0.45), rgba(7, 14, 26, 0.92) 80%);
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.85), inset 0 0 0 2px rgba(234, 208, 143, 0.14);
+}
+.army-intel.is-stale { border-style: dashed; border-color: var(--gold-700); background: linear-gradient(180deg, rgba(40, 34, 24, 0.55), rgba(7, 10, 16, 0.92)); }
+.army-intel__head { display: flex; align-items: center; gap: 0.45rem; }
+.army-intel__stage-icon { width: 1.8rem; height: 1.8rem; flex: none; color: var(--gold-300); }
+.army-intel.is-stale .army-intel__stage-icon { color: var(--text-dim); }
+.army-intel__titles { display: flex; flex-direction: column; min-width: 0; }
+.army-intel__title { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: var(--gold-200); letter-spacing: 0.02em; }
+.army-intel__who { display: flex; align-items: center; gap: 0.35rem; font-size: 0.82rem; min-width: 0; }
+.army-intel__banner { width: 0.75rem; height: 1rem; flex: none; background: #9a9a9a; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.45); }
+.army-intel__name-line { color: var(--text-strong); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.army-intel__owner { white-space: nowrap; }
+.army-intel__creatures { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0; padding: 0; list-style: none; }
+.army-intel__creature { display: flex; flex-direction: column; align-items: center; gap: 0.15rem; width: 4.1rem; }
+.army-intel--compact .army-intel__creature { width: 3.1rem; }
+.army-intel__art {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1.07;
+  border: 1px solid var(--gold-600);
+  border-radius: var(--radius-s);
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 30%, rgba(42, 75, 116, 0.55), rgba(7, 14, 26, 0.95) 75%);
+}
+.army-intel__art .portrait, .army-intel__figure .portrait { position: absolute; inset: 2px; }
+.army-intel__art .portrait::after, .army-intel__figure .portrait::after { display: none; }
+.army-intel__name { font-size: 0.72rem; line-height: 1.15; color: var(--text-dim); text-align: center; }
+.army-intel__count { font-family: var(--font-ui); font-weight: 700; font-size: 0.86rem; color: var(--gold-200); }
+.army-intel__count.is-unknown { color: var(--text-dim); }
+.army-intel__unknown { display: flex; align-items: center; gap: 0.5rem; }
+.army-intel__vignette { width: 4.6rem; height: 3.4rem; object-fit: cover; border-radius: var(--radius-s); border: 1px solid var(--gold-700); flex: none; filter: saturate(0.85); }
+.army-intel__vignette--drawn { display: grid; place-items: center; font-family: var(--font-display); font-size: 1.6rem; color: var(--text-dim); background: radial-gradient(circle, rgba(60, 70, 84, 0.7), rgba(7, 10, 16, 0.95)); }
+.army-intel__figure { position: relative; width: 3.2rem; height: 3.4rem; flex: none; border: 1px solid var(--gold-700); border-radius: var(--radius-s); overflow: hidden; filter: grayscale(0.35) brightness(0.85); }
+.army-intel__unknown-text { color: var(--text); font-size: 0.86rem; }
+.army-intel__strength { font-size: 0.86rem; color: var(--text); }
+.army-intel__strength strong { color: var(--gold-300); font-weight: 700; }
+.army-intel__note { margin: 0; font-size: 0.78rem; color: var(--text-dim); }
+.army-intel__track { display: flex; justify-content: space-between; gap: 0.3rem; margin: 0.1rem 0 0; padding: 0.3rem 0 0; list-style: none; border-top: 1px solid rgba(194, 154, 82, 0.3); }
+.army-intel__step { display: flex; align-items: center; gap: 0.2rem; font-size: 0.72rem; color: var(--text-faint); }
+.army-intel__step-icon { width: 1rem; height: 1rem; }
+.army-intel__step.is-reached { color: var(--text-dim); }
+.army-intel__step.is-current { color: var(--gold-300); font-weight: 700; }
+.army-intel__observed { font-size: 0.76rem; color: var(--text-dim); text-align: center; }
+.army-intel__observed.warn { color: var(--gold-400); }
+.army-intel__earlier { margin-top: 0.2rem; padding: 0.35rem 0.4rem; border: 1px dotted var(--gold-700); border-radius: var(--radius-s); background: rgba(5, 9, 15, 0.45); display: flex; flex-direction: column; gap: 0.3rem; }
+.army-intel__earlier-head { font-size: 0.74rem; color: var(--text-dim); }
+.army-intel__earlier .army-intel__creature { width: 2.7rem; }
+.army-intel__hint { text-align: center; }
+.encounter-side .army-intel { margin: 0.2rem 0 0; }
+.quick-battle.is-hidden-intel { opacity: 0.9; }

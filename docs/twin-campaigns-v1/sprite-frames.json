@@ -1,0 +1,1111 @@
+{
+  "schema": "native-source-rects-v1",
+  "coordinateUnits": "source pixels; x,y,width,height; bounds max exclusive; anchor relative to rect",
+  "animation": "Static variants. Do not play as animation or assume every cell is512x512. Use sourceRect.",
+  "frames": [
+    {
+      "id": "twin.longship.discovered",
+      "sheet": "twin.longship",
+      "state": "discovered",
+      "sourceRect": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        36,
+        65,
+        472,
+        459
+      ],
+      "anchor": [
+        254.0,
+        454
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.longship.refuge",
+      "sheet": "twin.longship",
+      "state": "refuge",
+      "sourceRect": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        47,
+        57,
+        471,
+        458
+      ],
+      "anchor": [
+        259.0,
+        453
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.longship.palisade",
+      "sheet": "twin.longship",
+      "state": "palisade",
+      "sourceRect": [
+        1024,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        18,
+        65,
+        492,
+        466
+      ],
+      "anchor": [
+        255.0,
+        461
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.longship.war_refuge",
+      "sheet": "twin.longship",
+      "state": "war_refuge",
+      "sourceRect": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        29,
+        15,
+        484,
+        435
+      ],
+      "anchor": [
+        256.5,
+        430
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.longship.war_fort",
+      "sheet": "twin.longship",
+      "state": "war_fort",
+      "sourceRect": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        18,
+        33,
+        510,
+        441
+      ],
+      "anchor": [
+        264.0,
+        436
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.longship.memorial",
+      "sheet": "twin.longship",
+      "state": "memorial",
+      "sourceRect": [
+        1024,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        34,
+        13,
+        488,
+        446
+      ],
+      "anchor": [
+        261.0,
+        441
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.fjord-quay.iced",
+      "sheet": "twin.fjord-quay",
+      "state": "iced",
+      "sourceRect": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        28,
+        17,
+        473,
+        479
+      ],
+      "anchor": [
+        250.5,
+        474
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.fjord-quay.opened",
+      "sheet": "twin.fjord-quay",
+      "state": "opened",
+      "sourceRect": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        32,
+        15,
+        480,
+        476
+      ],
+      "anchor": [
+        256.0,
+        471
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.fjord-quay.supplied",
+      "sheet": "twin.fjord-quay",
+      "state": "supplied",
+      "sourceRect": [
+        1024,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        45,
+        15,
+        487,
+        476
+      ],
+      "anchor": [
+        266.0,
+        471
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.fjord-quay.blockaded",
+      "sheet": "twin.fjord-quay",
+      "state": "blockaded",
+      "sourceRect": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        26,
+        6,
+        476,
+        474
+      ],
+      "anchor": [
+        251.0,
+        469
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.fjord-quay.war_broken",
+      "sheet": "twin.fjord-quay",
+      "state": "war_broken",
+      "sourceRect": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        34,
+        13,
+        495,
+        457
+      ],
+      "anchor": [
+        264.5,
+        452
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.fjord-quay.restored",
+      "sheet": "twin.fjord-quay",
+      "state": "restored",
+      "sourceRect": [
+        1024,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        36,
+        5,
+        487,
+        472
+      ],
+      "anchor": [
+        261.5,
+        467
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.delta-sluice.closed",
+      "sheet": "twin.delta-sluice",
+      "state": "closed",
+      "sourceRect": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        16,
+        47,
+        500,
+        468
+      ],
+      "anchor": [
+        258.0,
+        463
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.delta-sluice.canal_open",
+      "sheet": "twin.delta-sluice",
+      "state": "canal_open",
+      "sourceRect": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        16,
+        46,
+        500,
+        468
+      ],
+      "anchor": [
+        258.0,
+        463
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.delta-sluice.irrigation_open",
+      "sheet": "twin.delta-sluice",
+      "state": "irrigation_open",
+      "sourceRect": [
+        1024,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        16,
+        48,
+        499,
+        471
+      ],
+      "anchor": [
+        257.5,
+        466
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.delta-sluice.war_fortified",
+      "sheet": "twin.delta-sluice",
+      "state": "war_fortified",
+      "sourceRect": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        16,
+        39,
+        501,
+        465
+      ],
+      "anchor": [
+        258.5,
+        460
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.delta-sluice.war_broken",
+      "sheet": "twin.delta-sluice",
+      "state": "war_broken",
+      "sourceRect": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        14,
+        37,
+        500,
+        466
+      ],
+      "anchor": [
+        257.0,
+        461
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.delta-sluice.repaired",
+      "sheet": "twin.delta-sluice",
+      "state": "repaired",
+      "sourceRect": [
+        1024,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        17,
+        40,
+        502,
+        469
+      ],
+      "anchor": [
+        259.5,
+        464
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.lantern-watchlight.unlit",
+      "sheet": "twin.lantern-watchlight",
+      "state": "unlit",
+      "sourceRect": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        136,
+        9,
+        454,
+        493
+      ],
+      "anchor": [
+        295.0,
+        488
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.lantern-watchlight.lit",
+      "sheet": "twin.lantern-watchlight",
+      "state": "lit",
+      "sourceRect": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        97,
+        10,
+        414,
+        493
+      ],
+      "anchor": [
+        255.5,
+        488
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.lantern-watchlight.shuttered",
+      "sheet": "twin.lantern-watchlight",
+      "state": "shuttered",
+      "sourceRect": [
+        1024,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        54,
+        9,
+        371,
+        493
+      ],
+      "anchor": [
+        212.5,
+        488
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.lantern-watchlight.war_broken",
+      "sheet": "twin.lantern-watchlight",
+      "state": "war_broken",
+      "sourceRect": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        133,
+        8,
+        458,
+        494
+      ],
+      "anchor": [
+        295.5,
+        489
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.lantern-watchlight.restored",
+      "sheet": "twin.lantern-watchlight",
+      "state": "restored",
+      "sourceRect": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        94,
+        8,
+        417,
+        494
+      ],
+      "anchor": [
+        255.5,
+        489
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.lantern-watchlight.memorial",
+      "sheet": "twin.lantern-watchlight",
+      "state": "memorial",
+      "sourceRect": [
+        1024,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        48,
+        8,
+        383,
+        497
+      ],
+      "anchor": [
+        215.5,
+        492
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.living-arch.untouched",
+      "sheet": "twin.living-arch",
+      "state": "untouched",
+      "sourceRect": [
+        0,
+        0,
+        523,
+        512
+      ],
+      "visibleBounds": [
+        29,
+        34,
+        511,
+        468
+      ],
+      "anchor": [
+        270.0,
+        463
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.living-arch.sanctuary",
+      "sheet": "twin.living-arch",
+      "state": "sanctuary",
+      "sourceRect": [
+        523,
+        0,
+        501,
+        512
+      ],
+      "visibleBounds": [
+        7,
+        31,
+        490,
+        469
+      ],
+      "anchor": [
+        248.5,
+        464
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.living-arch.road",
+      "sheet": "twin.living-arch",
+      "state": "road",
+      "sourceRect": [
+        1024,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        9,
+        33,
+        492,
+        477
+      ],
+      "anchor": [
+        250.5,
+        472
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.living-arch.burned_gate",
+      "sheet": "twin.living-arch",
+      "state": "burned_gate",
+      "sourceRect": [
+        0,
+        512,
+        523,
+        512
+      ],
+      "visibleBounds": [
+        18,
+        6,
+        512,
+        454
+      ],
+      "anchor": [
+        265.0,
+        449
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.living-arch.witness_grove",
+      "sheet": "twin.living-arch",
+      "state": "witness_grove",
+      "sourceRect": [
+        523,
+        512,
+        501,
+        512
+      ],
+      "visibleBounds": [
+        11,
+        4,
+        497,
+        456
+      ],
+      "anchor": [
+        254.0,
+        451
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.living-arch.reopened_road",
+      "sheet": "twin.living-arch",
+      "state": "reopened_road",
+      "sourceRect": [
+        1024,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        20,
+        5,
+        496,
+        456
+      ],
+      "anchor": [
+        258.0,
+        451
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.observatory.weathered",
+      "sheet": "twin.observatory",
+      "state": "weathered",
+      "sourceRect": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        18,
+        49,
+        504,
+        474
+      ],
+      "anchor": [
+        261.0,
+        469
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.observatory.records_kept",
+      "sheet": "twin.observatory",
+      "state": "records_kept",
+      "sourceRect": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        24,
+        50,
+        501,
+        474
+      ],
+      "anchor": [
+        262.5,
+        469
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.observatory.supplied",
+      "sheet": "twin.observatory",
+      "state": "supplied",
+      "sourceRect": [
+        1024,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        19,
+        50,
+        496,
+        474
+      ],
+      "anchor": [
+        257.5,
+        469
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.observatory.fractured",
+      "sheet": "twin.observatory",
+      "state": "fractured",
+      "sourceRect": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        31,
+        42,
+        503,
+        468
+      ],
+      "anchor": [
+        267.0,
+        463
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.observatory.braced",
+      "sheet": "twin.observatory",
+      "state": "braced",
+      "sourceRect": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        24,
+        41,
+        499,
+        468
+      ],
+      "anchor": [
+        261.5,
+        463
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.observatory.stabilized",
+      "sheet": "twin.observatory",
+      "state": "stabilized",
+      "sourceRect": [
+        1024,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        20,
+        39,
+        496,
+        468
+      ],
+      "anchor": [
+        258.0,
+        463
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.accord-platform.empty",
+      "sheet": "twin.accord-platform",
+      "state": "empty",
+      "sourceRect": [
+        0,
+        0,
+        512,
+        500
+      ],
+      "visibleBounds": [
+        29,
+        76,
+        493,
+        433
+      ],
+      "anchor": [
+        261.0,
+        428
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.accord-platform.ratified",
+      "sheet": "twin.accord-platform",
+      "state": "ratified",
+      "sourceRect": [
+        512,
+        0,
+        512,
+        500
+      ],
+      "visibleBounds": [
+        25,
+        76,
+        489,
+        434
+      ],
+      "anchor": [
+        257.0,
+        429
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.accord-platform.ruined",
+      "sheet": "twin.accord-platform",
+      "state": "ruined",
+      "sourceRect": [
+        1024,
+        0,
+        512,
+        500
+      ],
+      "visibleBounds": [
+        17,
+        88,
+        478,
+        432
+      ],
+      "anchor": [
+        247.5,
+        427
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.accord-platform.occupied",
+      "sheet": "twin.accord-platform",
+      "state": "occupied",
+      "sourceRect": [
+        0,
+        500,
+        512,
+        524
+      ],
+      "visibleBounds": [
+        28,
+        65,
+        495,
+        454
+      ],
+      "anchor": [
+        261.5,
+        449
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.accord-platform.shared_custody",
+      "sheet": "twin.accord-platform",
+      "state": "shared_custody",
+      "sourceRect": [
+        512,
+        500,
+        512,
+        524
+      ],
+      "visibleBounds": [
+        28,
+        80,
+        492,
+        453
+      ],
+      "anchor": [
+        260.0,
+        448
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.accord-platform.open_passage",
+      "sheet": "twin.accord-platform",
+      "state": "open_passage",
+      "sourceRect": [
+        1024,
+        500,
+        512,
+        524
+      ],
+      "visibleBounds": [
+        17,
+        12,
+        481,
+        453
+      ],
+      "anchor": [
+        249.0,
+        448
+      ],
+      "displayWidthHexes": 1.35,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.town-ruins.greek",
+      "sheet": "twin.town-ruins",
+      "state": "greek",
+      "sourceRect": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        59,
+        117,
+        488,
+        461
+      ],
+      "anchor": [
+        273.5,
+        456
+      ],
+      "displayWidthHexes": 1.6,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.town-ruins.norse",
+      "sheet": "twin.town-ruins",
+      "state": "norse",
+      "sourceRect": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        49,
+        111,
+        466,
+        465
+      ],
+      "anchor": [
+        257.5,
+        460
+      ],
+      "displayWidthHexes": 1.6,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.town-ruins.egyptian",
+      "sheet": "twin.town-ruins",
+      "state": "egyptian",
+      "sourceRect": [
+        1024,
+        0,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        33,
+        114,
+        458,
+        467
+      ],
+      "anchor": [
+        245.5,
+        462
+      ],
+      "displayWidthHexes": 1.6,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.town-ruins.japanese",
+      "sheet": "twin.town-ruins",
+      "state": "japanese",
+      "sourceRect": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        48,
+        58,
+        488,
+        399
+      ],
+      "anchor": [
+        268.0,
+        394
+      ],
+      "displayWidthHexes": 1.6,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.town-ruins.celtic",
+      "sheet": "twin.town-ruins",
+      "state": "celtic",
+      "sourceRect": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        50,
+        47,
+        470,
+        404
+      ],
+      "anchor": [
+        260.0,
+        399
+      ],
+      "displayWidthHexes": 1.6,
+      "boundaryAlphaAbove32": 0
+    },
+    {
+      "id": "twin.town-ruins.mesoamerican",
+      "sheet": "twin.town-ruins",
+      "state": "mesoamerican",
+      "sourceRect": [
+        1024,
+        512,
+        512,
+        512
+      ],
+      "visibleBounds": [
+        32,
+        47,
+        463,
+        404
+      ],
+      "anchor": [
+        247.5,
+        399
+      ],
+      "displayWidthHexes": 1.6,
+      "boundaryAlphaAbove32": 0
+    }
+  ]
+}

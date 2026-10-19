@@ -1,0 +1,362 @@
+{
+ "schema": "pantheon-realms-sea-sites-1",
+ "notice": "Written by tools/assets/import_sea_sites.py from the coastal sites & sea salvage kit of 2026-10-17 (sources: assets-source/art/sea-sites-v1). Relative paths only (sea-sites-v1/...); merged by packages/ui/src/assets/manifest.ts and drawn by packages/presentation/src/seaSites.ts. Display sizes and anchors are presentation only (never collision); owner flags, hover rings, bob and fades are runtime overlays.",
+ "assets": {
+  "seaSites.coastal.watchtower.cold": {
+   "file": "sea-sites-v1/coastal-watchtower-cold.png",
+   "kind": "map-sprite",
+   "width": 1254,
+   "height": 1254,
+   "bytes": 1516107,
+   "sha256": "b8aa2b024dfc5cc7efc9fd5a3e06c9f827665f709881c27dca58179ddee201bf",
+   "alphaRange": [
+    0,
+    255
+   ],
+   "visibleBoundsPixels": [
+    192,
+    18,
+    1064,
+    1236
+   ],
+   "visibleBounds": [
+    0.15311,
+    0.01435,
+    0.84848,
+    0.98565
+   ],
+   "visibleBoundsMethod": "alpha >= 16 (measured by the importer)",
+   "kitVisibleBoundsPixels": [
+    0,
+    0,
+    1236,
+    1254
+   ],
+   "kitAnchorApprox": [
+    0.5,
+    1.0
+   ],
+   "status": "final",
+   "display": "Coastal watchtower, cold / rocky skin (rock, cool, marsh-adjacent coasts). Static; owner flag overlay at the mast.",
+   "provenance": "Coastal sites & sea salvage kit 2026-10-17 (built-in image generator). Native pixels, never resized or retouched. Copied byte for byte by tools/assets/import_sea_sites.py.",
+   "groundAnchor": [
+    0.50079,
+    0.98565
+   ],
+   "displayMeasure": "height",
+   "displayHexWidths": 2.0,
+   "flagAnchorApprox": [
+    0.56,
+    0.045
+   ]
+  },
+  "seaSites.coastal.watchtower.warm": {
+   "file": "sea-sites-v1/coastal-watchtower-warm.png",
+   "kind": "map-sprite",
+   "width": 1254,
+   "height": 1254,
+   "bytes": 1222516,
+   "sha256": "6df52124bf9031a8fe6ec8c4710bbd1b79e98daf06fddec249d00aff3e0e7e4d",
+   "alphaRange": [
+    0,
+    255
+   ],
+   "visibleBoundsPixels": [
+    273,
+    51,
+    1005,
+    1208
+   ],
+   "visibleBounds": [
+    0.2177,
+    0.04067,
+    0.80144,
+    0.96332
+   ],
+   "visibleBoundsMethod": "alpha >= 16 (measured by the importer)",
+   "kitVisibleBoundsPixels": [
+    0,
+    17,
+    1240,
+    1210
+   ],
+   "kitAnchorApprox": [
+    0.5,
+    0.96491
+   ],
+   "status": "final",
+   "display": "Coastal watchtower, warm skin (sand / temperate coasts). Static: no bob, no flame; the owner flag is a runtime overlay at the bare mast (never tint the sprite). A biome skin, not a level or a reward.",
+   "provenance": "Coastal sites & sea salvage kit 2026-10-17 (built-in image generator). Native pixels, never resized or retouched. Copied byte for byte by tools/assets/import_sea_sites.py.",
+   "groundAnchor": [
+    0.50957,
+    0.96332
+   ],
+   "displayMeasure": "height",
+   "displayHexWidths": 2.0,
+   "flagAnchorApprox": [
+    0.56,
+    0.07
+   ]
+  },
+  "seaSites.sea.pickup.gold": {
+   "file": "sea-sites-v1/sea-pickup-gold.png",
+   "kind": "map-sprite",
+   "width": 1254,
+   "height": 1254,
+   "bytes": 1726796,
+   "sha256": "2c8b05bfd85f4bca9e1ab3f12d37f8053b410abc6f5491f4237b8318b53f7555",
+   "alphaRange": [
+    0,
+    255
+   ],
+   "visibleBoundsPixels": [
+    53,
+    96,
+    1211,
+    1149
+   ],
+   "visibleBounds": [
+    0.04226,
+    0.07656,
+    0.96571,
+    0.91627
+   ],
+   "visibleBoundsMethod": "alpha >= 16 (measured by the importer)",
+   "kitVisibleBoundsPixels": [
+    0,
+    23,
+    1236,
+    1254
+   ],
+   "kitAnchorApprox": [
+    0.5,
+    1.0
+   ],
+   "status": "final",
+   "display": "Lost Treasury (Gold salvage) on a barrel raft. Gentle bob; 250 ms fade when collected.",
+   "provenance": "Coastal sites & sea salvage kit 2026-10-17 (built-in image generator). Native pixels, never resized or retouched. Copied byte for byte by tools/assets/import_sea_sites.py.",
+   "groundAnchor": [
+    0.50399,
+    0.91627
+   ],
+   "displayMeasure": "width",
+   "displayHexWidths": 0.62
+  },
+  "seaSites.sea.pickup.stone": {
+   "file": "sea-sites-v1/sea-pickup-stone.png",
+   "kind": "map-sprite",
+   "width": 1254,
+   "height": 1254,
+   "bytes": 1697281,
+   "sha256": "7cb6974850729e7dcb878d0b1641616f65d06be1a6e1b4681af45e45db684bc7",
+   "alphaRange": [
+    0,
+    255
+   ],
+   "visibleBoundsPixels": [
+    68,
+    155,
+    1204,
+    1086
+   ],
+   "visibleBounds": [
+    0.05423,
+    0.1236,
+    0.96013,
+    0.86603
+   ],
+   "visibleBoundsMethod": "alpha >= 16 (measured by the importer)",
+   "kitVisibleBoundsPixels": [
+    0,
+    111,
+    1218,
+    1234
+   ],
+   "kitAnchorApprox": [
+    0.5,
+    0.98405
+   ],
+   "status": "final",
+   "display": "Stone Cargo (Stone salvage) on a barrel raft. Gentle bob; 250 ms fade when collected.",
+   "provenance": "Coastal sites & sea salvage kit 2026-10-17 (built-in image generator). Native pixels, never resized or retouched. Copied byte for byte by tools/assets/import_sea_sites.py.",
+   "groundAnchor": [
+    0.50718,
+    0.86603
+   ],
+   "displayMeasure": "width",
+   "displayHexWidths": 0.62
+  },
+  "seaSites.sea.pickup.wood": {
+   "file": "sea-sites-v1/sea-pickup-wood.png",
+   "kind": "map-sprite",
+   "width": 1254,
+   "height": 1254,
+   "bytes": 1480266,
+   "sha256": "ec8b903da507592eb972950fe2d6d3e9583d5dd05bd044bddfe6cfb34ef07678",
+   "alphaRange": [
+    0,
+    255
+   ],
+   "visibleBoundsPixels": [
+    49,
+    250,
+    1220,
+    1020
+   ],
+   "visibleBounds": [
+    0.03907,
+    0.19936,
+    0.97289,
+    0.8134
+   ],
+   "visibleBoundsMethod": "alpha >= 16 (measured by the importer)",
+   "kitVisibleBoundsPixels": [
+    0,
+    32,
+    1238,
+    1254
+   ],
+   "kitAnchorApprox": [
+    0.5,
+    1.0
+   ],
+   "status": "final",
+   "display": "Driftwood Bundle (Wood salvage). Gentle bob 0.8-1.5 px over 3-4 s (none under reduced motion); 250 ms fade when collected.",
+   "provenance": "Coastal sites & sea salvage kit 2026-10-17 (built-in image generator). Native pixels, never resized or retouched. Copied byte for byte by tools/assets/import_sea_sites.py.",
+   "groundAnchor": [
+    0.50598,
+    0.8134
+   ],
+   "displayMeasure": "width",
+   "displayHexWidths": 0.62
+  },
+  "seaSites.shipwreck.broken.mast": {
+   "file": "sea-sites-v1/shipwreck-broken-mast.png",
+   "kind": "map-sprite",
+   "width": 1254,
+   "height": 1254,
+   "bytes": 2067512,
+   "sha256": "03fff7144f0934a40ce2f2ce5a2988cec48c7e760f2ab41b3f3bbecf3cbdfc4d",
+   "alphaRange": [
+    0,
+    255
+   ],
+   "visibleBoundsPixels": [
+    34,
+    80,
+    1244,
+    1163
+   ],
+   "visibleBounds": [
+    0.02711,
+    0.0638,
+    0.99203,
+    0.92743
+   ],
+   "visibleBoundsMethod": "alpha >= 16 (measured by the importer)",
+   "kitVisibleBoundsPixels": [
+    0,
+    21,
+    1254,
+    1254
+   ],
+   "kitAnchorApprox": [
+    0.5,
+    1.0
+   ],
+   "status": "final",
+   "display": "Shipwreck landmark, broken mast with torn sail. Almost static (bob <= 0.4 px, roll <= 0.15 deg); its name, guards and reward are site data, never read from the picture.",
+   "provenance": "Coastal sites & sea salvage kit 2026-10-17 (built-in image generator). Native pixels, never resized or retouched. Copied byte for byte by tools/assets/import_sea_sites.py.",
+   "groundAnchor": [
+    0.50957,
+    0.92743
+   ],
+   "displayMeasure": "width",
+   "displayHexWidths": 1.55
+  },
+  "seaSites.shipwreck.expedition.scene": {
+   "file": "sea-sites-v1/shipwreck-expedition-scene.png",
+   "kind": "illustration",
+   "width": 1672,
+   "height": 941,
+   "bytes": 2658169,
+   "sha256": "1d33fb9d74d28d5cd9c1670a09ac0c904e493ff21fc09c68f81537254ca3f5ac",
+   "alphaRange": [
+    255,
+    255
+   ],
+   "visibleBoundsPixels": [
+    0,
+    0,
+    1672,
+    941
+   ],
+   "visibleBounds": [
+    0.0,
+    0.0,
+    1.0,
+    1.0
+   ],
+   "visibleBoundsMethod": "alpha >= 16 (measured by the importer)",
+   "kitVisibleBoundsPixels": [
+    0,
+    0,
+    1672,
+    941
+   ],
+   "kitAnchorApprox": [
+    0.5,
+    1.0
+   ],
+   "status": "final",
+   "display": "Shipwreck expedition painting for the wreck and reward panels, native 1672 x 941 (below full HD, never upscaled). Never a playable battle background; it does not show which guards are aboard.",
+   "provenance": "Coastal sites & sea salvage kit 2026-10-17 (built-in image generator). Native pixels, never resized or retouched. Copied byte for byte by tools/assets/import_sea_sites.py.",
+   "fit": "contain",
+   "alt": "A small galley rows toward a wrecked ship listing on the rocks below a cliff temple; chests and barrels lie on its tilted deck."
+  },
+  "seaSites.shipwreck.split.hull": {
+   "file": "sea-sites-v1/shipwreck-split-hull.png",
+   "kind": "map-sprite",
+   "width": 1254,
+   "height": 1254,
+   "bytes": 1652557,
+   "sha256": "fa98ea4d1c9783bea57ee5c9f62dc32dbbebaf1b75c2db24e6d8f7b6f240215e",
+   "alphaRange": [
+    0,
+    255
+   ],
+   "visibleBoundsPixels": [
+    46,
+    120,
+    1236,
+    1104
+   ],
+   "visibleBounds": [
+    0.03668,
+    0.09569,
+    0.98565,
+    0.88038
+   ],
+   "visibleBoundsMethod": "alpha >= 16 (measured by the importer)",
+   "kitVisibleBoundsPixels": [
+    0,
+    31,
+    1242,
+    1230
+   ],
+   "kitAnchorApprox": [
+    0.5,
+    0.98086
+   ],
+   "status": "final",
+   "display": "Shipwreck landmark, split exposed hull. Almost static; interchangeable with the broken-mast skin.",
+   "provenance": "Coastal sites & sea salvage kit 2026-10-17 (built-in image generator). Native pixels, never resized or retouched. Copied byte for byte by tools/assets/import_sea_sites.py.",
+   "groundAnchor": [
+    0.51116,
+    0.88038
+   ],
+   "displayMeasure": "width",
+   "displayHexWidths": 1.55
+  }
+ }
+}

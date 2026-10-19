@@ -12,12 +12,13 @@
  * Low preset (`effects: 'simple'`) every phase is a short flash in the school's
  * colour and the whole-field moments are left out.
  */
-import { Container, Graphics, Sprite, Texture } from 'pixi.js';
+import { Container, Graphics, Sprite, Texture, Rectangle } from 'pixi.js';
 import { FX_PALETTE, type FxLook, type FxSchool, type FxScreen, type StatusOverlay } from './fxLooks';
 import { TweenPlayer, easeInOut, easeOut, linear } from './tween';
 import { graphicsProfile } from './graphics';
 import { spriteManifest, type EffectDefinition } from './sprites';
-import { loadStrip, stripFrames } from './textures';
+import { libraryFxRecipe } from './libraryFx';
+import { loadTexture, loadStrip, stripFrames } from './textures';
 
 export interface Pt {
   readonly x: number;
@@ -205,6 +206,28 @@ export class FxPainter {
     return graphicsProfile().effects === 'simple';
   }
 
+  /** Independent painted material cells: crop once, then animate position/scale/opacity. */
+  async material(id: string, at: Pt, scale = 1): Promise<void> { await this.painted(id, at, scale); }
+
+  private async painted(id: string | undefined, at: Pt, scale = 1): Promise<boolean> {
+    const recipe = libraryFxRecipe(id); if (!recipe?.materials.length) return false;
+    const textures = await Promise.all(recipe.materials.slice(0, Math.min(3, Math.max(1, recipe.maxParticles))).map(async (material) => {
+      try { const source = await loadTexture(material.url); return new Texture({ source: source.source, frame: new Rectangle(...material.rect) }); } catch { return null; }
+    }));
+    if (this.layer.destroyed) { for (const texture of textures) texture?.destroy(false); return true; }
+    const parts: Sprite[] = [];
+    for (const texture of textures) if (texture) { const sprite = new Sprite(texture); sprite.anchor.set(.5); sprite.position.set(at.x, at.y - this.u * .45); parts.push(sprite); }
+    if (!parts.length) return false;
+    try {
+      await this.run(parts, this.simple ? 200 : Math.min(1000, recipe.durationMs), (t) => parts.forEach((sprite, i) => {
+        const size = this.u * (i === 0 ? 2.2 : 1.5) * scale * (this.simple ? 1 : .8 + .35 * t);
+        sprite.scale.set(size / sprite.texture.width); sprite.alpha = this.simple ? .85 : Math.min(1, t * 8) * (1 - t) * .95;
+        if (!this.simple && i > 0) sprite.rotation = (i % 2 ? 1 : -1) * t * .35;
+      }));
+    } finally { for (const texture of textures) texture?.destroy(false); }
+    return true;
+  }
+
   /** The delivered strip for an asset ID, if any (Low quality keeps the flash). */
   stripOf(id: string | undefined): EffectDefinition | null {
     if (!id || this.simple) return null;
@@ -305,6 +328,7 @@ export class FxPainter {
 
   /** On the caster (the commander's banner corner, or the hero): a sigil opens and motes rise. */
   async cast(look: FxLook, at: Pt, id?: string): Promise<void> {
+    if (await this.painted(id, at, .65)) return;
     const def = this.stripOf(id);
     if (def) return this.strip(def, at);
     const [core, glow, spark] = FX_PALETTE[look.school];
@@ -525,6 +549,7 @@ export class FxPainter {
 
   /** Where the spell lands, on one stack, hero or town (`at`: its feet). */
   async impact(look: FxLook, at: FxTarget, id?: string): Promise<void> {
+    if (await this.painted(id, at, at.width)) return;
     // A strip made for this spell or miracle first; else the delivered final strip of its kind
     // (genericImpactOf: the shared battle effects); else the code-drawn impact.
     const def = this.stripOf(id) ?? this.finalStripOf(genericImpactOf(look) ?? undefined);

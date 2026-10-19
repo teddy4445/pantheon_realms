@@ -1,0 +1,30 @@
+import {test,expect} from '@playwright/test';
+import {goldBattleDriver,usePrefs} from './momentFixtures';
+import {importAndLoad,writeSave} from './fixtures';
+import {inspect,waitFor} from './helpers';
+
+test('Library II: native atlas icons, spellbook and an active relic use the real battle controls',async({page},info)=>{
+ test.setTimeout(300000);
+ const d=goldBattleDriver('skirmish_twin_harbors','library-ui',[['hoplite',30],['griffin',10]],100);
+ d.state.scenario.features={...d.state.scenario.features!,mythicLibraryV2:true};
+ const h=d.state.heroes.alexios!, b=d.state.battle!;
+ h.equipment.misc_1={instanceId:'e2e-ribbon',artifactId:'relic2_gleipnir_ribbon'};
+ h.mana=100;h.spellbook=true;h.knownSpellIds=['spell2_runes_refusal'];
+ b.sides.attacker.commander!.spellbook=true;b.sides.attacker.commander!.knownSpellIds=[...h.knownSpellIds];
+ const ally=Object.values(b.stacks).find(s=>s.side==='attacker')!,enemy=Object.values(b.stacks).find(s=>s.side==='defender')!;
+ b.activeStackId=ally.id; b.phase='normal';b.obstacles=[];ally.anchor={col:4,row:4};enemy.anchor={col:7,row:4};
+ const failures:string[]=[];page.on('pageerror',e=>failures.push(e.message));page.on('response',r=>{if(r.url().includes('mythic-library-v2')&&r.status()>=400)failures.push(`${r.status()} ${r.url()}`);});
+ await usePrefs(page,{graphicsTested:true,graphicsQuality:'low',battleSpeed:'instant',muteAll:true});
+ await page.goto('/?e2e',{waitUntil:'networkidle'});await importAndLoad(page,writeSave(d,'library-ui'));
+ await waitFor(page,s=>s.screen==='battle'&&!s.busy,'battle',90000);await expect(page.getByTestId('battle-loading')).toBeHidden({timeout:60000});
+ await page.getByTestId('battle-spell').click();
+ const spell=page.getByTestId('cast-spell2_runes_refusal');await expect(spell).toBeVisible();await expect(spell.locator('svg image')).toHaveAttribute('href',/mythic-library-v2/);
+ await page.screenshot({path:info.outputPath('library-spellbook.png'),animations:'disabled'});
+ await page.getByTestId('cast-cancel').click();
+ await page.getByTestId('battle-relics').click();const dialog=page.getByTestId('battle-relics-dialog');
+ await expect(dialog).toContainText('Gleipnir Ribbon');await expect(dialog.locator('svg image[href*="mythic-library-v2"]')).toHaveCount(1);
+ await page.screenshot({path:info.outputPath('library-relic.png'),animations:'disabled'});
+ await dialog.getByRole('button',{name:/^Bind /}).first().click();
+ await waitFor(page,s=>!s.busy&&Object.values(s.state.battle.stacks).some((x:any)=>x.statuses.some((z:any)=>z.kind==='rooted')),'relic binding');
+ expect((await inspect(page)).state.battle.sides.attacker.castThisRound).toBe(true);expect(failures).toEqual([]);
+});

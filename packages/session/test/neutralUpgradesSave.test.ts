@@ -8,7 +8,7 @@
 import { describe, expect, it } from 'vitest';
 import { loadCatalog } from '@pr/content';
 import { createMissionMatch } from '@pr/campaign';
-import { canonicalStateHash, missionSite, type CreatureStackState, type MatchState } from '@pr/rules';
+import { campTrainingLeft, canonicalStateHash, missionSite, type CreatureStackState, type MatchState } from '@pr/rules';
 import { buildObservation, strategicCandidates } from '@pr/ai';
 import { GameSession, createEnvelope, parseEnvelope, serializeEnvelope } from '../src';
 
@@ -67,7 +67,7 @@ describe('saves with neutral upgrades', () => {
     expect(restored.state.world.sites[SITE]!.stock).toBe(6);
   });
 
-  it('the strategic AI still hires from a hiring site with its old command (no form): the base creature', () => {
+  it('the strategic AI names the form it hires (2026-10-16); an old command without a form still hires the base creature', () => {
     const s = grove('save-nu-ai');
     (s.state.players['player']!.wallet as Record<string, number>).gold = 9000;
     // The AI sees what its empire has explored: the map is explored here.
@@ -75,10 +75,60 @@ describe('saves with neutral upgrades', () => {
     const all = strategicCandidates(catalog, buildObservation(catalog, s.state, 'player'));
     const cands = all.filter((c) => c.kind === 'RecruitFromCamp');
     expect(cands.length).toBe(1);
-    const c = cands[0]!;
-    expect(c).not.toHaveProperty('creatureId');
-    expect(s.dispatch(c).ok).toBe(true);
-    expect(s.state.heroes['hervor']!.army.slots[1]!.creatureId).toBe('root_runner');
-    expect(s.state.heroes['hervor']!.army.slots.some((x) => x?.creatureId === 'crownroot_runner')).toBe(false);
+    // A full week's stock with Gold to spare: the upgrade adds more strength.
+    expect(cands[0]).toMatchObject({ creatureId: 'crownroot_runner', quantity: 8 });
+    // The old command shape (no form) is still the base creature, after a round trip too.
+    const restored = roundTrip(s, 'nu-ai');
+    expect(restored.dispatch({ kind: 'RecruitFromCamp', heroId: 'hervor', siteId: SITE, quantity: 2 }).ok).toBe(true);
+    expect(restored.state.heroes['hervor']!.army.slots[1]).toMatchObject({ creatureId: 'root_runner', count: 8 });
+    expect(s.dispatch(cands[0]!).ok).toBe(true);
+    expect(s.state.heroes['hervor']!.army.slots.find((x) => x?.creatureId === 'crownroot_runner')!.count).toBe(8);
+  });
+});
+
+describe('saves and the weekly training allowance (owner decision 2026-10-16)', () => {
+  it('the week’s training count round-trips: what is left stays left, the same refusal, the same next week', () => {
+    const s = grove('save-nu-cap');
+    s.state.heroes['hervor']!.army.slots[1] = { stackId: 's-rr', creatureId: 'root_runner', count: 12 } as CreatureStackState;
+    expect(s.dispatch({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 5 }).ok).toBe(true);
+    const restored = roundTrip(s, 'nu-cap');
+    expect(restored.state.world.sites[SITE]).toMatchObject({ trainedThisWeek: 5, trainedWeek: 1 });
+    expect(canonicalStateHash(restored.state)).toBe(canonicalStateHash(s.state));
+    expect(campTrainingLeft(catalog, restored.state, SITE)).toBe(3);
+    for (const g of [s, restored]) {
+      const r = g.dispatch({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 4 });
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.rejection).toEqual({ code: 'no_population', message: 'Its trainers can take 3 more this week (8 a week)' });
+      expect(g.dispatch({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 3 }).ok).toBe(true);
+      expect(campTrainingLeft(catalog, g.state, SITE)).toBe(0);
+    }
+    expect(canonicalStateHash(restored.state)).toBe(canonicalStateHash(s.state));
+    // Saved again and loaded once more: the count of a past week counts as none in the next.
+    const again = roundTrip(restored, 'nu-cap-2');
+    const st = again.state as MatchState;
+    st.day = 8;
+    expect(campTrainingLeft(catalog, st, SITE)).toBe(8);
+  });
+
+  it('a 1.3.0-style save (no training fields, trainings already made) loads with this week’s whole allowance', () => {
+    const s = grove('save-nu-130');
+    // A 1.3.0 game trained here before the allowance existed: its counter, no site fields.
+    expect(s.dispatch({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 2 }).ok).toBe(true);
+    const m = s.state as MatchState;
+    const site = m.world.sites[SITE]!;
+    delete site.trainedThisWeek;
+    delete site.trainedWeek;
+    const env = createEnvelope(catalog, s.snapshot(), { id: 'v130', kind: 'manual', name: 'v130', savedAt: '2026-10-15T20:00:00Z' });
+    const text = serializeEnvelope(env);
+    expect(text.includes('trainedThisWeek')).toBe(false);
+    expect(text.includes('trainedWeek')).toBe(false);
+    const parsed = parseEnvelope(catalog, text);
+    expect(parsed.compatibility.status).toBe('ok');
+    const restored = GameSession.fromSnapshot(catalog, parsed.envelope!.snapshot);
+    expect(restored.state.mission.counters['trained:root_runner']).toBe(2);
+    expect(campTrainingLeft(catalog, restored.state, SITE)).toBe(8);
+    expect(restored.dispatch({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 4 }).ok).toBe(true);
+    expect(restored.state.world.sites[SITE]).toMatchObject({ trainedThisWeek: 4, trainedWeek: 1 });
+    expect(campTrainingLeft(catalog, restored.state, SITE)).toBe(4);
   });
 });

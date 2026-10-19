@@ -1,0 +1,68 @@
+{
+  "feature": "targetableCatapultV1",
+  "anchor": {
+    "col": 1,
+    "row": 0
+  },
+  "footprint": [
+    {
+      "col": 0,
+      "row": 0
+    },
+    {
+      "col": 1,
+      "row": 0
+    }
+  ],
+  "maxHp": 120,
+  "defense": 6,
+  "movement": 0,
+  "retaliation": 0,
+  "countsTowardArmySlots": false,
+  "countsTowardVictory": false,
+  "countsTowardCasualtyXp": false,
+  "spawn": "One attacker engine in fortified town siege only; reserve upper-left cells before deployment and keep approach cells reachable.",
+  "targetKinds": [
+    "wall",
+    "gate",
+    "tower",
+    "keep"
+  ],
+  "damage": "Keep rulesProfile.combat.siege.catapultDamage, currently1 structureHP; guaranteed valid aimed hit.",
+  "activation": "One explicit attacker-controlled engine phase after normal and waiting creature queues, before next round begins; fire or skip.",
+  "noAutomaticShot": true,
+  "targetFallback": "None. If target destroyed or invalid, ask player to choose; never silently shoot another structure.",
+  "receivingDamage": "Targetable by enemy legal melee/ranged damaging attacks, using engine Defense and actual remaining HP. Not a city structure. Affected by direct damaging spells, not mind/life/poison effects.",
+  "immunities": [
+    "move",
+    "push",
+    "pull",
+    "teleport",
+    "morale",
+    "luck",
+    "retaliation",
+    "healing",
+    "resurrection",
+    "poison",
+    "life_drain",
+    "mind_control"
+  ],
+  "noTargets": "Auto-skip empty engine phase with explanatory log; no fake shot.",
+  "destroyed": "Immediately cancel pending shot, make wreck nonblocking, no future firing this siege. No repair/resurrect in battle.",
+  "visualStages": {
+    "intact": "HP>60",
+    "damaged": "1<=HP<=60",
+    "destroyed": "HP=0"
+  },
+  "saveFields": [
+    "id",
+    "side",
+    "anchor",
+    "hp",
+    "maxHp",
+    "firedRound",
+    "aimedStructureId"
+  ],
+  "compatibility": "Existing saved active siege retains legacy behavior; enable new engine only when creating a new battle under feature.",
+  "balance": "120HP/Defense6 proposed, not playtested; applies all six town styles."
+}

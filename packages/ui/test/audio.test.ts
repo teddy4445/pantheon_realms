@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import { GameDriver } from '@pr/testing';
 import type { GameEvent } from '@pr/rules';
-import { soundForCue, soundsForEvents, soundscapeFor, summaryCue } from '../src/audio/sounds';
+import type { ProjectileProfile } from '@pr/presentation/core';
+import { COMBAT_SOUNDS, MAGIC_SOUNDS, cueSound, soundForCue, soundsForEvents, soundscapeFor, summaryCue } from '../src/audio/sounds';
 import { DEFAULT_PREFERENCES, sanitizePreferences } from '../src/app/preferences';
 import { levelsFrom } from '../src/audio/gameAudio';
 
@@ -74,6 +77,38 @@ describe('battle cues', () => {
     expect(summaryCue([ev({ kind: 'BattleStackMoved', stackId: 's', path: [], flying: false }), ev({ kind: 'BattleAttack', mode: 'melee', killed: 2 }), ev({ kind: 'BattleStackDestroyed', stackId: 't' })])).toBe('combat.death');
     expect(summaryCue([ev({ kind: 'BattleAttack', mode: 'shot', killed: 0 })])).toBe('combat.arrow_hit');
     expect(summaryCue([ev({ kind: 'TurnEnded', playerId: 'p' })])).toBeNull();
+  });
+});
+
+describe('missile sounds (battle FX profiles, 2026-10-16)', () => {
+  const root = path.resolve(__dirname, '../../..');
+  const profiles = (JSON.parse(readFileSync(path.join(root, 'assets-runtime/battle-fx-neutral-upgrades-v1/manifest.json'), 'utf8')) as { projectileProfiles: Record<string, ProjectileProfile> }).projectileProfiles;
+  const manifestIds = new Set((JSON.parse(readFileSync(path.join(root, 'assets-runtime/audio/manifest.json'), 'utf8')) as { sounds: { id: string }[] }).sounds.map((s) => s.id));
+
+  it('a cue carrying a missile’s own sound plays it (cut at its maxMs); without one, the kind’s sound plays whole', () => {
+    expect(soundForCue({ kind: 'shot' })).toBe('combat.shot');
+    expect(soundForCue({ kind: 'arrow-hit', heavy: true })).toBe('combat.arrow_hit');
+    expect(soundForCue({ kind: 'shot', sound: { id: 'magic.cast', maxMs: 600 } })).toBe('magic.cast');
+    expect(cueSound({ kind: 'shot', sound: { id: 'magic.cast', maxMs: 600 } })).toEqual({ id: 'magic.cast', maxMs: 600 });
+    expect(cueSound({ kind: 'arrow-hit', sound: { id: 'combat.hit_heavy' } })).toEqual({ id: 'combat.hit_heavy' });
+    expect(cueSound({ kind: 'turret' })).toEqual({ id: 'combat.turret' });
+    // A sound the director does not know: the kind's own sound, whole.
+    const has = (id: string) => manifestIds.has(id);
+    expect(cueSound({ kind: 'shot', sound: { id: 'magic.not_delivered', maxMs: 600 } }, has)).toEqual({ id: 'combat.shot' });
+    expect(cueSound({ kind: 'stone-hit', sound: { id: 'magic.not_delivered' } }, has)).toEqual({ id: 'combat.stone_hit' });
+    expect(cueSound({ kind: 'shot', sound: { id: 'combat.swing', maxMs: 600 } }, has)).toEqual({ id: 'combat.swing', maxMs: 600 });
+  });
+
+  it('every profile sound is in the sound manifest and in the combat and magic sets decoded ahead of a battle', () => {
+    const warmed = new Set([...COMBAT_SOUNDS, ...MAGIC_SOUNDS]);
+    const ids = Object.values(profiles).flatMap((p) => [p.sounds?.release?.id, p.sounds?.impact?.id]);
+    expect(ids).toHaveLength(48);
+    for (const id of ids) {
+      expect(id).toBeTruthy();
+      expect(manifestIds.has(id!), id).toBe(true);
+      // A sound not decoded yet is skipped by the director: these are warmed with the battle set.
+      expect(warmed.has(id!), id).toBe(true);
+    }
   });
 });
 

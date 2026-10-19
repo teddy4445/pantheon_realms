@@ -88,8 +88,9 @@ const INTENDED: Record<string, { file: string; travel: number; impact: number; p
   catapult: { file: 'fx-siege.png', travel: 2, impact: 3, path: 'high-ballistic' },
 };
 
+// The sea creatures (2026-10-17) fly their own delivery's missiles: checked in seaCreatures.test.ts.
 const shooters = Object.values(catalog.creatures)
-  .filter((d) => (d.stats?.shots ?? 0) > 0)
+  .filter((d) => (d.stats?.shots ?? 0) > 0 && catalog.families[d.familyId]?.availability !== 'sea_encounters')
   .map((d) => d.id)
   .sort();
 const wallBreakers = Object.values(catalog.creatures)

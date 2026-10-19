@@ -1,0 +1,15 @@
+START HERE — PANTHEON REALMS EXPEDITION KIT
+Open index.html for animation, boarding grid, targeting and UI references.
+Give Claude this entire folder or its ZIP and the following prompt:
+
+Implement the full specification in:
+C:/Users/lazeb/Desktop/blannder_models/naval-scouting-caravan-siege-kit-2026-10-17/CLAUDE_HANDOFF.txt
+in the separate game project:
+C:/Users/lazeb/Desktop/pantheon_realms
+
+Copy new visuals to assets-runtime/expedition-v1, reuse existing IDs from reuse-manifest.json, and read all design JSON contracts. Implement inspection, scouting, recruitment caravans, hero ships with owner-colored flags, two-ship boarding battles and the stationary destructible upper-left catapult with manual aim/fire. Preserve manual campaign battles and existing city-dedication/projectile/siege work. Test rules, persistence, AI and visual integration; report actual results.
+
+This is a complete design/material package, not an already modified game.
+New ship animations are delivered as runtime transform/FX animation code with directional artwork, not baked raster frame strips.
+Native boarding art is1672×941. Do not upscale or claim a larger native resolution.
+

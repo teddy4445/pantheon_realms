@@ -1,3 +1,4 @@
+import { LibraryTravelNotes } from '../components/libraryAdventure';
 /**
  * S14 Quest / Journal: objectives with live progress (from the rules'
  * conditionProgress), claimable rewards, story dialogue, mission help and
@@ -54,7 +55,7 @@ export function StatusIcon({ status }: { status: string }) {
   );
 }
 
-type Tab = 'objectives' | 'ledger' | 'story' | 'help' | 'campaign';
+type Tab = 'objectives' | 'ledger' | 'story' | 'help' | 'campaign' | 'coast' | 'scout-notes';
 
 export function DialogueLines({ lines }: { lines: readonly { speaker: string; text: string; portraitAssetId: string }[] }) {
   const catalog = useStore().catalog;
@@ -227,12 +228,37 @@ export function JournalScreen() {
             { id: 'objectives', label: 'Objectives' },
             ...(v2 ? [{ id: 'ledger' as const, label: 'Ledger' }] : []),
             { id: 'story', label: 'Story' },
+            ...(state.scenario.features?.mythicLibraryV2 ? [{ id: 'scout-notes' as const, label: 'Scout notes' }] : []),
+            ...(state.scenario.features?.seaEncountersV1 ? [{ id: 'coast' as const, label: 'Coastal watch' }] : []),
             { id: 'help', label: 'Mission help' },
             ...(campaign ? [{ id: 'campaign' as const, label: 'Campaign' }] : []),
           ]}
         />
       </div>
       <div className="journal-body journal-book">
+        {tab === 'scout-notes' ? (
+          <Folio label="Scout notes" left={<><h2>Reports of the road</h2><p>These are dated observations, not live intelligence. No hidden armies or exact numbers are revealed.</p><p>Soundings mark known shores. Reefs and currents are not simulated in this version.</p></>}
+            right={<div data-testid="library-scout-notes"><LibraryTravelNotes />{Object.values(state.heroes).filter((h) => h.ownerId === playerId).flatMap((h) => (h.libraryAdventure?.reports ?? []).filter((r) => r.untilDay > state.day).map((report) => (
+              <article key={`${h.id}:${report.spellId}`} className="journal-entry">
+                <h3>{catalog.spells[report.spellId]?.name} · {h.name}</h3>
+                <p className="small">Recorded day {report.day} · expires at dawn on day {report.untilDay}</p>
+                {!report.entries.length ? <p>No matching locations within the surveyed area.</p> : report.entries.map((entry, i) => <div key={i}>
+                  <strong>{entry.label}</strong><p>{entry.detail}</p>
+                  <Button onClick={() => { store.focusRequest = entry.coord; store.goto('adventure'); }}>Show on map</Button>
+                </div>)}
+              </article>
+            )))}</div>} />
+        ) : null}
+        {tab === 'coast' ? (
+          <Folio label="Coastal watch" left={<><h2>Watchtower reports</h2><p>Recorded sightings, newest first. These reports show where ships were seen, not their current positions.</p></>}
+            right={<div data-testid="coastal-watch-history">{!(state.seaWatch?.[playerId]?.history?.length) ? <p>No sightings recorded.</p> : [...state.seaWatch[playerId]!.history!].reverse().map((report, index) => (
+              <article key={`${report.day}-${report.shipId}-${index}`} className="journal-entry">
+                <strong>Day {report.day} · {missionSite(catalog, state, report.siteId)?.name ?? 'Coastal lookout'}</strong>
+                <p>{report.shipOwnerId ? state.players[report.shipOwnerId]?.name ?? 'Enemy' : 'Enemy'} ship sighted.</p>
+                <Button icon="eye" onClick={() => { store.focusOn(report.coord); store.toAdventure(); }}>Show reported location</Button>
+              </article>
+            ))}</div>} />
+        ) : null}
         {tab === 'objectives' ? (
           <Folio
             label="Objectives"

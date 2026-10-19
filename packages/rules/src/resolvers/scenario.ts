@@ -25,5 +25,6 @@ export function requireScenarioMission(catalog: ContentCatalog, state: Pick<Matc
 
 /** True when content of this scope may appear in the match ('expanded' needs the scenario feature). */
 export function scopeAllowed(state: Pick<MatchState, 'scenario'>, scope: ContentScope | undefined): boolean {
+  if (scope === 'mythic_library_v2') return state.scenario.features?.mythicLibraryV2 === true;
   return (scope ?? 'core') === 'core' || state.scenario.features?.expandedContent === true;
 }

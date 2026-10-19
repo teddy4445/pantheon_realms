@@ -9,6 +9,8 @@
 import { useState, type KeyboardEvent } from 'react';
 import {
   interventionUsedThisWeek,
+  axialDistance,
+  hexEquals,
   interventionsFor,
   matchScore,
   missionSite,
@@ -104,7 +106,8 @@ function CampaignIcon({ id, label, className = '' }: { id: string; label: string
  * family shows a base / upgraded selector over the picture (the selected form's
  * portrait, statistics, rules and price; one shared stock), and — only when the
  * visiting hero has a base stack of that family — a separate Train action (the
- * rules' quoteCampTraining and TrainAtCamp: the price difference, no stock used).
+ * rules' quoteCampTraining and TrainAtCamp: the price difference, no stock used),
+ * with how many of the site's weekly training allowance are left (2026-10-16).
  */
 export function CampDialog({ heroId, siteId }: { heroId: string; siteId: string }) {
   const store = useStore();
@@ -370,18 +373,27 @@ function FormPicker({ catalog, v, onChoose }: { catalog: ContentCatalog; v: Neut
   );
 }
 
-/** Training the visiting hero's base stack at this site (shown only when the hero has one): a strip under the panel. */
+/**
+ * Training the visiting hero's base stack at this site (shown only when the hero has one): a strip under the panel.
+ * It names how many of the site's weekly allowance (shared by every empire) are left; the quantity control and its
+ * Max stop there, and when none are left the rules' reason is the strip's visible disabled state.
+ */
 function TrainBlock({ catalog, v, quantity, onQuantity, onTrain }: { catalog: ContentCatalog; v: NeutralRecruitView; quantity: number; onQuantity: (n: number) => void; onTrain: (n: number) => void }) {
   const t = v.training!;
   return (
-    <section className="nr-train" aria-label={`Train ${t.fromPlural} into ${t.toPlural}`} data-testid="nr-train">
+    <section className="nr-train" aria-label={`Train ${t.fromPlural} into ${t.toPlural}`} data-testid="nr-train" data-left={t.leftThisWeek}>
       <span className="nr-train__pair" aria-hidden="true">
         <CreaturePortrait catalog={catalog} creatureId={t.fromId} size="2.5rem" count={t.stackCount} />
         <Icon name="back" className="nr-train__arrow" />
         <CreaturePortrait catalog={catalog} creatureId={t.toId} size="2.5rem" />
       </span>
       <span className="nr-train__text">
-        <span className="nr-k nr-train__title">Train troops</span>
+        <span className="nr-train__head">
+          <span className="nr-k nr-train__title">Train troops</span>
+          <span className={`nr-train__left ${t.leftThisWeek < 1 ? 'is-spent' : ''}`} title={`The trainers here take ${t.weeklyAllowance} a week, shared by every empire`} data-testid="nr-train-left">
+            {t.allowanceText}
+          </span>
+        </span>
         <span className="nr-train__what" data-testid="nr-train-what">
           {t.stackCount} {t.stackCount === 1 ? t.fromName : t.fromPlural} (slot {t.slot + 1}) → {t.toPlural} · <CostList cost={t.unitCost} /> each
         </span>
@@ -980,10 +992,18 @@ export function InterventionList({ adventure }: { adventure: boolean }) {
   const list = interventionsFor(catalog, state, playerId);
   const towns = Object.values(state.towns).filter((t) => t.ownerId === playerId);
   const [townId, setTownId] = useState(towns[0]?.id ?? '');
+  const heroes = Object.values(state.heroes).filter((h) => h.ownerId === playerId && h.status === 'active');
+  const [heroId, setHeroId] = useState(store.selectedHeroId ?? heroes[0]?.id ?? '');
+  const camps = (scenarioMission(catalog, state)?.sites ?? []).filter((s) => s.kind.type === 'creature_camp' && state.world.sites[s.id]?.owner === null && !!state.heroes[heroId] && axialDistance(state.heroes[heroId]!.position, s.coord) <= 1 && (state.world.sites[s.id]?.visitedHeroIds?.includes(heroId) || hexEquals(state.heroes[heroId]!.position, s.coord)));
+  const [chosenCamp, setChosenCamp] = useState('');
+  const siteId = camps.some((c) => c.id === chosenCamp) ? chosenCamp : camps[0]?.id ?? '';
+  const campPicker = list.some((d) => d.effect.type === 'library_guest_right') ? <label className="row gap small">Dwelling for Guest Right: <select className="select" value={siteId} onChange={(e) => setChosenCamp(e.target.value)} aria-label="Dwelling for Guest Right">{!camps.length ? <option value="">Visit a nearby neutral dwelling</option> : camps.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}</select></label> : null;
+  const heroPicker = list.some((d) => d.target === 'own_hero') ? <label className="row gap small">Hero for blessings: <select className="select" value={heroId} onChange={(e) => setHeroId(e.target.value)} aria-label="Hero for blessings">{heroes.map((h) => <option key={h.id} value={h.id}>{h.name}</option>)}</select></label> : null;
   const used = interventionUsedThisWeek(catalog, state, playerId);
   if (list.length === 0) return <p className="dim">Divine interventions are not part of this scenario.</p>;
   return (
     <div className="intervention-list">
+      {heroPicker}{campPicker}
       {used ? <p className="small warn">Already invoked this week.</p> : null}
       {list.some((d) => d.context === 'adventure' && d.target === 'own_town') && towns.length > 1 ? (
         <label className="row gap small">
@@ -998,12 +1018,12 @@ export function InterventionList({ adventure }: { adventure: boolean }) {
         </label>
       ) : null}
       {list.map((d) => {
-        const q = quoteIntervention(catalog, state, playerId, d.id, { townId: d.target === 'own_town' ? townId : null });
+        const q = quoteIntervention(catalog, state, playerId, d.id, { townId: d.target === 'own_town' ? townId : null, heroId: d.target === 'own_hero' ? heroId : null, siteId });
         const humanTurn = state.activePlayerId === playerId && !state.battle;
         const invoke =
           adventure && d.context === 'adventure'
             ? () => {
-                if (!store.dispatch({ kind: 'InvokeIntervention', interventionId: d.id, ...(d.target === 'own_town' ? { townId } : {}) })) {
+                if (!store.dispatch({ kind: 'InvokeIntervention', interventionId: d.id, ...(d.target === 'own_town' ? { townId } : {}), ...(d.target === 'own_hero' ? { heroId } : {}), ...(d.effect.type === 'library_guest_right' ? { siteId } : {}) })) {
                   store.toast(`${d.name}: the gods answer.`, 'success');
                   store.closeOverlay();
                 }
@@ -1025,10 +1045,17 @@ export function InterventionsDialog() {
   const list = interventionsFor(catalog, state, playerId);
   const towns = Object.values(state.towns).filter((t) => t.ownerId === playerId);
   const [townId, setTownId] = useState(towns[0]?.id ?? '');
+  const heroes = Object.values(state.heroes).filter((h) => h.ownerId === playerId && h.status === 'active');
+  const [heroId, setHeroId] = useState(store.selectedHeroId ?? heroes[0]?.id ?? '');
+  const camps = (scenarioMission(catalog, state)?.sites ?? []).filter((s) => s.kind.type === 'creature_camp' && state.world.sites[s.id]?.owner === null && !!state.heroes[heroId] && axialDistance(state.heroes[heroId]!.position, s.coord) <= 1 && (state.world.sites[s.id]?.visitedHeroIds?.includes(heroId) || hexEquals(state.heroes[heroId]!.position, s.coord)));
+  const [chosenCamp, setChosenCamp] = useState('');
+  const siteId = camps.some((c) => c.id === chosenCamp) ? chosenCamp : camps[0]?.id ?? '';
+  const campPicker = list.some((d) => d.effect.type === 'library_guest_right') ? <label className="row gap small">Dwelling for Guest Right: <select className="select" value={siteId} onChange={(e) => setChosenCamp(e.target.value)} aria-label="Dwelling for Guest Right">{!camps.length ? <option value="">Visit a nearby neutral dwelling</option> : camps.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}</select></label> : null;
+  const heroPicker = list.some((d) => d.target === 'own_hero') ? <label className="row gap small">Hero for blessings: <select className="select" value={heroId} onChange={(e) => setHeroId(e.target.value)} aria-label="Hero for blessings">{heroes.map((h) => <option key={h.id} value={h.id}>{h.name}</option>)}</select></label> : null;
   const humanTurn = state.activePlayerId === playerId && !state.battle;
   const options: Record<string, MiracleOption> = {};
   for (const d of list) {
-    const q = quoteIntervention(catalog, state, playerId, d.id, { townId: d.target === 'own_town' ? townId : null });
+    const q = quoteIntervention(catalog, state, playerId, d.id, { townId: d.target === 'own_town' ? townId : null, heroId: d.target === 'own_hero' ? heroId : null, siteId });
     options[d.id] = humanTurn ? { legal: q.legal, reason: q.reason } : { legal: false, reason: 'Not your turn' };
   }
   return (
@@ -1046,13 +1073,14 @@ export function InterventionsDialog() {
       onInvoke={(id) => {
         const d = interventionOf(catalog, state, playerId, id);
         if (!d) return;
-        if (!store.dispatch({ kind: 'InvokeIntervention', interventionId: id, ...(d.target === 'own_town' ? { townId } : {}) })) {
+        if (!store.dispatch({ kind: 'InvokeIntervention', interventionId: id, ...(d.target === 'own_town' ? { townId } : {}), ...(d.target === 'own_hero' ? { heroId } : {}), ...(d.effect.type === 'library_guest_right' ? { siteId } : {}) })) {
           store.toast(`${d.name}: the gods answer.`, 'success');
           store.closeOverlay();
         }
       }}
-      extra={
-        list.some((d) => d.context === 'adventure' && d.target === 'own_town') && towns.length > 1 ? (
+      extra={<>
+        {heroPicker}{campPicker}
+        {list.some((d) => d.context === 'adventure' && d.target === 'own_town') && towns.length > 1 ? (
           <label className="row gap small tome__town">
             Town:
             <select className="select" value={townId} onChange={(e) => setTownId(e.target.value)} aria-label="Town for town miracles">
@@ -1063,8 +1091,8 @@ export function InterventionsDialog() {
               ))}
             </select>
           </label>
-        ) : null
-      }
+        ) : null}
+      </>}
     />
   );
 }

@@ -275,9 +275,9 @@ describe('Watchtower', () => {
     const { townVisionRadius } = await import('../src');
     const d = GameDriver.mission('skirmish_twin_harbors');
     const t = d.state.towns['westharbor']!;
-    expect(townVisionRadius(d.catalog, t)).toBe(3);
+    expect(townVisionRadius(d.catalog, d.state, t)).toBe(3);
     t.buildings['watchtower'] = 1;
-    expect(townVisionRadius(d.catalog, t)).toBe(8);
+    expect(townVisionRadius(d.catalog, d.state, t)).toBe(8);
   });
 });
 
@@ -340,13 +340,18 @@ describe('second minor-god choice', () => {
     expect(d.player.wallet.favor).toBe(60 - 20 - 25);
     expect(quoteGodSelection(d.catalog, d.state, 'player', 'demeter').state).toBe('excluded');
     expect(quoteGodSelection(d.catalog, d.state, 'player', 'hades').state).toBe('excluded');
-    // Hermes: +250 Gold per day on top of town income, +15% movement.
-    const income = projectedIncome({ catalog: d.catalog, state: d.state }, 'player');
-    expect(income.gold).toBe(townDailyIncome(d.catalog, d.state.towns['westharbor']!).gold + 250);
+    // Legacy god economics (no city dedications): Hermes: +250 Gold per day on top of town income, +15% movement.
+    const legacy = { catalog: d.catalog, state: { ...d.state, scenario: { ...d.state.scenario, features: { ...d.state.scenario.features!, cityDedicationsV1: false } } } };
+    expect(projectedIncome(legacy, 'player').gold).toBe(townDailyIncome(d.catalog, d.state.towns['westharbor']!).gold + 250);
+    // City dedications (on in new skirmishes): Hermes' daily Gold is replaced by his city profile.
+    expect(d.state.scenario.features?.cityDedicationsV1).toBe(true);
+    expect(projectedIncome({ catalog: d.catalog, state: d.state }, 'player').gold).toBe(townDailyIncome(d.catalog, d.state.towns['westharbor']!).gold);
   });
 
-  it('growth blessings add to weekly growth of the matching tiers', () => {
+  it('growth blessings add to weekly growth of the matching tiers (legacy god economics)', () => {
     const d = GameDriver.mission('skirmish_twin_harbors');
+    // Without city dedications (old saves, The Three Beacons); with them the bonus is replaced (cityDedications.test.ts).
+    d.state.scenario = { ...d.state.scenario, features: { ...d.state.scenario.features!, cityDedicationsV1: false } };
     const t = d.state.towns['westharbor']!;
     const before = weeklyGrowthFor(d.catalog, t, 'hoplite', d.state);
     d.state.players['player']!.pantheon.minorGodIds.push('athena', 'demeter');

@@ -116,7 +116,7 @@ async function fit(page: Page, controls: string[]): Promise<Fit> {
 }
 
 const CONTROLS = ['[data-testid="nr-form-base"]', '[data-testid="nr-form-upgraded"]', '[data-testid="camp-recruit"]', '[data-testid="camp-recruit-all"]', '.nr-qty .qty', '[data-testid="nr-army"]', '[data-testid="nr-stock"]', '[data-testid="nr-price"]', '[data-testid="camp-leave"]'];
-const TRAIN_CONTROLS = [...CONTROLS, '[data-testid="camp-train"]', '.nr-train .qty', '[data-testid="nr-train-destination"]'];
+const TRAIN_CONTROLS = [...CONTROLS, '[data-testid="camp-train"]', '.nr-train .qty', '[data-testid="nr-train-destination"]', '[data-testid="nr-train-left"]'];
 
 async function campFits(page: Page, label: string, controls: string[]): Promise<void> {
   const f = await fit(page, controls);
@@ -265,6 +265,8 @@ test('hiring site: training a base stack — partial into a free slot, then the 
   await expect(train).toBeVisible();
   await expect(page.getByTestId('nr-train-what')).toContainText('6 Root-Runners (slot 2) → Crownroot Runners');
   await expect(page.getByTestId('nr-train-what')).toContainText('35');
+  // The week's training allowance (its weekly stock, shared by every empire): all eight left.
+  await expect(page.getByTestId('nr-train-left')).toHaveText('8 of 8 left this week');
   await expect(page.getByTestId('camp-train')).toContainText('Train 1');
   await expect(page.getByTestId('nr-train-destination')).toHaveText('Slot 3 — a free slot: a new stack of 1 Crownroot Runner. 5 Root-Runners stay in slot 2.');
   await shoot(page, 'train-available', (s) => campFits(page, `train ${s.width}x${s.height}`, TRAIN_CONTROLS));
@@ -282,6 +284,9 @@ test('hiring site: training a base stack — partial into a free slot, then the 
   expect(s.state.players.player.wallet.gold).toBe(gold0 - 70);
   expect(s.state.world.sites[SITE].stock ?? 8).toBe(8);
   await expect(page.getByTestId('nr-stock')).toContainText('8 Root-Runners this week');
+  // Two of the week's eight are used (the hiring stock is not).
+  await expect(page.getByTestId('nr-train-left')).toHaveText('6 of 8 left this week');
+  expect(s.state.world.sites[SITE]).toMatchObject({ trainedThisWeek: 2, trainedWeek: 1 });
   // The rest (Max): they join the upgraded stack, the base slot is freed.
   await page.waitForTimeout(600);
   await page.getByTestId('nr-train').getByRole('button', { name: 'Max' }).click();
@@ -292,7 +297,53 @@ test('hiring site: training a base stack — partial into a free slot, then the 
   expect(s.state.heroes.hervor.army.slots[1]).toBeNull();
   expect(s.state.heroes.hervor.army.slots[2]).toMatchObject({ creatureId: 'crownroot_runner', count: 6 });
   expect(s.state.players.player.wallet.gold).toBe(gold0 - 70 - 140);
+  expect(s.state.world.sites[SITE]).toMatchObject({ trainedThisWeek: 6, trainedWeek: 1 });
   await shoot(page, 'train-done', (sz) => campFits(page, `trained ${sz.width}x${sz.height}`, CONTROLS));
+});
+
+test('hiring site: the week’s training allowance — what is left, Max stops there, and the disabled state once it is used up', async ({ page }) => {
+  // Another empire already trained five here this week: three of eight are left; the hero has six Root-Runners.
+  const f = siteFixture({ name: 'up-train-cap', missionId: 'winter_oath_v2_m02', siteId: SITE, army: [['norse_draugr', 24], ['root_runner', 6], null, null, null, null, null], wallet: { gold: 3000 }, trainedThisWeek: 5 });
+  await load(page, f);
+  await openCamp(page, f);
+  const left = page.getByTestId('nr-train-left');
+  await expect(left).toHaveText('3 of 8 left this week');
+  await expect(left).toBeVisible();
+  // Max stops at what is left (not the six in the stack); a part goes to a free slot.
+  await page.getByTestId('nr-train').getByRole('button', { name: 'Max' }).click();
+  await expect(page.getByTestId('camp-train')).toContainText('Train 3');
+  await expect(page.getByTestId('camp-train')).toContainText('105');
+  await expect(page.getByRole('button', { name: /^Increase Root-Runners to train/ })).toBeDisabled();
+  await expect(page.getByTestId('nr-train').locator('input[type="range"]')).toHaveAttribute('max', '3');
+  await expect(page.getByTestId('nr-train-destination')).toHaveText('Slot 3 — a free slot: a new stack of 3 Crownroot Runners. 3 Root-Runners stay in slot 2.');
+  await shoot(page, 'train-left-this-week', (s) => campFits(page, `train left ${s.width}x${s.height}`, TRAIN_CONTROLS));
+  await page.setViewportSize(SIZES[0]);
+  // Keyboard: Tab reaches the Train button; Enter trains the three.
+  const gold0 = (await inspect(page)).state.players.player.wallet.gold as number;
+  await page.getByTestId('camp-train').focus();
+  await page.keyboard.press('Enter');
+  await expect(left).toHaveText('0 of 8 left this week');
+  let s = await inspect(page);
+  expect(s.state.heroes.hervor.army.slots[1]).toMatchObject({ creatureId: 'root_runner', count: 3 });
+  expect(s.state.heroes.hervor.army.slots[2]).toMatchObject({ creatureId: 'crownroot_runner', count: 3 });
+  expect(s.state.players.player.wallet.gold).toBe(gold0 - 105);
+  expect(s.state.world.sites[SITE]).toMatchObject({ trainedThisWeek: 8, trainedWeek: 1 });
+  // None left: the strip stays (three Root-Runners remain), the reason is its visible disabled state.
+  const reason = 'Its trainers can take no more this week (8 a week). More can train when the next week begins.';
+  await expect(page.getByTestId('nr-train')).toBeVisible();
+  await expect(page.getByTestId('camp-train')).toBeDisabled();
+  await expect(page.getByTestId('camp-train')).toHaveAttribute('aria-description', reason);
+  await expect(page.getByTestId('nr-train-destination')).toHaveText(reason);
+  await expect(page.getByTestId('nr-train-destination')).toBeVisible();
+  await expect(page.getByTestId('nr-train-destination')).toHaveClass(/is-refused/);
+  await expect(left).toHaveClass(/is-spent/);
+  await expect(page.getByTestId('nr-train').getByRole('button', { name: 'Max' })).toBeDisabled();
+  // Hiring is not limited by it: the stock is the site's own.
+  await expect(page.getByTestId('nr-stock')).toContainText('8 Root-Runners this week');
+  await expect(page.getByTestId('camp-recruit')).toBeEnabled();
+  s = await inspect(page);
+  expect(s.state.world.sites[SITE].stock ?? 8).toBe(8);
+  await shoot(page, 'train-allowance-used', (sz) => campFits(page, `train used ${sz.width}x${sz.height}`, TRAIN_CONTROLS));
 });
 
 test('hiring site: training refused — too little gold for one, and a full army that cannot split a stack', async ({ page }) => {

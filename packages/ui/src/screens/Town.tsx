@@ -10,6 +10,7 @@
  * pop-up beside that building with icon actions; the garrison and the visiting
  * hero's army are centred below with a divider between them.
  */
+import { caravansOn } from '../app/caravans';
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type DragEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import {
   ARTIFACT_SLOT_LABEL,
@@ -24,7 +25,7 @@ import {
   heroHiredThisWeek,
   quoteSpellbook,
   quoteTrade,
-  marketRates,
+  townMarketRates,
   playerMarketCount,
   townDailyIncome,
   townGrowthMultiplier,
@@ -38,11 +39,15 @@ import {
   quoteDivineGift,
   quoteTraining,
   quoteArtifactPurchase,
-  townTraining,
+  townShopPrice,
+  townTrainingTerms,
   townVisionRadius,
   townMerchantStockSize,
   worldWeek,
   quoteTransfer,
+  townDedicationView,
+  cityDedicationProfile,
+  dedicationGrowthPreview,
   type ArmyRef,
   type ArmyState,
   type HeroState,
@@ -52,7 +57,6 @@ import {
   type ResourceKey,
   type TownState,
 } from '@pr/rules';
-import { resources } from '@pr/rules';
 import { giftFxKind, type TownFxKind } from '@pr/presentation/core';
 import { useStore } from '../app/context';
 import { reducedMotion } from '../app/preferences';
@@ -62,11 +66,15 @@ import { Button, Chip, Modal, QuantitySelector, SectionTitle } from '../componen
 import { ArtifactIcon, BuildingArt, CreaturePortrait, Emblem, HeroPortrait, SpecialtyLine } from '../components/art';
 import { AdventureStage, HeroFigure, KitOrnament, adventureScene } from '../components/adventure';
 import { ArmyStrip, CostList, ScreenHeader } from '../components/game';
-import { townBackground } from '../assets/manifest';
+import { resolveAsset, townBackground } from '../assets/manifest';
 import { Icon, type IconName } from '../assets/icons';
 import { formatNumber, heroStory, heroesInTown, humanPlayer } from '../app/view';
 import { guiThemeFor, themeAsset } from '../assets/guiArt';
 import { GuiArtHeader, LockGlyph, useOnce } from '../components/gui';
+import { dedicationsOn, giftResource, giftTitle, godName } from '../app/dedication';
+import { DedicationMedallion, DedicationPane, SavingLine } from '../components/dedication';
+import { CoastalLaunchModal } from '../components/naval';
+import { launchView } from '../app/naval';
 
 function slotArtId(catalog: AppStore['catalog'], town: TownState, slot: BuildingSlotDefinition): { id: string; built: boolean } {
   const active = activeBuildingInSlot(catalog, town, slot.id);
@@ -100,19 +108,30 @@ function slotPlan(catalog: AppStore['catalog'], state: MatchState, playerId: str
 }
 
 /** A building's short tooltip line (shown on hover after a delay and at once on keyboard focus). */
-function slotHint(catalog: AppStore['catalog'], state: MatchState, town: TownState, plan: ReturnType<typeof slotPlan>): string {
+function slotHint(catalog: AppStore['catalog'], state: MatchState, town: TownState, plan: ReturnType<typeof slotPlan>, favored?: FavoredGrowth | null): string {
   const family = familyForSlot(catalog, plan.slot);
   if (family && plan.current) {
     const fam = catalog.families[family];
     const creature = fam ? catalog.creatures[fam.baseCreatureId] : undefined;
     const name = creature?.pluralName ?? fam?.name ?? '';
-    return `${town.population[family] ?? 0} ${name} available · +${weeklyGrowthFor(catalog, town, family, state)} each week`;
+    return `${town.population[family] ?? 0} ${name} available · +${weeklyGrowthFor(catalog, town, family, state)} each week${favored && favored.familyId === family ? ` · ${favoredText(favored)}` : ''}`;
   }
   if (plan.status === 'done') return plan.total > 1 ? `Level ${plan.level} of ${plan.total} · fully built` : 'Built';
   if (plan.status === 'planned') return 'Planned: not designed yet';
   if (plan.status === 'ready') return plan.current ? `Can upgrade today: ${plan.next!.name}` : `Can build today: ${plan.next!.name}`;
   const why = plan.quote?.missing[0] ?? plan.quote?.reason ?? '';
   return plan.current ? `Next: ${plan.next!.name}${why ? ` — ${why}` : ''}` : `Not built${why ? ` — ${why}` : ''}`;
+}
+
+/** City dedications: the honored god's favored family here and its increment at the next week (`dedicationGrowthPreview`). */
+interface FavoredGrowth {
+  readonly familyId: string;
+  readonly god: string;
+  readonly added: number;
+}
+
+function favoredText(f: FavoredGrowth): string {
+  return f.added > 0 ? `+${f.added} more from ${f.god} next week` : `favored by ${f.god}`;
 }
 
 const STATUS_ORDER: readonly SlotStatus[] = ['ready', 'blocked', 'planned', 'done'];
@@ -172,6 +191,7 @@ function ConstructionModal({ town, onClose, onShow, onBuilt }: { town: TownState
                       </div>
                       {plan.next ? <p className="build-row__summary">{plan.next.summary}</p> : plan.current ? <p className="build-row__summary">{plan.current.summary}</p> : null}
                       {plan.next && !plan.planned && plan.quote ? <CostList cost={plan.quote.cost} wallet={wallet} /> : null}
+                      {plan.next && !plan.planned ? <SavingLine catalog={catalog} saving={plan.quote?.dedication} testId={`construction-saving-${plan.slot.id}`} /> : null}
                       {plan.status === 'blocked' ? (
                         plan.quote?.missing.length ? (
                           <ul className="build-row__missing">
@@ -233,9 +253,12 @@ function MarketModal({ town, onClose }: { town: TownState; onClose: () => void }
   const [pending, once] = useOnce(600);
   const goodRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const markets = playerMarketCount(catalog, state, playerId);
-  const tier = marketRates(catalog, markets);
+  // This town's rates from the rules (a city dedication may lower its Gold buy rates; sell rates never change).
+  const tier = townMarketRates(catalog, state, playerId, town.id);
   const unitOf = (k: TradeGood) => (mode === 'sell' ? (k === 'crystal' ? tier.sellCrystal : tier.sellCommon) : k === 'crystal' ? tier.buyCrystal : tier.buyCommon);
   const unit = unitOf(res);
+  // The ordinary buy rate (shown beside a city dedication's lower rate; sell rates never change).
+  const normalUnit = mode === 'buy' ? (res === 'crystal' ? tier.normalBuyCrystal : tier.normalBuyCommon) : unit;
   const sell: ResourceKey = mode === 'sell' ? res : 'gold';
   const buy: ResourceKey = mode === 'sell' ? 'gold' : res;
   const max = mode === 'sell' ? wallet[res] : Math.floor(wallet.gold / Math.max(1, unit));
@@ -345,6 +368,7 @@ function MarketModal({ town, onClose }: { town: TownState; onClose: () => void }
             <KitOrnament id="adventurekit.chrome.balance" className="ak-market__balance" />
             <div className="ak-market__rate" data-testid="market-rate">
               1 {RESOURCE_LABELS[res]} = {formatNumber(unit)} Gold
+              {normalUnit !== unit ? <span className="ak-muted small"> (normally {formatNumber(normalUnit)})</span> : null}
             </div>
             <div className="ak-muted small">Trade through Gold · {markets} Marketplace{markets === 1 ? '' : 's'} owned</div>
           </div>
@@ -371,6 +395,7 @@ function MarketModal({ town, onClose }: { town: TownState; onClose: () => void }
             })}
           </div>
         </div>
+        {mode === 'buy' ? <SavingLine catalog={catalog} saving={q.dedication} testId="market-saving" /> : null}
         {reason ? (
           <p className="ak-market__reason" data-testid="market-reason">
             <LockGlyph />
@@ -959,7 +984,7 @@ function MerchantModal({ town, onClose }: { town: TownState; onClose: () => void
                       {ARTIFACT_SLOT_LABEL[art.slot]} · {art.summary}
                     </div>
                     <div className="row gap">
-                      <CostList cost={q?.cost ?? resources(art.merchantPrice ?? {})} wallet={state.players[playerId]!.wallet} />
+                      <CostList cost={q?.cost ?? townShopPrice(catalog, state, playerId, town.id, art.id).cost} wallet={state.players[playerId]!.wallet} />
                       <Button
                         variant="primary"
                         size="small"
@@ -977,6 +1002,7 @@ function MerchantModal({ town, onClose }: { town: TownState; onClose: () => void
                         Buy
                       </Button>
                     </div>
+                    <SavingLine catalog={catalog} saving={q?.dedication ?? townShopPrice(catalog, state, playerId, town.id, art.id).dedication} testId={`merchant-saving-${index}`} />
                     {visitor && q && !q.legal && q.reason ? (
                       <div className="shop-reason">
                         <LockGlyph />
@@ -1064,8 +1090,9 @@ function WorkshopModal({ town, onClose }: { town: TownState; onClose: () => void
                       <div className="ware__slot">{ARTIFACT_SLOT_LABEL[art.slot]}</div>
                       <div className="ware__fx">{art.summary}</div>
                       <div className="ware__price">
-                        <CostList cost={q?.cost ?? resources(art.merchantPrice ?? {})} wallet={wallet} />
+                        <CostList cost={q?.cost ?? townShopPrice(catalog, state, playerId, town.id, art.id, 'workshop').cost} wallet={wallet} />
                       </div>
+                      <SavingLine catalog={catalog} saving={q?.dedication ?? townShopPrice(catalog, state, playerId, town.id, art.id, 'workshop').dedication} testId={`workshop-saving-${index}`} />
                       <Button
                         variant="primary"
                         size="small"
@@ -1134,8 +1161,11 @@ export function TownScreen() {
   const town = townId ? state.towns[townId] : undefined;
   // The building pop-up is not restored on return (from recruitment, say): the town opens clean.
   const [selected, setSelected] = useState<string | null>(null);
-  type TownModal = 'market' | 'tavern' | 'offering' | 'merchant' | 'workshop' | 'gifts' | 'construction';
-  const [modal, setModalState] = useState<TownModal | null>(null);
+  type TownModal = 'market' | 'tavern' | 'offering' | 'merchant' | 'workshop' | 'gifts' | 'construction' | 'dedication' | 'launch';
+  // The Pantheon screen's "Open" on a city goes straight to that town's dedication pane.
+  const [modal, setModalState] = useState<TownModal | null>(store.screen.params.dedication ? 'dedication' : null);
+  // The medallion's short seal pulse after a dedication is confirmed (none under reduced motion).
+  const [sealPulse, setSealPulse] = useState(0);
   /** Town actions (market, tavern, temple, merchant, workshop, construction list) open with their own sound. */
   const setModal = (m: TownModal | null) => {
     if (m) store.audio?.effect('ui.town_action');
@@ -1230,7 +1260,7 @@ export function TownScreen() {
     );
   }
   // The town's painting follows its town hall (Brief 17: four stages per pantheon; `townBackground`).
-  const bg = townBackground(archetype.backgroundAssetId, town.buildings['civic_hall']);
+  const bg = town.warDamaged && (town.buildings['civic_hall'] ?? 0) < 2 ? resolveAsset(`twin.town-${town.pantheonId}`) : townBackground(archetype.backgroundAssetId, town.buildings['civic_hall']);
   const mine = town.ownerId === player.id;
   const visiting = heroesInTown(catalog, state, town).filter((h) => h.ownerId === player.id);
   const slot = selected ? archetype.slots.find((s) => s.id === selected) : undefined;
@@ -1254,7 +1284,8 @@ export function TownScreen() {
   const family = slot ? familyForSlot(catalog, slot) : null;
   const spellbookHero = visiting.find((h) => !h.spellbook);
   const offering = quoteOffering(catalog, state, player.id, town.id, []);
-  const training = townTraining(catalog, town);
+  // The academy's terms from the rules (a city dedication may lower the Gold).
+  const training = townTrainingTerms(catalog, state, player.id, town.id);
   const sbQuote = spellbookHero ? quoteSpellbook(catalog, state, spellbookHero.id, town.id) : null;
   const anchor = archetype.hudAnchor ?? 'center';
   const covenants = town.covenants.map((f) => catalog.families[f]?.name ?? f);
@@ -1263,6 +1294,21 @@ export function TownScreen() {
   const plans = new Map(archetype.slots.map((x) => [x.id, slotPlan(catalog, state, player.id, town, x)]));
   const readyCount = mine ? [...plans.values()].filter((x) => x.status === 'ready').length : 0;
   const hasTavern = townHasEffect(catalog, town, 'enables_hero_hiring');
+  // City dedications (scenario feature; hidden in legacy games): the temple's medallion, pane and weekly gift.
+  const dedView = dedicationsOn(state) ? townDedicationView(catalog, state, town.id, player.id) : null;
+  const templeSlot = archetype.slots.find((x) => x.kind === 'support' && x.role === 'pantheon_temple');
+  const dedGod = dedView?.active ? godName(catalog, dedView.active.godId) : null;
+  const dedGift = dedView?.benefits && dedView.benefits.resource.status.ok ? dedView.benefits.resource : null;
+  const dedGiftRes = dedGift ? giftResource(dedGift.amount) : null;
+  const favoredFamily = dedView?.active?.state === 'active' ? cityDedicationProfile(catalog, dedView.active.godId)?.favoredFamilyId : null;
+  const favored: FavoredGrowth | null = favoredFamily && dedGod ? { familyId: favoredFamily, god: dedGod, added: dedicationGrowthPreview(catalog, state, town.id, favoredFamily) } : null;
+  const dedLine = !dedView
+    ? null
+    : dedView.active
+      ? `City dedication: ${dedGod} — ${dedView.active.state === 'dormant' ? `dormant (${dedView.active.dormantReason})` : 'active'}${dedView.pending ? `; ${godName(catalog, dedView.pending.godId)} from day ${dedView.pending.activationDay}` : ''}`
+      : dedView.town.ok
+        ? 'City dedication: no god yet (the first is free)'
+        : `City dedication: ${dedView.town.reason}`;
 
   // Pop-up beside the selected building: right of it in the left half of the town, left of it in the right half;
   // its top level with the building's top (never under the economy bar), or its bottom level with the building's foot low in the scene.
@@ -1314,7 +1360,7 @@ export function TownScreen() {
             const planned = catalog.buildings[s.chain[0] ?? '']?.implementationStatus === 'planned';
             const p = s.placement;
             const name = art.built ? (plan.current?.name ?? s.label) : s.label;
-            const hint = slotHint(catalog, state, town, plan);
+            const hint = slotHint(catalog, state, town, plan, favored);
             // Empty plots are small UI markers: keep them above built art so every location stays clickable.
             const style = { left: `${p.x - p.width / 2}%`, bottom: `${100 - p.y}%`, width: `${p.width}%`, zIndex: art.built ? p.layer : 20 + p.layer };
             return (
@@ -1353,6 +1399,8 @@ export function TownScreen() {
             return <Burst key={b.key} kind={b.kind} {...(b.stripId ? { stripId: b.stripId } : {})} className="town-burst" scale={b.kind === 'brood' ? 0.6 : 1} style={{ left: `${at.x}%`, top: `${Math.max(8, at.y - at.width * 0.6)}%` }} onDone={() => setBursts((list) => list.filter((x) => x.key !== b.key))} />;
           })}
 
+          {dedView && templeSlot ? <DedicationMedallion key={sealPulse} catalog={catalog} view={dedView} slot={templeSlot} pulseKey={sealPulse} onOpen={() => setModal('dedication')} /> : null}
+
           {/* Town economy: a compact panel on the painting's top edge, over open sky. */}
           <div
             className={`town-hud town-hud--${typeof anchor === 'number' ? 'at' : anchor}`}
@@ -1365,6 +1413,13 @@ export function TownScreen() {
                 <CostList cost={income} empty="none" />
                 <span className="town-hud__unit">/day</span>
               </span>
+              {dedGift && dedGiftRes ? (
+                <span className="town-hud__item town-hud__gift" title={`${dedGod}: ${giftTitle(dedGift.amount)}, next on day ${dedGift.nextPayoutDay}`} data-testid="town-weekly-gift">
+                  <Icon name={dedGiftRes} className="town-hud__icon" />
+                  <span className="num">+{formatNumber(dedGift.amount[dedGiftRes])}</span>
+                  <span className="town-hud__unit">each week</span>
+                </span>
+              ) : null}
               <span className="town-hud__sep" aria-hidden="true" />
               <Button
                 size="small"
@@ -1392,6 +1447,27 @@ export function TownScreen() {
               </span>
               <span className="town-hud__sep" aria-hidden="true" />
               <IconAction icon="recruit" label="Recruit" onClick={() => store.goto('recruitment', { townId: town.id })} testId="town-recruit" />
+              {caravansOn(catalog, state) && owned.length > 1 ? (
+                <IconAction
+                  icon="caravan"
+                  label="Send reinforcements by caravan"
+                  onClick={() => store.openOverlay({ kind: 'caravan-dispatch', townId: town.id })}
+                  disabled={state.activePlayerId !== player.id || !!state.battle}
+                  reason="Wait for your turn"
+                  testId="town-caravan"
+                />
+              ) : null}
+              {(() => {
+                // Hero ships: the coastal launch service (not a building), offered where the town touches water.
+                const lv = launchView(catalog, state, player.id, town.id, null);
+                if (!lv.offered) return null;
+                const why = !mine ? 'You do not own this town' : state.activePlayerId !== player.id || state.battle ? 'Wait for your turn' : null;
+                const price = Object.entries(lv.cost)
+                  .filter(([, n]) => (n ?? 0) > 0)
+                  .map(([k, n]) => `${formatNumber(n ?? 0)} ${k[0]!.toUpperCase()}${k.slice(1)}`)
+                  .join(' + ');
+                return <IconAction icon="ship" label={`Launch a ship (${price})`} onClick={() => setModal('launch')} disabled={!!why} reason={why} testId="town-launch" />;
+              })()}
               <IconAction icon="market" label="Market" onClick={() => setModal('market')} disabled={!hasMarket} reason="Requires a Marketplace" testId="town-market" />
               <IconAction icon="tavern" label="Tavern" onClick={() => setModal('tavern')} disabled={!hasTavern} reason="Requires a Tavern" testId="town-tavern" />
               <IconAction icon="pantheon" label="Pantheon & gods" onClick={() => store.goto('pantheon', { townId: town.id })} testId="town-gods" />
@@ -1436,6 +1512,7 @@ export function TownScreen() {
                     {next.implementationStatus !== 'planned' ? (
                       <>
                         <CostList cost={quote.cost} wallet={player.wallet} />
+                        <SavingLine catalog={catalog} saving={quote.dedication} testId="build-saving" />
                         {quote.missing.length ? (
                           <ul className="bld-pop__missing" data-testid="build-missing">
                             {quote.missing.map((m) => (
@@ -1465,11 +1542,24 @@ export function TownScreen() {
                 {family ? (
                   <div className="bld-pop__line">
                     <Icon name="growth" className="inline-icon" /> {catalog.families[family]?.name}: <strong className="num">{town.population[family] ?? 0}</strong> available · +{weeklyGrowthFor(catalog, town, family, state)} per week
+                    {favored && favored.familyId === family ? <span data-testid="dwelling-favored"> · {favoredText(favored)}</span> : null}
                   </div>
                 ) : null}
                 {slot.role === 'training_academy' && current && training ? <div className="bld-pop__line">Once per week per hero: {training.gold} Gold for {training.xp} experience.</div> : null}
-                {slot.role === 'watchtower' ? <div className="bld-pop__line">Town vision: {townVisionRadius(catalog, town)} hexes.</div> : null}
-                {slot.role === 'mage_guild' && current ? <div className="bld-pop__line">Spell library: tier {townSpellLibraryTier(catalog, town)}. Visiting heroes with a spellbook learn its spells.</div> : null}
+                {slot.role === 'training_academy' && current && training ? <SavingLine catalog={catalog} saving={training.dedication} testId="training-saving" per="per training" /> : null}
+                {slot.role === 'mage_guild' && current && spellbookHero && sbQuote ? (
+                  <div className="bld-pop__line" data-testid="spellbook-price">
+                    Spellbook for {spellbookHero.name}: {formatNumber(sbQuote.cost.gold)} Gold{sbQuote.legal ? '' : ` — ${sbQuote.reason}`}
+                  </div>
+                ) : null}
+                {slot.role === 'mage_guild' && current && spellbookHero && sbQuote ? <SavingLine catalog={catalog} saving={sbQuote.dedication} testId="spellbook-saving" /> : null}
+                {slot.role === 'pantheon_temple' && dedLine ? (
+                  <div className="bld-pop__line" data-testid="temple-dedication-line">
+                    <Icon name="star" className="inline-icon" /> {dedLine}
+                  </div>
+                ) : null}
+                {slot.role === 'watchtower' ? <div className="bld-pop__line">Town vision: {townVisionRadius(catalog, state, town)} hexes.</div> : null}
+                {slot.role === 'mage_guild' && current ? <div className="bld-pop__line">Spell library: tier {townSpellLibraryTier(catalog, town, state)}. Visiting heroes need a spellbook and sufficient Wisdom.</div> : null}
                 {slot.role === 'fortifications' ? <div className="bld-pop__line">Weekly growth ×{growth.numerator / growth.denominator}. The fortifications defend the town in a siege.</div> : null}
               </div>
               <div className="bld-pop__actions">
@@ -1480,6 +1570,7 @@ export function TownScreen() {
                 {slot.role === 'pantheon_temple' ? (
                   <>
                     <IconAction icon="pantheon" label="Pantheon & gods" onClick={() => store.goto('pantheon', { townId: town.id })} />
+                    {dedView ? <IconAction icon="star" label="City dedication" onClick={() => setModal('dedication')} testId="popup-dedication" /> : null}
                     {offering.available && current ? <IconAction icon="favor" label="Make an offering" onClick={() => setModal('offering')} disabled={offering.code === 'already_done'} reason={offering.reason} testId="offering-open" /> : null}
                     {current && divineGifts(catalog, state).length > 0 ? <IconAction icon="gift" label="Divine gifts" onClick={() => setModal('gifts')} testId="gifts-open" /> : null}
                   </>
@@ -1532,6 +1623,17 @@ export function TownScreen() {
       {modal === 'merchant' ? <MerchantModal town={town} onClose={() => setModal(null)} /> : null}
       {modal === 'workshop' ? <WorkshopModal town={town} onClose={() => setModal(null)} /> : null}
       {modal === 'gifts' ? <GiftsModal town={town} onClose={() => setModal(null)} /> : null}
+      {modal === 'launch' ? <CoastalLaunchModal townId={town.id} onClose={() => setModal(null)} /> : null}
+      {modal === 'dedication' && dedView ? (
+        <DedicationPane
+          town={town}
+          onClose={() => {
+            setModal(null);
+            if (store.screen.params.dedication) store.setParams({ dedication: false });
+          }}
+          onSealed={() => !reducedMotion(store.prefs) && setSealPulse((k) => k + 1)}
+        />
+      ) : null}
       {/* Outside the painting: its size containment and clipping would hold a fixed burst inside it. */}
       {pins.map((b) => (
         <Burst key={b.key} kind={b.kind} stripId={b.stripId} className="burst--resbar" scale={0.42} centered style={{ left: b.x, top: b.y }} onDone={() => setPins((list) => list.filter((x) => x.key !== b.key))} />

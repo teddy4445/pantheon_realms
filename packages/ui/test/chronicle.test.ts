@@ -102,7 +102,7 @@ describe('chronicle layout', () => {
       expect(model.nodes.filter((n) => n.state !== 'available').every((n) => n.state === 'locked')).toBe(true);
       // Nothing can be continued to before a run exists.
       expect(model.available).toEqual([]);
-      expect(defaultSelection(model)).toBe(`${camp.id}_v2_m01`);
+      expect(defaultSelection(model)).toBe(camp.chapters![0]!.missionId);
       const first = model.nodes[0]!;
       expect(first.revealed).toBe(true);
       expect(first.firstLine?.text).toBe(catalog.missions[first.missionId]!.briefing[0]!.text);

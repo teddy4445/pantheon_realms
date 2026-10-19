@@ -618,9 +618,12 @@ export function buildNewFireV2(camp: V2Campaign): V2Built {
         commander: acatl,
         start: [30, 13],
         waypoints: [[24, 4], [30, 13], [24, 19], [30, 13]],
+        // Acatl protects the lake depots; the western ridge is the player's recovery area.
+        // All three patrol waypoints fit, but he cannot chase a depleted carried army home.
+        radius: 12,
         army: acatlArmy,
         home: 'nf2_reserve',
-        purpose: 'Acatl moves between his docks with a finite escort, keeping the canoe trade in his hands. His reserve on the east shore is paid from both depots: take both and the reserve goes home, and he withdraws with it.',
+        purpose: 'Acatl moves between his lake docks with a finite escort, keeping the canoe trade in his hands. He guards the lake region and does not pursue onto Ocelotepec’s western ridge. His reserve on the east shore is paid from both depots: take both and the reserve goes home, and he withdraws with it.',
       },
     ],
     objectives: [

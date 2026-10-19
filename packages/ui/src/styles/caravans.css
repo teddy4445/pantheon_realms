@@ -1,0 +1,410 @@
+/*
+ * Recruitment caravans (expedition kit §06/§11): the dispatch dialog, tracker, arrival
+ * receipt, held notice, actor picker and the command sidebar's list. Uses the shared kit
+ * tokens; no faction colour (the owner's colour is the map's, never the dialog's).
+ */
+
+.cv-art {
+  margin: -0.2rem 0 0.6rem;
+  border: 1px solid var(--rim);
+  border-radius: var(--radius-s, 3px);
+  box-shadow: var(--rim-double);
+  overflow: hidden;
+  aspect-ratio: 2172 / 520;
+  max-height: 22vh;
+  background: var(--plate-sunken);
+}
+.cv-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 55%;
+}
+
+.cv-route-line {
+  text-align: center;
+  font-family: var(--font-display);
+  color: var(--gold-200);
+  margin: 0 0 0.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+  justify-content: center;
+}
+.cv-select {
+  font: inherit;
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  color: var(--text-strong);
+  background: var(--plate-raised);
+  border: 1px solid var(--rim);
+  border-radius: var(--radius-s, 3px);
+  padding: 0.25rem 0.45rem;
+  max-width: 100%;
+}
+.cv-select:focus-visible {
+  outline: 2px solid var(--gold-300);
+  outline-offset: 2px;
+}
+
+.cv-dispatch {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 0.8rem;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .cv-dispatch {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cv-forms {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.cv-family {
+  border: 1px solid var(--rim-faint);
+  border-radius: var(--radius-s, 3px);
+  padding: 0.3rem 0.45rem;
+  background: rgba(7, 14, 26, 0.45);
+}
+.cv-family__head {
+  color: var(--gold-200);
+  margin-bottom: 0.2rem;
+}
+.cv-form {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.45rem;
+  align-items: center;
+  padding: 0.2rem 0;
+}
+.cv-form + .cv-form {
+  border-top: 1px dashed var(--rim-faint);
+}
+.cv-form.is-chosen .cv-form__name {
+  color: var(--gold-100);
+}
+.cv-form__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--text-strong);
+}
+.cv-form__price {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: center;
+}
+.cv-form .ded-saving {
+  margin: 0.15rem 0 0;
+}
+
+.cv-step {
+  display: inline-flex;
+  gap: 0.2rem;
+  align-items: center;
+}
+.cv-step__input {
+  width: 3.6rem;
+  text-align: center;
+  font: inherit;
+  font-family: var(--font-ui);
+  color: var(--text-strong);
+  background: var(--plate-sunken);
+  border: 1px solid var(--rim);
+  border-radius: var(--radius-s, 3px);
+  padding: 0.2rem 0.2rem;
+  -moz-appearance: textfield;
+}
+.cv-step__input::-webkit-outer-spin-button,
+.cv-step__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.cv-step__input:focus-visible {
+  outline: 2px solid var(--gold-300);
+  outline-offset: 1px;
+}
+
+.cv-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.5rem;
+  border: 1px solid var(--rim);
+  border-radius: var(--radius-s, 3px);
+  background: var(--plate);
+  box-shadow: var(--rim-double);
+}
+.cv-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+.cv-fact {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  padding: 0.3rem;
+  border: 1px solid var(--rim-faint);
+  border-radius: var(--radius-s, 3px);
+  background: rgba(7, 14, 26, 0.6);
+}
+.cv-fact svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: none;
+  color: var(--gold-400);
+}
+.cv-fact__label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+.cv-fact strong {
+  font-family: var(--font-display);
+  color: var(--gold-200);
+}
+.cv-fact strong.success {
+  color: var(--success);
+}
+.cv-fact strong.warn {
+  color: var(--warning);
+}
+.cv-risks {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+.cv-total {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.cv-total th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--text);
+  padding: 0.2rem 0.2rem;
+}
+.cv-total td {
+  text-align: right;
+  padding: 0.2rem 0.2rem;
+}
+.cv-total__sum th,
+.cv-total__sum td {
+  border-top: 1px solid var(--rim);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--gold-200);
+  padding-top: 0.35rem;
+}
+.cv-fit {
+  display: flex;
+  gap: 0.3rem;
+  align-items: flex-start;
+}
+.cv-note {
+  max-width: 26rem;
+  color: var(--text-dim);
+}
+
+/* Tracker / held / arrival */
+.cv-track-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+.cv-track-head__from {
+  display: inline-flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+.cv-track-head__eta {
+  margin-left: auto;
+  color: var(--gold-200);
+}
+.cv-subtitle {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  color: var(--gold-300);
+  margin: 0.5rem 0 0.3rem;
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+}
+.cv-cargo {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+.cv-cargo__card {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  column-gap: 0.4rem;
+  align-items: center;
+  padding: 0.3rem 0.45rem;
+  border: 1px solid var(--rim);
+  border-radius: var(--radius-s, 3px);
+  background: var(--plate-raised);
+  min-width: 9rem;
+}
+.cv-cargo__card .portrait {
+  grid-row: 1 / span 2;
+}
+.cv-cargo__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--text-strong);
+  font-size: 0.85rem;
+}
+.cv-cargo__count {
+  font-size: 1.15rem;
+  color: var(--gold-200);
+}
+.cv-route-status {
+  margin: 0;
+  padding: 0.35rem 0.5rem;
+  border-radius: var(--radius-s, 3px);
+  border: 1px solid var(--rim-faint);
+  background: rgba(7, 14, 26, 0.6);
+}
+.cv-route-status.ok {
+  color: var(--success);
+}
+.cv-route-status.warn {
+  color: var(--warning);
+  border-color: rgba(224, 176, 80, 0.5);
+}
+.cv-route-status.bad {
+  color: var(--danger);
+  border-color: rgba(210, 90, 69, 0.5);
+}
+.cv-notes {
+  margin: 0.4rem 0 0;
+  padding-left: 1.1rem;
+}
+.cv-reroute {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+  margin-top: 0.45rem;
+}
+.cv-reroute__label {
+  display: inline-flex;
+  gap: 0.25rem;
+  align-items: center;
+  color: var(--gold-200);
+}
+.cv-details {
+  margin-top: 0.4rem;
+}
+.cv-details summary {
+  cursor: var(--cur-pointer, pointer);
+  color: var(--gold-300);
+}
+.cv-details summary:focus-visible {
+  outline: 2px solid var(--gold-300);
+  outline-offset: 2px;
+}
+.cv-added {
+  margin: 0.55rem 0 0.25rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid rgba(123, 184, 106, 0.55);
+  border-radius: var(--radius-s, 3px);
+  background: linear-gradient(180deg, rgba(40, 80, 44, 0.75), rgba(20, 44, 26, 0.85));
+  font-family: var(--font-display);
+  text-align: center;
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  justify-content: center;
+}
+.cv-garrison {
+  margin-top: 0.4rem;
+}
+
+/* Actor picker */
+.cv-picker {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.cv-picker .btn {
+  justify-content: flex-start;
+  gap: 0.45rem;
+}
+
+/* Command sidebar */
+.adv-command__caravans {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.caravan-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.45rem;
+  background: var(--plate-raised);
+  border: 1px solid rgba(194, 154, 82, 0.4);
+  border-radius: var(--radius-s, 3px);
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.7);
+  cursor: var(--cur-pointer, pointer);
+  color: var(--gold-200);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-align: left;
+}
+.caravan-tab:hover {
+  border-color: var(--gold-400);
+}
+.caravan-tab:focus-visible {
+  outline: 2px solid var(--gold-300);
+  outline-offset: 2px;
+}
+.caravan-tab svg {
+  width: 1.3rem;
+  height: 1.3rem;
+  color: var(--gold-400);
+  flex: none;
+}
+.caravan-tab.is-held svg {
+  color: var(--warning);
+}
+.caravan-tab__to {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.caravan-tab__eta {
+  color: var(--text-dim);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+}
+.adv-caravans li svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+  color: var(--gold-400);
+}
+.rr-caravan {
+  white-space: nowrap;
+}

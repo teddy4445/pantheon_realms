@@ -7,7 +7,7 @@
  * through Load → Import (no privileged hooks).
  */
 import { GameDriver } from '@pr/testing';
-import { missionSite, type CreatureStackState, type HexCoord, type MissionDefinition, type SiteDefinition } from '@pr/rules';
+import { missionSite, worldWeek, type CreatureStackState, type HexCoord, type MissionDefinition, type SiteDefinition } from '@pr/rules';
 import { writeSave } from './fixtures';
 
 export interface SiteFixture {
@@ -30,6 +30,8 @@ export interface SiteSetup {
   readonly army?: ([string, number] | null)[];
   /** The camp's current stock. */
   readonly stock?: number;
+  /** Creatures already trained at the site this week (by any empire; the week's training allowance, 2026-10-16). */
+  readonly trainedThisWeek?: number;
   /** Mission flags to set (a pact made, evidence in hand). */
   readonly flags?: readonly string[];
   /** Story scenes already played (e.g. the one that plays on arriving at the site). */
@@ -59,6 +61,7 @@ export function siteFixture(s: SiteSetup): SiteFixture {
     (hero.army as { slots: (CreatureStackState | null)[] }).slots = slots;
   }
   if (s.stock !== undefined) d.state.world.sites[siteId]!.stock = s.stock;
+  if (s.trainedThisWeek !== undefined) Object.assign(d.state.world.sites[siteId]!, { trainedThisWeek: s.trainedThisWeek, trainedWeek: worldWeek(d.state, d.catalog.rulesProfile.daysPerWeek) });
   for (const f of s.flags ?? []) d.state.mission.flags[f] = true;
   if (s.scenes) d.state.mission.scenesPlayed = [...(d.state.mission.scenesPlayed ?? []), ...s.scenes];
   const saveName = `v2n-${s.name}`;

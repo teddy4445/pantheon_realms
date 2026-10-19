@@ -61,8 +61,8 @@ export const projectors: {
 
 /** Read-only view readouts for the ?e2e inspector (map avatar state, camera). Never mutate. */
 export const inspectors: {
-  adventure?: { heroes: () => unknown; camera: () => unknown; fx: () => unknown; ground: () => unknown; scenery: () => unknown; route?: () => unknown };
-  battle?: { stacks: () => unknown; fx: () => unknown; obstacles?: () => unknown; siege?: () => unknown };
+  adventure?: { heroes: () => unknown; camera: () => unknown; fx: () => unknown; ground: () => unknown; scenery: () => unknown; route?: () => unknown; lastKnown?: () => unknown; caravans?: () => unknown; ships?: () => unknown; seaSites?: () => unknown };
+  battle?: { stacks: () => unknown; fx: () => unknown; obstacles?: () => unknown; siege?: () => unknown; board?: () => unknown };
 } = {};
 
 /** Convert a canvas-local point to page coordinates. */

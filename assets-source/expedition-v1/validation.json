@@ -1,0 +1,2491 @@
+{
+  "generatedAt": "2026-10-17T10:38:36.435920+00:00",
+  "scope": "Asset integrity, source preservation, prototype browser behavior and boarding geometry. NOT implementation or gameplay balance testing.",
+  "counts": {
+    "newPaintedAssets": 13,
+    "newControlIcons": 28,
+    "newVectorOverlays": 3,
+    "reusedRegistrations": 405,
+    "boardingCells": 102
+  },
+  "passed": true,
+  "checks": [
+    {
+      "check": "13 new native painted assets",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.ship-e native dimensions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.ship-e alpha",
+      "passed": true,
+      "detail": [
+        0,
+        255
+      ]
+    },
+    {
+      "check": "expedition.ship-e exact original bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.ship-ne native dimensions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.ship-ne alpha",
+      "passed": true,
+      "detail": [
+        0,
+        255
+      ]
+    },
+    {
+      "check": "expedition.ship-ne exact original bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.ship-se native dimensions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.ship-se alpha",
+      "passed": true,
+      "detail": [
+        0,
+        255
+      ]
+    },
+    {
+      "check": "expedition.ship-se exact original bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.wagon-e native dimensions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.wagon-e alpha",
+      "passed": true,
+      "detail": [
+        0,
+        255
+      ]
+    },
+    {
+      "check": "expedition.wagon-e exact original bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.wagon-ne native dimensions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.wagon-ne alpha",
+      "passed": true,
+      "detail": [
+        0,
+        255
+      ]
+    },
+    {
+      "check": "expedition.wagon-ne exact original bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.wagon-se native dimensions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.wagon-se alpha",
+      "passed": true,
+      "detail": [
+        0,
+        255
+      ]
+    },
+    {
+      "check": "expedition.wagon-se exact original bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.boarding-battle native dimensions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.boarding-battle alpha",
+      "passed": true,
+      "detail": [
+        255,
+        255
+      ]
+    },
+    {
+      "check": "expedition.boarding-battle exact original bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.scout-unknown native dimensions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.scout-unknown alpha",
+      "passed": true,
+      "detail": [
+        0,
+        255
+      ]
+    },
+    {
+      "check": "expedition.scout-unknown exact original bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.caravan-dispatch-art native dimensions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.caravan-dispatch-art alpha",
+      "passed": true,
+      "detail": [
+        255,
+        255
+      ]
+    },
+    {
+      "check": "expedition.caravan-dispatch-art exact original bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.caravan-arrival-art native dimensions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.caravan-arrival-art alpha",
+      "passed": true,
+      "detail": [
+        255,
+        255
+      ]
+    },
+    {
+      "check": "expedition.caravan-arrival-art exact original bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.catapult-damaged native dimensions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.catapult-damaged alpha",
+      "passed": true,
+      "detail": [
+        0,
+        255
+      ]
+    },
+    {
+      "check": "expedition.catapult-damaged exact original bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.catapult-destroyed native dimensions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.catapult-destroyed alpha",
+      "passed": true,
+      "detail": [
+        0,
+        255
+      ]
+    },
+    {
+      "check": "expedition.catapult-destroyed exact original bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.ship-wreck native dimensions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "expedition.ship-wreck alpha",
+      "passed": true,
+      "detail": [
+        0,
+        255
+      ]
+    },
+    {
+      "check": "expedition.ship-wreck exact original bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "28 independent control icons",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "All SVGs parse",
+      "passed": true,
+      "detail": {
+        "icons": 28,
+        "overlays": 3
+      }
+    },
+    {
+      "check": "reuse:hero.greek.alexios.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.greek.melas.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.greek.scout_captain.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.greek.heracles.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.greek.achilles.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.greek.odysseus.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.greek.atalanta.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.greek.perseus.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.norse.sigurd.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.norse.brynhild.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.norse.ragnar.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.norse.lagertha.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.norse.hervor.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.norse.grey_jarl.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.norse.ulfhild.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.norse.hrafn.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.norse.bone_helm.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.norse.barrow_captain.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.egyptian.imhotep.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.egyptian.hatshepsut.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.egyptian.ramses.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.egyptian.cleopatra.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.egyptian.nefertiti.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.egyptian.ahmose.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.egyptian.tiye.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.egyptian.peseshet.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.japanese.momotaro.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.japanese.yamato_takeru.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.japanese.tomoe_gozen.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.japanese.benkei.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.japanese.yoshitsune.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.japanese.kusunoki_masashige.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.japanese.abe_no_seimei.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.japanese.hangaku_gozen.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.celtic.cu_chulainn.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.celtic.fionn_mac_cumhaill.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.celtic.scathach.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.celtic.deirdre.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.celtic.boudicca.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.celtic.medb.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.celtic.amergin.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.celtic.fergus_mac_roich.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.mesoamerican.hunahpu.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.mesoamerican.xbalanque.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.mesoamerican.nezahualcoyotl.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.mesoamerican.topiltzin_quetzalcoatl.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.mesoamerican.eight_deer_jaguar_claw.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.mesoamerican.moctezuma_ilhuicamina.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.mesoamerican.lady_six_sky.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.mesoamerican.chilam_balam.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.greek.theron.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.greek.doros.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.greek.phaidon.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.egyptian.seshet.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.egyptian.djedkhonsu.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.egyptian.paser.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.egyptian.ankhwen.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.egyptian.hekaib.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.egyptian.iti.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.japanese.akane.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.japanese.yamikage.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.japanese.kurogane.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.japanese.gonryo.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.japanese.oboro.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.japanese.kagero.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.celtic.orla.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.celtic.dubhghall.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.celtic.fiachra.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.celtic.corc.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.celtic.tadhg.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.celtic.ciar.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.mesoamerican.itzel.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.mesoamerican.itztli.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.mesoamerican.tecuani.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.mesoamerican.acatl.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.mesoamerican.mazatl.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.mesoamerican.tlacatl.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.greek.tier1.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.greek.tier1.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.greek.tier2.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.greek.tier2.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.greek.tier3.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.greek.tier3.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.greek.tier4.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.greek.tier4.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.greek.tier5.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.greek.tier5.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.greek.tier6.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.greek.tier6.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.greek.tier7.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.greek.tier7.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.neutral.centaur.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.neutral.centaur.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.norse.tier1.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.norse.tier1.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.norse.tier2.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.norse.tier2.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.norse.tier3.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.norse.tier3.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.norse.tier4.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.norse.tier4.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.norse.tier5.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.norse.tier5.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.norse.tier6.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.norse.tier6.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.norse.tier7.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.norse.tier7.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.egyptian.tier1.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.egyptian.tier1.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.egyptian.tier2.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.egyptian.tier2.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.egyptian.tier3.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.egyptian.tier3.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.egyptian.tier4.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.egyptian.tier4.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.egyptian.tier5.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.egyptian.tier5.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.egyptian.tier6.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.egyptian.tier6.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.egyptian.tier7.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.egyptian.tier7.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.japanese.tier1.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.japanese.tier1.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.japanese.tier2.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.japanese.tier2.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.japanese.tier3.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.japanese.tier3.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.japanese.tier4.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.japanese.tier4.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.japanese.tier5.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.japanese.tier5.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.japanese.tier6.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.japanese.tier6.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.japanese.tier7.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.japanese.tier7.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.celtic.tier1.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.celtic.tier1.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.celtic.tier2.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.celtic.tier2.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.celtic.tier3.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.celtic.tier3.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.celtic.tier4.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.celtic.tier4.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.celtic.tier5.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.celtic.tier5.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.celtic.tier6.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.celtic.tier6.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.celtic.tier7.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.celtic.tier7.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.mesoamerican.tier1.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.mesoamerican.tier1.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.mesoamerican.tier2.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.mesoamerican.tier2.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.mesoamerican.tier3.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.mesoamerican.tier3.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.mesoamerican.tier4.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.mesoamerican.tier4.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.mesoamerican.tier5.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.mesoamerican.tier5.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.mesoamerican.tier6.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.mesoamerican.tier6.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.mesoamerican.tier7.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.mesoamerican.tier7.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.neutral.brigand.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.neutral.brigand.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.neutral.hill_slinger.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.neutral.hill_slinger.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.neutral.wild_boar.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.neutral.wild_boar.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.neutral.clay_golem.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.neutral.clay_golem.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.neutral.wyvern.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.neutral.wyvern.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.neutral.ogre.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.neutral.ogre.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.neutral.basilisk.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.neutral.basilisk.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.neutral.elder_drake.base.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.neutral.elder_drake.upgraded.portrait",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.res.crystal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.res.favor",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.res.gold",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.res.stone",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.res.wood",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.accuracy",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.attack",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.crit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.damage",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.defense",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.evasion",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.flying",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.hp",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.initiative",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.knowledge",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.level",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.luck",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.magic-resist",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.mana",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.morale",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.movement",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.physical-resist",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.power",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.range",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.retaliation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.shots",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.speed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.stealth",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.vision",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.stat.xp",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.ability.charge",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.ability.charge_guard",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.ability.family_ward",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.ability.flight",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.ability.no_melee_penalty",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.ability.retaliation_2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.ability.retaliation_unlimited",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.ability.shapeshift_hare",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.ability.shapeshift_rut",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.ability.shapeshift_sealskin",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.ability.shapeshift_waterhorse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.ability.shooter",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.ability.unyielding",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.ability.wall_breaker",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.skill.scouting",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.aegis",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.ankh_of_renewal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.apollos_arrow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.balance_of_maat",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.berserkergang",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.blessing",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.blossom_veil",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.bramble_snare",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.cauldron_of_dagda",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.clear_skies",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.divine_sight",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.divine_wind",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.ember_burst",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.eye_of_horus",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.far_sight",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.fifth_sun",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.fleet_foot",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.frost_breath",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.gjallarhorn",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.glamour",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.hearthlight",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.homecoming",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.hoplon_wall",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.ill_omen",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.jaguar_spirit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.kitsune_fire",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.leaden_air",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.lightning",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.mend",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.mist_of_manannan",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.norns_thread",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.obsidian_rain",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.raijin_drums",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.rain_of_tlaloc",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.rallying_hymn",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.renewal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.rune_of_tyr",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.sapping_touch",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.scarab_swarm",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.shield_of_faith",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.smoking_mirror",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.spark",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.starfall",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.steadfast",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.swiftness",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.thunderclap",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.veil",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.warcry",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.ward",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.weariness",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.wild_hunt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.wings_of_hermes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.wrath_of_sekhmet",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.spell.yata_mirror",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.ui.map",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:icon.ui.recruit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:gui.frame.greek",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:gui.frame.norse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:gui.frame.egyptian",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:gui.frame.japanese",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:gui.frame.celtic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:gui.frame.mesoamerican",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege.catapult.intact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:projectiles.stone",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:effects.fx.siege.catapult.throw",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:town.greek.background.l2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:town.norse.background.l2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:town.egyptian.background.l2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:town.japanese.background.l2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:town.celtic.background.l2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:town.mesoamerican.background.l2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:audio.combat_catapult",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.sprite.hoplite.idle",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.sprite.peltast.idle",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:creature.sprite.griffin.idle",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.sprite.greek.idle",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.sprite.norse.idle",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.sprite.egyptian.idle",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.sprite.japanese.idle",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.sprite.celtic.idle",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:hero.sprite.mesoamerican.idle",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.battlefield.siege.ground.greek",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.battlefield.siege.ground.norse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.battlefield.siege.ground.egyptian",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.battlefield.siege.ground.japanese",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.battlefield.siege.ground.celtic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.battlefield.siege.ground.mesoamerican",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.gate.intact.greek",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.gate.damaged.greek",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.gate.rubble.greek",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.tower.intact.greek",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.tower.damaged.greek",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.tower.rubble.greek",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.keep.intact.greek",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.keep.damaged.greek",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.keep.rubble.greek",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.wall.intact.greek",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.wall.damaged.greek",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.wall.rubble.greek",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.gate.intact.norse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.gate.damaged.norse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.gate.rubble.norse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.tower.intact.norse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.tower.damaged.norse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.tower.rubble.norse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.keep.intact.norse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.keep.damaged.norse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.keep.rubble.norse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.wall.intact.norse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.wall.damaged.norse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.wall.rubble.norse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.gate.intact.egyptian",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.gate.damaged.egyptian",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.gate.rubble.egyptian",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.tower.intact.egyptian",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.tower.damaged.egyptian",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.tower.rubble.egyptian",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.keep.intact.egyptian",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.keep.damaged.egyptian",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.keep.rubble.egyptian",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.wall.intact.egyptian",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.wall.damaged.egyptian",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.wall.rubble.egyptian",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.gate.intact.japanese",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.gate.damaged.japanese",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.gate.rubble.japanese",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.tower.intact.japanese",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.tower.damaged.japanese",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.tower.rubble.japanese",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.keep.intact.japanese",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.keep.damaged.japanese",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.keep.rubble.japanese",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.wall.intact.japanese",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.wall.damaged.japanese",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.wall.rubble.japanese",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.gate.intact.celtic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.gate.damaged.celtic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.gate.rubble.celtic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.tower.intact.celtic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.tower.damaged.celtic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.tower.rubble.celtic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.keep.intact.celtic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.keep.damaged.celtic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.keep.rubble.celtic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.wall.intact.celtic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.wall.damaged.celtic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.wall.rubble.celtic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.gate.intact.mesoamerican",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.gate.damaged.mesoamerican",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.gate.rubble.mesoamerican",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.tower.intact.mesoamerican",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.tower.damaged.mesoamerican",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.tower.rubble.mesoamerican",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.keep.intact.mesoamerican",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.keep.damaged.mesoamerican",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.keep.rubble.mesoamerican",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.wall.intact.mesoamerican",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.wall.damaged.mesoamerican",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.wall.rubble.mesoamerican",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.ground.ditch",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.ground.bridge",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.ground.ditch.top",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-v2.ground.ditch.bottom",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-gates-v3.gate.intact.greek",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-gates-v3.gate.damaged.greek",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-gates-v3.gate.rubble.greek",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-gates-v3.gate.intact.egyptian",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-gates-v3.gate.damaged.egyptian",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-gates-v3.gate.rubble.egyptian",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-gates-v3.gate.intact.mesoamerican",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-gates-v3.gate.damaged.mesoamerican",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-gates-v3.gate.rubble.mesoamerican",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-gates-v3.gate.intact.norse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-gates-v3.gate.damaged.norse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-gates-v3.gate.rubble.norse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-gates-v3.gate.intact.japanese",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-gates-v3.gate.damaged.japanese",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-gates-v3.gate.rubble.japanese",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-gates-v3.gate.intact.celtic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-gates-v3.gate.damaged.celtic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reuse:siege-gates-v3.gate.rubble.celtic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "405 existing registrations",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "77 hero portrait registrations",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Game source unchanged: C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/siege.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Game source unchanged: C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/state/match.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Game source unchanged: C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/resolvers/world.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Game source unchanged: C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/adventure.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Game source unchanged: C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/core/hex.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Game source unchanged: C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Battle.tsx",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Game source unchanged: C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/adventure.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Game source unchanged: C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/battle.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Game source unchanged: C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/siegeLayout.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Game source unchanged: C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/assets/icons.tsx",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "102 distinct legal boarding hexes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Board cells in range",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Only two bridge rows",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Single-hex board connected",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Two-hex crossing facing 1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Seven two-hex deployment stacks facing 1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Two-hex crossing facing -1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Seven two-hex deployment stacks facing -1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Projection stays inside art",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Browser has no script errors",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Browser has no missing images",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "All seven animation states",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "All six pantheon identities",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Single shot and death disable fire",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Keyboard tooltip visible",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Responsive tabs and handoff",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Readable contract design/command-contracts.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Readable contract design/scouting-policy.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Readable contract design/caravan-policy.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Readable contract design/naval-policy.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Readable contract design/catapult-policy.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Readable contract design/feature-policy.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Readable contract design/animation-contract.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Delivery file CLAUDE_HANDOFF.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Delivery file CLAUDE_HANDOFF.html",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Delivery file START_HERE.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Delivery file index.html",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Delivery file runtime/ship-motion.js",
+      "passed": true,
+      "detail": null
+    }
+  ]
+}

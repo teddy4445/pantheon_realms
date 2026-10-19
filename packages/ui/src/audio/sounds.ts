@@ -90,10 +90,19 @@ export const REQUIRED_SOUND_IDS: readonly string[] = [
   ...MAGIC_SOUNDS,
 ];
 
-export function soundForCue(cue: BattleCue): string {
-  if (cue.kind === 'impact' && cue.heavy) return 'combat.hit_heavy';
-  if (cue.magic) return `magic.${cue.magic}`;
-  return CUE_SOUND[cue.kind];
+/**
+ * What a battle cue plays: a missile's own sound (its profile's release or impact sound, with how
+ * long at most) when the cue carries one the manifest has (`has`), else the kind's sound, whole.
+ */
+export function cueSound(cue: BattleCue, has: (id: string) => boolean = () => true): { readonly id: string; readonly maxMs?: number } {
+  if (cue.sound && has(cue.sound.id)) return cue.sound.maxMs !== undefined && cue.sound.maxMs > 0 ? { id: cue.sound.id, maxMs: cue.sound.maxMs } : { id: cue.sound.id };
+  if (cue.kind === 'impact' && cue.heavy) return { id: 'combat.hit_heavy' };
+  if (cue.magic) return { id: `magic.${cue.magic}` };
+  return { id: CUE_SOUND[cue.kind] };
+}
+
+export function soundForCue(cue: BattleCue, has?: (id: string) => boolean): string {
+  return cueSound(cue, has).id;
 }
 
 /** One sound for a whole batch of battle events when playback is instant (or motion is reduced). */
@@ -109,7 +118,7 @@ export function summaryCue(events: readonly GameEvent[]): string | null {
   for (const e of events) {
     if (e.kind === 'BattleStackDestroyed') offer('combat.death', 9);
     else if (e.kind === 'SiegeStructureDestroyed') offer('combat.breach', 8);
-    else if (e.kind === 'BattleAttack') offer(e.mode === 'shot' ? 'combat.arrow_hit' : e.killed > 0 ? 'combat.hit_heavy' : 'combat.hit', e.killed > 0 ? 7 : 6);
+    else if (e.kind === 'BattleAttack') offer(e.mode === 'shot' || e.mode === 'harpoon' ? 'combat.arrow_hit' : e.killed > 0 ? 'combat.hit_heavy' : 'combat.hit', e.killed > 0 ? 7 : 6);
     else if (e.kind === 'SiegeStructureDamaged') offer('combat.stone_hit', 5);
     else if (e.kind === 'BattleSpellCast') offer(e.healed > 0 ? 'combat.heal' : 'combat.spell', 5);
     else if (e.kind === 'SiegeTurretShot') offer('combat.turret', 4);

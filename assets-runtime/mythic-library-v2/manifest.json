@@ -1,0 +1,3544 @@
+{
+  "packId": "mythic-library-v2",
+  "version": 1,
+  "auditedGameVersion": "1.6.0",
+  "basePath": "assets-runtime/mythic-library-v2/",
+  "nativeOnly": true,
+  "note": "sourceRect is [x,y,width,height] in original pixels. Use measured frames, not equal cell division.",
+  "sheets": [
+    {
+      "id": "icons-greek",
+      "file": "assets/icons/icons-greek.png",
+      "width": 1254,
+      "height": 1254,
+      "columns": 4,
+      "rows": 4,
+      "sha256": "786fcfec4aa494344cd4e49957932c1ca0a437ecb5d2a84246451c0c869031e1",
+      "bytes": 2004073,
+      "frameCount": 13
+    },
+    {
+      "id": "icons-norse",
+      "file": "assets/icons/icons-norse.png",
+      "width": 1254,
+      "height": 1254,
+      "columns": 4,
+      "rows": 4,
+      "sha256": "137e6f91742979b961fd3a81bf8a7f801781e951ed461c28aa0f0f9751933566",
+      "bytes": 1958561,
+      "frameCount": 13
+    },
+    {
+      "id": "icons-egyptian",
+      "file": "assets/icons/icons-egyptian.png",
+      "width": 1254,
+      "height": 1254,
+      "columns": 4,
+      "rows": 4,
+      "sha256": "3800bea27cfd9f7d8cc06fc53ec14018eafae9d2c1fb42d5643b4fa1bdce38af",
+      "bytes": 1841445,
+      "frameCount": 13
+    },
+    {
+      "id": "icons-japanese",
+      "file": "assets/icons/icons-japanese.png",
+      "width": 1254,
+      "height": 1254,
+      "columns": 4,
+      "rows": 4,
+      "sha256": "fad1d639a8b9690cd3127b87994e4ead9e53ec52473cd59a2c18eb85b723bdc7",
+      "bytes": 2077132,
+      "frameCount": 13
+    },
+    {
+      "id": "icons-celtic",
+      "file": "assets/icons/icons-celtic.png",
+      "width": 1254,
+      "height": 1254,
+      "columns": 4,
+      "rows": 4,
+      "sha256": "d77077f966084c460271fe8d31a63407796fd7d73ca1471c8fe166fbc0f00d74",
+      "bytes": 2215104,
+      "frameCount": 13
+    },
+    {
+      "id": "icons-mesoamerican",
+      "file": "assets/icons/icons-mesoamerican.png",
+      "width": 1254,
+      "height": 1254,
+      "columns": 4,
+      "rows": 4,
+      "sha256": "9bcb450b3d1155ed984565ad91b1377e627627e77087ad543750ebe4ff219dc2",
+      "bytes": 1774428,
+      "frameCount": 13
+    },
+    {
+      "id": "icons-general",
+      "file": "assets/icons/icons-general.png",
+      "width": 1254,
+      "height": 1254,
+      "columns": 4,
+      "rows": 4,
+      "sha256": "0ce3dddd77ac00275678e1052b8f7a02b51ef5200a21a740cc036163f0f234cd",
+      "bytes": 2243920,
+      "frameCount": 14
+    },
+    {
+      "id": "vfx-greek-norse-egyptian",
+      "file": "assets/vfx/vfx-greek-norse-egyptian-spaced.png",
+      "width": 1448,
+      "height": 1086,
+      "columns": 4,
+      "rows": 3,
+      "sha256": "41319bc096ab10c92135e060e9a761a22ea0cafd84d770c8cb120a2855697287",
+      "bytes": 928681,
+      "frameCount": 12
+    },
+    {
+      "id": "vfx-japanese-celtic-mesoamerican",
+      "file": "assets/vfx/vfx-japanese-celtic-mesoamerican.png",
+      "width": 1448,
+      "height": 1086,
+      "columns": 4,
+      "rows": 3,
+      "sha256": "de5c970c2125f4260eaafc55bf5825f4e25460980db4449a509eec874403811d",
+      "bytes": 1258433,
+      "frameCount": 12
+    },
+    {
+      "id": "vfx-utility",
+      "file": "assets/vfx/vfx-utility.png",
+      "width": 1448,
+      "height": 1086,
+      "columns": 4,
+      "rows": 3,
+      "sha256": "fe10e725cbd369a15fd315cc2c61bc91ce6b604466eb1a24c362f0a15ab33446",
+      "bytes": 1540766,
+      "frameCount": 12
+    }
+  ],
+  "frames": {
+    "relic2_ariadne_spool": {
+      "id": "relic2_ariadne_spool",
+      "name": "Ariadne's Guiding Spool",
+      "file": "assets/icons/icons-greek.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        20,
+        19,
+        285,
+        279
+      ],
+      "cellRect": [
+        0,
+        0,
+        314,
+        314
+      ],
+      "cell": 0,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_aeolus_windbag": {
+      "id": "relic2_aeolus_windbag",
+      "name": "Aeolus's Windbag",
+      "file": "assets/icons/icons-greek.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        334,
+        20,
+        286,
+        282
+      ],
+      "cellRect": [
+        314,
+        0,
+        313,
+        314
+      ],
+      "cell": 1,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_orpheus_lyre": {
+      "id": "relic2_orpheus_lyre",
+      "name": "Lyre of the Unbroken Song",
+      "file": "assets/icons/icons-greek.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        654,
+        46,
+        272,
+        257
+      ],
+      "cellRect": [
+        627,
+        0,
+        313,
+        314
+      ],
+      "cell": 2,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_golden_fleece_mantle": {
+      "id": "relic2_golden_fleece_mantle",
+      "name": "Mantle of the Golden Fleece",
+      "file": "assets/icons/icons-greek.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        960,
+        36,
+        281,
+        269
+      ],
+      "cellRect": [
+        940,
+        0,
+        314,
+        314
+      ],
+      "cell": 3,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_hestia_hearthclasp": {
+      "id": "relic2_hestia_hearthclasp",
+      "name": "Hestia's Hearthclasp",
+      "file": "assets/icons/icons-greek.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        27,
+        328,
+        262,
+        273
+      ],
+      "cellRect": [
+        0,
+        314,
+        314,
+        313
+      ],
+      "cell": 4,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_talos_bronze_seal": {
+      "id": "relic2_talos_bronze_seal",
+      "name": "Talos's Bronze Seal",
+      "file": "assets/icons/icons-greek.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        332,
+        345,
+        277,
+        228
+      ],
+      "cellRect": [
+        314,
+        314,
+        313,
+        313
+      ],
+      "cell": 5,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_daedalus_passage": {
+      "id": "spell2_daedalus_passage",
+      "name": "Daedalus's Passage",
+      "file": "assets/icons/icons-greek.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        649,
+        323,
+        291,
+        281
+      ],
+      "cellRect": [
+        627,
+        314,
+        313,
+        313
+      ],
+      "cell": 6,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_siren_refrain": {
+      "id": "spell2_siren_refrain",
+      "name": "Siren's Refrain",
+      "file": "assets/icons/icons-greek.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        961,
+        333,
+        276,
+        258
+      ],
+      "cellRect": [
+        940,
+        314,
+        314,
+        313
+      ],
+      "cell": 7,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_oathbound_spear": {
+      "id": "spell2_oathbound_spear",
+      "name": "Oathbound Spear",
+      "file": "assets/icons/icons-greek.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        22,
+        627,
+        274,
+        287
+      ],
+      "cellRect": [
+        0,
+        627,
+        314,
+        300
+      ],
+      "cell": 8,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_crossroads_omen": {
+      "id": "spell2_crossroads_omen",
+      "name": "Crossroads Omen",
+      "file": "assets/icons/icons-greek.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        331,
+        631,
+        281,
+        281
+      ],
+      "cellRect": [
+        314,
+        627,
+        313,
+        300
+      ],
+      "cell": 9,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_aeolian_tack": {
+      "id": "spell2_aeolian_tack",
+      "name": "Aeolian Tack",
+      "file": "assets/icons/icons-greek.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        650,
+        629,
+        285,
+        283
+      ],
+      "cellRect": [
+        627,
+        627,
+        313,
+        300
+      ],
+      "cell": 10,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "blessing2_athenas_order": {
+      "id": "blessing2_athenas_order",
+      "name": "Athena's Ordered Ranks",
+      "file": "assets/icons/icons-greek.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        959,
+        627,
+        275,
+        289
+      ],
+      "cellRect": [
+        940,
+        627,
+        314,
+        300
+      ],
+      "cell": 11,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "blessing2_poseidons_mooring": {
+      "id": "blessing2_poseidons_mooring",
+      "name": "Poseidon's Mooring",
+      "file": "assets/icons/icons-greek.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        30,
+        927,
+        258,
+        318
+      ],
+      "cellRect": [
+        0,
+        927,
+        314,
+        327
+      ],
+      "cell": 12,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_gleipnir_ribbon": {
+      "id": "relic2_gleipnir_ribbon",
+      "name": "Gleipnir Ribbon",
+      "file": "assets/icons/icons-norse.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        35,
+        40,
+        268,
+        255
+      ],
+      "cellRect": [
+        0,
+        0,
+        314,
+        314
+      ],
+      "cell": 0,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_svalinn_shield": {
+      "id": "relic2_svalinn_shield",
+      "name": "Shard-Shield of Svalinn",
+      "file": "assets/icons/icons-norse.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        342,
+        37,
+        277,
+        253
+      ],
+      "cellRect": [
+        314,
+        0,
+        313,
+        314
+      ],
+      "cell": 1,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_mimir_cup": {
+      "id": "relic2_mimir_cup",
+      "name": "Cup of Mimir's Counsel",
+      "file": "assets/icons/icons-norse.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        704,
+        19,
+        158,
+        285
+      ],
+      "cellRect": [
+        627,
+        0,
+        313,
+        314
+      ],
+      "cell": 2,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_skidbladnir_keel": {
+      "id": "relic2_skidbladnir_keel",
+      "name": "Folded Keel of Skidbladnir",
+      "file": "assets/icons/icons-norse.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        962,
+        75,
+        271,
+        203
+      ],
+      "cellRect": [
+        940,
+        0,
+        314,
+        314
+      ],
+      "cell": 3,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_idunn_apple_clasp": {
+      "id": "relic2_idunn_apple_clasp",
+      "name": "Idunn's Apple Clasp",
+      "file": "assets/icons/icons-norse.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        55,
+        320,
+        232,
+        292
+      ],
+      "cellRect": [
+        0,
+        314,
+        314,
+        313
+      ],
+      "cell": 4,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_skadi_huntbow": {
+      "id": "relic2_skadi_huntbow",
+      "name": "Skadi's Huntbow",
+      "file": "assets/icons/icons-norse.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        325,
+        314,
+        301,
+        301
+      ],
+      "cellRect": [
+        314,
+        314,
+        313,
+        313
+      ],
+      "cell": 5,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_frost_threshold": {
+      "id": "spell2_frost_threshold",
+      "name": "Frost-Rune Threshold",
+      "file": "assets/icons/icons-norse.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        633,
+        335,
+        303,
+        267
+      ],
+      "cellRect": [
+        627,
+        314,
+        313,
+        313
+      ],
+      "cell": 6,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_ravens_exchange": {
+      "id": "spell2_ravens_exchange",
+      "name": "Ravens' Exchange",
+      "file": "assets/icons/icons-norse.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        957,
+        337,
+        281,
+        273
+      ],
+      "cellRect": [
+        940,
+        314,
+        314,
+        313
+      ],
+      "cell": 7,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_runes_refusal": {
+      "id": "spell2_runes_refusal",
+      "name": "Runes of Refusal",
+      "file": "assets/icons/icons-norse.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        32,
+        636,
+        272,
+        282
+      ],
+      "cellRect": [
+        0,
+        627,
+        314,
+        313
+      ],
+      "cell": 8,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_njords_sounding": {
+      "id": "spell2_njords_sounding",
+      "name": "Njord's Sounding",
+      "file": "assets/icons/icons-norse.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        343,
+        632,
+        258,
+        296
+      ],
+      "cellRect": [
+        314,
+        627,
+        313,
+        313
+      ],
+      "cell": 9,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_skalds_camp": {
+      "id": "spell2_skalds_camp",
+      "name": "Skald's Quiet Camp",
+      "file": "assets/icons/icons-norse.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        639,
+        661,
+        308,
+        255
+      ],
+      "cellRect": [
+        627,
+        627,
+        320,
+        313
+      ],
+      "cell": 10,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "blessing2_tyrs_equal_ground": {
+      "id": "blessing2_tyrs_equal_ground",
+      "name": "Tyr's Equal Ground",
+      "file": "assets/icons/icons-norse.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        976,
+        633,
+        242,
+        299
+      ],
+      "cellRect": [
+        947,
+        627,
+        307,
+        313
+      ],
+      "cell": 11,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "blessing2_friggs_watched_return": {
+      "id": "blessing2_friggs_watched_return",
+      "name": "Frigg's Watched Return",
+      "file": "assets/icons/icons-norse.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        39,
+        948,
+        259,
+        281
+      ],
+      "cellRect": [
+        0,
+        940,
+        314,
+        314
+      ],
+      "cell": 12,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_isis_tyet": {
+      "id": "relic2_isis_tyet",
+      "name": "Tyet of the Shelterer",
+      "file": "assets/icons/icons-egyptian.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        54,
+        16,
+        207,
+        290
+      ],
+      "cellRect": [
+        0,
+        0,
+        314,
+        314
+      ],
+      "cell": 0,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_wepwawet_sandals": {
+      "id": "relic2_wepwawet_sandals",
+      "name": "Sandals of the Opener",
+      "file": "assets/icons/icons-egyptian.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        330,
+        51,
+        284,
+        250
+      ],
+      "cellRect": [
+        314,
+        0,
+        313,
+        314
+      ],
+      "cell": 1,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_thoth_inkwell": {
+      "id": "relic2_thoth_inkwell",
+      "name": "Thoth's Ibis Inkwell",
+      "file": "assets/icons/icons-egyptian.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        638,
+        17,
+        287,
+        289
+      ],
+      "cellRect": [
+        627,
+        0,
+        313,
+        314
+      ],
+      "cell": 2,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_hathor_sistrum": {
+      "id": "relic2_hathor_sistrum",
+      "name": "Sistrum of Clear Hearts",
+      "file": "assets/icons/icons-egyptian.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        972,
+        19,
+        257,
+        287
+      ],
+      "cellRect": [
+        940,
+        0,
+        314,
+        314
+      ],
+      "cell": 3,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_anubis_canopic_seal": {
+      "id": "relic2_anubis_canopic_seal",
+      "name": "Canopic Seal of Anubis",
+      "file": "assets/icons/icons-egyptian.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        54,
+        321,
+        204,
+        293
+      ],
+      "cellRect": [
+        0,
+        314,
+        314,
+        313
+      ],
+      "cell": 4,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_nut_starweave": {
+      "id": "relic2_nut_starweave",
+      "name": "Starweave of Nut",
+      "file": "assets/icons/icons-egyptian.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        322,
+        330,
+        296,
+        285
+      ],
+      "cellRect": [
+        314,
+        314,
+        313,
+        313
+      ],
+      "cell": 5,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_feathers_verdict": {
+      "id": "spell2_feathers_verdict",
+      "name": "Feather's Verdict",
+      "file": "assets/icons/icons-egyptian.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        636,
+        329,
+        293,
+        289
+      ],
+      "cellRect": [
+        627,
+        314,
+        313,
+        313
+      ],
+      "cell": 6,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_door_duat": {
+      "id": "spell2_door_duat",
+      "name": "Door of the Duat",
+      "file": "assets/icons/icons-egyptian.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        958,
+        327,
+        284,
+        287
+      ],
+      "cellRect": [
+        940,
+        314,
+        314,
+        313
+      ],
+      "cell": 7,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_sand_silence": {
+      "id": "spell2_sand_silence",
+      "name": "Sand of Silence",
+      "file": "assets/icons/icons-egyptian.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        29,
+        662,
+        266,
+        267
+      ],
+      "cellRect": [
+        0,
+        627,
+        314,
+        313
+      ],
+      "cell": 8,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_scribes_survey": {
+      "id": "spell2_scribes_survey",
+      "name": "Scribe's Survey",
+      "file": "assets/icons/icons-egyptian.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        318,
+        631,
+        297,
+        301
+      ],
+      "cellRect": [
+        314,
+        627,
+        313,
+        313
+      ],
+      "cell": 9,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_silt_to_stone": {
+      "id": "spell2_silt_to_stone",
+      "name": "Silt to Stone",
+      "file": "assets/icons/icons-egyptian.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        640,
+        649,
+        277,
+        281
+      ],
+      "cellRect": [
+        627,
+        627,
+        313,
+        313
+      ],
+      "cell": 10,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "blessing2_thoths_reckoning": {
+      "id": "blessing2_thoths_reckoning",
+      "name": "Thoth's Reckoning",
+      "file": "assets/icons/icons-egyptian.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        949,
+        649,
+        280,
+        278
+      ],
+      "cellRect": [
+        940,
+        627,
+        314,
+        313
+      ],
+      "cell": 11,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "blessing2_sobeks_river_oath": {
+      "id": "blessing2_sobeks_river_oath",
+      "name": "Sobek's River Oath",
+      "file": "assets/icons/icons-egyptian.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        20,
+        968,
+        291,
+        262
+      ],
+      "cellRect": [
+        0,
+        940,
+        314,
+        314
+      ],
+      "cell": 12,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_hoori_tide_pearl": {
+      "id": "relic2_hoori_tide_pearl",
+      "name": "Hoori's Ebbing Pearl",
+      "file": "assets/icons/icons-japanese.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        31,
+        47,
+        258,
+        270
+      ],
+      "cellRect": [
+        0,
+        0,
+        314,
+        318
+      ],
+      "cell": 0,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_uzume_bells": {
+      "id": "relic2_uzume_bells",
+      "name": "Bells of the Dawn Dancer",
+      "file": "assets/icons/icons-japanese.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        329,
+        16,
+        294,
+        302
+      ],
+      "cellRect": [
+        314,
+        0,
+        313,
+        318
+      ],
+      "cell": 1,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_inari_rice_key": {
+      "id": "relic2_inari_rice_key",
+      "name": "Inari's Rice-Key",
+      "file": "assets/icons/icons-japanese.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        688,
+        20,
+        224,
+        298
+      ],
+      "cellRect": [
+        627,
+        0,
+        313,
+        318
+      ],
+      "cell": 2,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_hidesato_centipede_arrow": {
+      "id": "relic2_hidesato_centipede_arrow",
+      "name": "Centipede-Breaker Arrow",
+      "file": "assets/icons/icons-japanese.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        956,
+        7,
+        298,
+        311
+      ],
+      "cellRect": [
+        940,
+        0,
+        314,
+        318
+      ],
+      "cell": 3,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_yomi_return_cord": {
+      "id": "relic2_yomi_return_cord",
+      "name": "Cord of the Returning Shore",
+      "file": "assets/icons/icons-japanese.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        19,
+        346,
+        290,
+        281
+      ],
+      "cellRect": [
+        0,
+        318,
+        314,
+        309
+      ],
+      "cell": 4,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_takemikazuchi_guard": {
+      "id": "relic2_takemikazuchi_guard",
+      "name": "Thunder-Sword Guard",
+      "file": "assets/icons/icons-japanese.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        340,
+        348,
+        269,
+        273
+      ],
+      "cellRect": [
+        314,
+        318,
+        313,
+        309
+      ],
+      "cell": 5,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_tide_pearl_turn": {
+      "id": "spell2_tide_pearl_turn",
+      "name": "Tide-Pearl Turn",
+      "file": "assets/icons/icons-japanese.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        655,
+        375,
+        269,
+        239
+      ],
+      "cellRect": [
+        627,
+        318,
+        313,
+        309
+      ],
+      "cell": 6,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_paper_crane_ward": {
+      "id": "spell2_paper_crane_ward",
+      "name": "Paper Crane Ward",
+      "file": "assets/icons/icons-japanese.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        957,
+        351,
+        282,
+        266
+      ],
+      "cellRect": [
+        940,
+        318,
+        314,
+        309
+      ],
+      "cell": 7,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_uzumes_dawn": {
+      "id": "spell2_uzumes_dawn",
+      "name": "Uzume's Dawn",
+      "file": "assets/icons/icons-japanese.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        16,
+        643,
+        291,
+        290
+      ],
+      "cellRect": [
+        0,
+        627,
+        314,
+        313
+      ],
+      "cell": 8,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_lantern_pilgrimage": {
+      "id": "spell2_lantern_pilgrimage",
+      "name": "Lantern Pilgrimage",
+      "file": "assets/icons/icons-japanese.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        346,
+        630,
+        267,
+        304
+      ],
+      "cellRect": [
+        314,
+        627,
+        313,
+        313
+      ],
+      "cell": 9,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_foxfire_diversion": {
+      "id": "spell2_foxfire_diversion",
+      "name": "Foxfire Diversion",
+      "file": "assets/icons/icons-japanese.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        652,
+        638,
+        265,
+        290
+      ],
+      "cellRect": [
+        627,
+        627,
+        313,
+        313
+      ],
+      "cell": 10,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "blessing2_amaterasus_true_dawn": {
+      "id": "blessing2_amaterasus_true_dawn",
+      "name": "Amaterasu's True Dawn",
+      "file": "assets/icons/icons-japanese.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        962,
+        642,
+        276,
+        288
+      ],
+      "cellRect": [
+        940,
+        627,
+        314,
+        313
+      ],
+      "cell": 11,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "blessing2_inari_guest_right": {
+      "id": "blessing2_inari_guest_right",
+      "name": "Inari's Guest Right",
+      "file": "assets/icons/icons-japanese.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        14,
+        964,
+        304,
+        265
+      ],
+      "cellRect": [
+        0,
+        940,
+        318,
+        314
+      ],
+      "cell": 12,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_nuada_silver_bracer": {
+      "id": "relic2_nuada_silver_bracer",
+      "name": "Nuada's Silver Bracer",
+      "file": "assets/icons/icons-celtic.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        25,
+        18,
+        273,
+        291
+      ],
+      "cellRect": [
+        0,
+        0,
+        314,
+        314
+      ],
+      "cell": 0,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_brans_voyage_brooch": {
+      "id": "relic2_brans_voyage_brooch",
+      "name": "Brooch of Bran's Voyage",
+      "file": "assets/icons/icons-celtic.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        336,
+        14,
+        292,
+        292
+      ],
+      "cellRect": [
+        314,
+        0,
+        314,
+        314
+      ],
+      "cell": 1,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_dian_cecht_needle": {
+      "id": "relic2_dian_cecht_needle",
+      "name": "Needle of the Wellspring",
+      "file": "assets/icons/icons-celtic.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        668,
+        23,
+        242,
+        284
+      ],
+      "cellRect": [
+        628,
+        0,
+        312,
+        314
+      ],
+      "cell": 2,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_rhiannon_bridle": {
+      "id": "relic2_rhiannon_bridle",
+      "name": "Rhiannon's Patient Bridle",
+      "file": "assets/icons/icons-celtic.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        987,
+        14,
+        242,
+        299
+      ],
+      "cellRect": [
+        940,
+        0,
+        314,
+        314
+      ],
+      "cell": 3,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_salmon_wisdom_pin": {
+      "id": "relic2_salmon_wisdom_pin",
+      "name": "Salmon-Wisdom Pin",
+      "file": "assets/icons/icons-celtic.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        31,
+        332,
+        267,
+        279
+      ],
+      "cellRect": [
+        0,
+        314,
+        314,
+        313
+      ],
+      "cell": 4,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_morrigan_crowcloak": {
+      "id": "relic2_morrigan_crowcloak",
+      "name": "Crowcloak of the Last Watch",
+      "file": "assets/icons/icons-celtic.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        318,
+        321,
+        309,
+        303
+      ],
+      "cellRect": [
+        314,
+        314,
+        313,
+        313
+      ],
+      "cell": 5,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_rowan_sanctuary": {
+      "id": "spell2_rowan_sanctuary",
+      "name": "Rowan Sanctuary",
+      "file": "assets/icons/icons-celtic.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        640,
+        314,
+        300,
+        309
+      ],
+      "cellRect": [
+        627,
+        314,
+        313,
+        313
+      ],
+      "cell": 6,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_hazels_recall": {
+      "id": "spell2_hazels_recall",
+      "name": "Hazel's Recall",
+      "file": "assets/icons/icons-celtic.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        961,
+        319,
+        281,
+        300
+      ],
+      "cellRect": [
+        940,
+        314,
+        314,
+        313
+      ],
+      "cell": 7,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_briar_debt": {
+      "id": "spell2_briar_debt",
+      "name": "Briar Debt",
+      "file": "assets/icons/icons-celtic.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        13,
+        627,
+        294,
+        308
+      ],
+      "cellRect": [
+        0,
+        627,
+        314,
+        313
+      ],
+      "cell": 8,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_hares_borrowed_path": {
+      "id": "spell2_hares_borrowed_path",
+      "name": "Hare's Borrowed Path",
+      "file": "assets/icons/icons-celtic.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        314,
+        631,
+        313,
+        274
+      ],
+      "cellRect": [
+        314,
+        627,
+        313,
+        313
+      ],
+      "cell": 9,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_well_remembering": {
+      "id": "spell2_well_remembering",
+      "name": "Well of Remembering",
+      "file": "assets/icons/icons-celtic.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        651,
+        630,
+        285,
+        291
+      ],
+      "cellRect": [
+        627,
+        627,
+        313,
+        313
+      ],
+      "cell": 10,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "blessing2_brigids_unbroken_work": {
+      "id": "blessing2_brigids_unbroken_work",
+      "name": "Brigid's Unbroken Work",
+      "file": "assets/icons/icons-celtic.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        962,
+        632,
+        279,
+        297
+      ],
+      "cellRect": [
+        940,
+        627,
+        314,
+        313
+      ],
+      "cell": 11,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "blessing2_manannans_safe_landing": {
+      "id": "blessing2_manannans_safe_landing",
+      "name": "Manannan's Safe Landing",
+      "file": "assets/icons/icons-celtic.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        20,
+        947,
+        294,
+        291
+      ],
+      "cellRect": [
+        0,
+        940,
+        314,
+        314
+      ],
+      "cell": 12,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_ehecatl_conch": {
+      "id": "relic2_ehecatl_conch",
+      "name": "Ehecatl's Wind-Jewel",
+      "file": "assets/icons/icons-mesoamerican.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        41,
+        46,
+        248,
+        242
+      ],
+      "cellRect": [
+        0,
+        0,
+        314,
+        314
+      ],
+      "cell": 0,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_xiuhcoatl_firebrand": {
+      "id": "relic2_xiuhcoatl_firebrand",
+      "name": "Xiuhcoatl Firebrand",
+      "file": "assets/icons/icons-mesoamerican.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        341,
+        21,
+        274,
+        283
+      ],
+      "cellRect": [
+        314,
+        0,
+        313,
+        314
+      ],
+      "cell": 1,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_xolotl_guide_mask": {
+      "id": "relic2_xolotl_guide_mask",
+      "name": "Xolotl's Guide-Mask",
+      "file": "assets/icons/icons-mesoamerican.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        659,
+        22,
+        249,
+        281
+      ],
+      "cellRect": [
+        627,
+        0,
+        313,
+        314
+      ],
+      "cell": 2,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_chalchiuhtlicue_hem": {
+      "id": "relic2_chalchiuhtlicue_hem",
+      "name": "Jade-Hemmed Mantle",
+      "file": "assets/icons/icons-mesoamerican.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        952,
+        45,
+        290,
+        250
+      ],
+      "cellRect": [
+        940,
+        0,
+        314,
+        314
+      ],
+      "cell": 3,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_quetzal_seed_ring": {
+      "id": "relic2_quetzal_seed_ring",
+      "name": "Ring of the Returning Maize",
+      "file": "assets/icons/icons-mesoamerican.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        47,
+        333,
+        238,
+        265
+      ],
+      "cellRect": [
+        0,
+        314,
+        314,
+        313
+      ],
+      "cell": 4,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_mictlan_guide_lantern": {
+      "id": "relic2_mictlan_guide_lantern",
+      "name": "Lantern of Nine Crossings",
+      "file": "assets/icons/icons-mesoamerican.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        378,
+        317,
+        192,
+        297
+      ],
+      "cellRect": [
+        314,
+        314,
+        313,
+        313
+      ],
+      "cell": 5,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_obsidian_eclipse": {
+      "id": "spell2_obsidian_eclipse",
+      "name": "Obsidian Eclipse",
+      "file": "assets/icons/icons-mesoamerican.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        634,
+        320,
+        298,
+        297
+      ],
+      "cellRect": [
+        627,
+        314,
+        313,
+        313
+      ],
+      "cell": 6,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_serpents_breath": {
+      "id": "spell2_serpents_breath",
+      "name": "Feathered Serpent's Breath",
+      "file": "assets/icons/icons-mesoamerican.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        943,
+        351,
+        298,
+        246
+      ],
+      "cellRect": [
+        940,
+        314,
+        314,
+        313
+      ],
+      "cell": 7,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_xolotls_twin": {
+      "id": "spell2_xolotls_twin",
+      "name": "Xolotl's Pale Twin",
+      "file": "assets/icons/icons-mesoamerican.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        23,
+        627,
+        286,
+        292
+      ],
+      "cellRect": [
+        0,
+        627,
+        309,
+        310
+      ],
+      "cell": 8,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_ehecatls_boatcall": {
+      "id": "spell2_ehecatls_boatcall",
+      "name": "Ehecatl's Boatcall",
+      "file": "assets/icons/icons-mesoamerican.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        309,
+        643,
+        318,
+        274
+      ],
+      "cellRect": [
+        309,
+        627,
+        318,
+        310
+      ],
+      "cell": 9,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_maizebound_compact": {
+      "id": "spell2_maizebound_compact",
+      "name": "Maizebound Compact",
+      "file": "assets/icons/icons-mesoamerican.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        657,
+        638,
+        248,
+        280
+      ],
+      "cellRect": [
+        627,
+        627,
+        313,
+        310
+      ],
+      "cell": 10,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "blessing2_xolotls_faithful_shadow": {
+      "id": "blessing2_xolotls_faithful_shadow",
+      "name": "Xolotl's Faithful Shadow",
+      "file": "assets/icons/icons-mesoamerican.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        956,
+        630,
+        271,
+        288
+      ],
+      "cellRect": [
+        940,
+        627,
+        314,
+        310
+      ],
+      "cell": 11,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "blessing2_chalchiuhtlicues_mercy": {
+      "id": "blessing2_chalchiuhtlicues_mercy",
+      "name": "Chalchiuhtlicue's Mercy",
+      "file": "assets/icons/icons-mesoamerican.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        15,
+        937,
+        290,
+        293
+      ],
+      "cellRect": [
+        0,
+        937,
+        314,
+        317
+      ],
+      "cell": 12,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_surveyors_astrolabe": {
+      "id": "relic2_surveyors_astrolabe",
+      "name": "Surveyor's Broken Astrolabe",
+      "file": "assets/icons/icons-general.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        23,
+        16,
+        282,
+        283
+      ],
+      "cellRect": [
+        0,
+        0,
+        314,
+        314
+      ],
+      "cell": 0,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_runebreaker_gauntlet": {
+      "id": "relic2_runebreaker_gauntlet",
+      "name": "Runebreaker Gauntlet",
+      "file": "assets/icons/icons-general.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        340,
+        7,
+        283,
+        306
+      ],
+      "cellRect": [
+        314,
+        0,
+        313,
+        314
+      ],
+      "cell": 1,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_pilgrim_mileboots": {
+      "id": "relic2_pilgrim_mileboots",
+      "name": "Pilgrim's Mileboots",
+      "file": "assets/icons/icons-general.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        634,
+        29,
+        299,
+        271
+      ],
+      "cellRect": [
+        627,
+        0,
+        313,
+        314
+      ],
+      "cell": 2,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "relic2_hourglass_reserve": {
+      "id": "relic2_hourglass_reserve",
+      "name": "Hourglass of the Last Ember",
+      "file": "assets/icons/icons-general.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        997,
+        5,
+        202,
+        304
+      ],
+      "cellRect": [
+        940,
+        0,
+        314,
+        314
+      ],
+      "cell": 3,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_aether_step": {
+      "id": "spell2_aether_step",
+      "name": "Aether Step",
+      "file": "assets/icons/icons-general.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        30,
+        331,
+        259,
+        288
+      ],
+      "cellRect": [
+        0,
+        314,
+        314,
+        313
+      ],
+      "cell": 4,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_unweave": {
+      "id": "spell2_unweave",
+      "name": "Unweave",
+      "file": "assets/icons/icons-general.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        318,
+        319,
+        307,
+        303
+      ],
+      "cellRect": [
+        314,
+        314,
+        313,
+        313
+      ],
+      "cell": 5,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_clear_mind": {
+      "id": "spell2_clear_mind",
+      "name": "Clear Mind",
+      "file": "assets/icons/icons-general.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        629,
+        336,
+        288,
+        283
+      ],
+      "cellRect": [
+        627,
+        314,
+        313,
+        313
+      ],
+      "cell": 6,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_cinder_siphon": {
+      "id": "spell2_cinder_siphon",
+      "name": "Cinder Siphon",
+      "file": "assets/icons/icons-general.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        988,
+        321,
+        212,
+        297
+      ],
+      "cellRect": [
+        940,
+        314,
+        314,
+        313
+      ],
+      "cell": 7,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_glass_bulwark": {
+      "id": "spell2_glass_bulwark",
+      "name": "Glass Bulwark",
+      "file": "assets/icons/icons-general.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        16,
+        632,
+        294,
+        281
+      ],
+      "cellRect": [
+        0,
+        627,
+        314,
+        302
+      ],
+      "cell": 8,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_spellground": {
+      "id": "spell2_spellground",
+      "name": "Spellground",
+      "file": "assets/icons/icons-general.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        317,
+        633,
+        305,
+        281
+      ],
+      "cellRect": [
+        314,
+        627,
+        313,
+        302
+      ],
+      "cell": 9,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_second_guard": {
+      "id": "spell2_second_guard",
+      "name": "Second Guard",
+      "file": "assets/icons/icons-general.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        627,
+        630,
+        308,
+        285
+      ],
+      "cellRect": [
+        627,
+        627,
+        313,
+        302
+      ],
+      "cell": 10,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_leyline_chart": {
+      "id": "spell2_leyline_chart",
+      "name": "Leyline Chart",
+      "file": "assets/icons/icons-general.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        947,
+        633,
+        298,
+        285
+      ],
+      "cellRect": [
+        940,
+        627,
+        314,
+        302
+      ],
+      "cell": 11,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_road_mending": {
+      "id": "spell2_road_mending",
+      "name": "Road Mending",
+      "file": "assets/icons/icons-general.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        15,
+        929,
+        290,
+        319
+      ],
+      "cellRect": [
+        0,
+        929,
+        314,
+        325
+      ],
+      "cell": 12,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "spell2_courier_sigil": {
+      "id": "spell2_courier_sigil",
+      "name": "Courier Sigil",
+      "file": "assets/icons/icons-general.png",
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceRect": [
+        319,
+        957,
+        308,
+        252
+      ],
+      "cellRect": [
+        314,
+        929,
+        313,
+        325
+      ],
+      "cell": 13,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "icon",
+      "native": true
+    },
+    "fx_greek_burst": {
+      "id": "fx_greek_burst",
+      "name": "greek impact burst",
+      "file": "assets/vfx/vfx-greek-norse-egyptian-spaced.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        95,
+        117,
+        174,
+        175
+      ],
+      "cellRect": [
+        0,
+        0,
+        362,
+        362
+      ],
+      "cell": 0,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_greek_ward": {
+      "id": "fx_greek_ward",
+      "name": "greek ward",
+      "file": "assets/vfx/vfx-greek-norse-egyptian-spaced.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        439,
+        136,
+        216,
+        151
+      ],
+      "cellRect": [
+        362,
+        0,
+        362,
+        362
+      ],
+      "cell": 1,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_greek_trail": {
+      "id": "fx_greek_trail",
+      "name": "greek trail",
+      "file": "assets/vfx/vfx-greek-norse-egyptian-spaced.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        780,
+        164,
+        222,
+        94
+      ],
+      "cellRect": [
+        724,
+        0,
+        362,
+        362
+      ],
+      "cell": 2,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_greek_seal": {
+      "id": "fx_greek_seal",
+      "name": "greek ground seal",
+      "file": "assets/vfx/vfx-greek-norse-egyptian-spaced.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        1165,
+        118,
+        205,
+        178
+      ],
+      "cellRect": [
+        1086,
+        0,
+        362,
+        362
+      ],
+      "cell": 3,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_norse_burst": {
+      "id": "fx_norse_burst",
+      "name": "norse impact burst",
+      "file": "assets/vfx/vfx-greek-norse-egyptian-spaced.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        89,
+        453,
+        188,
+        183
+      ],
+      "cellRect": [
+        0,
+        362,
+        362,
+        362
+      ],
+      "cell": 4,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_norse_ward": {
+      "id": "fx_norse_ward",
+      "name": "norse ward",
+      "file": "assets/vfx/vfx-greek-norse-egyptian-spaced.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        425,
+        463,
+        238,
+        173
+      ],
+      "cellRect": [
+        362,
+        362,
+        362,
+        362
+      ],
+      "cell": 5,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_norse_trail": {
+      "id": "fx_norse_trail",
+      "name": "norse trail",
+      "file": "assets/vfx/vfx-greek-norse-egyptian-spaced.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        778,
+        504,
+        236,
+        99
+      ],
+      "cellRect": [
+        724,
+        362,
+        362,
+        362
+      ],
+      "cell": 6,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_norse_seal": {
+      "id": "fx_norse_seal",
+      "name": "norse ground seal",
+      "file": "assets/vfx/vfx-greek-norse-egyptian-spaced.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        1156,
+        452,
+        221,
+        192
+      ],
+      "cellRect": [
+        1086,
+        362,
+        362,
+        362
+      ],
+      "cell": 7,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_egyptian_burst": {
+      "id": "fx_egyptian_burst",
+      "name": "egyptian impact burst",
+      "file": "assets/vfx/vfx-greek-norse-egyptian-spaced.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        87,
+        806,
+        186,
+        179
+      ],
+      "cellRect": [
+        0,
+        724,
+        362,
+        362
+      ],
+      "cell": 8,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_egyptian_ward": {
+      "id": "fx_egyptian_ward",
+      "name": "egyptian ward",
+      "file": "assets/vfx/vfx-greek-norse-egyptian-spaced.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        424,
+        804,
+        240,
+        178
+      ],
+      "cellRect": [
+        362,
+        724,
+        362,
+        362
+      ],
+      "cell": 9,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_egyptian_trail": {
+      "id": "fx_egyptian_trail",
+      "name": "egyptian trail",
+      "file": "assets/vfx/vfx-greek-norse-egyptian-spaced.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        777,
+        832,
+        235,
+        120
+      ],
+      "cellRect": [
+        724,
+        724,
+        362,
+        362
+      ],
+      "cell": 10,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_egyptian_seal": {
+      "id": "fx_egyptian_seal",
+      "name": "egyptian ground seal",
+      "file": "assets/vfx/vfx-greek-norse-egyptian-spaced.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        1156,
+        795,
+        224,
+        206
+      ],
+      "cellRect": [
+        1086,
+        724,
+        362,
+        362
+      ],
+      "cell": 11,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_japanese_burst": {
+      "id": "fx_japanese_burst",
+      "name": "japanese impact burst",
+      "file": "assets/vfx/vfx-japanese-celtic-mesoamerican.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        91,
+        125,
+        234,
+        199
+      ],
+      "cellRect": [
+        0,
+        0,
+        362,
+        362
+      ],
+      "cell": 0,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_japanese_ward": {
+      "id": "fx_japanese_ward",
+      "name": "japanese ward",
+      "file": "assets/vfx/vfx-japanese-celtic-mesoamerican.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        430,
+        124,
+        246,
+        203
+      ],
+      "cellRect": [
+        362,
+        0,
+        362,
+        362
+      ],
+      "cell": 1,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_japanese_trail": {
+      "id": "fx_japanese_trail",
+      "name": "japanese trail",
+      "file": "assets/vfx/vfx-japanese-celtic-mesoamerican.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        766,
+        163,
+        258,
+        118
+      ],
+      "cellRect": [
+        724,
+        0,
+        362,
+        362
+      ],
+      "cell": 2,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_japanese_seal": {
+      "id": "fx_japanese_seal",
+      "name": "japanese ground seal",
+      "file": "assets/vfx/vfx-japanese-celtic-mesoamerican.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        1124,
+        143,
+        251,
+        179
+      ],
+      "cellRect": [
+        1086,
+        0,
+        362,
+        362
+      ],
+      "cell": 3,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_celtic_burst": {
+      "id": "fx_celtic_burst",
+      "name": "celtic impact burst",
+      "file": "assets/vfx/vfx-japanese-celtic-mesoamerican.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        92,
+        440,
+        224,
+        211
+      ],
+      "cellRect": [
+        0,
+        362,
+        362,
+        362
+      ],
+      "cell": 4,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_celtic_ward": {
+      "id": "fx_celtic_ward",
+      "name": "celtic ward",
+      "file": "assets/vfx/vfx-japanese-celtic-mesoamerican.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        418,
+        440,
+        267,
+        215
+      ],
+      "cellRect": [
+        362,
+        362,
+        362,
+        362
+      ],
+      "cell": 5,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_celtic_trail": {
+      "id": "fx_celtic_trail",
+      "name": "celtic trail",
+      "file": "assets/vfx/vfx-japanese-celtic-mesoamerican.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        762,
+        479,
+        266,
+        127
+      ],
+      "cellRect": [
+        724,
+        362,
+        362,
+        362
+      ],
+      "cell": 6,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_celtic_seal": {
+      "id": "fx_celtic_seal",
+      "name": "celtic ground seal",
+      "file": "assets/vfx/vfx-japanese-celtic-mesoamerican.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        1115,
+        446,
+        269,
+        215
+      ],
+      "cellRect": [
+        1086,
+        362,
+        362,
+        362
+      ],
+      "cell": 7,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_mesoamerican_burst": {
+      "id": "fx_mesoamerican_burst",
+      "name": "mesoamerican impact burst",
+      "file": "assets/vfx/vfx-japanese-celtic-mesoamerican.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        95,
+        773,
+        217,
+        188
+      ],
+      "cellRect": [
+        0,
+        724,
+        362,
+        362
+      ],
+      "cell": 8,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_mesoamerican_ward": {
+      "id": "fx_mesoamerican_ward",
+      "name": "mesoamerican ward",
+      "file": "assets/vfx/vfx-japanese-celtic-mesoamerican.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        423,
+        752,
+        258,
+        220
+      ],
+      "cellRect": [
+        362,
+        724,
+        362,
+        362
+      ],
+      "cell": 9,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_mesoamerican_trail": {
+      "id": "fx_mesoamerican_trail",
+      "name": "mesoamerican trail",
+      "file": "assets/vfx/vfx-japanese-celtic-mesoamerican.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        764,
+        792,
+        262,
+        147
+      ],
+      "cellRect": [
+        724,
+        724,
+        362,
+        362
+      ],
+      "cell": 10,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_mesoamerican_seal": {
+      "id": "fx_mesoamerican_seal",
+      "name": "mesoamerican ground seal",
+      "file": "assets/vfx/vfx-japanese-celtic-mesoamerican.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        1122,
+        756,
+        255,
+        228
+      ],
+      "cellRect": [
+        1086,
+        724,
+        362,
+        362
+      ],
+      "cell": 11,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_frost_patch": {
+      "id": "fx_frost_patch",
+      "name": "frost patch",
+      "file": "assets/vfx/vfx-utility.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        59,
+        118,
+        246,
+        224
+      ],
+      "cellRect": [
+        0,
+        0,
+        362,
+        362
+      ],
+      "cell": 0,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_crystal_barrier": {
+      "id": "fx_crystal_barrier",
+      "name": "crystal barrier",
+      "file": "assets/vfx/vfx-utility.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        437,
+        102,
+        228,
+        225
+      ],
+      "cellRect": [
+        362,
+        0,
+        362,
+        362
+      ],
+      "cell": 1,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_thorn_bind": {
+      "id": "fx_thorn_bind",
+      "name": "thorn bind",
+      "file": "assets/vfx/vfx-utility.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        789,
+        104,
+        259,
+        244
+      ],
+      "cellRect": [
+        724,
+        0,
+        362,
+        362
+      ],
+      "cell": 2,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_cleanse": {
+      "id": "fx_cleanse",
+      "name": "cleanse",
+      "file": "assets/vfx/vfx-utility.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        1190,
+        42,
+        163,
+        318
+      ],
+      "cellRect": [
+        1086,
+        0,
+        362,
+        362
+      ],
+      "cell": 3,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_shadow_echo": {
+      "id": "fx_shadow_echo",
+      "name": "shadow echo",
+      "file": "assets/vfx/vfx-utility.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        82,
+        426,
+        194,
+        290
+      ],
+      "cellRect": [
+        0,
+        362,
+        362,
+        362
+      ],
+      "cell": 4,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_water_ring": {
+      "id": "fx_water_ring",
+      "name": "water ring",
+      "file": "assets/vfx/vfx-utility.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        420,
+        441,
+        258,
+        259
+      ],
+      "cellRect": [
+        362,
+        362,
+        362,
+        362
+      ],
+      "cell": 5,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_gold_motes": {
+      "id": "fx_gold_motes",
+      "name": "gold motes",
+      "file": "assets/vfx/vfx-utility.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        818,
+        462,
+        214,
+        218
+      ],
+      "cellRect": [
+        724,
+        362,
+        362,
+        362
+      ],
+      "cell": 6,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_sand_hush": {
+      "id": "fx_sand_hush",
+      "name": "sand hush",
+      "file": "assets/vfx/vfx-utility.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        1154,
+        443,
+        252,
+        247
+      ],
+      "cellRect": [
+        1086,
+        362,
+        362,
+        362
+      ],
+      "cell": 7,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_portal": {
+      "id": "fx_portal",
+      "name": "portal",
+      "file": "assets/vfx/vfx-utility.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        67,
+        779,
+        239,
+        242
+      ],
+      "cellRect": [
+        0,
+        724,
+        362,
+        362
+      ],
+      "cell": 8,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_fire_ember": {
+      "id": "fx_fire_ember",
+      "name": "fire ember",
+      "file": "assets/vfx/vfx-utility.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        448,
+        767,
+        206,
+        236
+      ],
+      "cellRect": [
+        362,
+        724,
+        362,
+        362
+      ],
+      "cell": 9,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_ward_break": {
+      "id": "fx_ward_break",
+      "name": "ward break",
+      "file": "assets/vfx/vfx-utility.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        790,
+        792,
+        256,
+        226
+      ],
+      "cellRect": [
+        724,
+        724,
+        362,
+        362
+      ],
+      "cell": 10,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    },
+    "fx_delivery_seal": {
+      "id": "fx_delivery_seal",
+      "name": "delivery seal",
+      "file": "assets/vfx/vfx-utility.png",
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceRect": [
+        1168,
+        815,
+        234,
+        178
+      ],
+      "cellRect": [
+        1086,
+        724,
+        362,
+        362
+      ],
+      "cell": 11,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "vfx",
+      "native": true
+    }
+  },
+  "assetIdToFrame": {
+    "icon.artifact.relic2_ariadne_spool": "relic2_ariadne_spool",
+    "icon.artifact.relic2_aeolus_windbag": "relic2_aeolus_windbag",
+    "icon.artifact.relic2_orpheus_lyre": "relic2_orpheus_lyre",
+    "icon.artifact.relic2_golden_fleece_mantle": "relic2_golden_fleece_mantle",
+    "icon.artifact.relic2_hestia_hearthclasp": "relic2_hestia_hearthclasp",
+    "icon.artifact.relic2_talos_bronze_seal": "relic2_talos_bronze_seal",
+    "icon.artifact.relic2_gleipnir_ribbon": "relic2_gleipnir_ribbon",
+    "icon.artifact.relic2_svalinn_shield": "relic2_svalinn_shield",
+    "icon.artifact.relic2_mimir_cup": "relic2_mimir_cup",
+    "icon.artifact.relic2_skidbladnir_keel": "relic2_skidbladnir_keel",
+    "icon.artifact.relic2_idunn_apple_clasp": "relic2_idunn_apple_clasp",
+    "icon.artifact.relic2_skadi_huntbow": "relic2_skadi_huntbow",
+    "icon.artifact.relic2_isis_tyet": "relic2_isis_tyet",
+    "icon.artifact.relic2_wepwawet_sandals": "relic2_wepwawet_sandals",
+    "icon.artifact.relic2_thoth_inkwell": "relic2_thoth_inkwell",
+    "icon.artifact.relic2_hathor_sistrum": "relic2_hathor_sistrum",
+    "icon.artifact.relic2_anubis_canopic_seal": "relic2_anubis_canopic_seal",
+    "icon.artifact.relic2_nut_starweave": "relic2_nut_starweave",
+    "icon.artifact.relic2_hoori_tide_pearl": "relic2_hoori_tide_pearl",
+    "icon.artifact.relic2_uzume_bells": "relic2_uzume_bells",
+    "icon.artifact.relic2_inari_rice_key": "relic2_inari_rice_key",
+    "icon.artifact.relic2_hidesato_centipede_arrow": "relic2_hidesato_centipede_arrow",
+    "icon.artifact.relic2_yomi_return_cord": "relic2_yomi_return_cord",
+    "icon.artifact.relic2_takemikazuchi_guard": "relic2_takemikazuchi_guard",
+    "icon.artifact.relic2_nuada_silver_bracer": "relic2_nuada_silver_bracer",
+    "icon.artifact.relic2_brans_voyage_brooch": "relic2_brans_voyage_brooch",
+    "icon.artifact.relic2_dian_cecht_needle": "relic2_dian_cecht_needle",
+    "icon.artifact.relic2_rhiannon_bridle": "relic2_rhiannon_bridle",
+    "icon.artifact.relic2_salmon_wisdom_pin": "relic2_salmon_wisdom_pin",
+    "icon.artifact.relic2_morrigan_crowcloak": "relic2_morrigan_crowcloak",
+    "icon.artifact.relic2_ehecatl_conch": "relic2_ehecatl_conch",
+    "icon.artifact.relic2_xiuhcoatl_firebrand": "relic2_xiuhcoatl_firebrand",
+    "icon.artifact.relic2_xolotl_guide_mask": "relic2_xolotl_guide_mask",
+    "icon.artifact.relic2_chalchiuhtlicue_hem": "relic2_chalchiuhtlicue_hem",
+    "icon.artifact.relic2_quetzal_seed_ring": "relic2_quetzal_seed_ring",
+    "icon.artifact.relic2_mictlan_guide_lantern": "relic2_mictlan_guide_lantern",
+    "icon.artifact.relic2_surveyors_astrolabe": "relic2_surveyors_astrolabe",
+    "icon.artifact.relic2_runebreaker_gauntlet": "relic2_runebreaker_gauntlet",
+    "icon.artifact.relic2_pilgrim_mileboots": "relic2_pilgrim_mileboots",
+    "icon.artifact.relic2_hourglass_reserve": "relic2_hourglass_reserve",
+    "icon.spell.spell2_daedalus_passage": "spell2_daedalus_passage",
+    "icon.spell.spell2_siren_refrain": "spell2_siren_refrain",
+    "icon.spell.spell2_oathbound_spear": "spell2_oathbound_spear",
+    "icon.spell.spell2_crossroads_omen": "spell2_crossroads_omen",
+    "icon.spell.spell2_aeolian_tack": "spell2_aeolian_tack",
+    "icon.spell.spell2_frost_threshold": "spell2_frost_threshold",
+    "icon.spell.spell2_ravens_exchange": "spell2_ravens_exchange",
+    "icon.spell.spell2_runes_refusal": "spell2_runes_refusal",
+    "icon.spell.spell2_njords_sounding": "spell2_njords_sounding",
+    "icon.spell.spell2_skalds_camp": "spell2_skalds_camp",
+    "icon.spell.spell2_feathers_verdict": "spell2_feathers_verdict",
+    "icon.spell.spell2_door_duat": "spell2_door_duat",
+    "icon.spell.spell2_sand_silence": "spell2_sand_silence",
+    "icon.spell.spell2_scribes_survey": "spell2_scribes_survey",
+    "icon.spell.spell2_silt_to_stone": "spell2_silt_to_stone",
+    "icon.spell.spell2_tide_pearl_turn": "spell2_tide_pearl_turn",
+    "icon.spell.spell2_paper_crane_ward": "spell2_paper_crane_ward",
+    "icon.spell.spell2_uzumes_dawn": "spell2_uzumes_dawn",
+    "icon.spell.spell2_lantern_pilgrimage": "spell2_lantern_pilgrimage",
+    "icon.spell.spell2_foxfire_diversion": "spell2_foxfire_diversion",
+    "icon.spell.spell2_rowan_sanctuary": "spell2_rowan_sanctuary",
+    "icon.spell.spell2_hazels_recall": "spell2_hazels_recall",
+    "icon.spell.spell2_briar_debt": "spell2_briar_debt",
+    "icon.spell.spell2_hares_borrowed_path": "spell2_hares_borrowed_path",
+    "icon.spell.spell2_well_remembering": "spell2_well_remembering",
+    "icon.spell.spell2_obsidian_eclipse": "spell2_obsidian_eclipse",
+    "icon.spell.spell2_serpents_breath": "spell2_serpents_breath",
+    "icon.spell.spell2_xolotls_twin": "spell2_xolotls_twin",
+    "icon.spell.spell2_ehecatls_boatcall": "spell2_ehecatls_boatcall",
+    "icon.spell.spell2_maizebound_compact": "spell2_maizebound_compact",
+    "icon.spell.spell2_aether_step": "spell2_aether_step",
+    "icon.spell.spell2_unweave": "spell2_unweave",
+    "icon.spell.spell2_clear_mind": "spell2_clear_mind",
+    "icon.spell.spell2_cinder_siphon": "spell2_cinder_siphon",
+    "icon.spell.spell2_glass_bulwark": "spell2_glass_bulwark",
+    "icon.spell.spell2_spellground": "spell2_spellground",
+    "icon.spell.spell2_second_guard": "spell2_second_guard",
+    "icon.spell.spell2_leyline_chart": "spell2_leyline_chart",
+    "icon.spell.spell2_road_mending": "spell2_road_mending",
+    "icon.spell.spell2_courier_sigil": "spell2_courier_sigil",
+    "icon.intervention.blessing2_athenas_order": "blessing2_athenas_order",
+    "icon.intervention.blessing2_poseidons_mooring": "blessing2_poseidons_mooring",
+    "icon.intervention.blessing2_tyrs_equal_ground": "blessing2_tyrs_equal_ground",
+    "icon.intervention.blessing2_friggs_watched_return": "blessing2_friggs_watched_return",
+    "icon.intervention.blessing2_thoths_reckoning": "blessing2_thoths_reckoning",
+    "icon.intervention.blessing2_sobeks_river_oath": "blessing2_sobeks_river_oath",
+    "icon.intervention.blessing2_amaterasus_true_dawn": "blessing2_amaterasus_true_dawn",
+    "icon.intervention.blessing2_inari_guest_right": "blessing2_inari_guest_right",
+    "icon.intervention.blessing2_brigids_unbroken_work": "blessing2_brigids_unbroken_work",
+    "icon.intervention.blessing2_manannans_safe_landing": "blessing2_manannans_safe_landing",
+    "icon.intervention.blessing2_xolotls_faithful_shadow": "blessing2_xolotls_faithful_shadow",
+    "icon.intervention.blessing2_chalchiuhtlicues_mercy": "blessing2_chalchiuhtlicues_mercy"
+  }
+}

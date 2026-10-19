@@ -16,9 +16,20 @@ import { grantExperience } from '../heroes';
 import { grantReward } from '../quests';
 import { missionSite } from '../../resolvers/world';
 import { arriveAt } from '../adventure';
+import { settleCaravanInterception } from '../caravans';
+import { enemyCaravanAt } from '../../resolvers/caravans';
+import { resolveBoardingAftermath } from '../naval';
+import { resolveSeaEncounterAftermath } from '../seaEncounter';
+import { resolveWreckExpedition } from '../seaSites';
+import { permanentHp } from './libraryLife';
+import { libraryEffects } from './libraryRelics';
 
 export function resolveBattle(tx: Tx, battle: BattleState, winner: BattleSideId, outcome: BattleResultRecord['outcome']): void {
   if (battle.status === 'ended') return;
+  for (const stack of Object.values(battle.stacks)) {
+    if (stack.summoned) { delete battle.stacks[stack.id]; continue; }
+    stack.totalHp = permanentHp(stack); delete stack.temporaryLife;
+  }
   battle.status = 'ended';
   battle.activeStackId = null;
   const state = tx.state;
@@ -30,11 +41,14 @@ export function resolveBattle(tx: Tx, battle: BattleState, winner: BattleSideId,
   // Capped by this battle's own losses per stack; no XP, reward or kill credit is created.
   const recovered = new Map<string, number>();
   const recoveryPercent = battle.sides[winner].effects?.recoveryPercent ?? 0;
-  if (recoveryPercent > 0 && outcome !== 'stalemate') {
+  const livingRecovery = Math.max(0, ...libraryEffects(battle, winner, 'library_living_recovery').map((e) => e.percent));
+  if ((recoveryPercent > 0 || livingRecovery > 0) && outcome !== 'stalemate') {
     for (const s of Object.values(battle.stacks)) {
       if (s.side !== winner) continue;
       const losses = s.startingCount - aliveCount(catalog, s);
-      const back = Math.min(losses, Math.floor((losses * recoveryPercent) / 100));
+      const eligible = aliveCount(catalog, s) > 0 && !catalog.creatures[s.creatureId]?.traits?.some((t) => t === 'undead' || t === 'construct') && outcome !== 'retreat' && outcome !== 'surrender';
+      const pct = livingRecovery && eligible ? Math.min(15, recoveryPercent + livingRecovery) : recoveryPercent;
+      const back = Math.min(losses, Math.floor((losses * pct) / 100));
       if (back <= 0) continue;
       recovered.set(s.id, back);
       tx.emit({ kind: 'BattleCasualtiesRecovered', side: winner, stackId: s.id, creatureId: s.creatureId, count: back });
@@ -64,15 +78,18 @@ export function resolveBattle(tx: Tx, battle: BattleState, winner: BattleSideId,
   const siegeTown = enc.kind === 'town_siege' && enc.townId ? state.towns[enc.townId] : undefined;
   /** Write a side's survivors back to their source army (hero, or the besieged town's garrison). */
   const persistArmy = (hero: HeroState | undefined, side: BattleSideId, keepSurvivors: boolean) => {
+    const groups = new Map<string, { army: HeroState['army']; slot: number; count: number }>();
     for (const s of Object.values(battle.stacks)) {
       if (s.side !== side) continue;
       const army = s.sourceArmy === 'garrison' ? siegeTown?.garrison : hero?.army;
-      if (!army) continue;
-      const slot = army.slots[s.sourceSlot];
-      if (!slot) continue;
-      const alive = keepSurvivors ? survivors(s) : 0;
-      if (alive <= 0) army.slots[s.sourceSlot] = null;
-      else slot.count = alive;
+      if (!army || !army.slots[s.sourceSlot]) continue;
+      const key = `${s.sourceArmy}:${s.sourceSlot}`;
+      const g = groups.get(key) ?? { army, slot: s.sourceSlot, count: 0 };
+      g.count += keepSurvivors ? survivors(s) : 0; groups.set(key, g);
+    }
+    for (const g of groups.values()) {
+      if (g.count <= 0) g.army.slots[g.slot] = null;
+      else g.army.slots[g.slot]!.count = g.count;
     }
   };
 
@@ -90,18 +107,22 @@ export function resolveBattle(tx: Tx, battle: BattleState, winner: BattleSideId,
   // Winner keeps survivors (dead creatures remain dead; partial front HP heals).
   persistArmy(winnerHero, winner, true);
 
-  // Loser consequences.
+  // Loser consequences. A boarding battle's retreat or surrender withdraws the hero aboard its own
+  // ship to open water (resolveBoardingAftermath), never to the return roster or onto land.
+  // A wreck expedition (sea-sites kit) is fought from the hero's own ship: a retreat keeps it aboard on its approach hex.
+  // A sea encounter (seaEncountersV1, `sourceShipId`) follows the same at-sea rule: the ship withdraws with its hero.
+  const bySea = enc.kind === 'naval_boarding' || enc.kind === 'wreck_expedition' || !!enc.sourceShipId;
   if (loserHero) {
     if (loserSide.surrendered) {
       persistArmy(loserHero, loser, true);
-      loserHero.status = 'retreated';
-      heroOutcome = `${loserHero.name} surrendered and withdrew with the surviving troops.`;
-      tx.emit({ kind: 'HeroRetreated', heroId: loserHero.id });
+      if (!bySea) loserHero.status = 'retreated';
+      heroOutcome = bySea ? `${loserHero.name} surrendered and sailed away with the surviving troops.` : `${loserHero.name} surrendered and withdrew with the surviving troops.`;
+      if (!bySea) tx.emit({ kind: 'HeroRetreated', heroId: loserHero.id });
     } else if (loserSide.retreated) {
       persistArmy(loserHero, loser, false);
-      loserHero.status = 'retreated';
-      heroOutcome = `${loserHero.name} retreated; the army was abandoned.`;
-      tx.emit({ kind: 'HeroRetreated', heroId: loserHero.id });
+      if (!bySea) loserHero.status = 'retreated';
+      heroOutcome = bySea ? `${loserHero.name} retreated by sea; the army was abandoned.` : `${loserHero.name} retreated; the army was abandoned.`;
+      if (!bySea) tx.emit({ kind: 'HeroRetreated', heroId: loserHero.id });
     } else if (outcome === 'stalemate') {
       persistArmy(loserHero, loser, true);
       heroOutcome = `The battle stalled; ${loserHero.name} withdrew.`;
@@ -154,6 +175,16 @@ export function resolveBattle(tx: Tx, battle: BattleState, winner: BattleSideId,
     }
   }
 
+  // Shipwreck expedition (sea-sites kit): the wreck cleared and its salvage granted once, or the raiders stay aboard.
+  if (enc.kind === 'wreck_expedition') {
+    const salvage = resolveWreckExpedition(tx, battle, winner, survivors);
+    rewardsGranted = addResources(rewardsGranted, salvage.resources);
+    artifactIds.push(...salvage.artifactIds);
+  }
+
+  // Recruitment caravan interception: the cargo's survivors return to the shipment, or it is destroyed (no loot, nothing joins the attacker).
+  if (enc.kind === 'caravan_intercept') settleCaravanInterception(tx, battle, winner, survivors);
+
   // Wandering monster: its bounty goes to whoever defeats it.
   if (loserHero?.monster && loserHero.status === 'defeated' && winnerHero && winnerHero.status === 'active') {
     const bounty = resources(loserHero.monster.bounty);
@@ -199,11 +230,15 @@ export function resolveBattle(tx: Tx, battle: BattleState, winner: BattleSideId,
     }
   }
 
-  // Winning attacker steps onto the contested tile.
-  if (winner === 'attacker' && attackerHero && attackerHero.status === 'active') {
+  // Winning attacker steps onto the contested tile — never onto a tile an enemy caravan still holds (it stays on its approach tile).
+  if (winner === 'attacker' && attackerHero && attackerHero.status === 'active' && !enemyCaravanAt(state, enc.destination, attackerHero.ownerId)) {
     attackerHero.position = enc.destination;
     arriveAt(tx, attackerHero, enc.destination);
   }
+  // Boarding (navalMovementV1): withdrawals, lost hulls and the winner's ship on the contested hex.
+  if (bySea) resolveBoardingAftermath(tx, battle, winner, outcome);
+  // Sea encounters: the ship follows its winning hero, withdraws with a retreating one, or is lost with a defeated one.
+  if (enc.sourceShipId) resolveSeaEncounterAftermath(tx, battle, winner, outcome);
 
   if (!heroOutcome) {
     heroOutcome =

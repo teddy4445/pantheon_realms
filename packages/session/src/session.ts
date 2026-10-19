@@ -16,6 +16,7 @@ import {
   manualBattlesRequired,
   processCommand,
   siteAt,
+  missionSite,
   settleHeroesAtTownGates,
   type CommandPayload,
   type ContentCatalog,
@@ -243,7 +244,9 @@ export class GameSession {
     if (!res.ok) return { ok: false, rejection: res.rejection };
     this._state = res.state;
     if (before.players[actor]?.controller === 'human') this.lastHumanId = actor;
-    if (res.events.some((e) => e.kind === 'BattleStarted')) this.checkpoint('pre_encounter', this.snapshotOf(before));
+    const eventSite = payload.kind === 'ResolveMapEvent' ? missionSite(this.catalog, before, payload.siteId) : null;
+    const eventCheckpoint = payload.kind === 'ResolveMapEvent' && eventSite?.kind.type === 'map_event' && eventSite.kind.options[payload.optionIndex]?.checkpointBefore;
+    if (eventCheckpoint || res.events.some((e) => e.kind === 'BattleStarted')) this.checkpoint('pre_encounter', this.snapshotOf(before));
     // Following a planned journey again resumes it (a paused journey is planned once more).
     if (payload.kind === 'MoveHero' && !this._state.battle) {
       const j = journeyOf(this._presentation, actor, payload.heroId);
@@ -360,7 +363,7 @@ export class GameSession {
   /** Commit the mission completion record exactly once. */
   completeMission(): CompletionRecord | null {
     if (!this._campaign) return null;
-    this._campaign = recordCompletion(this.catalog, this._campaign, this._state);
+    this._campaign = recordCompletion(this.catalog, this._campaign, this._state, Object.values(this._presentation.journeys).flatMap(Object.values));
     return this._campaign.completions.find((c) => c.missionId === this._state.mission.missionId) ?? null;
   }
 
@@ -384,9 +387,18 @@ export class GameSession {
     const { campaign, start } = startNextMission(this.catalog, this._campaign, chosenMissionId);
     this._campaign = campaign;
     this._state = start.match;
-    this._presentation = EMPTY_PRESENTATION;
+    this.restoreRegionalJourneys();
     this.checkpoint('mission_start', this.snapshot());
     this.publish([], 'start');
+  }
+
+  private restoreRegionalJourneys(): void {
+    const journeys: Record<string, Record<string, JourneyIntent>> = {};
+    for (const region of this._campaign?.currentEntryRegions ?? []) for (const j of region.journeys ?? []) {
+      const heroId = this._state.heroes[j.heroId]?.ownerId === j.playerId ? j.heroId : `region:${region.regionId}:${j.heroId}`;
+      (journeys[j.playerId] ??= {})[heroId] = { ...j, heroId, version: 1, matchId: this._state.matchId, status: 'paused', reason: 'interrupted' };
+    }
+    this._presentation = sanitizePresentation({ version: 1, journeys }, this._state);
   }
 
   restartMission(): void {
@@ -415,7 +427,7 @@ export class GameSession {
       this._state = match;
     }
     this.lastHumanId = null;
-    this._presentation = EMPTY_PRESENTATION;
+    this.restoreRegionalJourneys();
     this.publish([], 'start');
   }
 
@@ -424,7 +436,7 @@ export class GameSession {
     const { campaign, start } = startPracticeReplay(this.catalog, this._campaign, missionId);
     this._campaign = campaign;
     this._state = start.match;
-    this._presentation = EMPTY_PRESENTATION;
+    this.restoreRegionalJourneys();
     this.publish([], 'start');
   }
 

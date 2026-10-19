@@ -303,7 +303,21 @@ export function chapter(spec: ChapterSpec): MissionDefinition {
     victory: spec.victory,
     storyScenes: spec.scenes ?? [],
     debriefPolicy: from.debriefPolicy,
-    ...(from.features ? { features: { ...from.features, neutralReactions: false } } : {}),
+    // City dedications (app 1.5.0): a new chapter plays them unless its v1 campaign turns them off
+    // explicitly (The Three Beacons: `cityDedicationsV1: false`); never inferred from other flags.
+    // Expedition kit (app 1.6.0): scouting intel and the targetable catapult the same way; caravans and
+    // ships never in authored chapters (their routes are designed for land travel).
+    features: {
+      ...(from.features ?? {}),
+      neutralReactions: false,
+      mythicLibraryV2: from.features?.cityDedicationsV1 !== false,
+      interventions: from.features?.cityDedicationsV1 !== false,
+      cityDedicationsV1: from.features?.cityDedicationsV1 !== false,
+      scoutingIntelV1: from.features?.scoutingIntelV1 !== false,
+      targetableCatapultV1: from.features?.targetableCatapultV1 !== false,
+      recruitmentCaravansV1: false,
+      navalMovementV1: false,
+    },
     ...(from.signatureMechanics !== undefined ? { signatureMechanics: from.signatureMechanics } : {}),
     player: {
       ...player,

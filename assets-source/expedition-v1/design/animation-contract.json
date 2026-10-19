@@ -1,0 +1,103 @@
+{
+  "type": "Runtime transform and vector-FX animation, not frame-by-frame raster strips",
+  "directions": {
+    "E": {
+      "asset": "ship-e",
+      "flipX": false
+    },
+    "NE": {
+      "asset": "ship-ne",
+      "flipX": false
+    },
+    "SE": {
+      "asset": "ship-se",
+      "flipX": false
+    },
+    "W": {
+      "asset": "ship-e",
+      "flipX": true
+    },
+    "NW": {
+      "asset": "ship-ne",
+      "flipX": true
+    },
+    "SW": {
+      "asset": "ship-se",
+      "flipX": true
+    }
+  },
+  "states": {
+    "idle": {
+      "durationMs": 3200,
+      "loop": true,
+      "bobPx": 1.4,
+      "rollDeg": 0.65
+    },
+    "sailing": {
+      "durationMs": 1800,
+      "loop": true,
+      "bobPx": 2,
+      "rollDeg": 1,
+      "wakeOpacity": 0.55,
+      "path": "Interpolate committed map waypoints separately"
+    },
+    "embark": {
+      "durationMs": 650,
+      "loop": false,
+      "event": "Commit rule command first; crossfade rider avatar to vessel"
+    },
+    "disembark": {
+      "durationMs": 650,
+      "loop": false,
+      "event": "Commit legal coast landing first; crossfade vessel to rider"
+    },
+    "boarding": {
+      "durationMs": 2600,
+      "loop": true,
+      "event": "Hold vessels stationary during tactical scene transition"
+    },
+    "hit": {
+      "durationMs": 420,
+      "loop": false,
+      "event": "Presentation cue only; no new persistent hull HP implied"
+    },
+    "sinking": {
+      "durationMs": 1800,
+      "loop": false,
+      "event": "After confirmed defeat; fade old hull to wreck then remove; do not delay logical defeat"
+    }
+  },
+  "flag": {
+    "ownerColor": "state.players[hero.ownerId].color",
+    "shape": "Existing square hero banner",
+    "identity": "Existing hero portrait medallion/name on inspection; not new heraldry",
+    "mountNormalized": [
+      0.52,
+      0.08
+    ],
+    "mirrorPolicy": "Mirror only ship art; transform flag anchor x→1−x and never mirror text or portrait",
+    "emptyShip": "No hero flag, owner/neutral marker only"
+  },
+  "wagon": {
+    "states": [
+      "idle",
+      "travelling",
+      "arriving"
+    ],
+    "method": "Directional painted token with gentle cart bob and position tween; no anatomical horse gait frames",
+    "travelBobPx": 0.6,
+    "shippedFrameStrips": false
+  },
+  "catapult": {
+    "idle": "Reuse siege.catapult.intact",
+    "fire": "Reuse fx.siege.catapult.throw 8frames256x256,12fps; runtime origin/flip from registered engine anchor",
+    "damageStages": [
+      "intact",
+      "damaged",
+      "destroyed"
+    ],
+    "projectile": "Reuse stone asset; projectile arrival synchronized to committed hit event"
+  },
+  "reducedMotion": "Disable bob, roll, wake and shaking; preserve state changes and readable ownership",
+  "timeSource": "Presentation elapsed milliseconds only; all actions/gameplay resolved in deterministic rules before playback"
+}

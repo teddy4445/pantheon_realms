@@ -23,6 +23,8 @@ import {
   familyForms,
   recruitableCreatureIds,
   weeklyGrowthFor,
+  cityDedicationProfile,
+  townDedicationView,
   type ArmyRef,
   type ContentCatalog,
   type CreatureDefinition,
@@ -32,7 +34,7 @@ import {
 import { useStore } from '../app/context';
 import { reducedMotion } from '../app/preferences';
 import { Button, QuantitySelector } from '../components/kit';
-import { CreaturePortrait, HeroPortrait } from '../components/art';
+import { CreaturePortrait, GodPortrait, HeroPortrait } from '../components/art';
 import { ArmyStrip, CostList, ScreenHeader } from '../components/game';
 import { heroesInTown, humanPlayer } from '../app/view';
 import { Icon, RESOURCE_ICON } from '../assets/icons';
@@ -41,6 +43,9 @@ import { guiThemeFor } from '../assets/guiArt';
 import { LockGlyph } from '../components/gui';
 import { AdventureStage, adventureScene } from '../components/adventure';
 import { creaturePicture, type CreaturePicture } from '../app/neutralRecruit';
+import { dedicationsOn, familyNames, godName, growthBreakdown, growthBreakdownText, growthProgressText, growthRateText, possessive, savingPriceText, savingText } from '../app/dedication';
+import { SavingLine } from '../components/dedication';
+import { caravansOn } from '../app/caravans';
 
 const RES_ORDER = ['gold', 'wood', 'stone', 'crystal', 'favor'] as const;
 const RES_LABEL: Record<string, string> = { gold: 'gold', wood: 'wood', stone: 'stone', crystal: 'crystal', favor: 'favor' };
@@ -173,6 +178,30 @@ export function RecruitmentScreen() {
     }
   };
 
+  // City dedications: the town's honored god favors one family (extra stock for its shared pool; no combat badge).
+  const dedView = dedicationsOn(state) ? townDedicationView(catalog, state, town.id, player.id) : null;
+  const favored = dedView?.active ? { godId: dedView.active.godId, familyId: cityDedicationProfile(catalog, dedView.active.godId)?.favoredFamilyId ?? null, dormant: dedView.active.state === 'dormant', reason: dedView.active.dormantReason } : null;
+  const favorOf = (famId: string) => {
+    if (!favored || favored.familyId !== famId) return null;
+    const g = growthBreakdown(catalog, state, town, famId);
+    const name = godName(catalog, favored.godId);
+    const n = familyNames(catalog, famId);
+    const rate = g.god ? (g.god.quartersPerWeek >= 4 ? growthRateText(g.god.quartersPerWeek) : growthProgressText(n.one, g.god.quartersPerWeek, g.god.blocked ? null : g.god.storedQuarters)) : '';
+    const text = favored.dormant ? `${possessive(name)} favor is dormant here: ${favored.reason}` : g.god?.blocked ? `${name} favors the ${n.family}: ${g.god.blocked}` : `${name} favors the ${n.family} here: ${rate}`;
+    return { godId: favored.godId, dormant: favored.dormant, text };
+  };
+  const breakdown = tier ? growthBreakdown(catalog, state, town, tier.fam.id) : null;
+  const breakdownText = breakdown ? growthBreakdownText(catalog, breakdown) : '';
+  const favor = tier ? favorOf(tier.fam.id) : null;
+  // One compact line for the favored family: the growth breakdown with the god's increment, the saving per unit.
+  const favorLine = (() => {
+    if (!favor || !breakdown) return null;
+    if (favor.dormant || !breakdown.god || breakdown.god.blocked) return favor.text;
+    const rare = breakdown.god.quartersPerWeek < 4 && breakdown.god.added === 0 ? ` · ${growthProgressText(familyNames(catalog, tier!.fam.id).one, breakdown.god.quartersPerWeek, breakdown.god.storedQuarters).replace(/^One extra .* — /, 'next extra in ')}` : '';
+    const saved = probe?.dedication ? ` · saves ${probe.dedication.savedGold.toLocaleString('en-US')} Gold each` : '';
+    return `${breakdownText}${rare}${saved}`;
+  })();
+
   const destArmy = destination.kind === 'hero' ? state.heroes[destination.heroId]?.army : town.garrison;
   const destName = destination.kind === 'hero' ? (state.heroes[destination.heroId]?.name ?? '') : `${town.name} garrison`;
   const back = () => (store.stack.length > 1 ? store.back() : store.toAdventure());
@@ -196,7 +225,7 @@ export function RecruitmentScreen() {
       <div className="rr" data-view={view} data-testid="recruit-layout">
         <nav className="rr-tiers" aria-label="Dwellings">
           {tiers.map((t) => (
-            <TierCard key={t.slot.id} catalog={catalog} tier={t} shownId={formOf(t)} selected={t.fam.id === familyId} growth={weeklyGrowthFor(catalog, town, t.fam.id, state)} onSelect={() => selectFamily(t)} />
+            <TierCard key={t.slot.id} catalog={catalog} tier={t} shownId={formOf(t)} selected={t.fam.id === familyId} growth={weeklyGrowthFor(catalog, town, t.fam.id, state)} favor={favorOf(t.fam.id)} onSelect={() => selectFamily(t)} />
           ))}
         </nav>
 
@@ -277,12 +306,32 @@ export function RecruitmentScreen() {
                 <div className="rr-facts">
                   <span data-testid="recruit-available">
                     <strong className="num">{pool.toLocaleString('en-US')}</strong> available
-                    {tier && tier.level > 0 ? <span className="ak-muted"> · +{weeklyGrowthFor(catalog, town, tier.fam.id, state)} / week</span> : null}
+                    {tier && tier.level > 0 ? (
+                      <span className="ak-muted rr-growth" tabIndex={0} title={`Growth: ${breakdownText} (one pool for both forms)`} aria-label={`Growth: ${breakdownText}`} data-testid="recruit-growth">
+                        {' '}
+                        · +{weeklyGrowthFor(catalog, town, tier.fam.id, state)} / week
+                      </span>
+                    ) : null}
                   </span>
                   <span className="rr-facts__cost">
                     <CostList cost={unitCost} /> each
                   </span>
+                  {probe?.dedication ? (
+                    <span className="ak-muted rr-normal" data-testid="recruit-normal-price">
+                      normally {(probe.dedication.normalGold).toLocaleString('en-US')} Gold
+                    </span>
+                  ) : null}
                 </div>
+                {favor ? (
+                  <p className={`rr-favor small ${favor.dormant ? 'is-dormant' : ''}`} tabIndex={0} title={favor.text} data-testid="recruit-favor">
+                    <GodPortrait catalog={catalog} godId={favor.godId} size="1.5rem" locked={favor.dormant} />
+                    <span>{favorLine}</span>
+                    <span className="sr-only">. {favor.text}</span>
+                  </p>
+                ) : (
+                  <SavingLine catalog={catalog} saving={quote?.dedication ?? probe?.dedication} testId="recruit-saving" per={quote ? `for ${q}` : 'each'} />
+                )}
+                  {quote && quote.unitCost.gold * q > quote.totalCost.gold ? <p className="small">Rice Key: saves {quote.unitCost.gold * q - quote.totalCost.gold} Gold on this order. First eligible purchase today; 150 Gold maximum per empire.</p> : null}
                 <DestinationPicker catalog={catalog} visiting={visiting} townName={town.name} dest={destination} onChange={setDest} />
                 <QuantitySelector label="Quantity" value={q} min={max < 1 ? 0 : 1} max={Math.max(0, max)} onChange={setQty} />
                 {recruitReason ? (
@@ -290,7 +339,17 @@ export function RecruitmentScreen() {
                     <LockGlyph /> {recruitReason}
                   </p>
                 ) : null}
-                <Button variant="primary" size="large" block className="rr-recruit" disabled={!quote?.legal} disabledReason={recruitReason ?? 'Cannot recruit now'} onClick={recruit} data-testid="recruit-confirm">
+                <Button
+                  variant="primary"
+                  size="large"
+                  block
+                  className="rr-recruit"
+                  disabled={!quote?.legal}
+                  disabledReason={recruitReason ?? 'Cannot recruit now'}
+                  onClick={recruit}
+                  title={quote?.dedication ? `${savingText(catalog, quote.dedication)} (${savingPriceText(quote.dedication)})` : undefined}
+                  data-testid="recruit-confirm"
+                >
                   <span>Recruit {q}</span>
                   <CostList cost={quote?.totalCost ?? unitCost} wallet={player.wallet} />
                 </Button>
@@ -313,6 +372,19 @@ export function RecruitmentScreen() {
           ) : null}
           {tier ? <Training key={`${tier.fam.id}|${destination.kind === 'hero' ? destination.heroId : 'g'}`} townId={town.id} tier={tier} destination={destination} visiting={visiting.map((h) => ({ id: h.id, name: h.name }))} /> : <section className="rr-train ak-pane" data-pane="train" />}
           <RecruitAll batch={batch} wallet={player.wallet} catalog={catalog} onRecruit={recruitAll} />
+          {caravansOn(catalog, state) && Object.values(state.towns).filter((t) => t.ownerId === player.id).length > 1 ? (
+            <Button
+              icon="caravan"
+              className="rr-caravan"
+              onClick={() => store.openOverlay({ kind: 'caravan-dispatch', townId: town.id, ...(def ? { creatureId: def.id } : {}) })}
+              disabled={state.activePlayerId !== player.id || !!state.battle}
+              disabledReason="Wait for your turn"
+              title="Buy recruits here and send them over land to another of your towns (transport fee once)"
+              data-testid="recruit-caravan"
+            >
+              Send by caravan
+            </Button>
+          ) : null}
           <Button variant="primary" className="rr-dock__recruit" disabled={!quote?.legal} disabledReason={recruitReason ?? 'Cannot recruit now'} onClick={recruit} data-testid="recruit-confirm-dock">
             Recruit {q}
           </Button>
@@ -339,15 +411,20 @@ function Treasury({ wallet }: { wallet: Partial<ResourceBundle> }) {
   );
 }
 
-function TierCard({ catalog, tier, shownId, selected, growth, onSelect }: { catalog: ContentCatalog; tier: { slot: { id: string; tier?: number; chain: readonly string[] }; fam: { id: string; name: string; baseCreatureId: string }; level: number; pool: number }; shownId: string; selected: boolean; growth: number; onSelect: () => void }) {
+function TierCard({ catalog, tier, shownId, selected, growth, favor, onSelect }: { catalog: ContentCatalog; tier: { slot: { id: string; tier?: number; chain: readonly string[] }; fam: { id: string; name: string; baseCreatureId: string }; level: number; pool: number }; shownId: string; selected: boolean; growth: number; favor?: { godId: string; dormant: boolean; text: string } | null; onSelect: () => void }) {
   const c = catalog.creatures[shownId] ?? catalog.creatures[tier.fam.baseCreatureId];
   const url = c ? resolveAsset(c.presentation.portraitAssetId).url : null;
   const locked = tier.level === 0;
   const need = catalog.buildings[tier.slot.chain[0] ?? '']?.name ?? 'its dwelling';
-  const tip = locked ? `${tier.fam.name}: build the ${need} to recruit them` : `${tier.fam.name}: ${tier.pool} available, +${growth} / week (one pool for both forms)`;
+  const tip = `${locked ? `${tier.fam.name}: build the ${need} to recruit them` : `${tier.fam.name}: ${tier.pool} available, +${growth} / week (one pool for both forms)`}${favor ? `. ${favor.text}` : ''}`;
   return (
     <button type="button" className={`rr-tier ${selected ? 'is-selected' : ''} ${locked ? 'is-locked' : ''}`} aria-pressed={selected} onClick={onSelect} title={tip} aria-description={tip} data-testid={`recruit-tier-${tier.slot.tier}`}>
       <span className="rr-tier__art">{url ? <img src={url} alt="" draggable={false} /> : c ? <CreaturePortrait catalog={catalog} creatureId={c.id} size="100%" /> : null}</span>
+      {favor ? (
+        <span className={`rr-tier__god ${favor.dormant ? 'is-dormant' : ''}`} data-testid={`recruit-tier-god-${tier.slot.tier}`} aria-hidden="true">
+          <GodPortrait catalog={catalog} godId={favor.godId} size="100%" locked={favor.dormant} />
+        </span>
+      ) : null}
       <span className="rr-tier__name">{tier.fam.name}</span>
       <span className="rr-tier__pool">
         {locked ? (
@@ -666,6 +743,7 @@ function Training({ townId, tier, destination, visiting }: { townId: string; tie
         </Button>
       </div>
       {reason ? <p className="rr-reason small">{reason}</p> : null}
+      <SavingLine catalog={catalog} saving={quote.dedication} testId="train-saving" per={`for ${Math.max(1, q)}`} />
     </section>
   );
 }
@@ -693,6 +771,11 @@ function RecruitAll({ batch, wallet, catalog, onRecruit }: { batch: ReturnType<t
             ) : (
               <>
                 <span className="num">{batch.totalCount.toLocaleString('en-US')}</span> troops · <CostList cost={batch.totalCost} wallet={wallet} />
+                {batch.dedication ? (
+                  <span className="rr-all__save" data-testid="recruit-all-saving">
+                    · saves {batch.dedication.savedGold.toLocaleString('en-US')} Gold
+                  </span>
+                ) : null}
               </>
             )}
           </span>
@@ -715,6 +798,7 @@ function RecruitAll({ batch, wallet, catalog, onRecruit }: { batch: ReturnType<t
         ) : (
           <span>No dwelling has creatures this week.</span>
         )}
+        {batch.dedication ? <SavingLine catalog={catalog} saving={batch.dedication} testId="recruit-all-saving-line" per="for the whole batch" /> : null}
       </div>
     </section>
   );

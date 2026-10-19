@@ -10,6 +10,7 @@ import { speakerBust, type SpeakerSide } from '../assets/storyArt';
 export { briefingArt, campaignEndingArtId, speakerBust, speakerSides, type SpeakerSide } from '../assets/storyArt';
 import { CreaturePortraitArt, EmblemArt, GodPortraitArt, HeroPortraitArt, MissionThumbArt } from '../assets/placeholders';
 import { Icon, type IconName } from '../assets/icons';
+import { AssetPicture } from './assetPicture';
 
 function pantheonAccent(catalog: ContentCatalog, pantheonId: string | null | undefined): string {
   if (!pantheonId) return '#6b5a3a';
@@ -344,7 +345,7 @@ export function SpellIcon({ iconAssetId, effectType, size = '2.4rem' }: { iconAs
   const rec = own.url ? own : resolveAsset(SPELL_EFFECT_ART[effectType] ?? 'icon.action.spell');
   return (
     <span className="spell-socket" style={{ width: size, height: size }} aria-hidden="true">
-      {rec.url ? <img src={rec.url} alt="" draggable={false} /> : null}
+      {rec.url ? <AssetPicture asset={rec} /> : null}
     </span>
   );
 }
@@ -406,7 +407,7 @@ export function SkillIcon({ iconAssetId, size = '2.2rem' }: { iconAssetId: strin
   const own = resolveAsset(iconAssetId);
   return (
     <span className="skill-socket" style={{ width: size, height: size }} aria-hidden="true">
-      {own.url ? <img src={own.url} alt="" draggable={false} /> : <Icon name="star" className="skill-socket__glyph" />}
+      {own.url ? <AssetPicture asset={own} /> : <Icon name="star" className="skill-socket__glyph" />}
     </span>
   );
 }
@@ -416,7 +417,7 @@ export function ArtifactIcon({ iconAssetId, kind, size = '2.6rem', rarity }: { i
   const own = resolveAsset(iconAssetId);
   return (
     <span className={`artifact-socket ${rarity ? `is-${rarity}` : ''}`} style={{ width: size, height: size }} aria-hidden="true">
-      {own.url ? <img src={own.url} alt="" draggable={false} /> : <Icon name={ARTIFACT_KIND_GLYPH[kind] ?? 'star'} className="artifact-socket__glyph" />}
+      {own.url ? <AssetPicture asset={own} /> : <Icon name={ARTIFACT_KIND_GLYPH[kind] ?? 'star'} className="artifact-socket__glyph" />}
     </span>
   );
 }

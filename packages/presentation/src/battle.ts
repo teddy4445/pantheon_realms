@@ -13,16 +13,17 @@
  * playback (speed 0) completes synchronously and cannot change any result.
  * Creature sprites face right; the defending side is mirrored.
  */
-import { Container, Graphics, Sprite, Text, Texture } from 'pixi.js';
+import { Container, Graphics, Sprite, Text, Texture, Rectangle } from 'pixi.js';
 import type { BattleCell, GameEvent } from '@pr/rules';
 import type { EngineHost, FramePace, SceneController } from './engineHost';
-import { BATTLE_SQUASH, SQRT3, cellPoint, hexPolygon, pointCell } from './hexmath';
+import { BATTLE_SQUASH, SQRT3, cellPoint, cellPointOn, hexPolygon, layoutBoardProjection, pickCellOn, pickTableCell, plainBoardProjection, tableCellPoint, tableCellPolygon, tableProjection, type BoardProjection, type NormalizedBoardProjection, type NormalizedCell, type TableProjection } from './hexmath';
+import { ActionTokens, hoverPx, overOpenWater, travelLiftPx, waterDeathSettle } from './seaBattle';
 import { tileNoise } from './palette';
 import { TweenPlayer, easeInOut, easeOut, linear } from './tween';
 import { BATTLEFIELD_LAYOUT, SIEGE_GROUND_SHIFT, battlefieldArt } from './environmentArt';
 import { graphicsProfile } from './graphics';
 import { SpriteFigure } from './figure';
-import { creatureSprites, spriteManifest, stripFrameCount, type EffectDefinition, type ProjectileProfile, type StaticSpriteDefinition } from './sprites';
+import { creatureSprites, spriteManifest, spriteUrl, stripFrameCount, type EffectDefinition, type ProfileSound, type ProjectileProfile, type StaticSpriteDefinition } from './sprites';
 import { loadStrip, loadTexture, stripFrames } from './textures';
 import {
   LEGACY_RELEASE_MS,
@@ -42,8 +43,10 @@ import {
   profileForCreature,
   releaseDelayMs,
   releasePoint,
+  regionReleaseSocket,
   releaseSocket,
   samplePath,
+  travelRotation,
   travelFrame,
   travelStrip,
   type MissileChoice,
@@ -56,6 +59,8 @@ import { SIEGE_ROW, siegeKeepPoint, siegePaintingRect, siegeWallPoint } from './
 import { connectedWall, paintedWall, siegeGroundLayer } from './siegeScenery';
 import { GATE_FIT, gateJambs, isWallGate, wallGateParts, wallGateShift, type GateNeighbour } from './siegeGate';
 import type { FxLook, FxSound, StatusOverlay } from './fxLooks';
+import { KILL_FLASH, hitStopMs, killFlashShown, nextBadge, type BadgeShown } from './impactTiming';
+import { CATAPULT_INTACT_VISIBLE, ENGINE_ART_FACING, catapultArc, engineDrawnBox, engineStageDraw, engineStageOf, type EngineStage, type EngineStageArt } from './siegeEngine';
 
 /** Hex radius in board pixels before the fit-to-view scale. */
 const RB = 40;
@@ -121,6 +126,8 @@ export interface ShotRecord {
   arc: number;
   launchAngle: number;
   arrivalAngle: number;
+  /** The travel art's painted-direction correction (degrees; 180 for Deepwater Blast, 0 for the rest); impacts never get it. */
+  travelOffsetDeg: number;
   readonly launchedAt: number;
   arrivedAt: number | null;
   impact: string | null;
@@ -132,6 +139,29 @@ export interface ShotRecord {
   impactEndAt: number | null;
   impactScale: number | null;
   reactAt: number | null;
+  /**
+   * The target stack's shown count (its badge text) when the missile left and right after it
+   * struck, and the controller time it changed at the blow (null: it did not change then). Held
+   * for playback, a target's count changes at the impact, never before (null for a wall).
+   */
+  labelAtLaunch: string | null;
+  labelAtImpact: string | null;
+  badgeAt: number | null;
+  /** The hit-stop the blow started (nominal ms, × `speed`; 0: it killed none) and whether it flashed. */
+  hitStopMs: number;
+  killFlash: boolean;
+  /** The presentation cues of this missile in order (launch, impact) with the sound each carried. */
+  cues: ShotCue[];
+}
+
+/** One cue of a missile as sent to the cue listener (read-only diagnostics). */
+export interface ShotCue {
+  readonly kind: BattleCueKind;
+  /** The profile's sound the cue carried (null: the listener plays the kind's own sound). */
+  readonly sound: string | null;
+  readonly maxMs: number | null;
+  /** Controller clock (ms). */
+  readonly at: number;
 }
 
 /** The read-only missile readout: how many are in the air now and the last ones flown. */
@@ -158,6 +188,8 @@ interface EffectOptions {
   readonly onFrame?: (frame: number, scale: number) => void;
   /** Called when the strip is over (diagnostics). */
   readonly onEnd?: () => void;
+  /** Draw the strip mirrored (art that faces the other way, e.g. the siege engine's throw). */
+  readonly flipX?: boolean;
 }
 /** The drawn catapult's arm: lying back at rest, upright against the crossbar when it throws. */
 const CATAPULT_REST = Math.PI * 1.04;
@@ -176,6 +208,7 @@ export interface BattleStackView {
   /** Creature ID: selects the creature's sprite set. */
   readonly creatureId?: string;
   readonly side: 'attacker' | 'defender';
+  readonly illusion?: boolean;
   readonly upgraded: boolean;
   readonly accent: string;
   readonly anchor: BattleCell;
@@ -190,6 +223,8 @@ export interface BattleStackView {
   readonly statuses?: readonly StatusOverlay[];
   /** Small icons over the count badge: what affects the stack right now (defending, waiting, aspect, statuses). */
   readonly marks?: readonly BattleStackMark[];
+  /** Defending now (a set with delivered event metadata holds its defend pose while it lasts). */
+  readonly defending?: boolean;
 }
 
 /** One icon over a stack's count (the Brief 13 status, action and miracle icons). Presentation only. */
@@ -214,9 +249,28 @@ export interface SiegeView {
   readonly wallCol: number;
   /** The defending town's pantheon: its own fortification art and siege battlefield when delivered (Brief 15). */
   readonly pantheonId?: string | null;
+  /**
+   * The attacker's stationary catapult on the board (`targetableCatapultV1`): drawn on its fixed cells
+   * by HP stage, facing the walls. Absent: a legacy siege's catapult west of the field.
+   */
+  readonly engine?: SiegeEngineView | null;
+}
+
+export interface SiegeEngineView {
+  readonly id: string;
+  readonly side: 'attacker' | 'defender';
+  readonly cells: readonly BattleCell[];
+  readonly hp: number;
+  readonly maxHp: number;
+}
+
+/** The catapult's aim while its side chooses a target (presentation only): that structure outlined, a restrained arc from the engine. */
+export interface CatapultAimView {
+  readonly structureId: string | null;
 }
 
 export interface BattleView {
+  readonly spellFields?: readonly { kind: 'frost' | 'sanctuary' | 'eclipse' | 'glass'; cells: readonly BattleCell[]; label: string }[];
   readonly battleId: string;
   readonly cols: number;
   readonly rows: number;
@@ -237,6 +291,15 @@ export interface BattleView {
   readonly siege: SiegeView | null;
   /** Deployment zone cells to shade while a side arranges its army. */
   readonly zone: readonly BattleCell[];
+  /**
+   * Creature inspection (expedition kit 2026-10-17; presentation only): the inspected stack's cells,
+   * outlined white over a dark rim (high contrast on any ground), and the cells of the stack that applied
+   * the effect being read, outlined gold. Absent: nothing outlined (included in `highlightKey`).
+   */
+  readonly inspected?: readonly BattleCell[];
+  readonly inspectedSource?: readonly BattleCell[];
+  /** The hovered move's whole footprint (a two-hex creature: both cells), outlined (presentation only). */
+  readonly footprint?: readonly BattleCell[];
   /** Reduced motion: status overlays hold still. */
   readonly calm?: boolean;
   /**
@@ -247,7 +310,53 @@ export interface BattleView {
   readonly mirrored?: boolean;
   /** The side drawn in blue (the human's); the other side is red. Default: the attacker. */
   readonly blueSide?: 'attacker' | 'defender';
+  /** The catapult's target while it is being aimed (`targetableCatapultV1`); null/absent: no aiming marks. */
+  readonly catapultAim?: CatapultAimView | null;
+  /**
+   * A board with a legal-cell mask drawn on its own painting (naval boarding `boarding_two_ships_v1`;
+   * absent on land battles and sieges): only its legal cells are drawn, highlighted, hovered or clicked.
+   */
+  readonly board?: BattleBoardView | null;
 }
+
+/** A masked battlefield on a measured painting (expedition kit `boarding-layout.json`). Presentation only. */
+export interface BattleBoardView {
+  /** Row-major zone letters as the battle stores them (rules `BOARD_ZONE_CODES`; '.' = water). */
+  readonly cells: string;
+  /** The painting (contain-fitted: letterboxed, never stretched or cropped) and its native size. */
+  readonly art: { readonly url: string | null; readonly width: number; readonly height: number };
+  /** The measured cell projection in art-normalised units (drawn through `hexmath.layoutBoardProjection`). */
+  readonly projection: NormalizedBoardProjection;
+  /** The two decks' live owner flags (the painting is shared by every pantheon); absent: no flags (the sea encounter). */
+  readonly flags?: { readonly attacker: string; readonly defender: string };
+  /**
+   * A piecewise board's per-cell projection (sea encounter `single_ship_sea_encounter_v2`): every cell placed and
+   * hit-tested by its own entry (`hexmath.tableProjection`), authoritative over `projection`. Absent: the affine projection.
+   */
+  readonly cellTable?: readonly NormalizedCell[];
+  /** Zone letters some creature may stand on (sea encounter: 'k.' — deck and water). Absent: every letter but '.' (boarding). */
+  readonly legalCodes?: string;
+}
+
+/** Read-only state of a masked board (tests and diagnostics). */
+export interface BoardDebug {
+  readonly masked: boolean;
+  /** A piecewise board (per-cell table: the sea encounter). */
+  readonly table?: boolean;
+  readonly projection: BoardProjection;
+  readonly cell: { readonly radius: number; readonly squash: number };
+  /** The painting's rectangle on the page (CSS pixels within the canvas). */
+  readonly art: { readonly x: number; readonly y: number; readonly width: number; readonly height: number } | null;
+  readonly legalCells: number;
+  readonly drawnCells: number;
+  readonly flags: readonly { readonly side: 'attacker' | 'defender'; readonly color: string; readonly x: number; readonly y: number }[];
+  readonly mirrored: boolean;
+}
+
+/** Where the decks' flags stand on the boarding painting (art-normalised: the two bow posts). */
+const DECK_FLAG_POSTS = { attacker: { x: 0.254, y: 0.135 }, defender: { x: 0.745, y: 0.135 } } as const;
+/** The sea around a letterboxed boarding painting (its own deep-water tone, never a black matte). */
+const BOARD_SEA = 0x0b3346;
 
 /**
  * Presentation cues: moments in battle playback that a sound (or any other
@@ -284,6 +393,12 @@ export interface BattleCue {
   readonly heavy?: boolean;
   /** Spells and miracles: the sound family of their look (`magic.<sound>`). */
   readonly magic?: FxSound;
+  /**
+   * A missile's own sound (its profile's release sound with `shot`, `turret` and `catapult`, its
+   * impact sound with `arrow-hit` and `stone-hit`), cut at `maxMs` when given. Absent (no profile,
+   * an unknown shooter): the kind's own sound.
+   */
+  readonly sound?: ProfileSound;
 }
 
 /** How a battle spell looks (fxLooks.spellLook), with the word shown when it neither hurts nor heals. */
@@ -330,6 +445,7 @@ export interface BattleCallbacks {
   spellFx?(spellId: string): BattleSpellFx | null;
   /** Optional: the runtime URL of an interface icon (stack marks and the icons beside floating words); null when not delivered. */
   iconUrl?(assetId: string): string | null;
+  iconRegion?(assetId: string): readonly [number, number, number, number] | null;
   /** Optional: how a divine intervention looks in this battle (null: not shown). */
   miracleFx?(interventionId: string, playerId: string): BattleMiracleFx | null;
   /** Optional: how a creature ability's use looks (null: the plain ward look). */
@@ -340,6 +456,17 @@ export interface BattleCallbacks {
    * silhouettes): `true`; a new board is loading: `false`. Waits for nothing else.
    */
   onBoardReady?(ready: boolean): void;
+  /**
+   * Optional (`targetableCatapultV1`): the siege engine's damaged and destroyed pictures (the
+   * expedition kit's `expedition.catapult-damaged` / `-destroyed`, with their visible boxes); null
+   * when not delivered (the intact still then stands in, tinted).
+   */
+  engineArt?(stage: 'damaged' | 'destroyed'): EngineStageArt | null;
+  /**
+   * Optional: a click on a structure that has no board cells (the keep beyond the east edge); cells
+   * of walls, gates and towers arrive as ordinary cell clicks.
+   */
+  onStructureClick?(structureId: string, button: number): void;
 }
 
 interface SiegeDrawn {
@@ -360,6 +487,9 @@ interface StackEntry {
   badgeBg: Graphics;
   /** The count and colour the badge was last drawn with. */
   badgeKey: string;
+  /** The badge as shown now (`nextBadge`), and the controller time its text last changed. */
+  badgeShown: BadgeShown;
+  badgeAt: number;
   badgeOffset: { x: number; y: number };
   /** Status, action and miracle icons in a row over the count badge (follow the statuses' timing). */
   marks: Container;
@@ -438,6 +568,17 @@ export function battlePlaybackOrder(events: readonly GameEvent[]): GameEvent[] {
     e.kind === 'BattleSpellCast' ||
     e.kind === 'InterventionInvoked';
   const out = [...events];
+  // A spell's share on the siege engine (and its fall) plays after the spell's own magic.
+  for (let i = 0; i < out.length; i++) {
+    const ev = out[i]!;
+    const spellShare = (ev.kind === 'EngineDamaged' && ev.source === 'spell') || (ev.kind === 'EngineDestroyed' && !ev.attackerId);
+    if (!spellShare) continue;
+    const j = out.findIndex((e, k) => k > i && e.kind === 'BattleSpellCast');
+    if (j < 0) continue;
+    out.splice(i, 1);
+    out.splice(j, 0, ev);
+    i -= 1;
+  }
   for (let i = 0; i < out.length; i++) {
     const ev = out[i]!;
     if (ev.kind !== 'BattleStackDestroyed') continue;
@@ -503,6 +644,19 @@ export class BattleSceneController implements SceneController {
   private siegeView: SiegeView | null = null;
   /** The board is drawn mirrored (the defender on the left; see `BattleView.mirrored`). */
   private mirrored = false;
+  /** Cell centres (`hexmath.cellPointOn`): the plain board, or a masked board's measured projection. */
+  private proj: BoardProjection = plainBoardProjection(RB, S);
+  /** The drawn cell's hex radius and squash (a masked board draws its measured cell size). */
+  private cellShape = { radius: RB, squash: S };
+  /** A masked board's legal-cell letters and its painting rectangle in board pixels (null: plain board). */
+  private boardMask: { cells: string; cols: number; legalCodes?: string } | null = null;
+  /** A piecewise board's per-cell projection (sea encounter): placement and hit-testing by its own table. */
+  private table: TableProjection | null = null;
+  /** Cosmetic events already played, by action token (event ID): never replayed. */
+  private readonly tokens = new ActionTokens();
+  private boardArt: { x: number; y: number; width: number; height: number } | null = null;
+  private deckFlags: { side: 'attacker' | 'defender'; color: string; x: number; y: number }[] = [];
+  private drawnCells = 0;
   /** The side whose markers and badges are blue. */
   private blueSide: 'attacker' | 'defender' = 'attacker';
   /** Structure HP as currently drawn (playback advances it event by event). */
@@ -521,6 +675,7 @@ export class BattleSceneController implements SceneController {
   private extraTweens: TweenPlayer[] = [];
   /** Interface icons loaded for stack marks and floating words, by URL; a newly loaded one redraws the marks. */
   private readonly iconTextures = new Map<string, Texture>();
+  private readonly croppedIconTextures = new Set<Texture>();
   private readonly iconLoading = new Set<string>();
   private marksDirty = false;
   /** Missiles in the air (their travel sprites), and the last ones flown (read-only diagnostics). */
@@ -540,6 +695,7 @@ export class BattleSceneController implements SceneController {
     this.field.addChild(this.backdrop, this.cells, this.siegeFloor, this.grid);
     this.marks.addChild(this.highlight, this.hover, this.activeRing);
     this.board.addChild(this.field, this.marks, this.objects, this.badges, this.fx, this.floats);
+    this.floats.addChild(this.aimMarks);
     this.root.addChild(this.board, this.screenLayer);
     // Render groups (2026-10-06 frame-rate work): the animated stacks, their
     // count badges and the effects re-send only their own layer each frame, never
@@ -571,6 +727,9 @@ export class BattleSceneController implements SceneController {
 
   /** Board extent in board pixels: the cells plus headroom above the top row for tall creatures. */
   private boardRect(): { x0: number; y0: number; x1: number; y1: number } {
+    // A masked board on its painting: the painting itself is the frame (contain: letterboxed, never cropped).
+    const art = this.boardArt;
+    if (art) return { x0: art.x, y0: art.y, x1: art.x + art.width, y1: art.y + art.height };
     const last = cellPoint({ col: this.cols - 1, row: 1 }, RB, S);
     const bottom = cellPoint({ col: 0, row: this.rows - 1 }, RB, S);
     // A siege also shows the attackers' catapult west of the field and the keep east of it.
@@ -621,7 +780,93 @@ export class BattleSceneController implements SceneController {
   // ------------------------------------------------------------------ board
 
   private cellXY(c: BattleCell): { x: number; y: number } {
-    return cellPoint(c, RB, S);
+    return this.table ? tableCellPoint(c, this.table) : cellPointOn(c, this.proj);
+  }
+
+  /** A cell a stack may stand on: on the board and, on a masked board, not water (the rules' `battleCellLegal`). */
+  private cellLegal(c: BattleCell): boolean {
+    if (c.col < 0 || c.row < 0 || c.col >= this.cols || c.row >= this.rows) return false;
+    const m = this.boardMask;
+    if (!m) return true;
+    const code = m.cells[c.row * m.cols + c.col];
+    if (code === undefined) return false;
+    return m.legalCodes ? m.legalCodes.includes(code) : code !== '.';
+  }
+
+  /** The polygon of a drawn cell (`k` of its radius) in the board's own cell shape. */
+  private cellPoly(x: number, y: number, k: number): number[] {
+    return hexPolygon(x, y, this.cellShape.radius * k, this.cellShape.squash);
+  }
+
+  /** The hover outline, drawn once per board in its cell shape and moved to the cell under the pointer. */
+  private redrawHover(): void {
+    this.hover.clear();
+    this.hover.poly(this.cellPoly(0, 0, 0.95)).stroke({ width: 2, color: 0xf5e4b7, alpha: 0.95 });
+  }
+
+  /**
+   * A masked board (naval boarding): its measured painting at native proportions, the cells placed by
+   * the kit's projection through hexmath, and the two decks' live owner flags on the bow posts.
+   */
+  private buildBoardingBackdrop(view: BattleView, b: BattleBoardView): void {
+    const art = this.boardArt!;
+    this.background = BOARD_SEA;
+    const flagsOf = b.flags;
+    this.deckFlags = flagsOf ? (['attacker', 'defender'] as const).map((side) => ({ side, color: flagsOf[side], x: art.x + DECK_FLAG_POSTS[side].x * art.width, y: art.y + DECK_FLAG_POSTS[side].y * art.height })) : [];
+    const battleId = view.battleId;
+    const flags = new Container();
+    for (const f of this.deckFlags) {
+      const g = new Graphics();
+      const h = RB * 1.9;
+      g.moveTo(0, 0).lineTo(0, -h).stroke({ width: 3, color: 0x3a2c1c });
+      // The owner's square banner (the land banner's shape and colour source), with a dark rim for any colour.
+      const cloth = new Graphics();
+      cloth.rect(0, 0, RB * 0.95, RB * 0.66).fill({ color: colorOf(f.color) }).stroke({ width: 1.6, color: 0x1a1208, alpha: 0.8 });
+      cloth.position.set(1.5, -h);
+      const root = new Container();
+      root.addChild(g, cloth);
+      root.position.set(f.x, f.y);
+      flags.addChild(root);
+    }
+    this.backdrop.addChild(flags);
+    this.backdropLoad = b.art.url
+      ? loadTexture(b.art.url).then(
+          (tex) => {
+            if (this.disposed || !this.boardKey.startsWith(battleId)) return;
+            const s = new Sprite(tex);
+            s.width = art.width;
+            s.height = art.height;
+            s.position.set(art.x, art.y);
+            this.backdrop.addChildAt(s, 0);
+          },
+          () => undefined,
+        )
+      : Promise.resolve();
+  }
+
+  /** Read-only: how a masked board is drawn (projection, painting rectangle on the page, cells, flags). */
+  boardDebug(): BoardDebug {
+    const art = this.boardArt;
+    const page = (p: { x: number; y: number }) => this.toPage(p);
+    let rect: BoardDebug['art'] = null;
+    if (art) {
+      const a = page({ x: art.x, y: art.y });
+      const b = page({ x: art.x + art.width, y: art.y + art.height });
+      rect = { x: Math.round(Math.min(a.x, b.x) * 10) / 10, y: Math.round(a.y * 10) / 10, width: Math.round(Math.abs(b.x - a.x) * 10) / 10, height: Math.round((b.y - a.y) * 10) / 10 };
+    }
+    let legal = 0;
+    for (let row = 0; row < this.rows; row++) for (let col = 0; col < this.cols; col++) if (this.cellLegal({ col, row })) legal++;
+    return {
+      masked: !!this.boardMask,
+      table: !!this.table,
+      projection: this.proj,
+      cell: { ...this.cellShape },
+      art: rect,
+      legalCells: legal,
+      drawnCells: this.drawnCells,
+      flags: this.deckFlags.map((f) => ({ side: f.side, color: f.color, ...page({ x: f.x, y: f.y }) })),
+      mirrored: this.mirrored,
+    };
   }
 
   /**
@@ -630,7 +875,12 @@ export class BattleSceneController implements SceneController {
    * 1500 × 1000 of 4096 × 3200 px). Image top = the far side of the field.
    */
   private buildBackdrop(view: BattleView): void {
-    for (const c of this.backdrop.removeChildren()) c.destroy();
+    for (const c of this.backdrop.removeChildren()) c.destroy({ children: true });
+    this.deckFlags = [];
+    if (view.board && this.boardArt) {
+      this.buildBoardingBackdrop(view, view.board);
+      return;
+    }
     // The plain ground around the painting is the renderer's background colour (no full-screen rectangle to fill).
     this.background = colorOf(ARCHETYPE_GROUND[view.archetype] ?? '#7e8a4f');
     const siegeArt = graphicsProfile().paintedGround ? this.siegeGround(view) : null;
@@ -679,6 +929,36 @@ export class BattleSceneController implements SceneController {
     this.siegeLayout = !!view.siege && view.siege.structures.length > 0;
     this.mirrored = !!view.mirrored;
     this.blueSide = view.blueSide ?? 'attacker';
+    // A masked board on its painting: the kit's projection is an affine case of the hex grid (hexmath),
+    // used for drawing, sprites and hit-testing alike; plain boards keep the standard grid.
+    this.table = null;
+    if (view.board?.cellTable) {
+      // A piecewise board (the sea encounter): every cell by its own table entry, drawing and hit-testing alike.
+      const tbl = tableProjection(view.board.cellTable, view.cols, view.rows, view.board.art, RB);
+      this.table = tbl;
+      this.proj = { radius: tbl.radius, squash: tbl.squash, originX: 0, originY: 0 };
+      // The drawn cell's shape (the delivered cells share one width and height): the table's own polygon.
+      const hw = tbl.hw[0] ?? RB * 0.8;
+      const hh = tbl.hh[0] ?? RB * 0.6;
+      const r = hw / Math.cos(Math.PI / 6);
+      this.cellShape = { radius: r, squash: hh / r };
+      this.boardArt = tbl.art;
+      this.boardMask = { cells: view.board.cells, cols: view.cols, ...(view.board.legalCodes ? { legalCodes: view.board.legalCodes } : {}) };
+      this.zoomK = 1;
+    } else if (view.board) {
+      const lay = layoutBoardProjection(view.board.projection, view.board.art, RB);
+      this.proj = lay.projection;
+      this.cellShape = lay.cell;
+      this.boardArt = lay.art;
+      this.boardMask = { cells: view.board.cells, cols: view.cols, ...(view.board.legalCodes ? { legalCodes: view.board.legalCodes } : {}) };
+      this.zoomK = 1;
+    } else {
+      this.proj = plainBoardProjection(RB, S);
+      this.cellShape = { radius: RB, squash: S };
+      this.boardArt = null;
+      this.boardMask = null;
+    }
+    this.redrawHover();
     this.layout();
     this.buildBackdrop(view);
     for (const c of this.siegeFloor.removeChildren()) c.destroy({ children: true });
@@ -693,7 +973,32 @@ export class BattleSceneController implements SceneController {
     const g = this.cells;
     g.clear();
     this.grid.clear();
-    for (let row = 0; row < view.rows; row++) {
+    this.drawnCells = 0;
+    if (this.boardMask) {
+      // Only the legal cells exist on a masked board: deck and bridge hexes drawn in the measured cell size, water never.
+      const bridge: number[][] = [];
+      const water: number[][] = [];
+      for (let row = 0; row < view.rows; row++) {
+        for (let col = 0; col < view.cols; col++) {
+          if (!this.cellLegal({ col, row })) continue;
+          const { x, y } = this.cellXY({ col, row });
+          // A piecewise board draws each cell's own polygon (the same one the pointer is tested against).
+          const poly = this.table ? tableCellPolygon({ col, row }, this.table) : this.cellPoly(x, y, 1);
+          const code = this.boardMask.cells[row * this.boardMask.cols + col];
+          if (code === '.') water.push(poly);
+          else this.grid.poly(poly);
+          if (code === 'b') bridge.push(poly);
+          this.drawnCells++;
+        }
+      }
+      this.grid.fill({ color: 0x87c8ce, alpha: 0.08 }).stroke({ width: 1.3, color: 0xc4ddd5, alpha: 0.42 });
+      for (const poly of bridge) this.cells.poly(poly);
+      if (bridge.length) this.cells.fill({ color: 0xdca738, alpha: 0.1 }).stroke({ width: 1.3, color: 0xf4d58c, alpha: 0.5 });
+      // Open water a creature may hold (sea encounter): a cool outline, so deck and sea read as two zones.
+      for (const poly of water) this.cells.poly(poly);
+      if (water.length) this.cells.fill({ color: 0x7fd3ea, alpha: 0.07 }).stroke({ width: 1.2, color: 0x9fe1f2, alpha: 0.4 });
+    }
+    for (let row = 0; row < view.rows && !this.boardMask; row++) {
       for (let col = 0; col < view.cols; col++) {
         const { x, y } = this.cellXY({ col, row });
         const poly = hexPolygon(x, y, RB * 0.975, S);
@@ -711,9 +1016,10 @@ export class BattleSceneController implements SceneController {
           g.poly(poly).fill({ color: (Math.round(Math.max(0, Math.min(1, r)) * 255) << 16) | (Math.round(Math.max(0, Math.min(1, gg)) * 255) << 8) | Math.round(Math.max(0, Math.min(1, bb)) * 255) });
         } else if (deploy) g.poly(poly).fill({ color: 0x000000, alpha: 0.1 });
         this.grid.poly(hexPolygon(x, y, RB * 0.975, S));
+        this.drawnCells++;
       }
     }
-    this.grid.stroke({ width: 1, color: 0x282a23, alpha: this.siegeLayout ? 0.24 : 0.5 });
+    if (!this.boardMask) this.grid.stroke({ width: 1, color: 0x282a23, alpha: this.siegeLayout ? 0.24 : 0.5 });
     // Obstacles: rocks, trees, logs, columns — drawn where the rules placed them.
     for (const o of this.obstacleSprites) o.destroy({ children: true });
     this.obstacleSprites = [];
@@ -752,7 +1058,16 @@ export class BattleSceneController implements SceneController {
       this.obstacleSprites.push(root);
     });
     this.catapult?.root.destroy({ children: true });
-    this.catapult = this.siegeLayout ? this.buildCatapult() : null;
+    this.engineFig?.root.destroy({ children: true });
+    this.engineFig?.label.destroy();
+    this.engineFig = null;
+    this.aimKey = '';
+    this.aimMarks.clear();
+    // targetableCatapultV1: the attacker's engine on its fixed cells; a legacy siege keeps its catapult west of the field.
+    this.engineView = view.siege?.engine ?? null;
+    this.engineShownHp = this.engineView?.hp ?? null;
+    this.catapult = this.siegeLayout && !this.engineView ? this.buildCatapult() : null;
+    if (this.siegeLayout && this.engineView) this.buildEngine();
     // The tower arrow and the Catapult's stone (their travel poses and impacts) load with a siege board.
     if (this.siegeLayout) for (const id of SIEGE_PROFILE_IDS) this.preloadMissile(spriteManifest().projectileProfiles?.[id]);
   }
@@ -822,6 +1137,7 @@ export class BattleSceneController implements SceneController {
 
   /** The catapult throws: the arm swings up against the crossbar and lets the stone go. Returns where it left the cup. */
   private async throwCatapult(): Promise<{ x: number; y: number }> {
+    if (this.engineFig) return this.throwEngine();
     const c = this.catapult;
     const top = this.catapultPos();
     if (!c) return { x: top.x, y: top.y - RB * 1.6 };
@@ -862,17 +1178,281 @@ export class BattleSceneController implements SceneController {
     return cup;
   }
 
+  // ------------------------------------------------------------------ the targetable siege engine (targetableCatapultV1)
+
+  private engineView: SiegeEngineView | null = null;
+  /** Engine HP as drawn now (playback moves it at each blow). */
+  private engineShownHp: number | null = null;
+  private engineLocked = 0;
+  private engineFig: {
+    root: Container;
+    still: Sprite | null;
+    stage: EngineStage | null;
+    token: number;
+    label: Text;
+    ready: Promise<unknown>;
+    drawn: { stage: EngineStage; url: string; scaleX: number; scaleY: number; anchor: [number, number]; tinted: boolean; box: { x0: number; y0: number; x1: number; y1: number } } | null;
+  } | null = null;
+  private aimKey = '';
+  private readonly aimMarks = new Graphics();
+  private aimDrawn: { structureId: string; from: Pt; to: Pt } | null = null;
+
+  /** The engine's ground point: between its cells, where its wheels stand. */
+  private enginePoint(): Pt {
+    const cells = this.engineView?.cells ?? [];
+    if (cells.length === 0) return this.catapultPos();
+    let x = 0;
+    let y = 0;
+    for (const c of cells) {
+      const p = this.cellXY(c);
+      x += p.x;
+      y += p.y;
+    }
+    return { x: x / cells.length, y: y / cells.length + RB * S * 0.35 };
+  }
+
+  /** Painted width of the intact engine as drawn (the reference every stage is sized to). */
+  private engineVisibleWidth(): number {
+    const def = spriteManifest().siege['catapult.intact'];
+    return (CATAPULT_INTACT_VISIBLE[2] - CATAPULT_INTACT_VISIBLE[0]) * (def?.width ?? 256) * (HEX_W / (def?.pixelsPerHex ?? 120)) * CATAPULT_SPRITE_SCALE;
+  }
+
+  /** +1 when the engine faces east (the attacker's, toward the walls). */
+  private engineFacing(): 1 | -1 {
+    return (this.engineView?.side ?? 'attacker') === 'attacker' ? 1 : -1;
+  }
+
+  private engineArtOf(stage: 'damaged' | 'destroyed'): EngineStageArt | null {
+    try {
+      return this.cb.engineArt?.(stage) ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  /** The picture of a stage and how it is drawn: the intact still at the throw strip's frame and scale; the kit's stages by their visible boxes. */
+  private stageArt(stage: EngineStage): { art: EngineStageArt; scaleX: number; scaleY: number; anchor: [number, number]; tint: number } | null {
+    const def = spriteManifest().siege['catapult.intact'];
+    const facing = this.engineFacing();
+    const flip = facing === ENGINE_ART_FACING ? 1 : -1;
+    const intact = () => {
+      if (!def) return null;
+      const k = (HEX_W / def.pixelsPerHex) * CATAPULT_SPRITE_SCALE;
+      return { art: { url: spriteUrl(def.file), width: def.width, height: def.height, visibleBounds: CATAPULT_INTACT_VISIBLE }, scaleX: k * flip, scaleY: k, anchor: [def.anchor[0], def.anchor[1]] as [number, number], tint: 0xffffff };
+    };
+    if (stage === 'intact') return intact();
+    const own = this.engineArtOf(stage);
+    if (own) {
+      const d = engineStageDraw(own, this.engineVisibleWidth(), facing, stage === 'destroyed' ? this.engineArtOf('damaged') : null);
+      return { art: own, scaleX: d.scaleX, scaleY: d.scaleY, anchor: [d.anchorX, d.anchorY], tint: 0xffffff };
+    }
+    // Not delivered: the intact still stands in, darkened (never a hidden engine).
+    const stand = intact();
+    return stand ? { ...stand, tint: stage === 'damaged' ? 0xc9a27e : 0x5f5040 } : null;
+  }
+
+  private buildEngine(): void {
+    const at = this.enginePoint();
+    const root = new Container();
+    root.position.set(at.x, at.y);
+    root.zIndex = root.y;
+    if (graphicsProfile().shadows) root.addChild(groundShadow(HEX_W * 0.8, HEX_W * 0.2, 0.34));
+    this.objects.addChild(root);
+    const label = new Text({ text: '', style: { fontFamily: 'Inter, sans-serif', fontSize: 12, fontWeight: '700', fill: '#f5e4b7', stroke: { color: '#1a1208', width: 3 } } });
+    label.anchor.set(0.5, 1);
+    this.floats.addChild(label);
+    this.engineFig = { root, still: null, stage: null, token: 0, label, ready: Promise.resolve(), drawn: null };
+    const throwFx = spriteManifest().effects['fx.siege.catapult.throw'];
+    if (throwFx && graphicsProfile().effects !== 'simple') void loadStrip(throwFx).catch(() => null);
+    // The other stages load with the board, so a blow never waits for its picture.
+    for (const stage of ['damaged', 'destroyed'] as const) {
+      const art = this.engineArtOf(stage);
+      if (art) void loadTexture(art.url, { mipmaps: true }).catch(() => null);
+    }
+    this.setEngineHp(this.engineShownHp ?? this.engineView?.hp ?? 0);
+  }
+
+  /** Draw the engine at `hp`: its stage picture (swapped once loaded) and its label. */
+  private setEngineHp(hp: number): void {
+    this.engineShownHp = hp;
+    const v = this.engineView;
+    const fig = this.engineFig;
+    if (!v || !fig) return;
+    const stage = engineStageOf(hp, v.maxHp);
+    const at = this.enginePoint();
+    fig.label.text = hp > 0 ? `Catapult ${hp}/${v.maxHp}` : '';
+    fig.label.visible = hp > 0;
+    fig.label.position.set(at.x, at.y - this.engineVisibleWidth() * 0.62);
+    this.upright(fig.label);
+    if (fig.stage === stage) return;
+    fig.stage = stage;
+    const pick = this.stageArt(stage);
+    const token = ++fig.token;
+    if (!pick) return;
+    fig.ready = loadTexture(pick.art.url, { mipmaps: pick.art.width > 512 }).then(
+      (tex) => {
+        if (this.disposed || fig.root.destroyed || fig.token !== token) return;
+        const s = fig.still ?? new Sprite(tex);
+        s.texture = tex;
+        s.anchor.set(pick.anchor[0], pick.anchor[1]);
+        s.scale.set(pick.scaleX, pick.scaleY);
+        s.tint = pick.tint;
+        if (!fig.still) {
+          fig.root.addChild(s);
+          fig.still = s;
+        }
+        const box = engineDrawnBox(pick.art, { scaleX: pick.scaleX, scaleY: pick.scaleY, anchorX: pick.anchor[0], anchorY: pick.anchor[1] }, { x: 0, y: 0 });
+        fig.drawn = { stage, url: pick.art.url, scaleX: pick.scaleX, scaleY: pick.scaleY, anchor: pick.anchor, tinted: pick.tint !== 0xffffff, box };
+        this.wake();
+      },
+      () => undefined,
+    );
+  }
+
+  /** A blow lands on the engine: its picture and label change now, it shakes, the damage rises over it. */
+  private async engineBlow(damage: number, hp: number, speed: number, luck: boolean): Promise<void> {
+    const fig = this.engineFig;
+    if (!fig) return;
+    this.setEngineHp(hp);
+    const at = this.enginePoint();
+    void this.floatText({ x: at.x, y: at.y - this.engineVisibleWidth() * 0.55 }, luck ? `Lucky! −${damage}` : `−${damage}`, luck ? '#f5e4b7' : '#ff8a70', speed, luck ? 'icon.stat.luck' : undefined);
+    const still = fig.still;
+    if (!still || this.calm) return;
+    await this.tweens.tween(
+      300,
+      (t) => {
+        if (still.destroyed) return;
+        still.x = Math.sin(t * Math.PI * 3) * (1 - t) * HEX_W * 0.05;
+        still.alpha = t < 0.5 ? (Math.floor(t * 12) % 2 === 0 ? 0.55 : 1) : 1;
+      },
+      linear,
+    );
+    if (!still.destroyed) {
+      still.x = 0;
+      still.alpha = 1;
+    }
+  }
+
+  /** Where a missile meets the engine: the middle of its painted body, on the side facing the shooter. */
+  private engineContact(fromX: number): Pt {
+    const at = this.enginePoint();
+    const w = this.engineVisibleWidth();
+    return { x: at.x + Math.sign(fromX - at.x) * w * 0.18, y: at.y - w * 0.22 };
+  }
+
+  /** The engine throws (engine mode): intact, the throw strip facing the walls; damaged, a recoil of its own picture. */
+  private async throwEngine(): Promise<Pt> {
+    const fig = this.engineFig!;
+    const at = this.enginePoint();
+    const facing = this.engineFacing();
+    const flip = facing === ENGINE_ART_FACING ? 1 : -1;
+    const fx = spriteManifest().effects['fx.siege.catapult.throw'];
+    const still = fig.still;
+    if (fig.stage === 'intact' && still && fx) {
+      const k = (HEX_W / (fx.pixelsPerHex ?? 120)) * CATAPULT_SPRITE_SCALE;
+      const [ax, ay] = fx.anchor ?? [0.5, 0.95];
+      const release = { x: at.x + flip * (CATAPULT_RELEASE.x - ax) * fx.frameWidth * k, y: at.y + (CATAPULT_RELEASE.y - ay) * fx.frameHeight * k };
+      if (graphicsProfile().effects !== 'simple' && (await loadStrip(fx).catch(() => null))) {
+        still.alpha = 0;
+        void this.effect('fx.siege.catapult.throw', at, { scale: CATAPULT_SPRITE_SCALE, flipX: flip === -1 }).then(() => {
+          if (!still.destroyed) still.alpha = 1;
+        });
+        await this.tweens.wait((CATAPULT_RELEASE.frame / Math.max(1, fx.fps)) * 1000);
+      }
+      return release;
+    }
+    // Damaged: the throw strip would show the whole engine again, so its own picture recoils and the stone leaves the cup.
+    const w = this.engineVisibleWidth();
+    const cup = { x: at.x + facing * w * 0.42, y: at.y - w * 0.36 };
+    if (still && !this.calm) {
+      await this.tweens.tween(
+        260,
+        (t) => {
+          if (!still.destroyed) still.rotation = -facing * Math.sin(t * Math.PI) * 0.06;
+        },
+        easeOut,
+      );
+      if (!still.destroyed) still.rotation = 0;
+    }
+    return cup;
+  }
+
+  /** The aim marks (outline of the aimed structure, restrained arc from the engine), redrawn only when they change. */
+  private drawAim(aim: CatapultAimView | null): void {
+    const fig = this.engineFig;
+    const id = aim?.structureId ?? null;
+    const st = id ? this.structureById(id) : undefined;
+    const alive = !!fig && (this.engineShownHp ?? 0) > 0;
+    const key = st && alive ? `${st.id}|${this.boardKey}|${this.shownHp.get(st.id) ?? st.hp}` : '';
+    if (key === this.aimKey) return;
+    this.aimKey = key;
+    const g = this.aimMarks;
+    g.clear();
+    this.aimDrawn = null;
+    if (!st || !alive) return;
+    // Outline: the structure's cells; the keep (no cells) a ring where it stands beyond the east edge.
+    if (st.cells.length > 0) {
+      for (const c of st.cells) {
+        const p = this.cellXY(c);
+        g.poly(hexPolygon(p.x, p.y, RB * 0.97, S));
+      }
+      g.stroke({ width: 3, color: 0xf5ca72, alpha: 0.95 });
+    } else {
+      const k = this.structurePos(st);
+      g.ellipse(k.x, k.y - RB * 0.9, RB * 1.5, RB * 1.5).stroke({ width: 3, color: 0xf5ca72, alpha: 0.95 });
+    }
+    const at = this.enginePoint();
+    const w = this.engineVisibleWidth();
+    const from = { x: at.x + this.engineFacing() * w * 0.42, y: at.y - w * 0.36 };
+    const top = this.structureTop(st);
+    const to = { x: top.x, y: top.y + RB * 0.4 };
+    // A low arc (it stays on the board under the top row's headroom), dots every other sample over a dark rim.
+    const pts = catapultArc(from, to, 30, 0.12, RB * 1.4);
+    for (let i = 1; i < pts.length - 1; i += 2) g.circle(pts[i]!.x, pts[i]!.y, 4.4);
+    g.fill({ color: 0x1a1208, alpha: 0.5 });
+    for (let i = 1; i < pts.length - 1; i += 2) g.circle(pts[i]!.x, pts[i]!.y, 3);
+    g.fill({ color: 0xf2d490, alpha: 0.95 });
+    g.circle(to.x, to.y, 6).stroke({ width: 2, color: 0xf5ca72, alpha: 0.9 });
+    this.aimDrawn = { structureId: st.id, from, to };
+    this.wake();
+  }
+
+  /** The engine side's standing stacks beside the engine (an area spell at the engine reaches them). */
+  private besideEngine(): StackEntry[] {
+    const cells = (this.engineView?.cells ?? []).map((c) => cellPoint(c, RB, 1));
+    return [...this.stacks.values()].filter((e) => !e.down && e.view.side === this.engineView?.side && this.flatCells(e).some((p) => cells.some((q) => Math.hypot(p.x - q.x, p.y - q.y) < HEX_W * 1.1)));
+  }
+
+  /** The keep under a board point (it has no cells: its picture beyond the east edge), else null. */
+  private keepAt(local: Pt): string | null {
+    const keep = this.siegeView?.structures.find((s) => s.kind === 'keep' && s.hp > 0);
+    if (!keep) return null;
+    const p = this.structurePos(keep);
+    return Math.abs(local.x - p.x) < 60 && local.y < p.y + 15 && local.y > p.y - 120 ? keep.id : null;
+  }
+
   private buildHighlights(view: BattleView): void {
     const g = this.highlight;
     g.clear();
-    const fill = (cells: readonly BattleCell[], k: number, color: number, alpha: number) => {
+    const fill = (all: readonly BattleCell[], k: number, color: number, alpha: number) => {
+      // A masked board highlights its legal cells only (water never takes a move, target or zone mark).
+      const cells = this.boardMask ? all.filter((c) => this.cellLegal(c)) : all;
       if (!cells.length) return;
       for (const c of cells) {
         const { x, y } = this.cellXY(c);
-        g.poly(hexPolygon(x, y, RB * k, S));
+        g.poly(this.cellPoly(x, y, k));
       }
       g.fill({ color, alpha });
     };
+    for (const field of view.spellFields ?? []) {
+      const color = field.kind === 'frost' ? 0x9ddfff : field.kind === 'sanctuary' ? 0x73c89b : field.kind === 'eclipse' ? 0xad83d9 : 0xdbc6ff;
+      fill(field.cells, 0.88, color, field.kind === 'glass' ? 0.42 : 0.24);
+      for (const c of field.cells) {
+        const { x, y } = this.cellXY(c);
+        if (field.kind === 'glass') g.poly([x, y - RB * 0.75, x + RB * 0.3, y, x, y + RB * 0.25, x - RB * 0.3, y]).fill({ color, alpha: 0.8 }).stroke({ width: 2, color: 0xffffff, alpha: 0.7 });
+        else g.circle(x, y, RB * 0.3).stroke({ width: 2, color, alpha: 0.9 });
+      }
+    }
     fill(view.zone, 0.93, 0xf1d48a, 0.24);
     fill(view.moves, 0.86, 0x4fc3d6, 0.24);
     fill(view.targets, 0.9, 0xe0573f, 0.32);
@@ -885,8 +1465,32 @@ export class BattleSceneController implements SceneController {
     }
     if (view.attackFrom) {
       const { x, y } = this.cellXY(view.attackFrom);
-      g.poly(hexPolygon(x, y, RB * 0.7, S)).fill({ color: 0xf1d48a, alpha: 0.45 });
-      g.poly(hexPolygon(x, y, RB * 0.52, S)).fill({ color: 0x33332a, alpha: 0.3 });
+      g.poly(this.cellPoly(x, y, 0.7)).fill({ color: 0xf1d48a, alpha: 0.45 });
+      g.poly(this.cellPoly(x, y, 0.52)).fill({ color: 0x33332a, alpha: 0.3 });
+    }
+    // Inspection outlines: a dark rim under a bright line, so the shape reads on light and dark ground.
+    const outline = (cells: readonly BattleCell[] | undefined, color: number) => {
+      if (!cells?.length) return;
+      for (const c of cells) {
+        const { x, y } = this.cellXY(c);
+        g.poly(this.cellPoly(x, y, 0.9));
+      }
+      g.stroke({ width: 5, color: 0x05090f, alpha: 0.85 });
+      for (const c of cells) {
+        const { x, y } = this.cellXY(c);
+        g.poly(this.cellPoly(x, y, 0.9));
+      }
+      g.stroke({ width: 2.2, color, alpha: 1 });
+    };
+    outline(view.inspectedSource, 0xf1d48a);
+    outline(view.inspected, 0xffffff);
+    // Where a two-hex creature would stand: both cells (the rules' footprint), in the move colour.
+    if (view.footprint && view.footprint.length > 1) {
+      for (const c of view.footprint) {
+        const { x, y } = this.cellXY(c);
+        g.poly(this.cellPoly(x, y, 0.86));
+      }
+      g.stroke({ width: 2.4, color: 0x9fe8f5, alpha: 0.95 });
     }
   }
 
@@ -904,6 +1508,45 @@ export class BattleSceneController implements SceneController {
     e.root.position.set(p.x, p.y);
     e.root.zIndex = p.y;
     e.badge.position.set(p.x + e.badgeOffset.x, p.y + e.badgeOffset.y);
+    this.applyHover(e, anchor);
+  }
+
+  /** The footprint cells of a stack standing at `anchor` (presentation copy of the rules' footprint). */
+  private cellsAt(e: StackEntry, anchor: BattleCell): BattleCell[] {
+    return e.view.footprint === 2 ? [anchor, { col: anchor.col - e.view.facing, row: anchor.row }] : [anchor];
+  }
+
+  /** The stack stands over open water of a sea board (a flyer hovers there; a body settles there). */
+  private overWater(e: StackEntry, anchor: BattleCell = e.shownAnchor): boolean {
+    return overOpenWater(this.cellsAt(e, anchor), this.boardMask);
+  }
+
+  /** An intrinsic flyer over the water hovers (`events.hover.idleHex`); elsewhere the figure stands on its ground point. */
+  private applyHover(e: StackEntry, anchor: BattleCell = e.shownAnchor): void {
+    if (e.down) return;
+    e.figure.view.y = -hoverPx(e.figure.set, this.overWater(e, anchor), HEX_W);
+  }
+
+  /**
+   * A body over the water settles after its held death pose (the set's `events.death`: sink and fade over
+   * its time; reduced motion and a reload show the end at once). Cosmetic only: the rules keep its cells.
+   */
+  private async settleOverWater(e: StackEntry, animate: boolean): Promise<void> {
+    const s = waterDeathSettle(e.figure.set, this.overWater(e), HEX_W);
+    if (!s) return;
+    const y0 = e.figure.view.y;
+    const end = (k: number) => {
+      e.figure.view.y = y0 + s.sinkPx * k;
+      e.figure.view.alpha = 1 - (1 - s.alpha) * k;
+    };
+    if (!animate || this.calm || this.tweens.speed === 0) return end(1);
+    await this.tweens.tween(s.fadeMs, (k) => !e.root.destroyed && end(k), linear);
+  }
+
+  /** A set with delivered event metadata holds its defend pose while the stack defends. */
+  private holdsDefend(e: StackEntry): boolean {
+    const d = e.figure.set?.animations['defend'];
+    return !!e.view.defending && !!e.figure.set?.events && !!d && !d.loop;
   }
 
   private createStack(v: BattleStackView): StackEntry {
@@ -951,6 +1594,8 @@ export class BattleSceneController implements SceneController {
       badgeText,
       badgeBg,
       badgeKey: '',
+      badgeShown: { label: v.label, color: v.labelColor, visible: true },
+      badgeAt: this.time,
       badgeOffset,
       marks,
       shownMarks: '',
@@ -978,6 +1623,26 @@ export class BattleSceneController implements SceneController {
     return e;
   }
 
+  /**
+   * Draw the badge `nextBadge` decided (its count, colour and whether it shows); remembers when the
+   * count's text changed (read-only diagnostics: `stackDebug().labelAt`, the shot log's `badgeAt`).
+   */
+  private applyBadge(e: StackEntry, b: BadgeShown): void {
+    if (b.label !== e.badgeShown.label) e.badgeAt = this.time;
+    e.badgeShown = b;
+    this.setBadge(e, b.label, b.color);
+    e.badge.visible = b.visible;
+  }
+
+  /**
+   * A stack held for playback shows the newest view's count now: the moment it takes its blow
+   * (`sufferBlow`: melee, shots, tower arrows, the moat, damaging spells and miracles) or a heal or
+   * status lands on it (its words are shown). Never earlier: see `syncStacks`.
+   */
+  private revealBadge(e: StackEntry): void {
+    this.applyBadge(e, nextBadge(e.badgeShown, e.view, 'blow', e.locked > 0));
+  }
+
   private setBadge(e: StackEntry, label: string, color: string): void {
     // Redrawn only when the count or its colour changes (each redraw renders the number again and re-sends it to the GPU).
     const key = `${label}|${color}|${e.view.side}|${this.blueSide}`;
@@ -999,11 +1664,13 @@ export class BattleSceneController implements SceneController {
     e.down = true;
     e.root.visible = true;
     e.base.visible = false;
-    e.badge.visible = false;
+    this.applyBadge(e, nextBadge(e.badgeShown, e.view, 'death', false));
     e.figure.rest();
     if (e.figure.has('death')) e.figure.holdLast('death');
     else this.fallenPose(e, 1);
     e.root.zIndex = e.root.y - 2;
+    // A body that fell over the water earlier (a reloaded battle) shows its settled end state at once.
+    if (e.deathPlays === 0) void this.settleOverWater(e, false);
     e.shownStatuses = [];
     e.aura.clear();
     this.refreshMarks(e);
@@ -1022,13 +1689,17 @@ export class BattleSceneController implements SceneController {
   private iconTexture(assetId: string): Texture | null {
     const url = this.cb.iconUrl?.(assetId) ?? null;
     if (!url) return null;
-    const tex = this.iconTextures.get(url);
+    const rect = this.cb.iconRegion?.(assetId);
+    const key = rect ? `${url}#${rect.join(",")}` : url;
+    const tex = this.iconTextures.get(key);
     if (tex) return tex;
-    if (!this.iconLoading.has(url)) {
-      this.iconLoading.add(url);
+    if (!this.iconLoading.has(key)) {
+      this.iconLoading.add(key);
       loadTexture(url).then(
         (t) => {
-          this.iconTextures.set(url, t);
+          const texture=rect ? new Texture({source:t.source,frame:new Rectangle(...rect)}) : t;
+          if(rect)this.croppedIconTextures.add(texture);
+          this.iconTextures.set(key,texture);
           this.marksDirty = true;
         },
         () => undefined,
@@ -1109,12 +1780,18 @@ export class BattleSceneController implements SceneController {
         if (e.locked === 0) e.snapIn = 3;
       }
       const died = !v.alive && e.view.alive;
+      // A held defend pose ends when the stack no longer defends (its next activation began).
+      if (e.locked === 0 && v.alive && !v.defending && e.view.defending && e.figure.current?.requested === 'defend') e.figure.setLoop('idle');
       const marksOf = (x: BattleStackView) => (x.marks ?? []).map((m) => m.icon).join(',');
       const statusesChanged = (v.statuses ?? []).join(',') !== e.shownStatuses.join(',') || marksOf(v) !== marksOf(e.view);
       e.view = v;
+      e.figure.view.alpha = v.illusion ? .55 : 1;
+      e.figure.view.tint = v.illusion ? 0x94d9ec : 0xffffff;
       if (statusesChanged && e.locked === 0 && e.auraDelay === 0) e.auraDelay = 3;
-      this.setBadge(e, v.label, v.labelColor);
-      e.badge.visible = v.alive;
+      // A stack held for playback keeps the count (and the badge of a stack it kills) it shows:
+      // the new count appears when its blow lands (`revealBadge`) or when it is released (`snap`),
+      // never before the missile arrives. Unheld stacks (and instant playback, at release) follow the view.
+      this.applyBadge(e, nextBadge(e.badgeShown, v, 'view', e.locked > 0));
       if (v.alive && e.down && e.locked === 0) {
         // Raised again (resurrection-type recovery): stand up.
         e.down = false;
@@ -1155,6 +1832,13 @@ export class BattleSceneController implements SceneController {
       if (first) this.syncStructures();
       else if (this.structuresLocked === 0) this.structureSnapIn = 3;
     }
+    // The engine's HP (and picture) follow the view except while a blow at it waits for playback.
+    const ev = view.siege?.engine ?? null;
+    if (ev && this.engineFig) {
+      this.engineView = ev;
+      if (this.engineLocked === 0 && ev.hp !== this.engineShownHp) this.setEngineHp(ev.hp);
+    }
+    this.drawAim(view.catapultAim ?? null);
     this.grid.visible = view.grid;
     this.calm = !!view.calm;
     if (view.highlightKey !== this.highlightKey) {
@@ -1177,6 +1861,7 @@ export class BattleSceneController implements SceneController {
     this.cb.onBoardReady?.(false);
     const waits: Promise<unknown>[] = [this.backdropLoad];
     for (const e of this.stacks.values()) waits.push(e.figure.firstFrame);
+    if (this.engineFig) waits.push(this.engineFig.ready);
     // A siege's walls, gate, towers, keep, moat and bridge belong to the readable board too.
     const siege = this.siegeView;
     if (siege && siege.structures.length) {
@@ -1428,7 +2113,9 @@ export class BattleSceneController implements SceneController {
   private releaseOf(a: StackEntry, choice: MissileChoice, anim: 'shoot' | 'attack', minMs: number): { delay: number; socket: ReleaseSocket & { calibrated: boolean } } {
     const f = a.figure;
     const strip = f.resolve(anim)?.def ?? null;
-    const own = anim === 'shoot' && f.has('shoot') && !strip?.regions;
+    // A delivered frame-region shot carries its own socket (sea creatures: `events.shoot`, measured in its release frame).
+    const delivered = anim === 'shoot' && f.has('shoot') && strip?.regions ? regionReleaseSocket(strip, strip.pixelsPerHex ?? f.set?.pixelsPerHex ?? 100, f.set?.events?.shoot) : null;
+    const own = anim === 'shoot' && f.has('shoot') && (!strip?.regions || !!delivered);
     const frames = strip ? stripFrameCount(strip) : 6;
     const socket = releaseSocket(a.view.creatureId, {
       ...(choice.kind === 'profile' ? { sourcePoint: choice.profile.sourcePoint } : {}),
@@ -1436,6 +2123,7 @@ export class BattleSceneController implements SceneController {
       footprint: a.view.footprint,
       ownShootStrip: own,
       frames,
+      delivered,
     });
     const delay = strip && f.status === 'ready' ? releaseDelayMs({ frames, fps: strip.fps }, minMs, socket.frame) : LEGACY_RELEASE_MS;
     return { delay, socket };
@@ -1443,7 +2131,7 @@ export class BattleSceneController implements SceneController {
 
   /** The socket's board point now: the stack's anchor, its pose offset (the throw's recoil) and the way the figure faces. */
   private socketPoint(a: StackEntry, socket: ReleaseSocket): Pt {
-    return releasePoint({ x: a.root.x, y: a.root.y }, socket, a.figure.mirror ? -1 : 1, HEX_W, { x: a.figure.pose.x, y: a.figure.pose.y });
+    return releasePoint({ x: a.root.x, y: a.root.y + a.figure.view.y }, socket, a.figure.mirror ? -1 : 1, HEX_W, { x: a.figure.pose.x, y: a.figure.pose.y });
   }
 
   /** Where a missile meets a stack: the middle of its painted body, on the side facing the shooter. */
@@ -1480,6 +2168,7 @@ export class BattleSceneController implements SceneController {
       arc: 0,
       launchAngle: 0,
       arrivalAngle: 0,
+      travelOffsetDeg: 0,
       launchedAt: this.time,
       arrivedAt: null,
       impact: null,
@@ -1489,6 +2178,12 @@ export class BattleSceneController implements SceneController {
       impactEndAt: null,
       impactScale: null,
       reactAt: null,
+      labelAtLaunch: null,
+      labelAtImpact: null,
+      badgeAt: null,
+      hitStopMs: 0,
+      killFlash: false,
+      cues: [],
     };
     this.shotLog = [...this.shotLog.slice(-(SHOT_LOG - 1)), rec];
     return rec;
@@ -1566,11 +2261,13 @@ export class BattleSceneController implements SceneController {
     arc = fitArc(from, to, arc, this.boardRect().y0);
     rec.flightMs = ms;
     rec.arc = Math.round(arc * 10) / 10;
+    rec.travelOffsetDeg = Math.round(((choice.kind === 'profile' ? (choice.profile.travelRotationOffsetRad ?? 0) : 0) * 180) / Math.PI);
     const place = (t: number) => {
       const pt = samplePath(from, to, t, arc);
       holder.position.set(pt.x, pt.y);
       const m = missileTransform(pt.angle, this.mirrored);
-      holder.rotation = m.rotation;
+      // Art painted facing another way turns by its profile's offset (Deepwater Blast: π); impacts never do.
+      holder.rotation = travelRotation(m.rotation, choice.kind === 'profile' ? choice.profile : null);
       holder.scale.y = m.scaleYSign;
       onFrame?.(t * ms);
       return pt.angle;
@@ -1655,7 +2352,7 @@ export class BattleSceneController implements SceneController {
       const tr = effectFrameTransform(def, i, HEX_W, scale);
       s.texture = frames[i]!;
       s.anchor.set(tr.anchor[0], tr.anchor[1]);
-      s.scale.set(tr.scale * flip, tr.scale);
+      s.scale.set(tr.scale * flip * (opts.flipX ? -1 : 1), tr.scale);
       opts.onFrame?.(i, tr.scale);
     };
     place(0);
@@ -1704,6 +2401,8 @@ export class BattleSceneController implements SceneController {
     this.place(e, e.view.anchor);
     e.figure.mirror = e.view.facing === -1;
     e.shownAnchor = e.view.anchor;
+    // Released: the badge says what the view says (the same end at every speed, and after a skip).
+    this.applyBadge(e, nextBadge(e.badgeShown, e.view, 'release', false));
     if (!e.view.alive) {
       if (!e.down) this.layDown(e);
       else e.root.zIndex = e.root.y - 2;
@@ -1711,9 +2410,9 @@ export class BattleSceneController implements SceneController {
     }
     e.root.visible = true;
     e.base.visible = true;
-    e.badge.visible = true;
     e.figure.rest();
-    if (!this.celebrating.has(e)) e.figure.setLoop('idle');
+    if (this.holdsDefend(e)) e.figure.holdLast('defend');
+    else if (!this.celebrating.has(e)) e.figure.setLoop('idle');
     this.applyAura(e);
   }
 
@@ -1732,6 +2431,7 @@ export class BattleSceneController implements SceneController {
       }
     };
     let structures = false;
+    let engine = false;
     for (const ev of events) {
       if (ev.kind === 'BattleStackMoved' || ev.kind === 'BattleAttack' || ev.kind === 'BattleStackDestroyed') {
         lockOnce(this.stacks.get(ev.kind === 'BattleAttack' ? ev.attackerId : ev.stackId));
@@ -1741,9 +2441,15 @@ export class BattleSceneController implements SceneController {
       } else if (ev.kind === 'SiegeStructureDamaged') {
         structures = true;
         if (ev.attackerId) lockOnce(this.stacks.get(ev.attackerId));
+      } else if (ev.kind === 'EngineDamaged' || ev.kind === 'EngineDestroyed') {
+        engine = true;
+        if (ev.attackerId) lockOnce(this.stacks.get(ev.attackerId));
       } else if (ev.kind === 'BattleSpellCast') {
         // The spell's targets keep their old look (and their old statuses) until it lands.
-        for (const v of this.victims(this.stacks.get(ev.targetId), this.spellLookOf(ev).scope)) lockOnce(v);
+        if (ev.targetEngineId) {
+          engine = true;
+          if (this.spellLookOf(ev).scope !== 'single') for (const v of this.besideEngine()) lockOnce(v);
+        } else for (const v of this.victims(this.stacks.get(ev.targetId), this.spellLookOf(ev).scope)) lockOnce(v);
       } else if (ev.kind === 'InterventionInvoked') {
         const m = this.miracleOf(ev.interventionId, ev.playerId);
         if (m) for (const v of this.miracleVictims(m, ev.targetStackId)) lockOnce(v);
@@ -1757,6 +2463,7 @@ export class BattleSceneController implements SceneController {
       this.structuresLocked += 1;
       this.structureSnapIn = 0;
     }
+    if (engine) this.engineLocked += 1;
     let released = false;
     return () => {
       if (released) return;
@@ -1765,6 +2472,10 @@ export class BattleSceneController implements SceneController {
       if (structures) {
         this.structuresLocked = Math.max(0, this.structuresLocked - 1);
         if (this.structuresLocked === 0) this.syncStructures();
+      }
+      if (engine) {
+        this.engineLocked = Math.max(0, this.engineLocked - 1);
+        if (this.engineLocked === 0 && this.engineView && this.engineView.hp !== this.engineShownHp) this.setEngineHp(this.engineView.hp);
       }
     };
   }
@@ -1779,6 +2490,8 @@ export class BattleSceneController implements SceneController {
         if (this.tweens.speed === 0) break;
         const ev = events[i]!;
         const next = events[i + 1];
+        // A committed event plays once (its ID is the action token): a batch delivered again never replays it.
+        if (!this.tokens.take((ev as { eventId?: string }).eventId)) continue;
         // An ability that braces its user (Reed Guard) shows the brace in its own animation: no second Defend pose.
         if (ev.kind === 'BattleStackDefended' && next?.kind === 'BattleAbilityUsed' && next.stackId === ev.stackId) continue;
         await this.playEvent(ev, this.tweens.speed);
@@ -1789,19 +2502,43 @@ export class BattleSceneController implements SceneController {
     }
   }
 
-  private cue(kind: BattleCueKind, heavy?: boolean, magic?: FxSound): void {
+  /** Send a presentation cue (with a missile's own `sound` when its profile has one); returns it as the shot log keeps it. */
+  private cue(kind: BattleCueKind, heavy?: boolean, magic?: FxSound, sound?: ProfileSound): ShotCue {
     try {
-      this.cb.onCue?.({ kind, ...(heavy === undefined ? {} : { heavy }), ...(magic ? { magic } : {}) });
+      this.cb.onCue?.({ kind, ...(heavy === undefined ? {} : { heavy }), ...(magic ? { magic } : {}), ...(sound ? { sound } : {}) });
     } catch {
       // A cosmetic listener must never break playback.
     }
+    return { kind, sound: sound?.id ?? null, maxMs: sound?.maxMs ?? null, at: this.time };
+  }
+
+  /** A missile's release and impact sounds (its profile's; none for the generic stills). */
+  private soundsOf(choice: MissileChoice): NonNullable<ProjectileProfile['sounds']> {
+    return (choice.kind === 'profile' ? choice.profile.sounds : undefined) ?? {};
+  }
+
+  /**
+   * A blow that kills creatures has landed (melee, a shot, a tower arrow): a brief light flash at
+   * the contact point (the effect painter's soft flash; not on Low graphics or with reduced
+   * motion) and a hit-stop — the whole playback holds for a beat, longer when the stack is
+   * destroyed. Called once the target's `sufferBlow` has started, so the first frame of its hit
+   * strip (and the impact's) is what holds. Cosmetic only: no random draw, no camera move, the same
+   * outcome at every speed (nothing at instant speed). Returns the hit-stop (nominal ms) and the flash.
+   */
+  private killMoment(at: Pt, killed: number, targetRemaining: number): { hitStopMs: number; killFlash: boolean } {
+    const ms = hitStopMs(killed, targetRemaining);
+    if (ms <= 0 || this.disposed) return { hitStopMs: 0, killFlash: false };
+    const flash = this.tweens.speed > 0 && killFlashShown(killed, graphicsProfile().quality, this.calm);
+    if (flash) void this.painter.flash(at, KILL_FLASH.color, targetRemaining <= 0 ? KILL_FLASH.destroyedSize : KILL_FLASH.size, KILL_FLASH.ms);
+    this.tweens.freeze(ms);
+    return { hitStopMs: ms, killFlash: flash };
   }
 
   /** Attack choreography: the strip plays while the figure lunges toward the target (further when only a still exists). */
-  private async strike(a: StackEntry, toward: StackEntry, name: 'attack' | 'shoot', k = 1): Promise<void> {
+  private async strike(a: StackEntry, toward: StackEntry | number, name: 'attack' | 'shoot', k = 1): Promise<void> {
     const f = a.figure;
     const own = f.has(name);
-    const dir = Math.sign(toward.root.x - a.root.x) || a.view.facing;
+    const dir = Math.sign((typeof toward === 'number' ? toward : toward.root.x) - a.root.x) || a.view.facing;
     const reach = (own ? 0.16 : 0.34) * HEX_W;
     const lunge = name === 'attack' ? reach : -0.06 * HEX_W;
     const strip = f.playOnce(name, this.tweens, { minMs: 560 * k });
@@ -1843,6 +2580,9 @@ export class BattleSceneController implements SceneController {
    */
   private async sufferBlow(e: StackEntry, killed: boolean): Promise<void> {
     if (e.down) return;
+    // The count changes as the blow lands (a stack hit twice in one batch shows the batch's final
+    // count at its first blow: the view is the batch's end).
+    this.revealBadge(e);
     await this.flinch(e, killed);
     if (killed) {
       await this.tweens.wait(90);
@@ -1851,12 +2591,30 @@ export class BattleSceneController implements SceneController {
     }
   }
 
+  /**
+   * A melee blow, shot or tower arrow lands on `t`: its hit reaction starts (and its count changes)
+   * first, in this very moment, then a blow that killed creatures flashes and holds the playback
+   * (`killMoment`). The shot log (`rec`) keeps the count before and after and when it changed.
+   */
+  private async blowLands(t: StackEntry, killed: number, targetRemaining: number, at: Pt, rec: ShotRecord | null): Promise<void> {
+    const shown = t.badgeText.text;
+    const blow = this.sufferBlow(t, targetRemaining <= 0);
+    const moment = this.killMoment(at, killed, targetRemaining);
+    if (rec) {
+      rec.labelAtImpact = t.badgeText.text;
+      rec.badgeAt = rec.labelAtImpact !== shown ? this.time : null;
+      rec.hitStopMs = moment.hitStopMs;
+      rec.killFlash = moment.killFlash;
+    }
+    await blow;
+  }
+
   /** Dying on the killing blow: the death strip held on its last frame, or the fallback fall (never twice). */
   private async die(e: StackEntry): Promise<void> {
     if (e.down) return;
     e.deathPlays += 1;
     const f = e.figure;
-    e.badge.visible = false;
+    this.applyBadge(e, nextBadge(e.badgeShown, e.view, 'death', e.locked > 0));
     if (f.has('death')) {
       await f.playOnce('death', this.tweens, { hold: true });
     } else {
@@ -1864,11 +2622,18 @@ export class BattleSceneController implements SceneController {
     }
     e.view = { ...e.view, alive: false };
     this.layDown(e);
+    // Over the water, a delivered body sinks a little and fades after its held pose (cosmetic; the cells stay taken).
+    await this.settleOverWater(e, true);
   }
 
   private async cheer(e: StackEntry): Promise<void> {
     const f = e.figure;
     if (f.has('victory')) {
+      // A victory strip that plays once (the delivered sea sets) holds its final pose until the screen closes.
+      if (f.set?.animations['victory']?.loop === false) {
+        await f.playOnce('victory', this.tweens, { hold: true });
+        return;
+      }
       await f.playOnce('victory', this.tweens);
       f.setLoop('victory');
       return;
@@ -1897,17 +2662,27 @@ export class BattleSceneController implements SceneController {
           f.setLoop(f.has('fly') ? 'fly' : 'move');
           const f0 = { ...from };
           const dist = Math.hypot(dest.x - f0.x, dest.y - f0.y);
-          const lift = Math.min(RB * 2.6, RB * 0.8 + dist * 0.15);
+          // A delivered flyer travels at its own height (0.4 hex for the Hippocampi), from and to its hover over water.
+          const travel = travelLiftPx(f.set, HEX_W);
+          const lift = travel ?? Math.min(RB * 2.6, RB * 0.8 + dist * 0.15);
+          const h0 = -f.view.y;
+          const h1 = hoverPx(f.set, this.overWater(e, last), HEX_W);
           await this.tweens.tween(
             Math.max(380, (dist / RB) * 90),
             (t) => {
               e.root.position.set(f0.x + (dest.x - f0.x) * t, f0.y + (dest.y - f0.y) * t);
               e.root.zIndex = e.root.y;
-              f.pose.y = -Math.sin(t * Math.PI) * lift;
+              if (travel !== null) {
+                // Up to the travel height quickly, held, then down to the landing's hover (never through the sea).
+                const up = Math.min(1, t * 4, (1 - t) * 4);
+                f.view.y = -(h0 + (h1 - h0) * t);
+                f.pose.y = -up * Math.max(0, lift - (h0 + (h1 - h0) * t));
+              } else f.pose.y = -Math.sin(t * Math.PI) * lift;
             },
             easeInOut,
           );
           f.pose.y = 0;
+          f.view.y = -h1;
           if (f.has('landing')) await f.playOnce('landing', this.tweens);
         } else {
           f.setLoop('move');
@@ -1950,7 +2725,8 @@ export class BattleSceneController implements SceneController {
         }
         // The damage words over the target (and a ward's share above them), shown as the blow lands.
         const words = () => {
-          const text = ev.killed > 0 ? `−${ev.damage} · ${ev.killed} slain` : `−${ev.damage}`;
+          const dealt = ev.killed > 0 ? `−${ev.damage} · ${ev.killed} slain` : `−${ev.damage}`;
+          const text = ev.mode === 'harpoon' ? `Harpoon ${dealt}` : dealt;
           const head = this.headOf(t);
           void this.floatText(head, ev.luck ? `Lucky! ${text}` : text, ev.luck ? '#f5e4b7' : '#ff8a70', speed, ev.luck ? 'icon.stat.luck' : undefined);
           // A ward (Sheltering Wings) took its share of this blow: say how much, above the damage.
@@ -1960,41 +2736,70 @@ export class BattleSceneController implements SceneController {
             void this.floatText({ x: head.x, y: head.y - RB * 0.62 }, `Ward saved ${warded}`, '#9fe8ff', speed, 'icon.ability.family_ward');
           }
         };
-        if (ev.mode === 'shot') {
+        if (ev.mode === 'shot' || ev.mode === 'harpoon') {
           // One missile per shot event (never one per creature in the stack): the shooter's own
           // profile, released at its shoot strip's release frame from its hand, staff or mouth.
           // On arrival, together and at once: the impact at the contact point, the hit sound, the
           // damage words and the target's hit reaction — while the shooter finishes its strip.
+          // Its own sounds too: the profile's release sound with the launch, its impact sound on arrival.
+          // The target keeps the count it shows until the missile strikes; a killing blow holds for a beat.
           const choice = this.missileOf(ev, 'arrow');
+          const sounds = this.soundsOf(choice);
           const { delay, socket } = this.releaseOf(a, choice, 'shoot', SHOOT_MIN_MS);
           const shot = (async () => {
             await this.tweens.wait(delay);
             if (this.disposed) return;
-            this.cue('shot');
+            const release = this.cue('shot', undefined, undefined, sounds.release);
             const from = this.socketPoint(a, socket);
             const to = this.contactOf(t, from.x);
             const rec = this.logShot(ev.kind, 'creature', a.view.creatureId ?? null, choice, from, to, socket, a.figure.mirror ? -1 : 1);
+            rec.cues.push(release);
+            rec.labelAtLaunch = t.badgeText.text;
             await this.flyMissile(choice, from, to, rec);
             if (this.disposed) return;
-            this.cue('arrow-hit', heavy);
+            rec.cues.push(this.cue('arrow-hit', heavy, undefined, sounds.impact));
             void this.impactFx(choice, to, false, rec);
             rec.reactAt = this.time;
             words();
-            await this.sufferBlow(t, ev.targetRemaining <= 0);
+            await this.blowLands(t, ev.killed, ev.targetRemaining, to, rec);
           })();
           await Promise.all([this.strike(a, t, 'shoot'), shot]);
         } else {
           // A melee blow (a shooter's too) flies nothing.
           this.cue('swing');
-          await this.strike(a, t, 'attack', retaliation ? 0.85 : 1);
-          // No burst over the target (owner request 2026-10-05): its hit strip shows the blow.
-          this.cue('impact', heavy);
-          words();
-          await this.sufferBlow(t, ev.targetRemaining <= 0);
+          const k = retaliation ? 0.85 : 1;
+          const contact = a.figure.set?.events?.attackContactFrame;
+          const attackStrip = a.figure.set?.animations['attack'];
+          if (contact !== undefined && attackStrip && a.figure.status === 'ready') {
+            // A delivered set lands its blow at its contact frame, once, while the strike plays on (cross-rail lunges included).
+            const delay = releaseDelayMs({ frames: stripFrameCount(attackStrip), fps: attackStrip.fps }, 560 * k, contact);
+            const landing = (async () => {
+              await this.tweens.wait(delay);
+              if (this.disposed) return;
+              this.cue('impact', heavy);
+              words();
+              await this.blowLands(t, ev.killed, ev.targetRemaining, this.contactOf(t, a.root.x), null);
+            })();
+            await Promise.all([this.strike(a, t, 'attack', k), landing]);
+          } else {
+            await this.strike(a, t, 'attack', k);
+            // No burst over the target (owner request 2026-10-05): its hit strip shows the blow.
+            this.cue('impact', heavy);
+            words();
+            await this.blowLands(t, ev.killed, ev.targetRemaining, this.contactOf(t, a.root.x), null);
+          }
         }
         if (this.disposed) return;
         a.figure.mirror = a.view.facing === -1;
         if (!t.down) t.figure.mirror = t.view.facing === -1;
+        return;
+      }
+      case 'BattleArtifactActivated': {
+        const target=this.stacks.get(ev.targetId); if(!target)return;
+        this.cue('bless');
+        await this.painter.material(`fx.artifact.${ev.artifactId}.impact`,this.chestOf(target));
+        this.applyAura(target);
+        await this.floatText(this.headOf(target),'Relic invoked','#edcf86',speed,`icon.artifact.${ev.artifactId}`);
         return;
       }
       case 'BattleSpellCast':
@@ -2060,11 +2865,13 @@ export class BattleSceneController implements SceneController {
         const to = { x: top.x, y: top.y + RB * 0.4 };
         // The Catapult throws its own siege stone; a wall breaker (Cyclops, Colossus) its OWN missile — never the Catapult's.
         const choice = this.missileOf(ev, 'stone');
+        const sounds = this.soundsOf(choice);
         let rec: ShotRecord | null = null;
         // The stone lands: its impact on the wall, the sound, the damaged picture and the words, at once.
         const land = () => {
           if (this.disposed) return;
-          this.cue('stone-hit');
+          const hit = this.cue('stone-hit', undefined, undefined, sounds.impact);
+          rec?.cues.push(hit);
           void this.impactFx(choice, to, true, rec);
           if (rec) rec.reactAt = this.time;
           this.shownHp.set(st.id, ev.hp);
@@ -2072,10 +2879,11 @@ export class BattleSceneController implements SceneController {
           void this.floatText({ x: to.x, y: to.y - RB * 0.6 }, ev.source === 'catapult' ? 'Catapult −1' : '−1', '#f0c27a', speed);
         };
         if (ev.source === 'catapult') {
-          this.cue('catapult');
+          const thrown = this.cue('catapult', undefined, undefined, sounds.release);
           const cup = await this.throwCatapult();
           if (this.disposed) return;
           rec = this.logShot(ev.kind, 'catapult', null, choice, cup, to, null, 1);
+          rec.cues.push(thrown);
           await this.flyMissile(choice, cup, to, rec);
           land();
           return;
@@ -2093,14 +2901,72 @@ export class BattleSceneController implements SceneController {
           a.figure.playOnce(anim, this.tweens, { minMs: THROW_MIN_MS }),
           this.tweens.wait(delay).then(async () => {
             if (this.disposed) return;
-            this.cue('shot');
+            const release = this.cue('shot', undefined, undefined, sounds.release);
             const from = this.socketPoint(a, socket);
             rec = this.logShot(ev.kind, 'creature', a.view.creatureId ?? null, choice, from, to, socket, a.figure.mirror ? -1 : 1);
+            rec.cues.push(release);
             await this.flyMissile(choice, from, to, rec);
             land();
           }),
         ]);
         if (!this.disposed) a.figure.mirror = a.view.facing === -1;
+        return;
+      }
+      case 'EngineDamaged': {
+        // A blow at the siege engine (targetableCatapultV1): the striker's normal attack or shot and
+        // impact; the engine's picture and label change as it lands (committed before playback).
+        const target = this.engineFig ? this.enginePoint() : null;
+        if (!target) return;
+        const a = ev.attackerId ? this.stacks.get(ev.attackerId) : undefined;
+        const heavy = ev.hp <= 0;
+        if (ev.source === 'shot' && a) {
+          const choice = this.missileOf(ev, 'arrow');
+          const sounds = this.soundsOf(choice);
+          const dx = target.x - a.root.x;
+          if (Math.abs(dx) > 1) a.figure.mirror = dx < 0;
+          const { delay, socket } = this.releaseOf(a, choice, 'shoot', SHOOT_MIN_MS);
+          const shot = (async () => {
+            await this.tweens.wait(delay);
+            if (this.disposed) return;
+            const release = this.cue('shot', undefined, undefined, sounds.release);
+            const from = this.socketPoint(a, socket);
+            const to = this.engineContact(from.x);
+            const rec = this.logShot(ev.kind, 'creature', a.view.creatureId ?? null, choice, from, to, socket, a.figure.mirror ? -1 : 1);
+            rec.cues.push(release);
+            await this.flyMissile(choice, from, to, rec);
+            if (this.disposed) return;
+            rec.cues.push(this.cue('arrow-hit', heavy, undefined, sounds.impact));
+            void this.impactFx(choice, to, true, rec);
+            rec.reactAt = this.time;
+            await this.engineBlow(ev.damage, ev.hp, speed, ev.luck);
+          })();
+          await Promise.all([this.strike(a, target.x, 'shoot'), shot]);
+        } else if (ev.source === 'melee' && a) {
+          const dx = target.x - a.root.x;
+          if (Math.abs(dx) > 1) a.figure.mirror = dx < 0;
+          this.cue('swing');
+          await this.strike(a, target.x, 'attack');
+          this.cue('impact', heavy);
+          await this.engineBlow(ev.damage, ev.hp, speed, ev.luck);
+        } else {
+          // A spell's share (its own playback showed the magic).
+          await this.engineBlow(ev.damage, ev.hp, speed, false);
+        }
+        if (a && !this.disposed) a.figure.mirror = a.view.facing === -1;
+        return;
+      }
+      case 'EngineDestroyed': {
+        if (!this.engineFig) return;
+        this.setEngineHp(0);
+        this.cue('breach');
+        const at = this.enginePoint();
+        await this.floatText({ x: at.x, y: at.y - this.engineVisibleWidth() * 0.5 }, 'Catapult destroyed', '#ffcf8a', speed * 0.8, 'icon.status.stun');
+        return;
+      }
+      case 'CatapultSkipped': {
+        if (!this.engineFig) return;
+        const at = this.enginePoint();
+        await this.floatText({ x: at.x, y: at.y - this.engineVisibleWidth() * 0.5 }, ev.reason === 'no_targets' ? 'No target left' : 'Holds fire', '#e6d7b0', speed * 0.6);
         return;
       }
       case 'SiegeStructureDestroyed': {
@@ -2114,19 +2980,22 @@ export class BattleSceneController implements SceneController {
         const st = this.structureById(ev.structureId);
         const t = this.stacks.get(ev.targetId);
         if (!st || !t) return;
-        this.cue('turret');
-        // The tower arrow (`siege_turret`), from the top of the tower or keep.
+        // The tower arrow (`siege_turret`), from the top of the tower or keep, with its profile's sounds.
         const choice = this.missileOf(ev, 'arrow');
+        const sounds = this.soundsOf(choice);
+        const loosed = this.cue('turret', undefined, undefined, sounds.release);
         const from = this.structureTop(st);
         const to = this.contactOf(t, from.x);
         const rec = this.logShot(ev.kind, 'turret', null, choice, from, to, null, from.x <= t.root.x ? 1 : -1);
+        rec.cues.push(loosed);
+        rec.labelAtLaunch = t.badgeText.text;
         await this.flyMissile(choice, from, to, rec);
         if (this.disposed) return;
-        this.cue('arrow-hit', ev.killed > 0);
+        rec.cues.push(this.cue('arrow-hit', ev.killed > 0, undefined, sounds.impact));
         void this.impactFx(choice, to, false, rec);
         rec.reactAt = this.time;
         void this.floatText(this.headOf(t), ev.killed > 0 ? `−${ev.damage} · ${ev.killed} slain` : `−${ev.damage}`, '#ff8a70', speed);
-        await this.sufferBlow(t, ev.targetRemaining <= 0);
+        await this.blowLands(t, ev.killed, ev.targetRemaining, to, rec);
         return;
       }
       case 'SiegeMoatDamage': {
@@ -2321,12 +3190,23 @@ export class BattleSceneController implements SceneController {
 
   /** A battle spell: the sigil at the commander's corner, its flight, where it lands on each stack it touches, then the numbers. */
   private async playSpell(ev: Extract<GameEvent, { kind: 'BattleSpellCast' }>, speed: number): Promise<void> {
+    if (ev.targetEngineId) return this.playEngineSpell(ev, speed);
     const t = this.stacks.get(ev.targetId);
     if (!t) return;
     const look = this.spellLookOf(ev);
     const id = `fx.spell.${ev.spellId}`;
     this.logFx(id);
     this.painter.preload(id);
+    if (ev.cells?.length) {
+      const from = this.casterPoint(ev.side);
+      await this.painter.cast(look, from, `${id}.cast`);
+      await Promise.all(ev.cells.map((cell) => {
+        const p = this.cellXY(cell);
+        return this.painter.impact(look, { ...p, height: RB * .7, width: 1, facing: ev.side === 'attacker' ? 1 : -1 }, `${id}.impact`);
+      }));
+      for (const stack of this.stacks.values()) if (this.cellsAt(stack, stack.shownAnchor).some((c) => ev.cells!.some((p) => p.col === c.col && p.row === c.row))) this.unlock(stack);
+      return;
+    }
     const victims = this.victims(t, look.scope);
     const dir = ev.side === 'attacker' ? 1 : -1;
     const from = this.casterPoint(ev.side);
@@ -2357,11 +3237,50 @@ export class BattleSceneController implements SceneController {
         text = look.label ?? (look.hostile ? 'Cursed' : 'Blessed');
         color = look.hostile ? '#d7b0ff' : '#f5e4b7';
       }
+      // Its count changes as the spell lands on it (with its words), never before.
+      this.revealBadge(v);
       if (text) void this.floatText(this.headOf(v), text, color, speed, icon);
       if (ev.damage > 0) await this.sufferBlow(v, !v.view.alive);
       await hit;
     };
     await Promise.all([...victims.map(react), screen]);
+  }
+
+  /** A spell cast at the siege engine: the sigil, its flight and its impact on the engine (and the stacks beside it for an area spell). */
+  private async playEngineSpell(ev: Extract<GameEvent, { kind: 'BattleSpellCast' }>, speed: number): Promise<void> {
+    if (!this.engineFig) return;
+    const look = this.spellLookOf(ev);
+    const id = `fx.spell.${ev.spellId}`;
+    this.logFx(id);
+    this.painter.preload(id);
+    const at = this.enginePoint();
+    const w = this.engineVisibleWidth();
+    const engineTarget: FxTarget = { x: at.x, y: at.y, height: w * 0.5, width: 2, facing: this.engineFacing() };
+    const dir = ev.side === 'attacker' ? 1 : -1;
+    const from = this.casterPoint(ev.side);
+    this.cue('cast');
+    await this.painter.cast(look, from, `${id}.cast`);
+    const screen = this.painter.screenFx(look.screen, look.school, this.screenDir(dir), `${id}.screen`);
+    const chest = { x: at.x, y: at.y - w * 0.25 };
+    if (look.travel !== 'none' && look.travel !== 'sky' && look.scope !== 'army') await this.painter.travel(look, from, chest, `${id}.travel`, dir === -1);
+    this.cue('spell', undefined, look.sound);
+    const beside = look.scope === 'single' ? [] : this.besideEngine();
+    const per = beside.length > 0 && ev.damage > 0 ? ev.damage / beside.length : null;
+    const hits: Promise<void>[] = [this.painter.impact(look, engineTarget, `${id}.impact`)];
+    beside.forEach((v, i) => {
+      hits.push(
+        (async () => {
+          await this.tweens.wait((i + 1) * 70);
+          const hit = this.painter.impact(look, this.targetOf(v), `${id}.impact`);
+          await this.tweens.wait(200);
+          this.revealBadge(v);
+          if (per !== null) void this.floatText(this.headOf(v), `−${per}`, '#9cc4ff', speed, SPELL_HURT_ICON[look.school]);
+          await this.sufferBlow(v, !v.view.alive);
+          await hit;
+        })(),
+      );
+    });
+    await Promise.all([...hits, screen]);
   }
 
   /** A battle miracle: the moment over the field, then light (or a smite) on each stack it touches. */
@@ -2385,8 +3304,9 @@ export class BattleSceneController implements SceneController {
       if (look.travel === 'sky') await this.painter.travel(look, { x: v.root.x, y: v.root.y - RB * 8 }, this.chestOf(v), `${id}.travel`);
       const hit = this.painter.impact(look, this.targetOf(v), `${id}.impact`);
       await this.tweens.wait(220);
-      // The miracle's own icon (Brief 13) stands before its word.
+      // The miracle's own icon (Brief 13) stands before its word; the count changes as it lands.
       const icon = `icon.intervention.${ev.interventionId}`;
+      this.revealBadge(v);
       if (m.damage) {
         void this.floatText(this.headOf(v), `−${m.damage}`, '#ff8a70', speed, icon);
         await this.sufferBlow(v, !v.view.alive);
@@ -2415,7 +3335,9 @@ export class BattleSceneController implements SceneController {
   private async defendPose(e: StackEntry, k: number): Promise<void> {
     const f = e.figure;
     if (f.has('defend')) {
-      await f.playOnce('defend', this.tweens, { minMs: 600 * k });
+      // A delivered set (sea creatures) holds its final defend pose while the stack defends.
+      const hold = !!f.set?.events && f.set.animations['defend']?.loop === false;
+      await f.playOnce('defend', this.tweens, { minMs: 600 * k, hold });
       return;
     }
     const back = e.view.facing === 1 ? -1 : 1;
@@ -2440,10 +3362,15 @@ export class BattleSceneController implements SceneController {
   }
 
   private cellAt(p: { x: number; y: number }): { cell: BattleCell; offset: { x: number; y: number } } | null {
-    const c = pointCell(p.x, p.y, RB, S);
-    if (c.col < 0 || c.row < 0 || c.col >= this.cols || c.row >= this.rows) return null;
+    // The inverse of the same projection that places every cell and sprite (hexmath): sprite size never matters.
+    // A masked board: water takes no hover, move or target (a click there does nothing).
+    // A piecewise board: only a point inside a cell's own polygon selects it (the rail, gaps and margins select nothing).
+    const legal = this.boardMask ? (x: BattleCell) => this.cellLegal(x) : undefined;
+    const c = this.table ? pickTableCell(p.x, p.y, this.table, legal) : pickCellOn(p.x, p.y, this.proj, this.cols, this.rows, legal);
+    if (!c) return null;
     const w = this.cellXY(c);
-    return { cell: c, offset: { x: (p.x - w.x) / RB, y: (p.y - w.y) / RB } };
+    // The offset is reported in the standard board's foreshortening (hex radii), whatever this board's squash.
+    return { cell: c, offset: { x: (p.x - w.x) / this.proj.radius, y: ((p.y - w.y) / this.proj.radius) * (S / this.proj.squash) } };
   }
 
   private onMove(e: PointerEvent): void {
@@ -2469,8 +3396,14 @@ export class BattleSceneController implements SceneController {
   }
 
   private onUp(e: PointerEvent): void {
-    const hit = this.cellAt(this.local(e));
+    const local = this.local(e);
+    const hit = this.cellAt(local);
     if (hit) this.cb.onCellClick(hit.cell, e.button, hit.offset);
+    else {
+      // The keep has no cells: its picture beyond the east edge answers for it (the catapult's target).
+      const keep = this.keepAt(local);
+      if (keep) this.cb.onStructureClick?.(keep, e.button);
+    }
   }
 
   private onLeave(): void {
@@ -2483,6 +3416,8 @@ export class BattleSceneController implements SceneController {
 
   private onWheel(e: WheelEvent): void {
     e.preventDefault();
+    // The boarding painting keeps its fixed, contain-fitted camera.
+    if (this.boardArt) return;
     this.zoomK = Math.max(0.85, Math.min(1.6, this.zoomK * Math.exp(-Math.max(-120, Math.min(120, e.deltaY)) * 0.0012)));
     this.layout();
   }
@@ -2515,16 +3450,38 @@ export class BattleSceneController implements SceneController {
     const stacks: Record<string, { depth: number; x: number; y: number; col: number; row: number }> = {};
     for (const [id, e] of this.stacks) stacks[id] = { depth: e.root.zIndex, x: e.root.x, y: e.root.y, col: e.shownAnchor.col, row: e.shownAnchor.row };
     // `projectiles`: the missile readout (projectileDebug), reachable under ?e2e through __prSiege.
-    return { ready: this.boardIsReady, mirrored: this.mirrored, gate: g ? { ...g, passagePage: page(g.passage) } : null, wallRows: [...this.siegeDrawn.wallRows].sort((a, b) => a - b), stacks, projectiles: this.projectileDebug() };
+    const fig = this.engineFig;
+    const ground = fig ? this.enginePoint() : null;
+    const engine = fig && ground
+      ? {
+          hp: this.engineShownHp,
+          stage: fig.stage,
+          drawn: fig.drawn ? { ...fig.drawn, box: { x0: page({ x: ground.x + fig.drawn.box.x0, y: ground.y + fig.drawn.box.y0 }), x1: page({ x: ground.x + fig.drawn.box.x1, y: ground.y + fig.drawn.box.y1 }) } } : null,
+          // On the board (west to east): the art, painted facing left, is mirrored so the attacker's engine faces the walls.
+          facesWalls: !!fig.drawn && (fig.drawn.scaleX < 0) === (ENGINE_ART_FACING === -1) === (this.engineFacing() === 1),
+          ground: page(ground),
+          label: fig.label.visible ? fig.label.text : null,
+          visible: !!fig.still?.visible && (fig.still?.alpha ?? 0) > 0,
+        }
+      : null;
+    const aim = this.aimDrawn ? { structureId: this.aimDrawn.structureId, from: page(this.aimDrawn.from), to: page(this.aimDrawn.to) } : null;
+    const legacyCatapult = this.catapult ? page({ x: this.catapult.root.x, y: this.catapult.root.y }) : null;
+    // Where each standing structure is drawn (page pixels; the keep has no cells, so tests click its picture here).
+    const structures: Record<string, { x: number; y: number; hp: number }> = {};
+    for (const st of this.siegeView?.structures ?? []) {
+      const at = this.structurePos(st);
+      structures[st.id] = { ...page(st.kind === 'keep' ? { x: at.x, y: at.y - 40 } : at), hp: this.shownHp.get(st.id) ?? st.hp };
+    }
+    return { ready: this.boardIsReady, mirrored: this.mirrored, gate: g ? { ...g, passagePage: page(g.passage) } : null, wallRows: [...this.siegeDrawn.wallRows].sort((a, b) => a - b), stacks, projectiles: this.projectileDebug(), engine, aim, legacyCatapult, structures };
   }
 
   /** Read-only: missiles in the air and the last ones flown (profile, release and contact points, timing, impacts). */
   projectileDebug(): ProjectileDebug {
-    return { time: this.time, inFlight: this.missiles.size, effects: this.fx.destroyed ? 0 : this.fx.children.length, shots: this.shotLog.map((r) => ({ ...r, impactFrames: [...r.impactFrames] })) };
+    return { time: this.time, inFlight: this.missiles.size, effects: this.fx.destroyed ? 0 : this.fx.children.length, shots: this.shotLog.map((r) => ({ ...r, impactFrames: [...r.impactFrames], cues: [...r.cues] })) };
   }
 
-  stackDebug(): Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; marks: string[]; deaths: number; hits: number; label: string; scale: number; lift: number }> {
-    const out: Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; marks: string[]; deaths: number; hits: number; label: string; scale: number; lift: number }> = {};
+  stackDebug(): Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; marks: string[]; deaths: number; hits: number; label: string; labelAt: number; scale: number; lift: number; hover: number }> {
+    const out: Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; marks: string[]; deaths: number; hits: number; label: string; labelAt: number; scale: number; lift: number; hover: number }> = {};
     for (const [id, e] of this.stacks) {
       const at = this.toPage(e.root.position);
       out[id] = {
@@ -2541,11 +3498,15 @@ export class BattleSceneController implements SceneController {
         overlays: e.aura.kinds,
         marks: e.shownMarks ? e.shownMarks.replace('…', '').split(',').filter(Boolean) : [],
         label: e.badgeText.text,
+        // The controller time the shown count last changed (the shot log's clock).
+        labelAt: e.badgeAt,
         deaths: e.deathPlays,
         hits: e.hitPlays,
         // The drawn frame's scale on the board (set × frame-region sourceScale) and how far the pose is lifted (flight).
         scale: Math.round(Math.abs(e.figure.sprite.scale.x) * 10000) / 10000,
         lift: Math.round(-e.figure.pose.y * 10) / 10 || 0,
+        // The visual hover over open water (a flyer standing over the sea; sea creatures 2026-10-17).
+        hover: Math.round(-e.figure.view.y * 10) / 10 || 0,
       };
     }
     return out;
@@ -2638,6 +3599,8 @@ export class BattleSceneController implements SceneController {
     this.disposed = true;
     this.skip();
     for (const [type, fn] of this.listeners) this.canvas.removeEventListener(type, fn);
+    for (const texture of this.croppedIconTextures) texture.destroy(false);
+    this.croppedIconTextures.clear(); this.iconTextures.clear();
     for (const e of this.stacks.values()) e.figure.destroy();
     this.stacks.clear();
     // Missiles still in the air when the battle closes go with the effect layer (their tweens were finished above).

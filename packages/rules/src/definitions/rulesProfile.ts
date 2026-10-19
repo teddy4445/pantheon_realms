@@ -5,6 +5,7 @@
  * Does not own: per-player preferences or scenario setup.
  */
 import type { Terrain } from './world';
+import { PROPOSED_NAVAL_RULES, type NavalRules } from './naval';
 
 export interface Rational {
   readonly numerator: number;
@@ -48,6 +49,12 @@ export interface RulesProfile {
   readonly librarySpellsPerTier: readonly number[];
   readonly market: readonly MarketTier[];
   readonly minorGodFavorCost: number;
+  /**
+   * Hero ships (scenario feature `navalMovementV1`, expedition kit 2026-10-17, design/naval-policy.json;
+   * proposed, not playtested): launch price, sailing cost, the embark/disembark minimum and the boarding
+   * battlefield. Absent in older profiles (then `navalRules` gives these defaults).
+   */
+  readonly naval?: NavalRules;
   readonly combat: {
     readonly cols: number;
     readonly rows: number;
@@ -95,6 +102,18 @@ export interface RulesProfile {
       readonly keepDamage: number;
       readonly towerDamage: number;
       readonly moatDamage: number;
+      /**
+       * The attacker's stationary, killable catapult (scenario feature `targetableCatapultV1`,
+       * expedition kit 2026-10-17, design/catapult-policy.json; proposed, not playtested). It stands
+       * on `footprint` (anchor `anchor`) in every fortified siege created under the feature, takes
+       * creature damage against `defense` and `maxHp`, never moves and never retaliates.
+       */
+      readonly engine: {
+        readonly maxHp: number;
+        readonly defense: number;
+        readonly anchor: { readonly col: number; readonly row: number };
+        readonly footprint: readonly { readonly col: number; readonly row: number }[];
+      };
     };
   };
 }
@@ -139,6 +158,7 @@ export const PR_02_CANDIDATE: RulesProfile = {
     { minMarkets: 3, buyCommon: 400, sellCommon: 75, buyCrystal: 800, sellCrystal: 150 },
   ],
   minorGodFavorCost: 20,
+  naval: PROPOSED_NAVAL_RULES,
   combat: {
     cols: 15,
     rows: 11,
@@ -174,6 +194,15 @@ export const PR_02_CANDIDATE: RulesProfile = {
       keepDamage: 20,
       towerDamage: 10,
       moatDamage: 10,
+      engine: {
+        maxHp: 120,
+        defense: 6,
+        anchor: { col: 1, row: 0 },
+        footprint: [
+          { col: 0, row: 0 },
+          { col: 1, row: 0 },
+        ],
+      },
     },
   },
 };

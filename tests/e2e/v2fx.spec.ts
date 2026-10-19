@@ -3,7 +3,10 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { inspect, waitFor, type Inspect } from './helpers';
 import { importAndLoad } from './fixtures';
 import { clickBattleCell, usePrefs } from './momentFixtures';
-import { DARK, MOMENTS, REPLAY, SAND, SNOW, fxBattle, fxDefence, fxSiege, type CheckedShot, type FxBattle } from './fxFixtures';
+import { loadCatalog } from '@pr/content';
+import type { MatchState } from '@pr/rules';
+import { DARK, MOMENTS, REPLAY, SAND, SNOW, fxBattle, fxDefence, fxSiege, rehearse, type CheckedShot, type FxBattle } from './fxFixtures';
+import { HIT_STOP_DESTROY_MS, HIT_STOP_KILL_MS } from '../../packages/presentation/src/impactTiming';
 
 /**
  * Battle FX delivery (handoff 2026-10-15 §4–6, §10): shooter missiles and impacts in the running game.
@@ -21,6 +24,10 @@ import { DARK, MOMENTS, REPLAY, SAND, SNOW, fxBattle, fxDefence, fxSiege, type C
  *  - A siege: the Cyclops and the Divine Colossus batter the walls with their own missiles, the
  *    Catapult throws its stone and the towers and keep shoot their arrows; and a town defended by
  *    the human, drawn mirrored.
+ *  - Impacts that land (2026-10-16): the target's shown count stays as it was while the missile
+ *    flies and changes in the moment it strikes (`badgeAt` = `reactAt` in the shot log); a blow
+ *    that kills holds the playback for a beat (hit-stop, longer when the stack falls) and flashes
+ *    (not on Low); each missile's launch and impact cues carry its profile's own sounds.
  *
  * Saves are built headlessly (fxFixtures.ts) and imported through Load → Import; the page is only
  * observed through the read-only `?e2e` readouts (`__prSiege().projectiles`: the battle view's shot
@@ -35,8 +42,12 @@ import { DARK, MOMENTS, REPLAY, SAND, SNOW, fxBattle, fxDefence, fxSiege, type C
 const OUT = '/home/claude/capture/v2-fx';
 mkdirSync(OUT, { recursive: true });
 const FX = JSON.parse(readFileSync(new URL('../../assets-runtime/battle-fx-neutral-upgrades-v1/manifest.json', import.meta.url), 'utf8')) as {
-  projectileProfiles: Record<string, { path: string; durationMsRange: [number, number]; sizeHex: number; impactFps: number; impactEffectId: string }>;
+  projectileProfiles: Record<string, { path: string; durationMsRange: [number, number]; sizeHex: number; impactFps: number; impactEffectId: string; sounds: { release: ProfileSound; impact: ProfileSound } }>;
 };
+interface ProfileSound {
+  id: string;
+  maxMs?: number;
+}
 const PROFILES = FX.projectileProfiles;
 /** One frame of the stepped clock (ms of game time). */
 const STEP_MS = 50;
@@ -72,6 +83,12 @@ interface ShotRec {
   impactEndAt: number | null;
   impactScale: number | null;
   reactAt: number | null;
+  labelAtLaunch: string | null;
+  labelAtImpact: string | null;
+  badgeAt: number | null;
+  hitStopMs: number;
+  killFlash: boolean;
+  cues: { kind: string; sound: string | null; maxMs: number | null; at: number }[];
 }
 interface Missiles {
   time: number;
@@ -86,6 +103,22 @@ interface StackShot {
   hits: number;
   deaths: number;
   mirrored: boolean;
+  /** The count badge's text as drawn, and when it last changed (controller clock). */
+  label: string;
+  labelAt: number;
+}
+
+/** The count a badge shows ("12", or "12 · 40hp" on the hovered or acting stack). */
+const countOf = (label: string | null | undefined): number => Number.parseInt(label ?? '', 10);
+
+/** A missile's two cues as its profile's sounds say (launch kind, then impact kind). */
+function expectCues(rec: ShotRec, sounds: { release: ProfileSound; impact: ProfileSound }, kinds: [string, string], label: string): void {
+  const cue = (k: string, s: ProfileSound) => ({ kind: k, sound: s.id, maxMs: s.maxMs ?? null });
+  expect(rec.cues.map(({ kind, sound, maxMs }) => ({ kind, sound, maxMs })), `${label}: its profile's sounds`).toEqual([cue(kinds[0], sounds.release), cue(kinds[1], sounds.impact)]);
+  // The impact's sound goes with the impact, in the moment of arrival.
+  expect(rec.cues[1]!.at).toBe(rec.arrivedAt);
+  if (kinds[0] !== 'catapult') expect(rec.cues[0]!.at).toBe(rec.launchedAt);
+  else expect(rec.cues[0]!.at).toBeLessThan(rec.launchedAt);
 }
 
 const missiles = (page: Page): Promise<Missiles | null> => page.evaluate(() => ((globalThis as unknown as { __prSiege: () => { projectiles?: Missiles } | null }).__prSiege()?.projectiles ?? null));
@@ -198,7 +231,7 @@ async function load(page: Page, prefs: Record<string, unknown>, file: string, st
  * `pick` finds it halfway through its flight (screenshot), then to its impact's second frame (its
  * first under reduced effects; screenshot).
  */
-async function capture(page: Page, pick: (m: Missiles) => ShotRec | null, name: string, impactFrame = 1): Promise<{ midFlight: boolean; impact: boolean }> {
+async function capture(page: Page, pick: (m: Missiles) => ShotRec | null, name: string, impactFrame = 1, onFlight?: (rec: ShotRec) => Promise<void>): Promise<{ midFlight: boolean; impact: boolean }> {
   expect(frozen.has(page), 'captures run on the stepped clock').toBe(true);
   let m = await until(page, (x) => !!pick(x), `${name} to fly`);
   const seq = pick(m)!.seq;
@@ -214,6 +247,7 @@ async function capture(page: Page, pick: (m: Missiles) => ShotRec | null, name: 
   if (find(m)!.arrivedAt === null && m.inFlight > 0) {
     await shot(page, `${name}-1-flight`);
     midFlight = true;
+    await onFlight?.(find(m)!);
     drift.push((await missiles(page))!.time - m.time);
   }
   m = await until(page, (x) => {
@@ -252,6 +286,8 @@ interface FireOpts {
   readonly frames?: number[];
   /** The board is drawn mirrored (the human defends against the computer). */
   readonly mirrored?: boolean;
+  /** Low graphics: a killing blow holds but does not flash. */
+  readonly low?: boolean;
 }
 
 /**
@@ -266,18 +302,24 @@ async function fire(page: Page, fx: FxBattle, s: CheckedShot, o: FireOpts): Prom
   const lastSeq = before.shots[before.shots.length - 1]?.seq ?? 0;
   const pre = await scene(page);
   const hitsBefore = pre[s.targetId]!.hits;
+  const countBefore = countOf(pre[s.targetId]!.label);
   const shooterFeet = await feet(page, s.shooterId);
   const targetFeet = await feet(page, s.targetId);
   const hex = await hexPx(page);
   const mine = (m: Missiles) => m.shots.find((r) => r.seq > lastSeq && r.event === 'BattleAttack' && r.creatureId === s.creatureId) ?? null;
   const name = `${o.prefix}-${s.label}`;
   await clickBattleCell(page, s.targetCell.col, s.targetCell.row);
-  const seen = await capture(page, mine, name, o.frames?.length === 1 ? 0 : 1);
+  // In the air: the rules have already applied the shot, yet the target still shows its count of before.
+  let inFlight: { label: string; labelAt: number; launchedAt: number } | null = null;
+  const seen = await capture(page, mine, name, o.frames?.length === 1 ? 0 : 1, async (r) => {
+    const st = (await scene(page))[s.targetId]!;
+    inFlight = { label: st.label, labelAt: st.labelAt, launchedAt: r.launchedAt };
+  });
   // The target's hit reaction (and its fall) and the impact play out.
   await until(page, (m) => m.inFlight === 0 && mine(m)?.impactEndAt != null, `${s.label} impact to finish`);
   const rec = mine((await missiles(page))!)!;
   const want = PROFILES[s.creatureId]!;
-  writeFileSync(`${OUT}/${name}.json`, JSON.stringify({ label: s.label, rec, shooterFeet, targetFeet, hex, captured: seen }, null, 1));
+  writeFileSync(`${OUT}/${name}.json`, JSON.stringify({ label: s.label, rec, shooterFeet, targetFeet, hex, captured: seen, countBefore, inFlight, killed: s.killed }, null, 1));
 
   expect(seen, `${s.label}: captured in the air and at impact`).toEqual({ midFlight: true, impact: true });
   // Its own profile, never the generic arrow; one record for the one shot event.
@@ -302,11 +344,28 @@ async function fire(page: Page, fx: FxBattle, s: CheckedShot, o: FireOpts): Prom
   // Played once, never looped: its frames in order from the first to the last, for its length.
   if (o.frames) expect(rec.impactFrames).toEqual(o.frames);
   else expect(rec.impactFrames).toEqual([0, 1, 2, 3]);
-  const impactMs = (o.frames?.length === 1 ? 180 : (4 / want.impactFps) * 1000) * o.speed;
+  // A blow that kills holds the whole playback for a beat (the impact's frames too): longer when the stack falls.
+  const hitStop = s.killed > 0 ? (s.targetFalls ? HIT_STOP_DESTROY_MS : HIT_STOP_KILL_MS) : 0;
+  expect(rec.hitStopMs, `${s.label}: hit-stop`).toBe(hitStop);
+  expect(rec.killFlash, `${s.label}: flash`).toBe(s.killed > 0 && !o.low);
+  const impactMs = (o.frames?.length === 1 ? 180 : (4 / want.impactFps) * 1000) * o.speed + hitStop * o.speed;
   expect(rec.impactEndAt! - rec.impactAt!).toBeGreaterThanOrEqual(impactMs - 1);
   expect(rec.impactEndAt! - rec.impactAt!).toBeLessThanOrEqual(impactMs + 120);
+  // The count: the same when the missile left and in the air (unchanged since before the launch),
+  // the rules' new count in the moment it struck — together with the hit reaction.
+  const flying = inFlight as { label: string; labelAt: number; launchedAt: number } | null;
+  expect(flying, `${s.label}: sampled in the air`).not.toBeNull();
+  expect(countOf(flying!.label), `${s.label}: the count in the air`).toBe(countBefore);
+  expect(flying!.labelAt, `${s.label}: the count did not change in the air`).toBeLessThanOrEqual(flying!.launchedAt);
+  expect(countOf(rec.labelAtLaunch), `${s.label}: the count at launch`).toBe(countBefore);
+  expect(countOf(rec.labelAtImpact), `${s.label}: the count at the impact`).toBe(countBefore - s.killed);
+  if (s.killed > 0) expect(rec.badgeAt, `${s.label}: the count changed at the impact`).toBe(rec.reactAt);
+  if (rec.badgeAt !== null) expect(rec.badgeAt).toBe(rec.reactAt);
+  // The cues carry the profile's own release and impact sounds.
+  expectCues(rec, want.sounds, ['shot', 'arrow-hit'], s.label);
   const post = await scene(page);
   expect(post[s.targetId]!.hits).toBe(hitsBefore + 1);
+  if (!s.targetFalls) expect(countOf(post[s.targetId]!.label), `${s.label}: the count after playback`).toBe(countBefore - s.killed);
   // Direction: the art turned toward the target; released in front of the shooter and above its feet
   // (on a mirrored board the rules' west is the screen's east).
   expect(rec.mirroredBoard).toBe(!!o.mirrored);
@@ -391,6 +450,7 @@ test.describe('1366×768', () => {
       expect(rec.reactAt).toBe(rec.arrivedAt);
       expect(rec.path).toBe('high-ballistic');
       expect(rec.impactFrames).toEqual([0, 1, 2, 3]);
+      expectCues(rec, PROFILES[creatureId]!.sounds, ['shot', 'stone-hit'], creatureId);
     }
     // The peltasts shoot the town's hoplites over the wall.
     await activeIs(page, sg.peltast);
@@ -416,6 +476,7 @@ test.describe('1366×768', () => {
       expect(r.impacts).toBe(1);
       expect(r.impactAt).toBe(r.arrivedAt);
       expect(r.path).toBe('high-ballistic');
+      expectCues(r, PROFILES['catapult']!.sounds, ['catapult', 'stone-hit'], 'catapult');
     }
     expect(arrows.length).toBe(sg.turrets.length);
     for (const r of arrows) {
@@ -425,6 +486,10 @@ test.describe('1366×768', () => {
       expect(r.impactAt).toBe(r.arrivedAt);
       expect(r.reactAt).toBe(r.arrivedAt);
       expect(r.facing).toBe(-1);
+      expectCues(r, PROFILES['siege_turret']!.sounds, ['turret', 'arrow-hit'], 'siege_turret');
+      // A tower arrow's target keeps its count until the arrow strikes (then it may change).
+      if (r.badgeAt !== null) expect(r.badgeAt).toBe(r.reactAt);
+      expect(r.labelAtLaunch).not.toBeNull();
     }
     // No creature ever took the Catapult's stone.
     expect(all.filter((r) => r.source === 'creature').every((r) => r.profile !== 'catapult')).toBe(true);
@@ -486,7 +551,7 @@ test.describe('1366×768', () => {
     const errors = watchErrors(page);
     const fx = fxBattle(REPLAY);
     await load(page, { battleSpeed: '0.5', graphicsQuality: 'low' }, fx.file);
-    for (const s of fx.shots.slice(0, 2)) await fire(page, fx, s, { prefix: 'low', speed: 2, frames: [0] });
+    for (const s of fx.shots.slice(0, 2)) await fire(page, fx, s, { prefix: 'low', speed: 2, frames: [0], low: true });
     const stacks = (await inspect(page)).state.battle.stacks as Record<string, { totalHp: number }>;
     for (const s of fx.shots.slice(0, 2)) expect(stacks[s.targetId]!.totalHp, s.label).toBe(s.targetHpAfter);
     expect(errors).toEqual([]);
@@ -598,11 +663,12 @@ test.describe('1920×1080', () => {
     await waitState(page, (x) => x.state.battle?.activeStackId !== vpel && !x.busy, 'the skipped shot to finish');
     await shot(page, 'hd-skip-2-after');
     await until(page, (m) => m.inFlight === 0 && m.effects === 0, 'the effect layer to clear');
-    // The next shot plays normally again.
+    // The next shot plays normally again. Its outcome (kills, a fall) is rehearsed headlessly on a
+    // copy of the game's state as it stands now (read-only readout; the same rules and random state).
     const seer = fx.ids['seer']!;
-    const far = s.state.battle.stacks[fx.ids['t_far']!].anchor as { col: number; row: number };
-    const plan: CheckedShot = { shooter: 'seer', target: 't_far', label: 'temple_seer-after-skip', shooterId: seer, targetId: fx.ids['t_far']!, creatureId: 'temple_seer', targetCreatureId: 'hoplite', targetCell: far, shooterCell: { col: 1, row: 9 }, dir: 1, distance: 12, targetFootprint: 1, killed: 0, targetFalls: false, targetHpAfter: 0 };
-    await fire(page, fx, plan, { prefix: 'hd', speed: 2 });
+    const live = await activeIs(page, seer);
+    const [plan] = rehearse('hd-after-skip', loadCatalog(), live.state as MatchState, { seer, t_far: fx.ids['t_far']! }, [{ shooter: 'seer', target: 't_far', label: 'temple_seer-after-skip' }]);
+    await fire(page, fx, plan!, { prefix: 'hd', speed: 2 });
     expect(errors).toEqual([]);
   });
 });

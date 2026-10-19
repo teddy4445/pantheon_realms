@@ -12,6 +12,17 @@ export {
   createRandomSkirmish,
   RANDOM_TEMPLATE_ID,
   SKIRMISH_MAP_TYPES,
+  RANDOM_MAP_TYPES,
+  NAVAL_MAP_TYPES,
+  isNavalMapType,
+  navalSettingsProblem,
+  navalTemplate,
+  navalTemplatesReadiness,
+  type NavalMapType,
+  type NavalReadiness,
+  type NavalTemplateInfo,
+  type RandomMapType,
+  type RandomMapTypeInfo,
   SKIRMISH_SIZE_LABEL,
   SKIRMISH_SIZE_RADIUS,
   SKIRMISH_START_WALLET,
@@ -89,3 +100,7 @@ export {
   type NeutralSiteTable,
   type SluiceConnectivity,
 } from '@pr/campaign';
+// Sea-sites kit (2026-10-18): the editor's placement reasons for coastal sites and sea salvage.
+export { coastalTowerSkin, customWaterSiteKind, seaSiteCustomProblem } from '@pr/campaign';
+// Sea creatures (2026-10-17): the editor's checks for sea-monster stacks.
+export { SEA_MONSTER_KIND, seaMonsterCustomProblem } from '@pr/campaign';

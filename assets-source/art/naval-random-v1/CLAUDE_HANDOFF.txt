@@ -1,0 +1,130 @@
+PANTHEON REALMS — TWO NAVAL RANDOM-MAP TEMPLATES
+Art and design handoff · 17 October 2026 · audited game 1.4.0
+
+SOURCE PACKAGE
+C:/Users/lazeb/Desktop/blannder_models/naval-random-maps-2026-10-17
+TARGET GAME PROJECT
+C:/Users/lazeb/Desktop/pantheon_realms
+NAVAL FEATURE DEPENDENCY
+C:/Users/lazeb/Desktop/blannder_models/naval-scouting-caravan-siege-kit-2026-10-17
+Read its CLAUDE_HANDOFF.txt, design/naval-policy.json and design/boarding-layout.json. Ships, boarding combat, save fields and AI support must be implemented before these templates can be started.
+
+This package contains two new random-template designs, four generated paintings, exact reference terrain graphs, layout diagrams and validation. It has NOT changed the game. The topology JSON files are an intermediate design format, not importable .prmap.json scenarios. Implement them through the actual random-map generator rather than pretending they are ready-to-play maps.
+
+1. THE SHATTERED CROWN
+ID: shattered_crown
+Selection summary: Separate island kingdoms surround the broken Crown. Sail for distant riches, capture landing beaches, and carry your army across the sea to conquer.
+Supported seats for first release: 2, 3 or 6. Every existing pantheon is selectable in every seat. Do not introduce new heroes or creatures.
+Sizes: Huge for first release, radius25. Other sizes disabled until they pass the same capacity and naval tests.
+Default victory: hold_relic, 7 consecutive owner dawns using existing hold-site semantics and existing rival-elimination alternative. Elimination-only is also supported.
+Water target: 70–77% of non-void terrain. Reference:73.50%.
+Topology: six outer home-size islands, six small inner resource islands, one isolated central objective island. Water completely separates all thirteen.
+Pacing:
+- Opening: secure your own island's wood, stone and supplies. Your empty ship is accessible immediately, with no guard or payment required.
+- Expansion: choose an inner resource island or a clockwise/counterclockwise raid. Resources and neutral recruitment are distributed; the center is not the only worthwhile destination.
+- Conflict: conquer landing beaches and sail around a threatened route. Every capital has at least two separated viable landings.
+- Endgame: sail to and defend the central relic, or invade every rival island. No continent-wide land corridor ever appears.
+Seat assignment on the reference six-island ring: 6 uses slots0–5; 3 uses0,2,4; 2 uses0,3. Unused slots contain identically budgeted neutral opportunities, no player town, no free hero or starting ship. Two/three-player arrangements must remain symmetric under the relevant seat rotation. Randomize seat-to-island assignment deterministically.
+Central island: four separated legal landing clusters, an ordinary land path from each to the shrine and enough unoccupied space for disembarking. Existing shrine art and guardian creature pools. In elimination-only mode use the existing guarded central gold mine instead.
+Inner resource islands: mirror reward/guard budgets, not a mandatory ordered quest chain. One rare-resource mine or equal-value treasure site per island; optional habitat-valid neutral recruitment from existing content.
+Reference geometry: design/shattered_crown.topology.json and design/shattered_crown.layout.svg. Coordinates are centered axial; never confuse with tactical odd-r cells.
+
+2. THE SERPENT STRAITS
+ID: serpent_straits
+Selection summary: Rival harbors face a maze of island straits. Seize the inner passages or sail around the outer coast to land behind the enemy.
+Supported seats for first release: 2, human/AI or hot-seat, any pair of existing pantheons. This is deliberately a naval duel; do not advertise four/six-player support.
+Sizes: Huge, radius25 for first release.
+Default victory: elimination. Optional existing hold_relic with7 consecutive owner dawns on the isolated central island.
+Water target: 66–74%. Reference:69.81%.
+Topology: two large disconnected home islands, two long curved neutral islands separating inner and outer sailing routes, and one isolated central objective island.
+Pacing:
+- Opening: build your army on the home island and choose a clockwise or counterclockwise departure.
+- Expansion: land on either curved island for extra income, a watchtower or habitat-valid recruits. These are optional staging areas, not required keys.
+- Conflict: short inner passages make interception attractive; the longer outer sea stays open for flanking. Neither a single dock occupant nor a single ship can seal every route.
+- Endgame: invade from the forward beach, rear cove or side beach and attack the opposing coastal capital on land. There is no compulsory left-to-right sequence.
+At least three landing clusters per home island, two per curved island, three on the center. Inner shipping corridors at least2 water hexes wide; outer bypass at least3 except at actual coastline endpoints. Validate these after object placement.
+Gold/wood values and guardian budgets mirror180degrees between the two empires. Coastal forest/rock dressing varies visually without changing movement or reward budgets.
+Reference geometry: design/serpent_straits.topology.json and design/serpent_straits.layout.svg. The conceptual painting includes extra distant scenery; it is not an exact tactical chart.
+
+3. MAKING SHIPS NECESSARY, NOT JUST OPTIONAL
+Use normal sea movement and boarding rules from the naval kit. No water damage, weather simulation, sea monsters, cannons, new naval unit roster or additional currencies are required.
+- Every opposing capital is in another land-connected component.
+- The relic/central gold mine is also in a separate land component.
+- Disable portals for these templates, visibly locked in setup with reason “Ships connect these islands.” Force portals:false in validation as well; do not silently accept a persisted true value.
+- No sandbars, bridges, ferries, scripted relocation, sluices draining inter-island channels or portal quest rewards. No road repair may replace sea with land.
+- Audit adventure spells and movement powers. A hero may not cross water, target an undiscovered foreign island, teleport into an unvisited town across the sea or use a flying army to bypass embarking. Enable a scenario-level naval-only inter-island traversal rule rather than globally deleting spells. A legal recall to a previously visited friendly town can remain only if it cannot provide first access to a new island; document and test this carefully.
+- Allied units and AI must obey exactly the same traversal rules.
+- Elimination can still occur by an invading rival losing on your own shore; do not add an artificial “you must personally sail once” victory counter. The requirement is structural: no land-only way to reach and conquer rival holdings or claim the central victory site.
+- Revealed map changes information, never passability. Land caravans cannot cross these seas in this release.
+- A stationary ship can be attacked by a hostile occupied ship using the two-deck bridge battle. Troops must disembark before attacking a shore army/town; no ship-to-shore cannon system.
+
+4. STARTS, COASTS AND NO-SOFTLOCK RULES
+Starting hero, faction, army, wallet and town content follow current setup rules. Add one empty owner-associated ship per active player as a scenario grant, independent of StartWealth and never sold for gold.
+Place it adjacent to a legal reachable embark beach near the starting town, in the connected sea. No guard on the approach. Ship path must join both available outbound sea routes.
+Use the existing naval-kit ship purchase:1500Gold+10Wood at an owned coastal town, immediate placement in a free legal launch-water cell. No new shipyard building. Validate the actual town footprint has adjacent water and its normal gate remains land-reachable. The reference anchors are guides; adjust footprint-safe positions symmetrically in production.
+Each home island guarantees an accessible sawmill, quarry, early supplies, renewable town income, normal growth and a safe land path to embark. Replacement-ship wood comes from guaranteed renewable wood income, not a one-time chest. Preserve normal recruitment budgets.
+Give each owned coastal town at least two legal launch cells. If both occupied, show a reason; do not spawn a ship under another ship or delete blockers.
+At least two separated beach approaches per home island. A single opposing unit may occupy one beach but cannot permanently make the island unreachable while another beach is clear.
+Disembarking consumes remaining movement according to the naval rules; route estimates must include that. Save final destination across days and pause for transition confirmations or battles.
+Empty abandoned ships must not create unremovable naval walls: compatible boarding/ownership interaction or a legal alternative route is required. No free destroy-own-ship refunds.
+Optional unowned towns obey the normal none/own/other/both setting. Place equivalent budgets on remote islands; enlarge matching islands symmetrically if required. Fail validation if footprints, gates, sites and landing capacity cannot fit. Do not hide missing towns or duplicate them in both home and remote regions.
+
+5. RANDOMIZATION AND FAIRNESS
+These are seeded templates, not two fixed scenarios. Use the exact reference graphs as safe starting skeletons.
+Keep coast safety bands, capital zones, legal beaches, launch cells and sea corridors reserved. Apply bounded coast jitter to unreserved edges only, in the same rotation/reflection orbit. Revalidate all land and water connectivity after each candidate. Apply themed land tiles/decor, site variants, reward identities and guardian choices from catalog pools with equal budgets per player.
+Do not scale this dense topology blindly down to Small or Medium.
+Use independent RNG streams for terrain, content and decoration. Generator identity e.g. pr-naval-templates-1; include template, version, seed and all relevant settings in map hash/save. Leave legacy map seeds and SKIRMISH_NOISE_LABEL unchanged.
+Try at most32 deterministic candidate variants; if invalid, use the reference-shaped topology and rerun complete content placement checks. If those fail, return an explicit generation error; never silently carve a causeway, grant a teleport or return an invalid map.
+The stored graphs are baseline geometry only. Their sea connectivity and separated land components were tested, but the production randomized variants, footprints, AI and rules have not been implemented here.
+For symmetry, compare actual movement cost from gate to beach and first neutral opportunity; maximum difference1 hex at equal terrain. Match home usable land, resource/guardian budgets and accessible shoreline count. Random decorative trees must not add invisible collision.
+
+6. ART INSTALLATION
+Copy the four new files from:
+C:/Users/lazeb/Desktop/blannder_models/naval-random-maps-2026-10-17/assets
+to:
+C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/naval-random-v1
+Keep source masters in:
+C:/Users/lazeb/Desktop/pantheon_realms/assets-source/art/naval-random-v1
+Register IDs exactly as asset-manifest.json:
+frontend.random.shattered_crown -> shattered-crown-card.png
+frontend.random.serpent_straits -> serpent-straits-card.png
+random.shattered_crown.loading -> shattered-crown-loading.png
+random.serpent_straits.loading -> serpent-straits-loading.png
+Cards: random-map type chooser, selected-type summary, save/scenario thumbnail fallback. Loading art: generated-mission briefing/loading background for the matching type. Use object-fit:cover with centered focal point; add gradient and readable text in UI.
+Four paintings were generated with the built-in image generator. Keep native pixels. Actual dimensions and SHA256 are in asset-manifest.json; they are below the requested1920x1080 if the generator returns1672x941. Do not label them native1080p.
+Artwork illustrates the template; actual seed preview must come from generated terrain. Do not bake either painting onto the gameplay map or use it as pathfinding.
+Existing water, shoreline foam, land tiles, islands/rocks, trees, mines, towns, shrines and creature art cover gameplay. Use existing biome mapping: palms on warm sandy coasts, conifers on cool rocky coasts; no green forest trees scattered on pure sand. Distant rocks on paintings are decorative.
+Reuse shared ships/flags/wake and boarding battlefield from the previous naval kit. No new ship skins or unit sprites are needed for these two templates. Keep hero owner-color flags live; paintings are not their color source.
+The two SVG layouts are developer diagrams only, not UI paintings or runtime terrain.
+
+7. CODE INTEGRATION POINTS VERIFIED IN CURRENT CHECKOUT
+C:/Users/lazeb/Desktop/pantheon_realms/packages/mapgen/src/skirmish.ts
+Add the new types, entries, coast biome, constrained size/seat support, naval-aware layout/site generation and validation. The legacy archipelago intentionally carves sandbars and enables portals; do not reuse that branch unchanged. Existing reachability repair is land-oriented and must never bridge reserved sea for these types.
+C:/Users/lazeb/Desktop/pantheon_realms/packages/campaign/src/randomSkirmish.ts
+Expose new type support through current package exports and generated mission metadata. Do not bypass public package boundaries.
+C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/RandomSetup.tsx
+Current art lookup uses frontend.random.<typeId>. Add descriptions, Ships required tag, seat/size reasons, portal lock, dependency readiness and selected-type loading art. Persist and validate supported settings; do not silently change a user's player count.
+C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/MapEditor.tsx
+It also lists SKIRMISH_MAP_TYPES; do not allow it to produce a naval map unless export/import can preserve ship entities and naval rules. Explain disabled choices when necessary.
+C:/Users/lazeb/Desktop/pantheon_realms/docs/frontend-v1.1.0/random-map-types.json
+Append the two new type entries and IDs; do not replace existing nine.
+Inspect the live frontend art registry, generated scenario serializer, settings/schema validators, map checks and naval AI integration. Current source hashes are in design/source-audit.json.
+Gate new templates on navalMovementV1 readiness. Existing nine types and old saves remain unchanged. New maps carry the naval-only travel policy so reload cannot restore portals or land-only AI.
+No new faction, god, hero or creature definitions.
+
+8. ACCEPTANCE TESTS FOR CLAUDE
+- Generate at least100 seeds for each supported seat count, both victory modes and each treasure/wealth/guard setting through a covering matrix. Test optional neutral sites and all unowned-town settings separately. Record actual pass counts; do not claim the reference checks cover these.
+- No land flood from any home reaches another active home or center. Include spells, portals, ferry scripts and connectivity repair in the bypass audit.
+- All legal starting ship hexes reach all required landing-water clusters in the water graph. Verify full town footprint, inward gate, embark approach and launch adjacency after content placement.
+- Verify alternate routes: at least two internally vertex-disjoint sea paths between each start's outbound area and contested sea. Test that removing any one nonterminal ship tile cannot isolate a home from all invasion beaches. The included graph test merely checks water connectivity/minimum neighbor count, not this stronger guarantee.
+- Water ratio in target band after all generation stages; no hidden impassable decor on sailing routes.
+- AI must reserve funds/wood for replacements, embark, move over multiple days, attack another ship, disembark at another coast, capture towns and pursue the actual victory. Run headless complete matches, not only movement unit tests.
+- Test loading an embarked save, defeated ship, captured home harbor, blocked launch cells, route continuation, owner-colored flags, relic held/recaptured and a hero with a flying army.
+- Verify no imported custom-map schema drops ship or naval-policy data.
+- Preserve manual-only campaign combat policy from prior work. These random maps do not change campaign rules.
+- Actual-game screenshots: both chooser cards, selected descriptions, seed minimaps, ships at both starts, boarding battle and invasion of a distant capital.
+- Run normal typecheck, boundary lint, relevant rules/mapgen/UI tests and build. Report untested balance and every deviation.
+
+READY-TO-PASTE CLAUDE REQUEST
+Implement the two naval random-map templates described in C:/Users/lazeb/Desktop/blannder_models/naval-random-maps-2026-10-17/CLAUDE_HANDOFF.txt in the separate project C:/Users/lazeb/Desktop/pantheon_realms. Install the four paintings via asset-manifest.json. Use the reference topology graphs as design inputs, not importable game maps. Integrate with the previous naval kit; ships must be the only first-access travel between islands. Complete generation, validation, AI, save/load, setup and loading-screen wiring, then provide tests and actual game screenshots. Preserve existing map types and old seeds.
+

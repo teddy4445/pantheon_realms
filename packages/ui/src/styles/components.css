@@ -1415,3 +1415,154 @@ input[type='radio']:disabled {
 .sluice-dialog__picture > img { display: block; width: 100%; height: auto; pointer-events: none; }
 .sluice-dialog__text > p { margin: 0 0 0.5rem; }
 @media (max-width: 720px) { .sluice-dialog { grid-template-columns: 1fr; } .sluice-dialog__picture { max-width: 14rem; justify-self: center; } }
+/* ============================================================
+   City dedications (handoff §09, app 1.5.0): the temple medallion, the dedication pane
+   with its three illustrated rows and the god selection, the service-saving line, god
+   cards' empire blessing / city dedication split and the weekly "City blessings".
+   Existing pictures only; every state carries an icon and words, never colour alone.
+   ============================================================ */
+/* The medallion beside the temple (left/top set inline from the temple's placement). */
+.ded-medal { position: absolute; z-index: 35; transform: translate(-50%, -50%); width: 2.7rem; height: 2.7rem; min-width: 30px; min-height: 30px; padding: 0; border: 0; border-radius: 50%; background: none; cursor: var(--cur-pointer, pointer); }
+.ded-medal__face { display: block; width: 100%; height: 100%; overflow: hidden; border-radius: 50%; border: 2px solid var(--gold-400); background: radial-gradient(circle at 50% 35%, #25426a, #070e1a 80%); box-shadow: 0 0 0 1px rgba(5, 9, 15, 0.9), 0 0.25rem 0.6rem rgba(0, 0, 0, 0.6); }
+.ded-medal__face .portrait { width: 100% !important; height: 100% !important; }
+.ded-medal__face .god-ico { width: 100%; height: 100%; padding: 12%; }
+.ded-medal__badge { position: absolute; right: -0.3rem; bottom: -0.3rem; display: grid; place-items: center; width: 1.25rem; height: 1.25rem; min-width: 15px; min-height: 15px; border-radius: 50%; border: 1px solid var(--gold-400); background: #070e1a; color: var(--gold-200); }
+.ded-medal__badge svg { width: 70%; height: 70%; }
+.ded-medal.is-active .ded-medal__badge { color: var(--success); border-color: var(--success); }
+.ded-medal.is-dormant .ded-medal__face { filter: grayscale(0.85) brightness(0.7); border-color: var(--text-dim); }
+.ded-medal.is-pending .ded-medal__badge { color: var(--warning); border-color: var(--warning); }
+.ded-medal.is-none .ded-medal__face { border-style: dashed; }
+.ded-medal:hover .ded-medal__face { border-color: var(--gold-200); box-shadow: 0 0 0 1px rgba(5, 9, 15, 0.9), 0 0 0.8rem rgba(255, 226, 150, 0.75); }
+.ded-medal:focus-visible { outline: none; }
+.ded-medal:focus-visible .ded-medal__face { outline: 3px solid #fff1b0; outline-offset: 2px; }
+.ded-medal.is-sealed .ded-medal__face { animation: ded-seal-pulse 0.9s ease-out 1; }
+@keyframes ded-seal-pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 226, 150, 0.9); } 40% { transform: scale(1.18); box-shadow: 0 0 0 0.5rem rgba(255, 226, 150, 0.35); } 100% { transform: scale(1); box-shadow: 0 0 0 1px rgba(5, 9, 15, 0.9); } }
+@keyframes ded-stamp { 0% { opacity: 0; transform: scale(2.2) rotate(-20deg); } 60% { opacity: 1; transform: scale(0.92) rotate(4deg); } 100% { opacity: 1; transform: scale(1) rotate(0); } }
+:root[data-motion='reduced'] .ded-medal.is-sealed .ded-medal__face, :root[data-motion='reduced'] .ded-seal.is-sealed .portrait, :root[data-motion='reduced'] .ded-seal__stamp { animation: none; }
+@media (prefers-reduced-motion: reduce) { :root[data-motion='system'] .ded-medal.is-sealed .ded-medal__face, :root[data-motion='system'] .ded-seal.is-sealed .portrait, :root[data-motion='system'] .ded-seal__stamp { animation: none; } }
+/* Town economy bar: the weekly gift beside the daily income, always with "each week". */
+.town-hud__gift .num { font-weight: 700; color: var(--gold-100); }
+
+/* The pane: the god at the left over the town's own painting, the three rows at the right. */
+.ded-pane { display: grid; grid-template-columns: minmax(10rem, 13rem) minmax(0, 1fr); gap: 1rem; align-items: stretch; }
+.ded-pane__god { position: relative; display: flex; flex-direction: column; align-items: center; gap: 0.35rem; padding: 0.9rem 0.6rem; text-align: center; border: 1px solid rgba(194, 154, 82, 0.45); border-radius: var(--radius-m); background: linear-gradient(180deg, rgba(7, 14, 26, 0.55), rgba(7, 14, 26, 0.88)), var(--ded-bg, none) center / cover no-repeat, #0b1626; overflow: hidden; }
+.ded-pane__name { margin: 0.2rem 0 0; font-family: var(--font-display); font-size: 1.35rem; line-height: 1.15; color: var(--gold-200); overflow-wrap: anywhere; max-width: 100%; }
+.ded-pane__domain { font-family: var(--font-ui); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-400); overflow-wrap: anywhere; }
+.ded-seal { position: relative; display: inline-block; border-radius: 50%; box-shadow: 0 0 0 2px var(--gold-400), 0 0.4rem 1rem rgba(0, 0, 0, 0.6); }
+.ded-seal.is-sealed .portrait { animation: ded-seal-pulse 0.9s ease-out 1; }
+.ded-seal__empty { display: grid; place-items: center; width: 6.6rem; height: 6.6rem; border-radius: 50%; background: radial-gradient(circle at 50% 35%, #25426a, #070e1a 80%); }
+.ded-seal__empty .god-ico { width: 60%; height: 60%; }
+.ded-seal__stamp { position: absolute; right: -0.3rem; bottom: -0.2rem; width: 2.4rem; height: 2.4rem; animation: ded-stamp 0.7s ease-out both; }
+.ded-seal__stamp .god-ico { width: 100%; height: 100%; }
+.ded-pane__main { display: flex; flex-direction: column; gap: 0.55rem; min-width: 0; }
+.ded-eyebrow { font-family: var(--font-ui); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-400); }
+.ded-chip { display: inline-flex; align-items: center; gap: 0.3rem; }
+.ded-chip__icon { width: 0.95em; height: 0.95em; }
+.ded-chip.is-active { border-color: rgba(123, 184, 106, 0.7); color: #d6f0cc; }
+.ded-chip.is-dormant { border-color: rgba(165, 154, 128, 0.6); color: var(--text-dim); }
+.ded-chip.is-pending { border-color: rgba(224, 176, 80, 0.75); color: #f7e4b3; }
+.ded-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.45rem; }
+.ded-row { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.7rem; align-items: center; padding: 0.5rem 0.7rem; border: 1px solid rgba(194, 154, 82, 0.45); border-radius: var(--radius-m); background: linear-gradient(180deg, rgba(14, 27, 46, 0.92), rgba(7, 14, 26, 0.94)); }
+.ded-row.is-missing { border-style: dashed; }
+.ded-row__text { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
+.ded-row__title { font-weight: 700; font-size: 1.02rem; color: var(--gold-200); overflow-wrap: anywhere; }
+.ded-row__detail { font-size: 0.86rem; line-height: 1.3; color: var(--text-strong); }
+.ded-pic { display: grid; place-items: center; flex: none; border-radius: var(--radius-s); overflow: hidden; }
+.ded-pic--res svg { width: 88%; height: 88%; }
+.ded-pic--creature { border-radius: 50%; box-shadow: 0 0 0 1px rgba(194, 154, 82, 0.6); }
+.ded-pic--creature .portrait { width: 100% !important; height: 100% !important; }
+.ded-pic--building img, .ded-pic--building svg { width: 100%; height: 100%; object-fit: contain; }
+.ded-status { display: inline-flex; align-items: baseline; gap: 0.3rem; font-size: 0.82rem; }
+.ded-status.is-ok { color: #b9e3a8; }
+.ded-status.is-missing { color: #f0c28a; }
+.ded-status__icon { width: 0.95em; height: 0.95em; flex: none; align-self: center; }
+.ded-note { display: flex; align-items: center; gap: 0.35rem; margin: 0; padding: 0.4rem 0.6rem; border: 1px dashed rgba(224, 176, 80, 0.6); border-radius: var(--radius-s); color: #f0c28a; font-size: 0.86rem; }
+.ded-blocked { display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.6rem 0.7rem; border: 1px dashed rgba(224, 176, 80, 0.6); border-radius: var(--radius-m); background: rgba(7, 14, 26, 0.6); }
+.ded-blocked > .god-ico { width: 2.6rem; height: 2.6rem; }
+.ded-blocked p { margin: 0.3rem 0 0; }
+.ded-pending { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0.7rem; border: 1px solid rgba(224, 176, 80, 0.6); border-radius: var(--radius-m); background: rgba(60, 42, 10, 0.35); }
+
+/* Choosing a god: actionable cards, then the locked "Future choices". */
+.ded-choose { display: flex; flex-direction: column; gap: 0.6rem; }
+.ded-choose__lead { margin: 0; font-size: 0.92rem; color: var(--text-strong); }
+.ded-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(14.5rem, 1fr)); gap: 0.6rem; }
+.ded-card { display: flex; flex-direction: column; gap: 0.45rem; min-width: 0; padding: 0.6rem 0.7rem; border: 1px solid rgba(194, 154, 82, 0.55); border-radius: var(--radius-m); background: linear-gradient(180deg, rgba(17, 32, 54, 0.95), rgba(7, 14, 26, 0.96)); }
+.ded-card.is-active { border-color: var(--gold-300); box-shadow: 0 0 0 1px rgba(234, 208, 143, 0.35); }
+.ded-card__head { display: flex; align-items: center; gap: 0.6rem; min-width: 0; }
+.ded-card__who { display: flex; flex-direction: column; align-items: flex-start; gap: 0.15rem; min-width: 0; }
+.ded-card__name { font-family: var(--font-display); font-size: 1.12rem; line-height: 1.15; color: var(--gold-200); overflow-wrap: anywhere; }
+.ded-card__role { color: var(--text-dim); }
+.ded-card__go.btn { white-space: normal; overflow-wrap: anywhere; margin-top: auto; }
+.ded-card__reason { display: flex; align-items: center; gap: 0.3rem; margin: 0; color: #f0c28a; }
+.ded-mini { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.25rem; text-align: left; align-self: stretch; }
+.ded-mini__item { display: flex; align-items: center; gap: 0.45rem; min-width: 0; font-size: 0.86rem; line-height: 1.2; color: var(--text-strong); overflow-wrap: anywhere; }
+.ded-mini__item:focus-visible { outline: 2px solid var(--gold-300); outline-offset: 1px; border-radius: 2px; }
+.ded-future { padding-top: 0.4rem; border-top: 1px solid rgba(194, 154, 82, 0.3); }
+.ded-future__title { display: flex; align-items: center; gap: 0.35rem; margin: 0; font-family: var(--font-display); font-size: 1rem; color: var(--gold-300); }
+.ded-future p { margin: 0.15rem 0 0.4rem; }
+.ded-future__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 0.35rem 0.6rem; }
+.ded-future__item { display: flex; align-items: center; gap: 0.5rem; min-width: 0; padding: 0.25rem 0.4rem; border: 1px dashed rgba(165, 154, 128, 0.45); border-radius: var(--radius-s); background: rgba(7, 14, 26, 0.5); }
+.ded-future__item:focus-visible { outline: 2px solid var(--gold-300); outline-offset: 1px; }
+.ded-future__text { display: flex; flex-direction: column; min-width: 0; }
+.ded-future__name { font-weight: 700; color: var(--text-strong); overflow-wrap: anywhere; }
+.ded-future__reason { font-size: 0.8rem; color: var(--text-dim); }
+/* The confirmation's terms (current and replacement benefits). */
+.ded-terms { display: flex; flex-direction: column; gap: 0.5rem; margin: 0.4rem 0; }
+.ded-terms__block { padding: 0.4rem 0.55rem; border: 1px solid rgba(122, 90, 38, 0.45); border-radius: var(--radius-s); }
+.ded-terms__head { display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.3rem; font-weight: 700; }
+.ded-terms__cost { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; }
+.gui-surface--parchment .ded-mini__item { color: var(--text-ink); }
+
+/* The service saving of a quote: the god's portrait and the Gold it saves (normal and final price in words). */
+.ded-saving { display: flex; align-items: center; gap: 0.4rem; margin: 0.15rem 0; font-size: 0.84rem; line-height: 1.25; color: #d6f0cc; }
+.ded-saving .portrait { flex: none; }
+.ded-saving__text { min-width: 0; overflow-wrap: anywhere; }
+.ded-saving__price { color: var(--text-dim); font-weight: 400; }
+.gui-surface--parchment .ded-saving { color: #2f5a22; }
+.gui-surface--parchment .ded-saving__price { color: #5b4a33; }
+
+/* God cards with city dedications: "Empire blessing" apart from "Available city dedication". */
+.ded-god { display: flex; flex-direction: column; gap: 0.45rem; align-self: stretch; text-align: left; }
+.ded-god__part { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.35rem 0.45rem; border: 1px solid rgba(194, 154, 82, 0.3); border-radius: var(--radius-s); background: rgba(7, 14, 26, 0.35); }
+.ded-god__part .god-row { justify-content: flex-start; }
+.ded-god__title { margin: 0; font-family: var(--font-ui); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-400); }
+.ded-god__note { margin: 0; color: var(--text-dim); }
+.ded-only-cities { margin: 0; color: #f0c28a; }
+.ded-cities { list-style: none; margin: 0.2rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.2rem; }
+.ded-cities__item { display: flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; line-height: 1.25; color: var(--text-strong); }
+.ded-cities__item.is-blocked, .ded-cities__item.is-later { color: var(--text-dim); }
+.ded-cities__icon { width: 0.95em; height: 0.95em; flex: none; color: var(--gold-300); }
+.ded-cities__text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.ded-cities__after { color: var(--text-dim); }
+
+/* Weekly summary: one grouped "City blessings" section (no popup per city). */
+.ded-week { display: flex; flex-direction: column; gap: 0.35rem; margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid rgba(194, 154, 82, 0.3); }
+.ded-week:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.ded-week__title { display: flex; align-items: center; gap: 0.35rem; margin: 0; font-family: var(--font-display); font-size: 0.95rem; color: var(--gold-200); }
+.ded-week__title .god-ico { width: 1.2rem; height: 1.2rem; }
+.ded-week__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+.ded-week__item { display: flex; align-items: flex-start; gap: 0.45rem; font-size: 0.84rem; }
+.ded-week__item > .portrait { flex: none; }
+.ded-week__text { display: flex; flex-wrap: wrap; align-items: center; gap: 0.15rem 0.5rem; min-width: 0; }
+.ded-week__part { display: inline-flex; align-items: center; gap: 0.25rem; }
+.ded-week__part.is-missing { color: #f0c28a; }
+.ded-week__total { margin: 0; display: flex; align-items: center; gap: 0.4rem; }
+/* Encyclopedia and unit page: the gods whose city dedication favors a family (never a lock). */
+.codex-favored { display: flex; align-items: center; gap: 0.45rem; margin: 0.35rem 0 0; }
+.codex-favored__gods { display: inline-flex; flex: none; }
+.codex-favored__gods .portrait + .portrait { margin-left: -0.35rem; }
+.unit-favored { flex-wrap: wrap; align-items: center; gap: 0.4rem; }
+.codex-newgames { margin-top: 0.35rem; }
+.gui-surface--parchment .ded-god__part { background: rgba(255, 248, 230, 0.35); border-color: rgba(122, 90, 38, 0.45); }
+.gui-surface--parchment .ded-god__title { color: #6b4a1a; }
+.gui-surface--parchment .ded-god__note, .gui-surface--parchment .ded-cities__after { color: #5b4a33; }
+.gui-surface--parchment .ded-only-cities { color: #7a3d14; }
+.ded-pane__name.is-long { font-size: 1.15rem; }
+.ded-pane__name.is-very-long { font-size: 0.98rem; letter-spacing: 0; }
+.ded-card__name.is-long { font-size: 1rem; }
+.ded-card__name.is-very-long { font-size: 0.9rem; letter-spacing: 0; }
+.ded-week__res { width: 1.2rem; height: 1.2rem; }
+.ded-week__gift { font-weight: 700; color: var(--gold-100); }
+/* In the encyclopedia's parchment cards the notes keep the cards' small size. */
+.codex-card .ded-god__note, .codex-card .ded-only-cities { font-size: 0.8rem; line-height: 1.3; }
+.codex-card .ded-mini__item { font-size: 0.82rem; }

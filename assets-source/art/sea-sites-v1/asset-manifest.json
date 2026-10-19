@@ -1,0 +1,229 @@
+{
+  "runtimeRoot": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime",
+  "assets": [
+    {
+      "id": "seaSites.coastal.watchtower.warm",
+      "name": "Coastal Watchtower · Warm",
+      "file": "assets/coastal-watchtower-warm.png",
+      "runtimeFile": "sea-sites-v1/coastal-watchtower-warm.png",
+      "sourceAbsolute": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-04147b8a-f4a2-45a9-b6be-c04268993a85.png",
+      "width": 1254,
+      "height": 1254,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        0,
+        17,
+        1240,
+        1210
+      ],
+      "anchorNormalizedApprox": [
+        0.5,
+        0.96491
+      ],
+      "anchorNote": "Approximate base-center; tune to actual scene waterline/ground; alpha bounds include foam.",
+      "sha256": "6df52124bf9031a8fe6ec8c4710bbd1b79e98daf06fddec249d00aff3e0e7e4d",
+      "role": "map sprite",
+      "bakedAnimation": false,
+      "flagAnchorNormalizedApprox": [
+        0.56,
+        0.07
+      ]
+    },
+    {
+      "id": "seaSites.coastal.watchtower.cold",
+      "name": "Coastal Watchtower · Rocky",
+      "file": "assets/coastal-watchtower-cold.png",
+      "runtimeFile": "sea-sites-v1/coastal-watchtower-cold.png",
+      "sourceAbsolute": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-dca964df-ea6b-4ee8-b9e5-ff09c5db4e20.png",
+      "width": 1254,
+      "height": 1254,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        0,
+        0,
+        1236,
+        1254
+      ],
+      "anchorNormalizedApprox": [
+        0.5,
+        1.0
+      ],
+      "anchorNote": "Approximate base-center; tune to actual scene waterline/ground; alpha bounds include foam.",
+      "sha256": "b8aa2b024dfc5cc7efc9fd5a3e06c9f827665f709881c27dca58179ddee201bf",
+      "role": "map sprite",
+      "bakedAnimation": false,
+      "flagAnchorNormalizedApprox": [
+        0.56,
+        0.045
+      ]
+    },
+    {
+      "id": "seaSites.shipwreck.broken.mast",
+      "name": "Shipwreck · Broken Mast",
+      "file": "assets/shipwreck-broken-mast.png",
+      "runtimeFile": "sea-sites-v1/shipwreck-broken-mast.png",
+      "sourceAbsolute": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-b3a021a0-44a0-478a-b6f0-01d173f899c3.png",
+      "width": 1254,
+      "height": 1254,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        0,
+        21,
+        1254,
+        1254
+      ],
+      "anchorNormalizedApprox": [
+        0.5,
+        1.0
+      ],
+      "anchorNote": "Approximate base-center; tune to actual scene waterline/ground; alpha bounds include foam.",
+      "sha256": "03fff7144f0934a40ce2f2ce5a2988cec48c7e760f2ab41b3f3bbecf3cbdfc4d",
+      "role": "map sprite",
+      "bakedAnimation": false
+    },
+    {
+      "id": "seaSites.shipwreck.split.hull",
+      "name": "Shipwreck · Split Hull",
+      "file": "assets/shipwreck-split-hull.png",
+      "runtimeFile": "sea-sites-v1/shipwreck-split-hull.png",
+      "sourceAbsolute": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-2fc3c856-e9e6-4285-bff5-6043460df7c3.png",
+      "width": 1254,
+      "height": 1254,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        0,
+        31,
+        1242,
+        1230
+      ],
+      "anchorNormalizedApprox": [
+        0.5,
+        0.98086
+      ],
+      "anchorNote": "Approximate base-center; tune to actual scene waterline/ground; alpha bounds include foam.",
+      "sha256": "fa98ea4d1c9783bea57ee5c9f62dc32dbbebaf1b75c2db24e6d8f7b6f240215e",
+      "role": "map sprite",
+      "bakedAnimation": false
+    },
+    {
+      "id": "seaSites.sea.pickup.wood",
+      "name": "Driftwood Bundle",
+      "file": "assets/sea-pickup-wood.png",
+      "runtimeFile": "sea-sites-v1/sea-pickup-wood.png",
+      "sourceAbsolute": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-cb23b8c4-efc1-4b26-ae80-db6f555c88dc.png",
+      "width": 1254,
+      "height": 1254,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        0,
+        32,
+        1238,
+        1254
+      ],
+      "anchorNormalizedApprox": [
+        0.5,
+        1.0
+      ],
+      "anchorNote": "Approximate base-center; tune to actual scene waterline/ground; alpha bounds include foam.",
+      "sha256": "ec8b903da507592eb972950fe2d6d3e9583d5dd05bd044bddfe6cfb34ef07678",
+      "role": "map sprite",
+      "bakedAnimation": false
+    },
+    {
+      "id": "seaSites.sea.pickup.stone",
+      "name": "Stone Cargo",
+      "file": "assets/sea-pickup-stone.png",
+      "runtimeFile": "sea-sites-v1/sea-pickup-stone.png",
+      "sourceAbsolute": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-de0bb5c3-1834-456b-898a-4a8161aa2f3f.png",
+      "width": 1254,
+      "height": 1254,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        0,
+        111,
+        1218,
+        1234
+      ],
+      "anchorNormalizedApprox": [
+        0.5,
+        0.98405
+      ],
+      "anchorNote": "Approximate base-center; tune to actual scene waterline/ground; alpha bounds include foam.",
+      "sha256": "7cb6974850729e7dcb878d0b1641616f65d06be1a6e1b4681af45e45db684bc7",
+      "role": "map sprite",
+      "bakedAnimation": false
+    },
+    {
+      "id": "seaSites.sea.pickup.gold",
+      "name": "Lost Treasury",
+      "file": "assets/sea-pickup-gold.png",
+      "runtimeFile": "sea-sites-v1/sea-pickup-gold.png",
+      "sourceAbsolute": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-d071c49e-4d13-49b3-a723-f20d1b534538.png",
+      "width": 1254,
+      "height": 1254,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        0,
+        23,
+        1236,
+        1254
+      ],
+      "anchorNormalizedApprox": [
+        0.5,
+        1.0
+      ],
+      "anchorNote": "Approximate base-center; tune to actual scene waterline/ground; alpha bounds include foam.",
+      "sha256": "2c8b05bfd85f4bca9e1ab3f12d37f8053b410abc6f5491f4237b8318b53f7555",
+      "role": "map sprite",
+      "bakedAnimation": false
+    },
+    {
+      "id": "seaSites.shipwreck.expedition.scene",
+      "name": "Shipwreck Expedition · Encounter Scene",
+      "file": "assets/shipwreck-expedition-scene.png",
+      "runtimeFile": "sea-sites-v1/shipwreck-expedition-scene.png",
+      "sourceAbsolute": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-ed8c9312-79c2-4cf7-befa-71863adb51bb.png",
+      "width": 1672,
+      "height": 941,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBoundsPixels": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "anchorNormalizedApprox": [
+        0.5,
+        1.0
+      ],
+      "anchorNote": "Approximate base-center; tune to actual scene waterline/ground; alpha bounds include foam.",
+      "sha256": "1d33fb9d74d28d5cd9c1670a09ac0c904e493ff21fc09c68f81537254ca3f5ac",
+      "role": "encounter illustration",
+      "bakedAnimation": false
+    }
+  ]
+}

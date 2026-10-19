@@ -1,8 +1,13 @@
+import { buildConfluenceCampaigns } from './campaign/confluence/campaigns';
 /**
  * ContentLoader + ContentRegistry: assembles all definitions into one indexed,
  * frozen ContentCatalog and validates it.
  */
+import { CITY_DEDICATION_POLICY, CITY_DEDICATION_PROFILES, CITY_MODE_GOD_SUMMARIES, CITY_SERVICE_RULES } from './common/cityDedications';
 import { buildGodPerks } from './common/godPerks';
+import { SCOUTING_INTEL_POLICY } from './common/scoutingIntel';
+import { CARAVAN_POLICY } from './common/caravans';
+import { SEA_SITE_POLICY } from './common/seaSites';
 import { PR_02_CANDIDATE, deepFreeze, type ContentCatalog, type VersionBundle } from '@pr/rules';
 import { ABILITIES } from './common/abilities';
 import { ARTIFACTS, HERO_CLASSES, SKILLS, SPELLS } from './common/heroesMagic';
@@ -11,6 +16,7 @@ import { GREEK_FAMILY_SPECS, buildFamilies } from './greek/creatures';
 import { GREEK_LORE } from './greek/lore';
 import { NEUTRAL_FAMILY_SPECS, NEUTRAL_LORE } from './common/neutrals';
 import { NEUTRAL_V2_ABILITIES, NEUTRAL_V2_FAMILY_SPECS, NEUTRAL_V2_LORE } from './common/neutralsV2';
+import { SEA_ABILITIES, SEA_FAMILY_SPECS, SEA_LORE } from './common/seaCreatures';
 import { GREEK_BUILDINGS, GREEK_TOWN } from './greek/town';
 import { GREEK_GODS, GREEK_HEROES, GREEK_PANTHEON } from './greek/pantheon';
 import { buildPantheonKit } from './pantheonKit';
@@ -32,6 +38,10 @@ import { CLIMATE_RULES } from './common/climates';
 import { AI_TEMPERAMENTS } from './common/temperaments';
 import { ARTIFACT_SETS, DIFFICULTIES, DIVINE_GIFTS, EXPANDED_SKILLS, EXPANDED_SPELLS, INTERVENTIONS, MAP_EVENT_TEMPLATES, SET_ARTIFACTS, WEEKLY_EVENTS } from './common/expanded';
 import { ARCANA_ARTIFACTS, ARCANA_SETS, ARCANA_SPELLS, EXISTING_LORE } from './common/arcana';
+import { MYTHIC_LIBRARY_SPELLS } from './common/mythicLibrary';
+import { MYTHIC_RELICS } from './common/mythicRelics';
+import { MYTHIC_BLESSINGS } from './common/mythicBlessings';
+import { withSpellSemantics } from './common/spellSemantics';
 import { validateCatalog } from './validation/validators';
 
 /** Merge the stories written for spells and artifacts that predate the Arcana library. */
@@ -67,8 +77,16 @@ export function buildCatalog(): ContentCatalog {
   const neutralV2 = buildFamilies(NEUTRAL_V2_FAMILY_SPECS, { source: 'proposed-this-build', note: 'Campaign expansion kit 2026-10-15, neutral-content.json; candidate values, unplaytested' });
   const kits = KIT_SPECS.map(buildPantheonKit);
   const pantheons = [GREEK_PANTHEON, NORSE_PANTHEON, ...kits.map((k) => k.pantheon)];
-  const creatureList = [...greek.creatures, ...norse.creatures, ...kits.flatMap((k) => k.creatures), ...neutral.creatures, ...neutralV2.creatures];
-  const creatureIndex = index(creatureList, 'creature');
+  // Five neutral sea families met only in sea encounters (sea-creature delivery 2026-10-17; proposed values, unplaytested).
+  const sea = buildFamilies(SEA_FAMILY_SPECS, { source: 'proposed-this-build', note: 'Sea-creature delivery 2026-10-17 (design/sea-creature-roster.json: movement, footprint, range); statistics, prices and growth proposed, unplaytested' });
+  const creatureList = [...greek.creatures, ...norse.creatures, ...kits.flatMap((k) => k.creatures), ...neutral.creatures, ...neutralV2.creatures, ...sea.creatures];
+  // Authored biological tags for life/mind rules; never inferred by the rules from artwork.
+  const traitFamilies: Readonly<Record<string, readonly ('undead' | 'construct' | 'mind_immune')[]>> = {
+    norse_draugr: ['undead', 'mind_immune'], clay_golem: ['construct', 'mind_immune'],
+    egyptian_ushabti: ['construct', 'mind_immune'], egyptian_desert_colossus: ['construct', 'mind_immune'],
+    mesoamerican_stone_colossus: ['construct', 'mind_immune'],
+  };
+  const creatureIndex = index(creatureList.map((c) => traitFamilies[c.familyId] ? { ...c, traits: traitFamilies[c.familyId] } : c), 'creature');
   // The arc campaigns name troops in their objectives (names come from the creatures above).
   const arc = buildArcCampaigns((id) => creatureIndex[id], (id) => creatureIndex[id]?.familyId ?? id);
   // The Silent Oracle (built first) is listed second, right after the tutorial campaign (owner request 2026-10-14).
@@ -76,18 +94,19 @@ export function buildCatalog(): ContentCatalog {
   // Campaign content v2 (handoff 2026-10-15): chapters built from the v1 missions' economy and cast.
   const v1Missions = [...THREE_BEACONS_MISSIONS, ...WINTER_OATH_MISSIONS, ...arc.missions];
   const v2 = buildCampaignsV2(Object.fromEntries(v1Missions.map((m) => [m.id, m])), (id) => creatureIndex[id]);
-  const familyIndex = index([...greek.families, ...norse.families, ...kits.flatMap((k) => k.families), ...neutral.families, ...neutralV2.families], 'family');
-  const spellIndex = index(withLore([...SPELLS, ...EXPANDED_SPELLS, ...ARCANA_SPELLS]), 'spell');
+  const familyIndex = index([...greek.families, ...norse.families, ...kits.flatMap((k) => k.families), ...neutral.families, ...neutralV2.families, ...sea.families], 'family');
+  const spellIndex = index(withSpellSemantics(withLore([...SPELLS, ...EXPANDED_SPELLS, ...ARCANA_SPELLS, ...MYTHIC_LIBRARY_SPELLS])), 'spell');
   const godList = [...GREEK_GODS, ...NORSE_GODS, ...kits.flatMap((k) => k.gods)];
   const heroList = withSpecialties([...GREEK_HEROES, ...NORSE_HEROES, ...kits.flatMap((k) => k.heroes), ...ARC_CAMPAIGN_HEROES], { families: familyIndex, creatures: creatureIndex, spells: spellIndex });
+  const twins = buildConfluenceCampaigns(v1Missions, heroList, [...GREEK_BUILDINGS, ...NORSE_BUILDINGS, ...kits.flatMap((k) => k.buildings)]);
   const catalog: ContentCatalog = {
     versions: VERSIONS,
     rulesProfile: PR_02_CANDIDATE,
     pantheons: index(pantheons, 'pantheon'),
     families: familyIndex,
     creatures: creatureIndex,
-    abilities: index([...ABILITIES, ...NEUTRAL_V2_ABILITIES], 'ability'),
-    lore: index([...GREEK_LORE, ...NORSE_LORE, ...kits.flatMap((k) => k.lore), ...NEUTRAL_LORE, ...NEUTRAL_V2_LORE], 'lore'),
+    abilities: index([...ABILITIES, ...NEUTRAL_V2_ABILITIES, ...SEA_ABILITIES], 'ability'),
+    lore: index([...GREEK_LORE, ...NORSE_LORE, ...kits.flatMap((k) => k.lore), ...NEUTRAL_LORE, ...NEUTRAL_V2_LORE, ...SEA_LORE], 'lore'),
     buildings: index([...GREEK_BUILDINGS, ...NORSE_BUILDINGS, ...kits.flatMap((k) => k.buildings)], 'building'),
     townArchetypes: index([GREEK_TOWN, NORSE_TOWN, ...kits.map((k) => k.town)], 'town archetype'),
     gods: index(godList, 'god'),
@@ -96,19 +115,26 @@ export function buildCatalog(): ContentCatalog {
     heroClasses: index([...HERO_CLASSES, ...NORSE_HERO_CLASSES, ...kits.flatMap((k) => k.classes)], 'hero class'),
     skills: index([...SKILLS, ...EXPANDED_SKILLS], 'skill'),
     spells: spellIndex,
-    artifacts: index(withLore([...ARTIFACTS, ...SET_ARTIFACTS, ...ARCANA_ARTIFACTS]), 'artifact'),
+    artifacts: index(withLore([...ARTIFACTS, ...SET_ARTIFACTS, ...ARCANA_ARTIFACTS, ...MYTHIC_RELICS]), 'artifact'),
     artifactSets: index([...ARTIFACT_SETS, ...ARCANA_SETS], 'artifact set'),
     difficulties: index(DIFFICULTIES, 'difficulty'),
-    interventions: index(INTERVENTIONS, 'intervention'),
+    interventions: index([...INTERVENTIONS, ...MYTHIC_BLESSINGS], 'intervention'),
     divineGifts: index(DIVINE_GIFTS, 'divine gift'),
     climates: index(CLIMATE_RULES, 'climate rule'),
     aiTemperaments: index(AI_TEMPERAMENTS, 'AI temperament'),
     weeklyEvents: index(WEEKLY_EVENTS, 'weekly event'),
+    cityDedicationProfiles: Object.fromEntries(CITY_DEDICATION_PROFILES.map((p) => [p.godId, p])),
+    cityServiceRules: Object.fromEntries(CITY_SERVICE_RULES.map((r) => [r.id, r])) as ContentCatalog['cityServiceRules'],
+    cityDedicationPolicy: CITY_DEDICATION_POLICY,
+    cityModeGodSummaries: CITY_MODE_GOD_SUMMARIES,
+    scoutingIntelPolicy: SCOUTING_INTEL_POLICY,
+    caravanPolicy: CARAVAN_POLICY,
+    seaSitePolicy: SEA_SITE_POLICY,
     skirmishKits: Object.fromEntries(SKIRMISH_KITS.map((k) => [k.pantheonId, k])),
     mapEventTemplates: index(MAP_EVENT_TEMPLATES, 'map event'),
     entitlements: index([...ENTITLEMENTS, ...WINTER_OATH_ENTITLEMENTS, ...arc.entitlements], 'entitlement'),
-    campaigns: index([THREE_BEACONS, silentOracle!, WINTER_OATH, ...otherArcCampaigns, ...COMING_SOON_CAMPAIGNS].map((c) => withChapters(c, v2)), 'campaign'),
-    missions: index([...v1Missions, ...v2.missions, ...SKIRMISH_MISSIONS], 'mission'),
+    campaigns: index([THREE_BEACONS, silentOracle!, WINTER_OATH, ...otherArcCampaigns, ...COMING_SOON_CAMPAIGNS, ...twins.campaigns].map((c) => withChapters(c, v2)), 'campaign'),
+    missions: index([...v1Missions, ...v2.missions, ...twins.missions, ...SKIRMISH_MISSIONS], 'mission'),
     skirmishes: index(SKIRMISH_SCENARIOS, 'skirmish'),
     skirmishMaps: index(SKIRMISH_MAPS, 'skirmish map'),
     mapTemplates: index([...TEMPLATES, ...WINTER_OATH_TEMPLATES, ...arc.templates, ...SKIRMISH_TEMPLATES], 'map template'),

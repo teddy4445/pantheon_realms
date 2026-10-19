@@ -1,0 +1,617 @@
+[
+  {
+    "id": "icons-greek",
+    "kind": "icon-atlas",
+    "cols": 4,
+    "rows": 4,
+    "entries": [
+      {
+        "id": "relic2_ariadne_spool",
+        "name": "Ariadne's Guiding Spool",
+        "motif": "gold spool with a single luminous blue thread forming a small maze",
+        "cell": 0
+      },
+      {
+        "id": "relic2_aeolus_windbag",
+        "name": "Aeolus's Windbag",
+        "motif": "tied leather wind bag with three curling ivory gusts and gold clasp",
+        "cell": 1
+      },
+      {
+        "id": "relic2_orpheus_lyre",
+        "name": "Lyre of the Unbroken Song",
+        "motif": "small gold lyre with blue strings and a broken violet musical curl",
+        "cell": 2
+      },
+      {
+        "id": "relic2_golden_fleece_mantle",
+        "name": "Mantle of the Golden Fleece",
+        "motif": "golden ram fleece cuirass with curled ram horns and a blue chest clasp",
+        "cell": 3
+      },
+      {
+        "id": "relic2_hestia_hearthclasp",
+        "name": "Hestia's Hearthclasp",
+        "motif": "gold circular clasp enclosing a quiet amber hearth flame",
+        "cell": 4
+      },
+      {
+        "id": "relic2_talos_bronze_seal",
+        "name": "Talos's Bronze Seal",
+        "motif": "thick bronze ring with a glowing rivet and small shield silhouette",
+        "cell": 5
+      },
+      {
+        "id": "spell2_daedalus_passage",
+        "name": "Daedalus's Passage",
+        "motif": "gold feathered wing lifting a small blue sandal",
+        "cell": 6
+      },
+      {
+        "id": "spell2_siren_refrain",
+        "name": "Siren's Refrain",
+        "motif": "gold lyre sound waves curling around a silver arrow",
+        "cell": 7
+      },
+      {
+        "id": "spell2_oathbound_spear",
+        "name": "Oathbound Spear",
+        "motif": "gold spear crossed by a blue knotted oath ribbon",
+        "cell": 8
+      },
+      {
+        "id": "spell2_crossroads_omen",
+        "name": "Crossroads Omen",
+        "motif": "three bronze road arrows under a luminous owl eye",
+        "cell": 9
+      },
+      {
+        "id": "spell2_aeolian_tack",
+        "name": "Aeolian Tack",
+        "motif": "blue sail wrapped by a golden spiral gust",
+        "cell": 10
+      },
+      {
+        "id": "blessing2_athenas_order",
+        "name": "Athena's Ordered Ranks",
+        "motif": "gold owl above two blue formation shields",
+        "cell": 11
+      },
+      {
+        "id": "blessing2_poseidons_mooring",
+        "name": "Poseidon's Mooring",
+        "motif": "gold trident hooked into a turquoise anchor",
+        "cell": 12
+      }
+    ],
+    "prompt": "Use case: stylized-concept. Production game UI ICON ATLAS for Pantheon Realms, icons-greek. A square canvas with EXACTLY 4 columns and 4 rows of equal square cells, read left to right then top to bottom. Transparent RGBA background everywhere outside the objects. NO visible grid, borders, frames, words, labels or numbers. Each occupied cell holds ONE distinct isolated icon centered exactly in its cell, constrained within its central 70% width and height, generous fully transparent gutters. ALL icons same apparent size, readable at 64px: chunky clear silhouette, sophisticated hand-painted polished gold edges, dark navy recesses, restrained jewel colors, warm highlights, not photorealistic, not cartoon emoji, not noisy filigree. Style: Hellenic bronze, royal blue enamel, pale ivory, laurel and geometric accents. The icon designs in cell order are:\nCell 1 (1,1): Ariadne's Guiding Spool: gold spool with a single luminous blue thread forming a small maze.\nCell 2 (1,2): Aeolus's Windbag: tied leather wind bag with three curling ivory gusts and gold clasp.\nCell 3 (1,3): Lyre of the Unbroken Song: small gold lyre with blue strings and a broken violet musical curl.\nCell 4 (1,4): Mantle of the Golden Fleece: golden ram fleece cuirass with curled ram horns and a blue chest clasp.\nCell 5 (2,1): Hestia's Hearthclasp: gold circular clasp enclosing a quiet amber hearth flame.\nCell 6 (2,2): Talos's Bronze Seal: thick bronze ring with a glowing rivet and small shield silhouette.\nCell 7 (2,3): Daedalus's Passage: gold feathered wing lifting a small blue sandal.\nCell 8 (2,4): Siren's Refrain: gold lyre sound waves curling around a silver arrow.\nCell 9 (3,1): Oathbound Spear: gold spear crossed by a blue knotted oath ribbon.\nCell 10 (3,2): Crossroads Omen: three bronze road arrows under a luminous owl eye.\nCell 11 (3,3): Aeolian Tack: blue sail wrapped by a golden spiral gust.\nCell 12 (3,4): Athena's Ordered Ranks: gold owl above two blue formation shields.\nCell 13 (4,1): Poseidon's Mooring: gold trident hooked into a turquoise anchor.\nCell 14 completely EMPTY transparent.\nCell 15 completely EMPTY transparent.\nCell 16 completely EMPTY transparent.\nKeep every icon isolated, no connecting effects, no shared background, no drop shadow spreading into neighboring cells. Four by four regular alignment essential. Deliver a single native-resolution square atlas, ideally 2048x2048 or highest native size. Do not add text."
+  },
+  {
+    "id": "icons-norse",
+    "kind": "icon-atlas",
+    "cols": 4,
+    "rows": 4,
+    "entries": [
+      {
+        "id": "relic2_gleipnir_ribbon",
+        "name": "Gleipnir Ribbon",
+        "motif": "pale silk ribbon tied in an impossible knot with tiny gold rune ends",
+        "cell": 0
+      },
+      {
+        "id": "relic2_svalinn_shield",
+        "name": "Shard-Shield of Svalinn",
+        "motif": "ice-blue round shield with gold sun half hidden behind rim",
+        "cell": 1
+      },
+      {
+        "id": "relic2_mimir_cup",
+        "name": "Cup of Mimir's Counsel",
+        "motif": "small silver cup pendant holding a luminous blue droplet",
+        "cell": 2
+      },
+      {
+        "id": "relic2_skidbladnir_keel",
+        "name": "Folded Keel of Skidbladnir",
+        "motif": "miniature folded wooden longship attached to a leather saddle strap",
+        "cell": 3
+      },
+      {
+        "id": "relic2_idunn_apple_clasp",
+        "name": "Idunn's Apple Clasp",
+        "motif": "gold ring holding a single red-gold apple with one green leaf",
+        "cell": 4
+      },
+      {
+        "id": "relic2_skadi_huntbow",
+        "name": "Skadi's Huntbow",
+        "motif": "silver recurved bow with snowy antler tips and a single blue arrow",
+        "cell": 5
+      },
+      {
+        "id": "spell2_frost_threshold",
+        "name": "Frost-Rune Threshold",
+        "motif": "three blue frost runes on a cracked silver threshold",
+        "cell": 6
+      },
+      {
+        "id": "spell2_ravens_exchange",
+        "name": "Ravens' Exchange",
+        "motif": "two silver ravens circling opposite blue arrows",
+        "cell": 7
+      },
+      {
+        "id": "spell2_runes_refusal",
+        "name": "Runes of Refusal",
+        "motif": "gold rune tablet inside a blue broken curse ring",
+        "cell": 8
+      },
+      {
+        "id": "spell2_njords_sounding",
+        "name": "Njord's Sounding",
+        "motif": "silver sounding weight hanging above three turquoise water rings",
+        "cell": 9
+      },
+      {
+        "id": "spell2_skalds_camp",
+        "name": "Skald's Quiet Camp",
+        "motif": "small gold harp beside a blue campfire and folded cloak",
+        "cell": 10
+      },
+      {
+        "id": "blessing2_tyrs_equal_ground",
+        "name": "Tyr's Equal Ground",
+        "motif": "silver balanced sword over a gold rune circle",
+        "cell": 11
+      },
+      {
+        "id": "blessing2_friggs_watched_return",
+        "name": "Frigg's Watched Return",
+        "motif": "gold spindle with protective pale blue thread",
+        "cell": 12
+      }
+    ],
+    "prompt": "Use case: stylized-concept. Production game UI ICON ATLAS for Pantheon Realms, icons-norse. A square canvas with EXACTLY 4 columns and 4 rows of equal square cells, read left to right then top to bottom. Transparent RGBA background everywhere outside the objects. NO visible grid, borders, frames, words, labels or numbers. Each occupied cell holds ONE distinct isolated icon centered exactly in its cell, constrained within its central 70% width and height, generous fully transparent gutters. ALL icons same apparent size, readable at 64px: chunky clear silhouette, sophisticated hand-painted polished gold edges, dark navy recesses, restrained jewel colors, warm highlights, not photorealistic, not cartoon emoji, not noisy filigree. Style: Nordic gold and steel, icy blue enamel, carved knots, rune-like ornament. The icon designs in cell order are:\nCell 1 (1,1): Gleipnir Ribbon: pale silk ribbon tied in an impossible knot with tiny gold rune ends.\nCell 2 (1,2): Shard-Shield of Svalinn: ice-blue round shield with gold sun half hidden behind rim.\nCell 3 (1,3): Cup of Mimir's Counsel: small silver cup pendant holding a luminous blue droplet.\nCell 4 (1,4): Folded Keel of Skidbladnir: miniature folded wooden longship attached to a leather saddle strap.\nCell 5 (2,1): Idunn's Apple Clasp: gold ring holding a single red-gold apple with one green leaf.\nCell 6 (2,2): Skadi's Huntbow: silver recurved bow with snowy antler tips and a single blue arrow.\nCell 7 (2,3): Frost-Rune Threshold: three blue frost runes on a cracked silver threshold.\nCell 8 (2,4): Ravens' Exchange: two silver ravens circling opposite blue arrows.\nCell 9 (3,1): Runes of Refusal: gold rune tablet inside a blue broken curse ring.\nCell 10 (3,2): Njord's Sounding: silver sounding weight hanging above three turquoise water rings.\nCell 11 (3,3): Skald's Quiet Camp: small gold harp beside a blue campfire and folded cloak.\nCell 12 (3,4): Tyr's Equal Ground: silver balanced sword over a gold rune circle.\nCell 13 (4,1): Frigg's Watched Return: gold spindle with protective pale blue thread.\nCell 14 completely EMPTY transparent.\nCell 15 completely EMPTY transparent.\nCell 16 completely EMPTY transparent.\nKeep every icon isolated, no connecting effects, no shared background, no drop shadow spreading into neighboring cells. Four by four regular alignment essential. Deliver a single native-resolution square atlas, ideally 2048x2048 or highest native size. Do not add text."
+  },
+  {
+    "id": "icons-egyptian",
+    "kind": "icon-atlas",
+    "cols": 4,
+    "rows": 4,
+    "entries": [
+      {
+        "id": "relic2_isis_tyet",
+        "name": "Tyet of the Shelterer",
+        "motif": "red jasper tyet knot suspended from a fine gold chain",
+        "cell": 0
+      },
+      {
+        "id": "relic2_wepwawet_sandals",
+        "name": "Sandals of the Opener",
+        "motif": "sand-colored sandals with small gold jackal clasps",
+        "cell": 1
+      },
+      {
+        "id": "relic2_thoth_inkwell",
+        "name": "Thoth's Ibis Inkwell",
+        "motif": "lapis inkwell shaped as an ibis with a gold reed pen",
+        "cell": 2
+      },
+      {
+        "id": "relic2_hathor_sistrum",
+        "name": "Sistrum of Clear Hearts",
+        "motif": "gold horseshoe sistrum with turquoise bars and cow-ear ornament",
+        "cell": 3
+      },
+      {
+        "id": "relic2_anubis_canopic_seal",
+        "name": "Canopic Seal of Anubis",
+        "motif": "black jackal signet ring over a small sealed gold vessel",
+        "cell": 4
+      },
+      {
+        "id": "relic2_nut_starweave",
+        "name": "Starweave of Nut",
+        "motif": "deep navy cape filled with a few large gold stars and arched gold collar",
+        "cell": 5
+      },
+      {
+        "id": "spell2_feathers_verdict",
+        "name": "Feather's Verdict",
+        "motif": "white feather balanced against a gold sword on small scales",
+        "cell": 6
+      },
+      {
+        "id": "spell2_door_duat",
+        "name": "Door of the Duat",
+        "motif": "gold funerary doorway with a blue spirit stepping through",
+        "cell": 7
+      },
+      {
+        "id": "spell2_sand_silence",
+        "name": "Sand of Silence",
+        "motif": "lapis mouth seal crossed by a fine stream of gold sand",
+        "cell": 8
+      },
+      {
+        "id": "spell2_scribes_survey",
+        "name": "Scribe's Survey",
+        "motif": "gold reed pen drawing three large resource marks on pale papyrus",
+        "cell": 9
+      },
+      {
+        "id": "spell2_silt_to_stone",
+        "name": "Silt to Stone",
+        "motif": "small gold paving stones rising from a blue silt swirl",
+        "cell": 10
+      },
+      {
+        "id": "blessing2_thoths_reckoning",
+        "name": "Thoth's Reckoning",
+        "motif": "gold ibis nib marking a blue moon tablet",
+        "cell": 11
+      },
+      {
+        "id": "blessing2_sobeks_river_oath",
+        "name": "Sobek's River Oath",
+        "motif": "gold crocodile head over three turquoise waves",
+        "cell": 12
+      }
+    ],
+    "prompt": "Use case: stylized-concept. Production game UI ICON ATLAS for Pantheon Realms, icons-egyptian. A square canvas with EXACTLY 4 columns and 4 rows of equal square cells, read left to right then top to bottom. Transparent RGBA background everywhere outside the objects. NO visible grid, borders, frames, words, labels or numbers. Each occupied cell holds ONE distinct isolated icon centered exactly in its cell, constrained within its central 70% width and height, generous fully transparent gutters. ALL icons same apparent size, readable at 64px: chunky clear silhouette, sophisticated hand-painted polished gold edges, dark navy recesses, restrained jewel colors, warm highlights, not photorealistic, not cartoon emoji, not noisy filigree. Style: Egyptian gold, lapis lazuli, turquoise, ivory and bold sacred geometry. The icon designs in cell order are:\nCell 1 (1,1): Tyet of the Shelterer: red jasper tyet knot suspended from a fine gold chain.\nCell 2 (1,2): Sandals of the Opener: sand-colored sandals with small gold jackal clasps.\nCell 3 (1,3): Thoth's Ibis Inkwell: lapis inkwell shaped as an ibis with a gold reed pen.\nCell 4 (1,4): Sistrum of Clear Hearts: gold horseshoe sistrum with turquoise bars and cow-ear ornament.\nCell 5 (2,1): Canopic Seal of Anubis: black jackal signet ring over a small sealed gold vessel.\nCell 6 (2,2): Starweave of Nut: deep navy cape filled with a few large gold stars and arched gold collar.\nCell 7 (2,3): Feather's Verdict: white feather balanced against a gold sword on small scales.\nCell 8 (2,4): Door of the Duat: gold funerary doorway with a blue spirit stepping through.\nCell 9 (3,1): Sand of Silence: lapis mouth seal crossed by a fine stream of gold sand.\nCell 10 (3,2): Scribe's Survey: gold reed pen drawing three large resource marks on pale papyrus.\nCell 11 (3,3): Silt to Stone: small gold paving stones rising from a blue silt swirl.\nCell 12 (3,4): Thoth's Reckoning: gold ibis nib marking a blue moon tablet.\nCell 13 (4,1): Sobek's River Oath: gold crocodile head over three turquoise waves.\nCell 14 completely EMPTY transparent.\nCell 15 completely EMPTY transparent.\nCell 16 completely EMPTY transparent.\nKeep every icon isolated, no connecting effects, no shared background, no drop shadow spreading into neighboring cells. Four by four regular alignment essential. Deliver a single native-resolution square atlas, ideally 2048x2048 or highest native size. Do not add text."
+  },
+  {
+    "id": "icons-japanese",
+    "kind": "icon-atlas",
+    "cols": 4,
+    "rows": 4,
+    "entries": [
+      {
+        "id": "relic2_hoori_tide_pearl",
+        "name": "Hoori's Ebbing Pearl",
+        "motif": "white pearl inside a jade wave-shaped ring",
+        "cell": 0
+      },
+      {
+        "id": "relic2_uzume_bells",
+        "name": "Bells of the Dawn Dancer",
+        "motif": "three gold kagura bells on a red ribbon with a tiny sun disk",
+        "cell": 1
+      },
+      {
+        "id": "relic2_inari_rice_key",
+        "name": "Inari's Rice-Key",
+        "motif": "gold fox-shaped key with one rice ear and red cord",
+        "cell": 2
+      },
+      {
+        "id": "relic2_hidesato_centipede_arrow",
+        "name": "Centipede-Breaker Arrow",
+        "motif": "single broad silver arrow piercing a curved bronze centipede plate",
+        "cell": 3
+      },
+      {
+        "id": "relic2_yomi_return_cord",
+        "name": "Cord of the Returning Shore",
+        "motif": "white shoulder sash with red cord and broken dark boundary stone",
+        "cell": 4
+      },
+      {
+        "id": "relic2_takemikazuchi_guard",
+        "name": "Thunder-Sword Guard",
+        "motif": "round gold tsuba with a bold blue lightning cutout",
+        "cell": 5
+      },
+      {
+        "id": "spell2_tide_pearl_turn",
+        "name": "Tide-Pearl Turn",
+        "motif": "white tide pearl with a turquoise wave and one gold directional chevron",
+        "cell": 6
+      },
+      {
+        "id": "spell2_paper_crane_ward",
+        "name": "Paper Crane Ward",
+        "motif": "white origami crane spreading wings around a small blue spark",
+        "cell": 7
+      },
+      {
+        "id": "spell2_uzumes_dawn",
+        "name": "Uzume's Dawn",
+        "motif": "gold kagura bells with red ribbons opening a dark sun circle",
+        "cell": 8
+      },
+      {
+        "id": "spell2_lantern_pilgrimage",
+        "name": "Lantern Pilgrimage",
+        "motif": "red lantern above a gold winding road leading to a tiny roof",
+        "cell": 9
+      },
+      {
+        "id": "spell2_foxfire_diversion",
+        "name": "Foxfire Diversion",
+        "motif": "three blue foxflames forming a gold fox-tail silhouette",
+        "cell": 10
+      },
+      {
+        "id": "blessing2_amaterasus_true_dawn",
+        "name": "Amaterasu's True Dawn",
+        "motif": "gold sun reflected in a bright white sacred mirror",
+        "cell": 11
+      },
+      {
+        "id": "blessing2_inari_guest_right",
+        "name": "Inari's Guest Right",
+        "motif": "two gold foxes flanking a rice bundle",
+        "cell": 12
+      }
+    ],
+    "prompt": "Use case: stylized-concept. Production game UI ICON ATLAS for Pantheon Realms, icons-japanese. A square canvas with EXACTLY 4 columns and 4 rows of equal square cells, read left to right then top to bottom. Transparent RGBA background everywhere outside the objects. NO visible grid, borders, frames, words, labels or numbers. Each occupied cell holds ONE distinct isolated icon centered exactly in its cell, constrained within its central 70% width and height, generous fully transparent gutters. ALL icons same apparent size, readable at 64px: chunky clear silhouette, sophisticated hand-painted polished gold edges, dark navy recesses, restrained jewel colors, warm highlights, not photorealistic, not cartoon emoji, not noisy filigree. Style: Japanese gold, vermilion lacquer, ivory paper, dark blue, refined shrine motifs. The icon designs in cell order are:\nCell 1 (1,1): Hoori's Ebbing Pearl: white pearl inside a jade wave-shaped ring.\nCell 2 (1,2): Bells of the Dawn Dancer: three gold kagura bells on a red ribbon with a tiny sun disk.\nCell 3 (1,3): Inari's Rice-Key: gold fox-shaped key with one rice ear and red cord.\nCell 4 (1,4): Centipede-Breaker Arrow: single broad silver arrow piercing a curved bronze centipede plate.\nCell 5 (2,1): Cord of the Returning Shore: white shoulder sash with red cord and broken dark boundary stone.\nCell 6 (2,2): Thunder-Sword Guard: round gold tsuba with a bold blue lightning cutout.\nCell 7 (2,3): Tide-Pearl Turn: white tide pearl with a turquoise wave and one gold directional chevron.\nCell 8 (2,4): Paper Crane Ward: white origami crane spreading wings around a small blue spark.\nCell 9 (3,1): Uzume's Dawn: gold kagura bells with red ribbons opening a dark sun circle.\nCell 10 (3,2): Lantern Pilgrimage: red lantern above a gold winding road leading to a tiny roof.\nCell 11 (3,3): Foxfire Diversion: three blue foxflames forming a gold fox-tail silhouette.\nCell 12 (3,4): Amaterasu's True Dawn: gold sun reflected in a bright white sacred mirror.\nCell 13 (4,1): Inari's Guest Right: two gold foxes flanking a rice bundle.\nCell 14 completely EMPTY transparent.\nCell 15 completely EMPTY transparent.\nCell 16 completely EMPTY transparent.\nKeep every icon isolated, no connecting effects, no shared background, no drop shadow spreading into neighboring cells. Four by four regular alignment essential. Deliver a single native-resolution square atlas, ideally 2048x2048 or highest native size. Do not add text."
+  },
+  {
+    "id": "icons-celtic",
+    "kind": "icon-atlas",
+    "cols": 4,
+    "rows": 4,
+    "entries": [
+      {
+        "id": "relic2_nuada_silver_bracer",
+        "name": "Nuada's Silver Bracer",
+        "motif": "silver articulated forearm bracer with a green knotwork gem",
+        "cell": 0
+      },
+      {
+        "id": "relic2_brans_voyage_brooch",
+        "name": "Brooch of Bran's Voyage",
+        "motif": "silver ship-shaped brooch with a white apple blossom",
+        "cell": 1
+      },
+      {
+        "id": "relic2_dian_cecht_needle",
+        "name": "Needle of the Wellspring",
+        "motif": "long gold needle with a green water droplet through its eye",
+        "cell": 2
+      },
+      {
+        "id": "relic2_rhiannon_bridle",
+        "name": "Rhiannon's Patient Bridle",
+        "motif": "white leather bridle with silver horse-head fittings",
+        "cell": 3
+      },
+      {
+        "id": "relic2_salmon_wisdom_pin",
+        "name": "Salmon-Wisdom Pin",
+        "motif": "small copper salmon circling a luminous hazelnut",
+        "cell": 4
+      },
+      {
+        "id": "relic2_morrigan_crowcloak",
+        "name": "Crowcloak of the Last Watch",
+        "motif": "black crow-feather cloak with a red clasp and silver edges",
+        "cell": 5
+      },
+      {
+        "id": "spell2_rowan_sanctuary",
+        "name": "Rowan Sanctuary",
+        "motif": "rowan branch with red berries surrounding three green glowing stones",
+        "cell": 6
+      },
+      {
+        "id": "spell2_hazels_recall",
+        "name": "Hazel's Recall",
+        "motif": "hazel branch beside two silver arrows returning to a quiver",
+        "cell": 7
+      },
+      {
+        "id": "spell2_briar_debt",
+        "name": "Briar Debt",
+        "motif": "green thorn coil wrapped around a gold shield with one red thorn",
+        "cell": 8
+      },
+      {
+        "id": "spell2_hares_borrowed_path",
+        "name": "Hare's Borrowed Path",
+        "motif": "silver hare leaping along three gold leaf footprints",
+        "cell": 9
+      },
+      {
+        "id": "spell2_well_remembering",
+        "name": "Well of Remembering",
+        "motif": "round stone well with a golden memory thread looping home",
+        "cell": 10
+      },
+      {
+        "id": "blessing2_brigids_unbroken_work",
+        "name": "Brigid's Unbroken Work",
+        "motif": "gold smith hammer over a teal shield and small wheel",
+        "cell": 11
+      },
+      {
+        "id": "blessing2_manannans_safe_landing",
+        "name": "Manannan's Safe Landing",
+        "motif": "gold boat touching an emerald crescent shore",
+        "cell": 12
+      }
+    ],
+    "prompt": "Use case: stylized-concept. Production game UI ICON ATLAS for Pantheon Realms, icons-celtic. A square canvas with EXACTLY 4 columns and 4 rows of equal square cells, read left to right then top to bottom. Transparent RGBA background everywhere outside the objects. NO visible grid, borders, frames, words, labels or numbers. Each occupied cell holds ONE distinct isolated icon centered exactly in its cell, constrained within its central 70% width and height, generous fully transparent gutters. ALL icons same apparent size, readable at 64px: chunky clear silhouette, sophisticated hand-painted polished gold edges, dark navy recesses, restrained jewel colors, warm highlights, not photorealistic, not cartoon emoji, not noisy filigree. Style: Celtic gold, forest green enamel, ivory, simple knotwork and natural forms. The icon designs in cell order are:\nCell 1 (1,1): Nuada's Silver Bracer: silver articulated forearm bracer with a green knotwork gem.\nCell 2 (1,2): Brooch of Bran's Voyage: silver ship-shaped brooch with a white apple blossom.\nCell 3 (1,3): Needle of the Wellspring: long gold needle with a green water droplet through its eye.\nCell 4 (1,4): Rhiannon's Patient Bridle: white leather bridle with silver horse-head fittings.\nCell 5 (2,1): Salmon-Wisdom Pin: small copper salmon circling a luminous hazelnut.\nCell 6 (2,2): Crowcloak of the Last Watch: black crow-feather cloak with a red clasp and silver edges.\nCell 7 (2,3): Rowan Sanctuary: rowan branch with red berries surrounding three green glowing stones.\nCell 8 (2,4): Hazel's Recall: hazel branch beside two silver arrows returning to a quiver.\nCell 9 (3,1): Briar Debt: green thorn coil wrapped around a gold shield with one red thorn.\nCell 10 (3,2): Hare's Borrowed Path: silver hare leaping along three gold leaf footprints.\nCell 11 (3,3): Well of Remembering: round stone well with a golden memory thread looping home.\nCell 12 (3,4): Brigid's Unbroken Work: gold smith hammer over a teal shield and small wheel.\nCell 13 (4,1): Manannan's Safe Landing: gold boat touching an emerald crescent shore.\nCell 14 completely EMPTY transparent.\nCell 15 completely EMPTY transparent.\nCell 16 completely EMPTY transparent.\nKeep every icon isolated, no connecting effects, no shared background, no drop shadow spreading into neighboring cells. Four by four regular alignment essential. Deliver a single native-resolution square atlas, ideally 2048x2048 or highest native size. Do not add text."
+  },
+  {
+    "id": "icons-mesoamerican",
+    "kind": "icon-atlas",
+    "cols": 4,
+    "rows": 4,
+    "entries": [
+      {
+        "id": "relic2_ehecatl_conch",
+        "name": "Ehecatl's Wind-Jewel",
+        "motif": "cut white conch cross-section pectoral with turquoise rim",
+        "cell": 0
+      },
+      {
+        "id": "relic2_xiuhcoatl_firebrand",
+        "name": "Xiuhcoatl Firebrand",
+        "motif": "turquoise serpent-shaped short blade with an orange flame edge",
+        "cell": 1
+      },
+      {
+        "id": "relic2_xolotl_guide_mask",
+        "name": "Xolotl's Guide-Mask",
+        "motif": "obsidian canine mask with turquoise eyes and a small gold path mark",
+        "cell": 2
+      },
+      {
+        "id": "relic2_chalchiuhtlicue_hem",
+        "name": "Jade-Hemmed Mantle",
+        "motif": "jade scale vest with a broad blue wave hem and gold edging",
+        "cell": 3
+      },
+      {
+        "id": "relic2_quetzal_seed_ring",
+        "name": "Ring of the Returning Maize",
+        "motif": "gold ring cradling one jade maize kernel and a red feather",
+        "cell": 4
+      },
+      {
+        "id": "relic2_mictlan_guide_lantern",
+        "name": "Lantern of Nine Crossings",
+        "motif": "small obsidian lantern with nine large gold studs and a blue flame",
+        "cell": 5
+      },
+      {
+        "id": "spell2_obsidian_eclipse",
+        "name": "Obsidian Eclipse",
+        "motif": "black obsidian sun disk surrounded by a turquoise eclipse rim",
+        "cell": 6
+      },
+      {
+        "id": "spell2_serpents_breath",
+        "name": "Feathered Serpent's Breath",
+        "motif": "turquoise feathered serpent exhaling three gold wind blades",
+        "cell": 7
+      },
+      {
+        "id": "spell2_xolotls_twin",
+        "name": "Xolotl's Pale Twin",
+        "motif": "two canine-profile masks one gold one translucent turquoise",
+        "cell": 8
+      },
+      {
+        "id": "spell2_ehecatls_boatcall",
+        "name": "Ehecatl's Boatcall",
+        "motif": "white cut-conch calling a small turquoise boat along a gold arc",
+        "cell": 9
+      },
+      {
+        "id": "spell2_maizebound_compact",
+        "name": "Maizebound Compact",
+        "motif": "gold maize ear clasped by two turquoise hands",
+        "cell": 10
+      },
+      {
+        "id": "blessing2_xolotls_faithful_shadow",
+        "name": "Xolotl's Faithful Shadow",
+        "motif": "gold canine silhouette mirrored in turquoise shadow",
+        "cell": 11
+      },
+      {
+        "id": "blessing2_chalchiuhtlicues_mercy",
+        "name": "Chalchiuhtlicue's Mercy",
+        "motif": "jade water skirt encircling an extinguished red ember",
+        "cell": 12
+      }
+    ],
+    "prompt": "Use case: stylized-concept. Production game UI ICON ATLAS for Pantheon Realms, icons-mesoamerican. A square canvas with EXACTLY 4 columns and 4 rows of equal square cells, read left to right then top to bottom. Transparent RGBA background everywhere outside the objects. NO visible grid, borders, frames, words, labels or numbers. Each occupied cell holds ONE distinct isolated icon centered exactly in its cell, constrained within its central 70% width and height, generous fully transparent gutters. ALL icons same apparent size, readable at 64px: chunky clear silhouette, sophisticated hand-painted polished gold edges, dark navy recesses, restrained jewel colors, warm highlights, not photorealistic, not cartoon emoji, not noisy filigree. Style: Mesoamerican gold, jade turquoise, red accents, stepped geometry and feathers. The icon designs in cell order are:\nCell 1 (1,1): Ehecatl's Wind-Jewel: cut white conch cross-section pectoral with turquoise rim.\nCell 2 (1,2): Xiuhcoatl Firebrand: turquoise serpent-shaped short blade with an orange flame edge.\nCell 3 (1,3): Xolotl's Guide-Mask: obsidian canine mask with turquoise eyes and a small gold path mark.\nCell 4 (1,4): Jade-Hemmed Mantle: jade scale vest with a broad blue wave hem and gold edging.\nCell 5 (2,1): Ring of the Returning Maize: gold ring cradling one jade maize kernel and a red feather.\nCell 6 (2,2): Lantern of Nine Crossings: small obsidian lantern with nine large gold studs and a blue flame.\nCell 7 (2,3): Obsidian Eclipse: black obsidian sun disk surrounded by a turquoise eclipse rim.\nCell 8 (2,4): Feathered Serpent's Breath: turquoise feathered serpent exhaling three gold wind blades.\nCell 9 (3,1): Xolotl's Pale Twin: two canine-profile masks one gold one translucent turquoise.\nCell 10 (3,2): Ehecatl's Boatcall: white cut-conch calling a small turquoise boat along a gold arc.\nCell 11 (3,3): Maizebound Compact: gold maize ear clasped by two turquoise hands.\nCell 12 (3,4): Xolotl's Faithful Shadow: gold canine silhouette mirrored in turquoise shadow.\nCell 13 (4,1): Chalchiuhtlicue's Mercy: jade water skirt encircling an extinguished red ember.\nCell 14 completely EMPTY transparent.\nCell 15 completely EMPTY transparent.\nCell 16 completely EMPTY transparent.\nKeep every icon isolated, no connecting effects, no shared background, no drop shadow spreading into neighboring cells. Four by four regular alignment essential. Deliver a single native-resolution square atlas, ideally 2048x2048 or highest native size. Do not add text."
+  },
+  {
+    "id": "icons-general",
+    "kind": "icon-atlas",
+    "cols": 4,
+    "rows": 4,
+    "entries": [
+      {
+        "id": "relic2_surveyors_astrolabe",
+        "name": "Surveyor's Broken Astrolabe",
+        "motif": "brass astrolabe with one cracked ring and a blue map needle",
+        "cell": 0
+      },
+      {
+        "id": "relic2_runebreaker_gauntlet",
+        "name": "Runebreaker Gauntlet",
+        "motif": "iron gauntlet crushing a glowing violet rune tile",
+        "cell": 1
+      },
+      {
+        "id": "relic2_pilgrim_mileboots",
+        "name": "Pilgrim's Mileboots",
+        "motif": "worn blue boots with gold milestones on the buckles",
+        "cell": 2
+      },
+      {
+        "id": "relic2_hourglass_reserve",
+        "name": "Hourglass of the Last Ember",
+        "motif": "gold hourglass with a small glowing ember in lower bulb",
+        "cell": 3
+      },
+      {
+        "id": "spell2_aether_step",
+        "name": "Aether Step",
+        "motif": "two silver bootprints linked by a violet arc",
+        "cell": 4
+      },
+      {
+        "id": "spell2_unweave",
+        "name": "Unweave",
+        "motif": "gold scissors cutting one bright violet magic knot",
+        "cell": 5
+      },
+      {
+        "id": "spell2_clear_mind",
+        "name": "Clear Mind",
+        "motif": "silver head silhouette with a violet chain opening",
+        "cell": 6
+      },
+      {
+        "id": "spell2_cinder_siphon",
+        "name": "Cinder Siphon",
+        "motif": "violet magic vial leaking three embers into an empty gold bowl",
+        "cell": 7
+      },
+      {
+        "id": "spell2_glass_bulwark",
+        "name": "Glass Bulwark",
+        "motif": "two translucent violet crystal slabs with gold bases",
+        "cell": 8
+      },
+      {
+        "id": "spell2_spellground",
+        "name": "Spellground",
+        "motif": "silver banishing circle breaking a violet spectral claw",
+        "cell": 9
+      },
+      {
+        "id": "spell2_second_guard",
+        "name": "Second Guard",
+        "motif": "gold shield with two silver returning arrow arcs",
+        "cell": 10
+      },
+      {
+        "id": "spell2_leyline_chart",
+        "name": "Leyline Chart",
+        "motif": "navy map with three violet stars joined by gold lines",
+        "cell": 11
+      },
+      {
+        "id": "spell2_road_mending",
+        "name": "Road Mending",
+        "motif": "gold mason hammer repairing a violet-lit stone road",
+        "cell": 12
+      },
+      {
+        "id": "spell2_courier_sigil",
+        "name": "Courier Sigil",
+        "motif": "gold sealed parcel inside two violet linked circles",
+        "cell": 13
+      }
+    ],
+    "prompt": "Use case: stylized-concept. Production game UI ICON ATLAS for Pantheon Realms, icons-general. A square canvas with EXACTLY 4 columns and 4 rows of equal square cells, read left to right then top to bottom. Transparent RGBA background everywhere outside the objects. NO visible grid, borders, frames, words, labels or numbers. Each occupied cell holds ONE distinct isolated icon centered exactly in its cell, constrained within its central 70% width and height, generous fully transparent gutters. ALL icons same apparent size, readable at 64px: chunky clear silhouette, sophisticated hand-painted polished gold edges, dark navy recesses, restrained jewel colors, warm highlights, not photorealistic, not cartoon emoji, not noisy filigree. Style: mythic gold, dark navy enamel, violet and turquoise magical accents. The icon designs in cell order are:\nCell 1 (1,1): Surveyor's Broken Astrolabe: brass astrolabe with one cracked ring and a blue map needle.\nCell 2 (1,2): Runebreaker Gauntlet: iron gauntlet crushing a glowing violet rune tile.\nCell 3 (1,3): Pilgrim's Mileboots: worn blue boots with gold milestones on the buckles.\nCell 4 (1,4): Hourglass of the Last Ember: gold hourglass with a small glowing ember in lower bulb.\nCell 5 (2,1): Aether Step: two silver bootprints linked by a violet arc.\nCell 6 (2,2): Unweave: gold scissors cutting one bright violet magic knot.\nCell 7 (2,3): Clear Mind: silver head silhouette with a violet chain opening.\nCell 8 (2,4): Cinder Siphon: violet magic vial leaking three embers into an empty gold bowl.\nCell 9 (3,1): Glass Bulwark: two translucent violet crystal slabs with gold bases.\nCell 10 (3,2): Spellground: silver banishing circle breaking a violet spectral claw.\nCell 11 (3,3): Second Guard: gold shield with two silver returning arrow arcs.\nCell 12 (3,4): Leyline Chart: navy map with three violet stars joined by gold lines.\nCell 13 (4,1): Road Mending: gold mason hammer repairing a violet-lit stone road.\nCell 14 (4,2): Courier Sigil: gold sealed parcel inside two violet linked circles.\nCell 15 completely EMPTY transparent.\nCell 16 completely EMPTY transparent.\nKeep every icon isolated, no connecting effects, no shared background, no drop shadow spreading into neighboring cells. Four by four regular alignment essential. Deliver a single native-resolution square atlas, ideally 2048x2048 or highest native size. Do not add text."
+  }
+]

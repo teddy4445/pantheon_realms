@@ -19,6 +19,7 @@ import type { ContentCatalog } from '../definitions/catalog';
 import type { MatchState, MissionTimerState } from '../state/match';
 import { reject, type RejectionCode, type Tx } from '../engine/tx';
 import { missionSite } from '../resolvers/world';
+import { heroShip, shipList } from '../resolvers/naval';
 import { scenarioMission } from '../resolvers/scenario';
 import { evaluateCondition, setFlag } from './quests';
 
@@ -52,13 +53,17 @@ export function evaluateTimers(tx: Tx): void {
       tx.emit({ kind: 'TimerStarted', timerId: def.id, label: def.label, deadlineDay: st.deadlineDay });
     }
     if (st.status !== 'running') continue;
+    if (def.holdWhile && !evaluateCondition(tx.catalog, tx.state, def.holdWhile)) {
+      st.startedDay = tx.state.day; st.deadlineDay = tx.state.day + def.days;
+      continue;
+    }
     if (evaluateCondition(tx.catalog, tx.state, def.metWhen)) {
       st.status = 'met';
       st.resolvedDay = tx.state.day;
       tx.emit({ kind: 'TimerResolved', timerId: def.id, met: true });
       continue;
     }
-    if (st.deadlineDay !== undefined && tx.state.day > st.deadlineDay) {
+    if (st.deadlineDay !== undefined && (def.expiresOnDeadline ? tx.state.day >= st.deadlineDay : tx.state.day > st.deadlineDay)) {
       st.status = 'expired';
       st.resolvedDay = tx.state.day;
       for (const f of def.onExpire.flags ?? []) setFlag(tx, f);
@@ -136,8 +141,14 @@ export function quoteSluice(catalog: ContentCatalog, state: MatchState, heroId: 
   const target = willOpen ? def.kind.openTerrain : def.kind.closedTerrain;
   if (catalog.rulesProfile.terrainCost[target] === null) {
     const cells = new Set(def.kind.channel.map(hexKey));
-    const stranded = Object.values(state.heroes).find((h) => h.status === 'active' && cells.has(hexKey(h.position)));
+    const stranded = Object.values(state.heroes).find((h) => h.status === 'active' && cells.has(hexKey(h.position)) && !heroShip(state, h.id));
     if (stranded) return fail('illegal_action', `${stranded.name} stands in the channel; the water would cut them off`);
+  }
+  // A ship in the channel would run aground if its water turned to land (navalMovementV1).
+  if (target !== 'water') {
+    const cells = new Set(def.kind.channel.map(hexKey));
+    const aground = shipList(state).find((s) => cells.has(hexKey(s.coord)));
+    if (aground) return fail('illegal_action', 'A ship lies in the channel; draining it would leave the ship aground');
   }
   return { legal: true, code: null, reason: null, willOpen, text };
 }

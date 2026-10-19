@@ -11,5 +11,7 @@ export * from './engineHost';
 export * from './tween';
 export * from './figure';
 export * from './adventure';
+export * from './ships';
 export * from './battle';
 export * from './viewer';
+export * from './seaSites';

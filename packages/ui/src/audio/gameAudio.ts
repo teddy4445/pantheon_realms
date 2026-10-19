@@ -19,7 +19,7 @@ import type { GameEvent } from '@pr/rules';
 import soundManifest from '../../../../assets-runtime/audio/manifest.json';
 import { battlePlaybackFactor, adventurePlaybackFactor, type Preferences } from '../app/preferences';
 import type { AppStore } from '../app/store';
-import { COMBAT_SOUNDS, MAGIC_SOUNDS, REQUIRED_SOUND_IDS, STINGERS, UI_SOUNDS, soundForCue, soundsForEvents, soundscapeFor, summaryCue } from './sounds';
+import { COMBAT_SOUNDS, MAGIC_SOUNDS, REQUIRED_SOUND_IDS, STINGERS, UI_SOUNDS, cueSound, soundsForEvents, soundscapeFor, summaryCue } from './sounds';
 
 export const SOUND_MANIFEST = soundManifest as SoundManifest;
 
@@ -213,9 +213,10 @@ export class GameAudio {
     }
   };
 
-  /** Battle scene playback cue (see BattleSceneController callbacks). */
+  /** Battle scene playback cue (see BattleSceneController callbacks); a missile's own sound may be cut at its `maxMs`. */
   battleCue(cue: BattleCue): void {
-    this.director.play(soundForCue(cue));
+    const s = cueSound(cue, (id) => this.director.has(id));
+    this.director.play(s.id, s.maxMs !== undefined ? { maxMs: s.maxMs } : {});
   }
 
   /** A sound that goes with something the interface shows (a page turned, a pop-up, a map miracle's light). */

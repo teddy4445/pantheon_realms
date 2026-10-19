@@ -228,7 +228,8 @@ function missionBase(ctx: ArcCampaignContext, n: number, kind: string, w: Missio
     victory: w.victory,
     debriefPolicy: ctx.debriefPolicy,
     signatureMechanics: true,
-    features: { expandedContent: true, heroSpecialties: true },
+    // City dedications (app 1.5.0): on for new runs of the arc campaigns (The Silent Oracle and the four others).
+    features: { expandedContent: true, heroSpecialties: true, cityDedicationsV1: true },
     heroHiringEnabled: false,
     heroHiringDisabledReason: ctx.hiringReason,
     protectedHeroFailure: true,

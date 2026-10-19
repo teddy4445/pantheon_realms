@@ -1,0 +1,94 @@
+{
+ "schema": "pantheon-realms-sea-creatures-1",
+ "notice": "Written by tools/assets/import_sea_creatures.py from the sea-creature delivery of 2026-10-17 (sources: assets-source/art/sea-creatures-v1). Relative paths only (sea-creatures-v1/...); portraits and the battlefield are read by packages/ui/src/assets/manifest.ts; the creature, effect, projectile and profile entries live in assets-runtime/sprites/manifest.json. Native pixels: never resized, alpha kept.",
+ "assets": {
+  "seacreatures.portrait.hippocampus": {
+   "file": "sea-creatures-v1/hippocampus-base.png",
+   "kind": "portrait",
+   "width": 1254,
+   "height": 1254,
+   "creatureId": "hippocampus",
+   "sha256": "1e5a065c5fde5a8b91f15356d8db490ca8d53ded65fde52d215757f434c59cd3"
+  },
+  "seacreatures.portrait.tempest_hippocampus": {
+   "file": "sea-creatures-v1/hippocampus-upgraded.png",
+   "kind": "portrait",
+   "width": 1254,
+   "height": 1254,
+   "creatureId": "tempest_hippocampus",
+   "sha256": "3dfd842349a48004df4a9b406172566d38ef087acc6341d783bae53721b872d1"
+  },
+  "seacreatures.portrait.cetus": {
+   "file": "sea-creatures-v1/cetus-base.png",
+   "kind": "portrait",
+   "width": 1254,
+   "height": 1254,
+   "creatureId": "cetus",
+   "sha256": "fa4648b4b2d2d6686a92600800c60dd9ad8294fe7e6ae825b42e8c081355eecf"
+  },
+  "seacreatures.portrait.crownfin_cetus": {
+   "file": "sea-creatures-v1/cetus-upgraded.png",
+   "kind": "portrait",
+   "width": 1254,
+   "height": 1254,
+   "creatureId": "crownfin_cetus",
+   "sha256": "330a897af63f80d101748e4949d62b275633d8f2043f5bddd13e3a9cd58b2bf9"
+  },
+  "seacreatures.portrait.hafgufa": {
+   "file": "sea-creatures-v1/hafgufa-base.png",
+   "kind": "portrait",
+   "width": 1254,
+   "height": 1254,
+   "creatureId": "hafgufa",
+   "sha256": "5eab9cae513fee756193165dbf19e732e2027feb038085e9209f8452f9a6abbe"
+  },
+  "seacreatures.portrait.abyssal_hafgufa": {
+   "file": "sea-creatures-v1/hafgufa-upgraded.png",
+   "kind": "portrait",
+   "width": 1254,
+   "height": 1254,
+   "creatureId": "abyssal_hafgufa",
+   "sha256": "fd27c511365189e0d57b2ddcb822922b3038ab8dad1e89c5ae20a9b900e3320b"
+  },
+  "seacreatures.portrait.isonade": {
+   "file": "sea-creatures-v1/isonade-base.png",
+   "kind": "portrait",
+   "width": 1254,
+   "height": 1254,
+   "creatureId": "isonade",
+   "sha256": "de7dadcb7559a3032e105224662c16db15cfc80cf3b37bd3462bf5f385997a2e"
+  },
+  "seacreatures.portrait.razorwake_isonade": {
+   "file": "sea-creatures-v1/isonade-upgraded.png",
+   "kind": "portrait",
+   "width": 1254,
+   "height": 1254,
+   "creatureId": "razorwake_isonade",
+   "sha256": "6bb37a431cbbd35a64a7c98a1b0ce46b223be44d0b74a74594f99f1d79012007"
+  },
+  "seacreatures.portrait.triton": {
+   "file": "sea-creatures-v1/triton-base.png",
+   "kind": "portrait",
+   "width": 1254,
+   "height": 1254,
+   "creatureId": "triton",
+   "sha256": "a0162995e6b17dd1002d36489b8fc5a58ee897c08b07aa970f48cf973e56813d"
+  },
+  "seacreatures.portrait.stormcaller_triton": {
+   "file": "sea-creatures-v1/triton-upgraded.png",
+   "kind": "portrait",
+   "width": 1254,
+   "height": 1254,
+   "creatureId": "stormcaller_triton",
+   "sha256": "f86806015f86b1d5701bfe474352438678f1281bdc425596cdeb9b0013c5a93d"
+  },
+  "seacreatures.battlefield.single-ship": {
+   "file": "sea-creatures-v1/single-ship-battlefield.png",
+   "kind": "battlefield",
+   "width": 1672,
+   "height": 941,
+   "layoutId": "single_ship_sea_encounter_v2",
+   "sha256": "58fbe4d4458a9e15c34d3d03ab288de7c3dbcbe0d232b0e6f944ac23af3f079c"
+  }
+ }
+}

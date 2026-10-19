@@ -1,0 +1,12 @@
+CITY DEDICATIONS — COMPLETE CLAUDE HANDOFF
+
+Open index.html for the visual reference and all 60 god profiles.
+Give Claude the entire folder/ZIP and CLAUDE_HANDOFF.txt.
+
+Prompt to Claude:
+Implement the city dedication design in C:/Users/lazeb/Desktop/blannder_models/divine-city-benefits-2026-10-17/CLAUDE_HANDOFF.txt in C:/Users/lazeb/Desktop/pantheon_realms.
+Read the full handoff and all design JSONs. Implement the 60 profiles, local weekly gifts/growth/services, source-aware replacement of old economic god benefits, UI, AI, save compatibility and tests. Reuse existing visual IDs from visual-reuse-manifest.json. Keep campaign battles manual-only. Report actual verification and any proposed-number changes.
+
+60 gods / 6 pantheons / 11 reusable service rule types.
+No new paintings required; existing art is included as portable reference copies.
+Game code has not been modified. Values require playtesting.

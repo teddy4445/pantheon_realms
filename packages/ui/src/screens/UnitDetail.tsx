@@ -26,7 +26,7 @@ import { familyForms } from '@pr/rules';
 import type { UnitViewerController, ViewerSpriteStatus } from '@pr/presentation';
 import { useStore } from '../app/context';
 import { Button, Panel, SectionTitle, Toggle } from '../components/kit';
-import { CreaturePortrait, Emblem } from '../components/art';
+import { CreaturePortrait, Emblem, GodPortrait } from '../components/art';
 import { CostList } from '../components/game';
 import { FrontendShell } from '../components/frontend';
 import { SceneViewport, type SceneFactory } from '../scene/SceneHost';
@@ -37,6 +37,8 @@ import { guiThemeFor, NEUTRAL_THEME, type FrameTheme } from '../assets/guiArt';
 import { adventureKitArt } from '../assets/manifest';
 import { adventureScene } from '../components/adventure';
 import { neutralFacts } from '../app/neutralCodex';
+import { isSeaCreature } from '../app/seaCreatures';
+import { blessingMode, godName, godsFavoringFamily } from '../app/dedication';
 
 const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
 
@@ -140,6 +142,11 @@ export function UnitDetailScreen() {
   const stats = def.stats;
   // An expansion neutral (campaign expansion 2026-10-15): its forms, the family's habitat and where it is hired (content data).
   const neutral = neutralFacts(catalog, def.id);
+  // A sea creature (2026-10-17) is met only at sea: no growth, no price on screen (it is never recruited).
+  const sea = isSeaCreature(catalog, def.id);
+  // City dedications (app 1.5.0): the gods whose city dedication adds to this family's stock (not in legacy games; never a lock).
+  const dedMode = blessingMode(store.session?.state);
+  const favoring = dedMode === 'legacy' || !fam ? [] : godsFavoringFamily(catalog, fam.id);
   const facts: { icon: IconName; label: string; value: ReactNode }[] = stats
     ? [
         { icon: 'attack', label: 'Attack', value: stats.attack },
@@ -147,7 +154,7 @@ export function UnitDetailScreen() {
         { icon: 'damage', label: 'Damage', value: `${stats.damageMin}–${stats.damageMax}` },
         { icon: 'hp', label: 'Health', value: stats.hp },
         { icon: 'speed', label: 'Speed', value: stats.speed },
-        neutral ? { icon: 'growth', label: 'Site stock', value: fam ? `${fam.baseGrowth} / week` : '—' } : { icon: 'growth', label: 'Growth', value: fam ? `${fam.baseGrowth} / week` : '—' },
+        ...(sea ? [] : [neutral ? { icon: 'growth' as IconName, label: 'Site stock', value: fam ? `${fam.baseGrowth} / week` : '—' } : { icon: 'growth' as IconName, label: 'Growth', value: fam ? `${fam.baseGrowth} / week` : '—' }]),
         ...(stats.shots > 0 ? [{ icon: 'shots' as IconName, label: 'Shots', value: stats.shots }] : []),
         ...(stats.shots > 0 && stats.range ? [{ icon: 'range' as IconName, label: 'Range', value: `${stats.range} hexes` }] : []),
       ]
@@ -226,8 +233,29 @@ export function UnitDetailScreen() {
             <p className="dim">Statistics are not designed for this preparation creature yet.</p>
           )}
           <div className="unit-facts">
-            <span className="unit-facts__label">Cost</span> {def.cost ? <CostList cost={def.cost} /> : <span className="dim">—</span>}
+            {sea ? (
+              <>
+                <span className="unit-facts__label">Encounters</span> <span data-testid="unit-sea-only">Met only at sea, when a ship sails into them; never recruited and never joins an army.</span>
+              </>
+            ) : (
+              <>
+                <span className="unit-facts__label">Cost</span> {def.cost ? <CostList cost={def.cost} /> : <span className="dim">—</span>}
+              </>
+            )}
           </div>
+          {favoring.length ? (
+            <div className="unit-facts unit-favored" data-testid="unit-favored">
+              <span className="unit-facts__label">City dedications</span>
+              <span className="codex-favored__gods" aria-hidden="true">
+                {favoring.map((g) => (
+                  <GodPortrait key={g} catalog={catalog} godId={g} size="1.5rem" />
+                ))}
+              </span>
+              <span className="small">
+                {dedMode === 'outside' ? 'In new games, cities' : 'Cities'} honoring {favoring.map((g) => godName(catalog, g)).join(' or ')} gain extra {fam?.name} each week (shared pool of both forms); recruited as usual wherever their dwelling stands.
+              </span>
+            </div>
+          ) : null}
           {neutral ? (
             <div className="ncx-unit" data-testid="unit-neutral">
               {neutral.singleForm ? (

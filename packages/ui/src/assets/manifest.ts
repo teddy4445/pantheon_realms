@@ -24,7 +24,12 @@ import heroPortraitPack from '../../../../assets-runtime/hero-portraits-complete
 import routeKitManifest from '../../../../assets-runtime/recruitment-route-v1/manifest.json';
 import campaignV2Manifest from '../../../../assets-runtime/campaign-v2/manifest.json';
 import battleFxUpgradesManifest from '../../../../assets-runtime/battle-fx-neutral-upgrades-v1/manifest.json';
-import { registerEnvironmentArt, registerRouteArt, registerSpriteManifest, type EnvironmentArt, type RouteMarkerId, type SpriteManifest } from '@pr/presentation/core';
+import expeditionManifest from '../../../../assets-runtime/expedition-v1/manifest.json';
+import navalRandomManifest from '../../../../assets-runtime/naval-random-v1/manifest.json';
+import seaSitesManifest from '../../../../assets-runtime/sea-sites-v1/manifest.json';
+import seaCreaturesManifest from '../../../../assets-runtime/sea-creatures-v1/manifest.json';
+import { expansionArt, twinSiteSprites, type AtlasRegion } from './expansionArt';
+import { registerEnvironmentArt, registerRouteArt, registerSpriteManifest, type EnvironmentArt, type RouteMarkerId, type SeaSiteArt, type SpriteManifest } from '@pr/presentation/core';
 
 export type AssetStatus = 'final' | 'placeholder' | 'procedural';
 
@@ -34,6 +39,8 @@ export interface AssetRecord {
   /** Relative URL (resolved against the app base) when a file exists. */
   readonly url: string | null;
   readonly provenance: string;
+  /** Native source rectangle; consumers must crop rather than show the full sheet. */
+  readonly atlas?: AtlasRegion;
 }
 
 interface ManifestFile {
@@ -111,6 +118,10 @@ const GATE_V3 = siegeGateV3 as unknown as { siege: SpriteManifest['siege'] };
 
 /** Story art by asset ID, with its size (null when not delivered). */
 export function resolveArt(id: string): StoryArtRecord | null {
+  const expansion = expansionArt(id);
+  if (expansion && (expansion.kind === 'briefing' || expansion.kind === 'background')) {
+    return { id, url: expansion.url, kind: id.startsWith('ending.') ? 'ending' : id.endsWith('.thumbnail') ? 'card' : id.endsWith('.cover') ? 'cover' : expansion.kind, width: expansion.width, height: expansion.height };
+  }
   const a = storyAsset(id);
   if (!a || a.kind === 'terrain' || a.kind === 'battlefield' || a.kind === 'sky') return null;
   return { id, url: `./${a.file}`, kind: a.kind, width: a.width, height: a.height, alphaBox: a.alphaBox, plaque: a.plaque };
@@ -155,7 +166,22 @@ export interface FrontendArt {
 }
 const FRONTEND = (frontendArtManifest as unknown as { assets: Record<string, { file: string; width: number; height: number; fit?: string; alt?: string; quietRegionNormalized?: number[] }> }).assets;
 
+/**
+ * Naval random-map art (2026-10-17, assets-runtime/naval-random-v1, `npm run naval-random:import`): the
+ * two type cards under `frontend.random.<typeId>` (so the chooser, the selected summary and the
+ * thumbnail fallback find them like the nine land types) and the two loading paintings
+ * `random.<typeId>.loading` (`navalRandomArt`). Native 1672 × 941, cover, centred; decorative only.
+ */
+const NAVAL_RANDOM = (navalRandomManifest as unknown as { assets: Record<string, { file: string; width: number; height: number; fit?: string; alt?: string }> }).assets;
+
+export function navalRandomArt(id: string): FrontendArt | null {
+  const a = NAVAL_RANDOM[id];
+  if (!a || !a.file || /^[a-z]:|^\/|^\\/i.test(a.file)) return null;
+  return { id, url: `./${a.file}`, width: a.width, height: a.height, fit: 'cover', alt: a.alt ?? '', quietRegion: null };
+}
+
 export function frontendArt(id: string): FrontendArt | null {
+  if (!FRONTEND[id] && NAVAL_RANDOM[id]) return navalRandomArt(id);
   const a = FRONTEND[id];
   if (!a || !a.file || /^[a-z]:|^\/|^\\/i.test(a.file)) return null;
   return { id, url: `./${a.file}`, width: a.width, height: a.height, fit: a.fit === 'contain' ? 'contain' : 'cover', alt: a.alt ?? '', quietRegion: (a.quietRegionNormalized as unknown as FrontendArt['quietRegion']) ?? null };
@@ -349,12 +375,138 @@ export function neutralUpgradeIds(): string[] {
   return Object.keys(BATTLE_FX.assets ?? {});
 }
 
+/**
+ * The expedition, naval & siege kit of 2026-10-17 (`assets-runtime/expedition-v1`,
+ * `npm run expedition:import`): 13 native pictures under their kit IDs — the neutral ship
+ * (`expedition.ship-e`, `-ne`, `-se`) and its wreck (`expedition.ship-wreck`), the caravan wagon
+ * (`expedition.wagon-e`, `-ne`, `-se`), the boarding battlefield (`expedition.boarding-battle`,
+ * native 1672 × 941), the unknown-army vignette (`expedition.scout-unknown`), the caravan
+ * dispatch and arrival paintings (`expedition.caravan-dispatch-art`, `-arrival-art`) and the
+ * damaged / destroyed catapult (`expedition.catapult-damaged`, `-destroyed`); three vector
+ * overlays (`expedition.overlay.flag-template`, `.wake`, `.destination-ring`) and the 28 controls
+ * (`expedition.icon.*`, drawn by the Icon component under their `iconName`). The ship, wagon and
+ * wreck also go to the sprite manifest's `mapTokens` (below). `visibleBounds` is the painted part
+ * as fractions [left, top, right, bottom]: size by what shows, not by the transparent margin.
+ * Relative paths only; the kit's reused IDs keep their existing registrations.
+ */
+export interface ExpeditionArt {
+  readonly id: string;
+  readonly url: string;
+  readonly width: number;
+  readonly height: number;
+  /** `map-token` | `battlefield` | `illustration` | `siege-variant` | `overlay` | `icon`. */
+  readonly kind: string;
+  readonly visibleBounds: readonly [number, number, number, number];
+  /** Ground contact point as fractions [x, y] (map tokens and siege variants). */
+  readonly groundAnchor: readonly [number, number] | null;
+  /** The kit's runtime display notes. */
+  readonly display: string | null;
+  /** Controls: the Icon name that draws this path. */
+  readonly iconName: string | null;
+}
+interface ExpeditionFile {
+  readonly assets: Record<string, { file: string; kind: string; width: number; height: number; visibleBounds?: number[]; groundAnchor?: number[]; display?: string; iconName?: string }>;
+  readonly mapTokens: Record<string, unknown>;
+}
+const EXPEDITION = expeditionManifest as unknown as ExpeditionFile;
+
+export function expeditionArt(id: string): ExpeditionArt | null {
+  const a = EXPEDITION.assets?.[id];
+  if (!a || !safeFile(a.file)) return null;
+  const b = a.visibleBounds;
+  const g = a.groundAnchor;
+  return {
+    id,
+    url: `./${a.file}`,
+    width: a.width,
+    height: a.height,
+    kind: a.kind,
+    visibleBounds: b?.length === 4 ? [b[0]!, b[1]!, b[2]!, b[3]!] : [0, 0, 1, 1],
+    groundAnchor: g?.length === 2 ? [g[0]!, g[1]!] : null,
+    display: a.display ?? null,
+    iconName: a.iconName ?? null,
+  };
+}
+
+export function expeditionIds(): string[] {
+  return Object.keys(EXPEDITION.assets ?? {});
+}
+
+/**
+ * Coastal sites and sea salvage (2026-10-18, `assets-runtime/sea-sites-v1`, `npm run sea-sites:import`): the seven
+ * native map sprites (`seaSites.coastal.watchtower.warm` / `.cold`, `seaSites.shipwreck.broken.mast` /
+ * `.split.hull`, `seaSites.sea.pickup.wood` / `.stone` / `.gold`) with their measured painted bounds, ground
+ * anchors, display sizes and the towers' flag mounts (presentation only), and the shipwreck expedition painting
+ * (`seaSites.shipwreck.expedition.scene`, 1672 × 941, panels only).
+ */
+interface SeaSitesFile {
+  readonly assets: Record<string, { file: string; kind: string; width: number; height: number; visibleBounds?: number[]; groundAnchor?: number[]; displayMeasure?: string; displayHexWidths?: number; flagAnchorApprox?: number[]; alt?: string }>;
+}
+const SEA_SITES = seaSitesManifest as unknown as SeaSitesFile;
+
+/** A sea-site map picture with its layout data (null: not a map sprite of the kit). */
+export function seaSiteArt(id: string): SeaSiteArt | null {
+  const a = SEA_SITES.assets?.[id];
+  if (!a || a.kind !== 'map-sprite' || !safeFile(a.file)) return null;
+  const b = a.visibleBounds;
+  const g = a.groundAnchor;
+  const f = a.flagAnchorApprox;
+  return {
+    url: `./${a.file}`,
+    width: a.width,
+    height: a.height,
+    visibleBounds: b?.length === 4 ? [b[0]!, b[1]!, b[2]!, b[3]!] : [0, 0, 1, 1],
+    groundAnchor: g?.length === 2 ? [g[0]!, g[1]!] : [0.5, 1],
+    measure: a.displayMeasure === 'height' ? 'height' : 'width',
+    hexWidths: a.displayHexWidths ?? 1,
+    flagAnchor: f?.length === 2 ? [f[0]!, f[1]!] : null,
+  };
+}
+
+/** The shipwreck expedition painting (wreck and reward panels; never a battlefield). */
+export function seaSitePainting(): { url: string; width: number; height: number; alt: string } | null {
+  const a = SEA_SITES.assets?.['seaSites.shipwreck.expedition.scene'];
+  if (!a || !safeFile(a.file)) return null;
+  return { url: `./${a.file}`, width: a.width, height: a.height, alt: a.alt ?? '' };
+}
+
+/**
+ * The sea-creature delivery of 2026-10-17 (`assets-runtime/sea-creatures-v1`, `npm run sea-creatures:import`):
+ * the ten native portraits (`seacreatures.portrait.<creatureId>`, opaque 1254 × 1254, for the encyclopedia,
+ * inspection and encounter cards) and the single-ship battlefield (`seacreatures.battlefield.single-ship`,
+ * 1672 × 941, contain-fitted). The creature atlases, impacts, projectiles and profiles are registered in the
+ * sprite manifest itself (merged by the importer). Relative paths only.
+ */
+interface SeaCreaturesFile {
+  readonly assets: Record<string, { file: string; kind: string; width: number; height: number; creatureId?: string; layoutId?: string }>;
+}
+const SEA_CREATURES = seaCreaturesManifest as unknown as SeaCreaturesFile;
+
+/** A sea-creature delivery picture (portrait or battlefield), or null. */
+export function seaCreatureArt(id: string): { id: string; url: string; width: number; height: number; kind: string } | null {
+  const a = SEA_CREATURES.assets?.[id];
+  if (!a || !safeFile(a.file)) return null;
+  return { id, url: `./${a.file}`, width: a.width, height: a.height, kind: a.kind };
+}
+
 const cache = new Map<string, AssetRecord>();
 
 export function resolveAsset(id: string): AssetRecord {
   const hit = cache.get(id);
   if (hit) return hit;
+  const expansion = expansionArt(id);
+  if (expansion) {
+    const rec: AssetRecord = { id, status: 'final', url: expansion.url, atlas: expansion.atlas, provenance: 'Approved native expansion artwork, October 2026' };
+    cache.set(id, rec);
+    return rec;
+  }
   let rec: AssetRecord;
+  const seaArt = id.startsWith('seacreatures.') ? seaCreatureArt(id) : null;
+  if (seaArt) {
+    rec = { id, status: 'final', url: seaArt.url, provenance: 'Sea-creature delivery 2026-10-17 (sea-creatures-v1)' };
+    cache.set(id, rec);
+    return rec;
+  }
   const fe = id.startsWith('frontend.') ? frontendArt(id) : null;
   if (fe) {
     rec = { id, status: 'final', url: fe.url, provenance: '1.1.0 pre-game art (frontend-v1.1.0)' };
@@ -382,6 +534,18 @@ export function resolveAsset(id: string): AssetRecord {
   const up = id.startsWith('neutralupgrade.') ? neutralUpgradeArt(id) : null;
   if (up) {
     rec = { id, status: 'final', url: up.url, provenance: 'Battle FX & neutral upgrades 2026-10-15 (battle-fx-neutral-upgrades-v1)' };
+    cache.set(id, rec);
+    return rec;
+  }
+  const sea = id.startsWith('seaSites.') ? SEA_SITES.assets?.[id] : undefined;
+  if (sea && safeFile(sea.file)) {
+    rec = { id, status: 'final', url: `./${sea.file}`, provenance: 'Coastal sites & sea salvage kit 2026-10-17 (sea-sites-v1)' };
+    cache.set(id, rec);
+    return rec;
+  }
+  const exp = id.startsWith('expedition.') ? expeditionArt(id) : null;
+  if (exp) {
+    rec = { id, status: 'final', url: exp.url, provenance: 'Expedition, naval & siege kit 2026-10-17 (expedition-v1)' };
     cache.set(id, rec);
     return rec;
   }
@@ -504,9 +668,13 @@ registerSpriteManifest(
     },
     projectiles: { ...(spriteManifestFile as unknown as SpriteManifest).projectiles, ...safeEntries<SpriteManifest['projectiles'][string]>(BATTLE_FX.projectiles) },
     effects: { ...(spriteManifestFile as unknown as SpriteManifest).effects, ...safeEntries<SpriteManifest['effects'][string]>(BATTLE_FX.effects) },
-    projectileProfiles: safeEntries<NonNullable<SpriteManifest['projectileProfiles']>[string]>(BATTLE_FX.projectileProfiles),
-    sites: { ...(spriteManifestFile as unknown as SpriteManifest).sites, ...safeEntries<SpriteManifest['sites'][string]>(CAMPAIGN_V2.sites) },
+    projectileProfiles: {
+      ...((spriteManifestFile as unknown as SpriteManifest).projectileProfiles ?? {}),
+      ...safeEntries<NonNullable<SpriteManifest['projectileProfiles']>[string]>(BATTLE_FX.projectileProfiles),
+    },
+    sites: { ...(spriteManifestFile as unknown as SpriteManifest).sites, ...safeEntries<SpriteManifest['sites'][string]>(CAMPAIGN_V2.sites), ...twinSiteSprites },
     siege: { ...(spriteManifestFile as unknown as SpriteManifest).siege, ...SIEGE_V2.siege, ...GATE_V3.siege },
+    mapTokens: safeEntries<NonNullable<SpriteManifest['mapTokens']>[string]>(EXPEDITION.mapTokens),
   },
   (file) => `./${file}`,
 );

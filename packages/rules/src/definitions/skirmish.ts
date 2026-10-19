@@ -64,6 +64,14 @@ export interface DifficultyDefinition {
 }
 
 export type InterventionEffectDefinition =
+  | { readonly type: 'library_formation_swap' }
+  | { readonly type: 'library_dawn_ward'; readonly durationRounds: number }
+  | { readonly type: 'library_element_barrier'; readonly hp: number; readonly durationRounds: number }
+  | { readonly type: 'library_guest_right' }
+  | { readonly type: 'library_ship_blessing'; readonly effect: 'mooring' | 'safe_landing'; readonly percent?: number }
+  | { readonly type: 'library_battle_status'; readonly status: 'retaliation_bonus' | 'last_creature_guard' | 'pierce_borrowed_defense' | 'faithful_shadow'; readonly amount: number; readonly durationRounds: number; readonly charges?: number; readonly wetBattleOnly?: boolean }
+  | { readonly type: 'library_spell_credit'; readonly amount: number; readonly durationRounds: number }
+  | { readonly type: 'library_engine_repair'; readonly heal: number; readonly barrier: number; readonly durationRounds: number }
   /** Adventure: every active hero of the player regains `percent`% of its daily movement. */
   | { readonly type: 'restore_movement'; readonly percent: number }
   /** Adventure: the chosen town gains `amount` recruits for every family of tier <= maxTier it houses. */
@@ -84,12 +92,15 @@ export type InterventionEffectDefinition =
  * most one intervention per world week (proposed this build).
  */
 export interface InterventionDefinition {
+  readonly scope?: import('./logic').ContentScope;
+  readonly requiredGodId?: string;
+  readonly consumesCommanderAction?: boolean;
   readonly id: string;
   readonly name: string;
   readonly summary: string;
   readonly favorCost: number;
   readonly context: 'adventure' | 'battle';
-  readonly target: 'none' | 'own_town' | 'enemy_stack';
+  readonly target: 'none' | 'own_town' | 'enemy_stack' | 'ally_stack' | 'own_hero';
   readonly effect: InterventionEffectDefinition;
   /** Offered only to these pantheons (omitted: every pantheon). */
   readonly pantheonIds?: readonly PantheonId[];

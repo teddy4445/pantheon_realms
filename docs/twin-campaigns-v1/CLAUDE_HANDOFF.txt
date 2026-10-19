@@ -1,0 +1,255 @@
+PANTHEON REALMS — TWO CAMPAIGNS, ONE CHANGING WORLD
+CLAUDE CODE IMPLEMENTATION HANDOFF
+Prepared 17 October 2026. Source project inspected: version 1.5.0.
+Delivery status: new artwork and implementation design prepared; game code was not changed.
+
+START HERE
+Implement the approved two seven-chapter campaigns:
+• When the Worlds Met — six individual discoveries immediately after the collision, then a six-hero coalition finale.
+• The Ashes of the Accord — return eighteen years later to the same geography, six regional wars and reconstruction stories, then a six-hero finale with an open ending.
+Reuse Alexios, Hervor, Seshet, Akane, Orla and Itzel. Preserve the existing six main pantheon campaigns and Three Beacons. All campaign combat involving a human side must remain manual.
+
+The original design files still carry a “proposal for discussion” status because they are preserved verbatim. The user has now approved their direction and requested this production pack. The detailed missions and world rules in those files are the content specification; numbers explicitly labelled tuning targets still require playtesting.
+
+1. FULL PATHS AND COPY PLAN
+This art/design workspace is a DIFFERENT PROJECT from the game.
+
+Delivery folder:
+C:/Users/lazeb/Desktop/blannder_models/twin-campaign-production-2026-10-17
+
+Target game:
+C:/Users/lazeb/Desktop/pantheon_realms
+
+Read in this order:
+1) This CLAUDE_HANDOFF.txt.
+2) design/CAMPAIGN_DESIGN.txt — complete approved story, all 14 chapter cards and finale structure.
+3) design/missions.json and design/design.json — structured authoring notes, NOT directly importable engine missions.
+4) chapter-art-bindings.json — exact campaign, chapter and art IDs.
+5) world-state-bindings.json — choices, landmark states and standalone defaults.
+6) asset-manifest.json and sprite-frames.json — measured native images and source rectangles.
+7) dependencies.json and bundled dependency handoffs — required naval mechanics/art.
+8) qa/file-validation.json and qa/browser-validation.json — delivery checks, not game acceptance.
+
+Copy the CONTENTS of:
+C:/Users/lazeb/Desktop/blannder_models/twin-campaign-production-2026-10-17/assets
+into:
+C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/twin-campaigns-v1
+
+Thus assets/story/p1-longship.png becomes:
+C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/twin-campaigns-v1/story/p1-longship.png
+
+Retain the original PNGs as source art under:
+C:/Users/lazeb/Desktop/pantheon_realms/assets-source/art/twin-campaigns-v1
+
+Copy the documents, design JSON, bindings, manifests and validation reports into:
+C:/Users/lazeb/Desktop/pantheon_realms/docs/twin-campaigns-v1
+
+Do not copy reference/original-*.png into the runtime; they are superseded spacing drafts. final-generation-records.json identifies the final generated sources. Do not load generation-prompts.json as an asset list. No installed project assets were overwritten during this delivery.
+
+2. WHAT IS NEW, AND WHAT IS REUSED
+30 new native PNGs:
+• 14 chapter paintings, one per mission.
+• 1 divine-council painting and 1 open-ending painting.
+• 7 transparent landmark sheets, six appearances each: 42 map states.
+• 6 war-damaged town backgrounds, one per pantheon.
+• 1 transparent ruined-town sheet: six town sprites.
+That is 48 atlas frames plus 22 standalone paintings/backgrounds. These are static appearances, NOT movement animations.
+
+Native dimensions:
+• Chapter/council/ending paintings: 1672 × 941.
+• Town backgrounds: 1448 × 1086, matching the existing L1 reference dimensions.
+• State sheets: 1536 × 1024.
+No upscaling or code-based raster retouching was used. They are not 4K images. The user has previously accepted native painting resolution with shortfalls documented. Keep originals and use normal runtime scaling; do not claim a higher native resolution.
+
+Existing protagonist/commander busts, campaign icons, parchment, sites, normal town backgrounds and naval art are reused. reuse-manifest.json lists verified source paths, bundled copies and hashes. Reuse existing registrations when already installed; do not create duplicates with different semantic IDs. New heroes, new god designs and new creature models are not required for these campaigns.
+
+3. CAMPAIGN AND ART REGISTRATION
+Use new campaign IDs worlds_met and ashes_accord. Proposed mission IDs are worlds_met_m01…m07 and ashes_accord_m01…m07. Keep old campaign and mission IDs unchanged. Adding fourteen to the inspected 37-chapter v2 roster yields 51 chapters; check the actual latest catalog before asserting that count in UI.
+
+Chapter order:
+P1 Greek / Alexios — The Ship in the Olive Grove
+P2 Norse / Hervor — A Warm Tide beneath the Ice
+P3 Egyptian / Seshet — The River That Forgot the Sea
+P4 Japanese / Akane — Lanterns on a Foreign Shore
+P5 Celtic / Orla — Roots beneath Foreign Stones
+P6 Mesoamerican / Itzel — The Night with Six Horizons
+P7 all six — The First Accord
+
+E1 Greek / Alexios — The Harbor We Once Saved
+E2 Norse / Hervor — Bread across the Broken Fjord
+E3 Egyptian / Seshet — The Price of the River
+E4 Celtic / Orla — The Ashes of the Living Arch
+E5 Japanese / Akane — The Fleet of Unlit Lanterns
+E6 Mesoamerican / Itzel — The Calendar of Scars
+E7 all six — The World We Leave Behind
+
+IMPORTANT: Japanese P4 pairs with E5; Celtic P5 pairs with E4. Do not pair solely by chapter number.
+
+Register briefing and thumbnail keys from chapter-art-bindings.json. Both can alias the same PNG. Cover worlds_met uses P7; cover ashes_accord uses E7. The council painting is the prologue epilogue, when the gods still fail to settle their disagreement. The distant coastline painting follows BOTH final settlements.
+
+Existing art manifests are generated by tools/assets/import_story_art.py. Extend the source-driven pipeline, or add a validated sidecar merge in the asset resolver. Do not make a hand-edited generated manifest the sole source of truth. Inspect packages/ui/src/assets/storyArt.ts, including its thumbnail-to-briefing and portrait-to-bust conventions, and explicit campaign epilogue art support.
+
+Chapter paintings are illustrations. Do not use them as the playable map, collision mask, unit-placement reference, or source of faction ownership. Counts of decorative pillars/flags within a painting are not objective counts. Draw text, timers, portraits, crests and choice buttons with the actual UI.
+
+4. SHARED WORLD AND LEVEL AUTHORING
+Implement the Confluence as ONE stable coast/elevation/river skeleton with a persistent event layer. The design's 192 × 144 hex envelope is an authoring proposal, not a verified performance requirement. Prototype travel density and loading first. Preserve the topology if reducing runtime size. Target roughly 35–40% water.
+
+Regions:
+north — Norse Broken Fjord / Frostwatch
+west — Greek Drowned Bell Coast / First Harbor
+southwest — Egyptian Three-Mouth Delta / Sunbank
+southeast — Mesoamerican Obsidian Horseshoe / Ember Quay
+east — Japanese Lantern Strait / Lantern Haven
+northeast — Celtic Living Arch / Hazel Ford
+center — Accord Isle, accessible by ship, with two landing beaches.
+
+Use the bundled master-map-schematic.png as a topology reference only. It is not a hex terrain export. Author actual terrain, roads, ports, landing cells, object footprints, guards and masks in the game's map schema. Existing region-map kit coordinates are authoring coordinates transformed to axial hexes; do not paste canvas pixels directly into axial positions.
+
+Each regional mission must provide:
+• A meaningful circuit, not a left-to-right corridor.
+• Two approaches to the main target.
+• One useful shortcut or a more costly alternate route.
+• Optional resource/dwelling exploration that returns to the main circuit.
+• Clearly labelled expedition boundaries; fog is not an impassable wall.
+• At least two valid landings and a recoverable ship source where sailing is mandatory.
+
+Use an active region mask, with known earlier regions accessible as dated chronicle views. Freeze inactive economies and enemies. Do not award weeks of hidden recruits or lose a former town while playing another hero. Only named ledger events may change a frozen region.
+
+Maintain stable landmark IDs and coordinates through both eras. Apply war damage as a local layer, not a new random map. Terrain changes must validate occupied cells, landing access, army legality and alternate routes before committing. Never destroy the only return route with a cosmetic event.
+
+5. PERSISTENCE AND THE SIX-HERO FINALES
+The inspected HeroCarryover in packages/campaign/src/missionFactory.ts does not itself represent six armies, towns, treasuries and fog snapshots. Extend the model deliberately.
+
+Snapshot per regional protagonist:
+hero definition and runtime state; army stacks/counts; owned towns and construction; reserve/recruitment stock; resources; owned ships and embark status; explored cells; persistent destination route; regional site/guard state; choices; consumed reward/event IDs.
+
+P7 restores all six prologue snapshots. E7 restores all six reconstruction snapshots. Do not reset E7 towns again. Do not silently overwrite five heroes with whichever hero finished most recently. Save chapter transition and merged finale atomically.
+
+Recommended coalition implementation:
+Keep six allied faction seats, all controlled by the same human, under one coalition command layer. Preserve each seat's pantheon, hero patrons and town services. Switching the selected hero must not rewrite ownership or religion. A shared treasury needs explicit, atomic cost/payment rules across those seats; do not fake it by only summing numbers in the UI. Present one consolidated coalition turn with a clearly labelled End Day that advances the world once; do not charge six days for six heroes.
+
+Use union fog for the active coalition only; do not reveal unreached future regions from hidden snapshots. Allow six hero tabs, next-hero navigation, town navigation, owner flags and “remaining movement” indicators. Preserve native-faction armies and existing morale rules.
+
+Disclose a one-time minimum army/garrison package before entering either finale so an attrition-heavy regional result remains playable. Optional choice benefits are bounded. Any carryover caps must be shown before chapter completion and apply to surplus resources/reserves as specified in the design, not secretly delete earned troops. Exact quantities and difficulty multipliers must be tuned through simulations AND manual playtests.
+
+Later-campaign veteran starting profiles are authored starting forces, not unrestricted imports of six endgame armies. Import story decisions separately. Offer an “Established chronicle” preset, show its choices, and permit selected completed-run imports. Never falsely mark the main campaigns complete. Missing optional flags cannot make a chapter unwinnable.
+
+6. STORY AND STATE DELIVERY
+Use the approved mission hook, story, objectives, choice, mark and ending fields. Each chapter opens with a skippable 20–40 second scene, then two short on-map revelations and a choice scene. Keep individual dialogue beats to roughly 2–5 lines; put longer explanations in a replayable journal.
+
+Use these existing hero IDs:
+alexios
+norse_hervor
+egyptian_seshet
+japanese_akane
+celtic_orla
+mesoamerican_itzel
+
+Use actual existing busts from reuse/heroes; do not replace them with tiny figures from paintings. Existing portraits are also used for gods speaking over the council painting. Divine visions, shrines and dialogue are allowed; gods are not battlefield units. Divine direct combat would unravel the world. Ordinary battles do not create global fractures. The collision's original cause remains unresolved.
+
+world-state-bindings.json names every landmark sheet/state, choice value and default. Its JSON is a design contract to translate into validated game events, not an engine schema to cast with “as any.”
+Apply rule changes, visual state and ledger entry in one transaction. Guard by a unique event ID. Loading a save, replaying a journal entry or revisiting a site must not duplicate rewards or respawn defeated commanders.
+
+P1 refuge/palisade, P2 channel/pass, P3 canal/floodplain, P4 inner/outer light, P5 sanctuary/road and P6 observatory/harbor choices leave visible marks and different bounded preparation benefits. Both alternatives remain viable.
+The later story concerns human responsibility for war; do not introduce a secret villain who absolves everyone. Existing main-campaign mysteries and ending flags remain intact.
+
+P7 opponents: Doros, Ulfhild, Paser, Kurogane, Fiachra and Tecuani. Existing busts are included. Follow design/design.json for the three acts and neutral compositions. Required victories produce surrender/capture, not premature canonical deaths.
+E1–E6 suggested opposition names in the design remain casting proposals: resolve current catalog IDs and main-campaign survival first. If a proposed actor lacks an appropriate living role, use an existing eligible commander with the same role, never resurrect a killed antagonist or create a new portrait requirement.
+
+E7: capture three anchors in any order; each disables one finite siege reserve. Assault the Crown Host from either landing. After a briefing and save opportunity, the player explicitly starts a three-day stabilization with three announced, finite attacks at named sites. No hidden timer starts during the briefing. State/phase checkpoints must survive save/load and credit a target already defeated early.
+Shared Custody and Open Passage both win. Show the appropriate council-platform state, a short settlement-specific text, then the same mysterious distant shoreline. Do not announce an unbuilt seventh pantheon.
+
+7. LANDMARK AND TOWN RENDERING
+Use sprite-frames.json sourceRect and anchor values, in native pixels. Most cells are512×512, but living-arch and accord-platform use measured alternate boundaries. Do not assume every sheet can use the same arithmetic grid.
+
+Render through a texture subrectangle or CSS overflow container; native sheets stay intact. Calculate source-relative anchors, then scale uniformly. Start landmarks around1.35hex visible width and town sprites around1.6hex, then tune against existing sites. Appearance does not dictate occupancy; explicitly authored footprints and interaction cells control movement.
+
+All atlas frame boundaries passed an alpha>32 edge check. Alpha contains antialiasing and very faint residual values in some gutters; preserve generated alpha, use normal alpha compositing and test on both light and dark terrain. Avoid additive blending and black mattes. State sheets are not frame-by-frame animations: use a short200–350ms crossfade at a stable anchor, or instant replacement with reduced motion.
+
+Town backgrounds preserve the supplied faction L1 composition and pad positions visually. They still need in-engine registration QA with actual buildings and gate sprites. Use a common normalized 4:3 canvas transform for background, buildings and hit targets. Never independently “cover” crop the background while positioning buildings against uncropped coordinates.
+
+E1–E6 begin with the faction ruined-town map sprite, new damaged background, and ONE real inhabited L1 civic core. All other depicted masonry is scenery with no recruitment or resource production. Keep build pads free for existing building sprites.
+On normal Town Hall level2 construction, return to existing level2 background and existing map town sprite. Continue existing L3/L4 logic. If an explicit repair event happens while still L1, use the included normal L1 background. Avoid a global art replacement: these damaged backgrounds are only for the authored reconstruction towns.
+Preview every faction with all actual building sprites, gate opening, road-to-door connection, hover bounds and UI. Fix any registration drift through placement data or a new image-generator edit, not by baking functional buildings into the background.
+
+8. REQUIRED SCREENS
+Campaign selection: put When the Worlds Met before the six main stories and Ashes after them. Use P7/E7 cover art, seven chapter indicators and the existing six hero portraits. Present Three Beacons as optional training without deleting its content.
+Campaign import: choose a completed chronicle or the disclosed standalone preset. Show imported decisions and numerical-start rules before confirming.
+Chapter chart: use the existing campaign parchment with the ACTUAL master-map outline, revealed region, chapter markers and shipping links. Avoid a decorative map that contradicts playable routes.
+Briefing: new chapter painting, existing speaker busts, concise objectives, manual-battle badge and explicit loss conditions. Do not obscure important art with a wall of text.
+World ledger: chronological, replayable event cards with before/after landmark states, location, chapter date, choice and bounded effect. Unknown later events stay hidden.
+Coalition command: six hero tabs and town strip, faction/patron context, one shared treasury explanation and consolidated End Day. No scroll-heavy six-column dashboard.
+Town recovery: current construction levels, ruined background, explicit “nonfunctional ruins” tooltips where appropriate, ordinary building queue.
+Finale preparation: six saved forces, reserve allocation, carried-over choices, announced stages and one-time assistance. Do not lock progress behind optional choices.
+Ending: settlement-specific text and platform state, then the distant coastline. Save final flags before presentation so skipping still records completion.
+
+Use existing frames, buttons and icons; no new raster icon dependency is necessary. Map pact→icon-pact, evidence→icon-evidence, supplies→icon-supply, civilian convoy→icon-evacuation, branches→icon-branch, manual battle→icon-manual-battle-v2. Icons supplement accessible labels, not replace them entirely.
+
+9. NAVAL AND BATTLE DEPENDENCIES
+Bundled under dependencies/:
+naval — prior ship motion/idle sheets, flags, boarding battlefield, caravan/siege assets and instructions.
+sea-creatures — completed base/upgraded sea creatures, animation data, single-ship battlefield and legal-terrain rules.
+sea-objects — coastal watchtower, wreck and floating-resource materials previously delivered.
+
+Original folders are listed in dependencies.json. These are existing deliveries, not newly regenerated artwork. Follow each bundled handoff's runtime destination and merge manifests. Absolute original paths in those older documents can be resolved to the equivalent bundled relative file using reuse-manifest.json. Do not blindly copy their entire older manifests over the current game catalog.
+
+The source inspection did not establish a complete ship/boarding implementation. Treat naval support as a required engineering dependency and verify it before marking any mandatory-water chapter finished. A ferry teleport is not a substitute for hero-controlled ships.
+
+Hero-occupied ships must show the hero owner's runtime flag color. Keep map camera angle fixed; pan and supported zoom are fine, no free rotation. Persist destinations across End Day and save/load; present Continue Journey next day, revalidate changed segments, stop before a newly discovered hostile encounter. Do not force the player to remark a multi-day destination.
+
+Use distinct encounters:
+• Ship versus ship: supplied two-deck battlefield with narrow connecting bridge.
+• Ship versus sea monsters: supplied half-deck/half-water battlefield. Ground units stay on deck, swimmers stay in water, flyers may cross/hover as specified.
+Follow the existing sea package for renewable ranged attacks and deck harpoon access to avoid unwinnable melee-only engagements. Afanc and Ahuitzotl are land neutrals despite wetland themes; do not mark them as swimmers.
+Mandatory sailing must have replacement ships, two landing opportunities and knowledge-based quest records that cannot vanish with a destroyed vessel.
+
+Current manual battle policy:
+C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/policy.ts
+manualBattlesRequired currently keys off scenario.campaignId. Set it correctly on every new battle, including navy, boarding, garrisons, scripted attacks and resumed saves. The session layer also rejects automated resolution. Extend the existing policy and tests rather than creating a second inconsistent switch.
+No instant resolve, human-side autoplay or exact auto-casualty shortcut in campaigns. AI still controls enemy turns; animation speed controls remain.
+
+10. IMPLEMENTATION ORDER AND ACCEPTANCE
+A. Preserve old saves/catalog. Add source-driven art registration and new IDs, then render all assets.
+B. Build one shared-map prototype with land loops, a navigable channel and two island landings. Verify ship and battle rules before all14missions.
+C. Implement ledger transactions, frozen regional snapshots and a six-hero restore test.
+D. Complete P1–P6, then P7. Implement documented finite reserves and capture outcomes.
+E. Apply the Year18 war layer; complete E1–E6 with veteran starts and persistent reconstruction.
+F. Implement E7 phases, both settlements, final flags and open ending.
+G. Add campaign/ledger/import/coalition screens; check accessibility and responsive layout.
+H. Run repository-required checks and manual playtests. Existing scripts include npm run check and npm run test:e2e; inspect latest package.json before running.
+
+Required acceptance cases:
+• All14chapters launch with correct hero, faction, art, objectives and manual combat.
+• Both alternatives of every choice remain finishable; worst-case optional bonuses still permit finales.
+• Every regional target has two real approaches; routes loop and reconnect.
+• Mandatory sea legs cannot be walked around or replaced by ferry teleports.
+• Ship loss, army swapping, full slots and quest inventory changes do not softlock progress.
+• Day changes and saves retain destination paths, ships, event IDs and known evidence.
+• All six heroes, armies, town builds and faction services restore correctly into P7/E7.
+• Frozen regions neither grow resources nor suffer AI attacks off-screen.
+• Coalition End Day advances only once and never dispatches human actions as automated.
+• Old saves and all existing campaigns remain playable without importing new history.
+• Every required opponent is finite; early victories and reloaded phase transitions cannot duplicate waves.
+• E7 timer starts only on explicit Begin; loss conditions and arrival sites are visible.
+• Both final choices save a victory; ending skip/replay is safe.
+• Every atlas frame has a stable anchor and no neighboring frame bleed on grass, snow, sand and water.
+• All six town scenes align real buildings, doors, roads and gates at supported aspect ratios.
+• Full assets load without missing paths; only active atlases are decoded, not every dependency image at once.
+
+This package was validated as an art/document delivery. It is not a compiled campaign map, balanced combat roster, tested game build, or claim that engine integration is complete. Do not mark the feature done based only on screenshots: supply automated validation and manual scenario evidence.
+
+
+11. DEPENDENCY PRECEDENCE AND ADDITIONAL MAP DRESSING
+The sea-creatures-complete package takes precedence over older sea-creature proposals in sea-objects. Do not restore the rejected two-fish creature. Use the final delivered Hippocampus, Cetus, Hafgufa, Isonade and Triton families and their actual catalog IDs/upgrade mappings from that package.
+
+Reuse existing assets for secondary locations:
+• First Harbor signal and other coastal watches: dependencies/sea-objects/assets/coastal-watchtower-warm.png or coastal-watchtower-cold.png, according to biome.
+• Drowned harbor investigation: the warm watchtower, existing water/shore tiles, and shipwreck-split-hull.png; use a bell sound and evidence label. The story painting supplies the close narrative view. No new functional tower type is implied.
+• Wreck expedition: shipwreck-broken-mast.png or shipwreck-split-hull.png; expedition dialogue uses shipwreck-expedition-scene.png.
+• Floating supplies: sea-pickup-wood.png, sea-pickup-stone.png and sea-pickup-gold.png.
+• Harbor stores, captured depots and relief supplies: existing site-supply-depot.png.
+• Neutral recruitment sites: existing campaign-v2 dwelling sites, creature portraits and upgraded unit sprites. Match the actual creature catalog; no generic wetland-to-swimmer conversion.
+• Roads, repaired passes, river banks and local cliff cuts: existing terrain/road/shore assets plus authored movement rules. The new landmark sheets indicate the event's focal point, not every terrain tile.
+
+The council scene intentionally uses architectural seats rather than generating new god faces. Overlay existing deity portraits associated with each current campaign/patron definition; do not hard-code a different patron solely to match the painting.
+

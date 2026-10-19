@@ -1,0 +1,304 @@
+{
+  "assets": [
+    {
+      "file": "assets/animations/cetus-base-actions.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "1537960f82ea7ed1176d745d2765f7f83c8c2e3a5ca965ca9f3097a369884c67",
+      "runtimePath": "sea-creatures-v1/animations/cetus-base-actions.png"
+    },
+    {
+      "file": "assets/animations/cetus-base-core.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "166de14318769b3789308e42b060ba69031acccfbb14961cd4f8221dba5eccd0",
+      "runtimePath": "sea-creatures-v1/animations/cetus-base-core.png"
+    },
+    {
+      "file": "assets/animations/cetus-upgraded-actions.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "fb90c3557d0ac3ff4c5ba0bdafd742ded715de6c18d4057ae40b64685ec32299",
+      "runtimePath": "sea-creatures-v1/animations/cetus-upgraded-actions.png"
+    },
+    {
+      "file": "assets/animations/cetus-upgraded-core.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "732ecf07e9803ce700f6adfd0b162d68259635be8334368add8fd18255f28719",
+      "runtimePath": "sea-creatures-v1/animations/cetus-upgraded-core.png"
+    },
+    {
+      "file": "assets/animations/fx-barbed-spray.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "sha256": "1d6f5ba2473b93bdf4ae7cb9604569e058da1de8e72521f49a74de010f596484",
+      "runtimePath": "sea-creatures-v1/animations/fx-barbed-spray.png"
+    },
+    {
+      "file": "assets/animations/fx-brine-jet.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "sha256": "e06674e3a03f27bf2b08ed79474f8f718258308f03af794f9e572f3a933cf5eb",
+      "runtimePath": "sea-creatures-v1/animations/fx-brine-jet.png"
+    },
+    {
+      "file": "assets/animations/fx-conch-pulse.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "sha256": "997f1fa43ea0b84c0590ef713eba1d3d71c9d708c81de020da861ee3ab00dc42",
+      "runtimePath": "sea-creatures-v1/animations/fx-conch-pulse.png"
+    },
+    {
+      "file": "assets/animations/fx-deepwater-blast.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "sha256": "fee2a8b4e44a0c1d66d78b511a2cacaabce13003ae764177d5e8daa21a25e7a1",
+      "runtimePath": "sea-creatures-v1/animations/fx-deepwater-blast.png"
+    },
+    {
+      "file": "assets/animations/hafgufa-base-actions.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "d8c3a405c47e4ce952be95c9a9bc397ebff7e89184747019229a84b43de74b57",
+      "runtimePath": "sea-creatures-v1/animations/hafgufa-base-actions.png"
+    },
+    {
+      "file": "assets/animations/hafgufa-base-core.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "9cccc7947f0cb5b388dda4f8489511e560beeb8e7ec2b6f7bcfeb67955a38a04",
+      "runtimePath": "sea-creatures-v1/animations/hafgufa-base-core.png"
+    },
+    {
+      "file": "assets/animations/hafgufa-upgraded-actions.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "75b278de729dcd606695912ad256211141cbb29d50c9b3855aad8e0ae8fa2bdf",
+      "runtimePath": "sea-creatures-v1/animations/hafgufa-upgraded-actions.png"
+    },
+    {
+      "file": "assets/animations/hafgufa-upgraded-core.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "c7047f2f22994e30d7b25012aaf3b96e432082eec6f263f688a23c0cc9c8880a",
+      "runtimePath": "sea-creatures-v1/animations/hafgufa-upgraded-core.png"
+    },
+    {
+      "file": "assets/animations/hippocampus-base-actions.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "a6ff25ed478944d1f5442dafcacb682cf1d9278aff3b4379e26695ef04e32acd",
+      "runtimePath": "sea-creatures-v1/animations/hippocampus-base-actions.png"
+    },
+    {
+      "file": "assets/animations/hippocampus-base-core.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "a726cbb004a54f928a019d88ed99766c6a9792892f283aaf140b0bfda4e0e331",
+      "runtimePath": "sea-creatures-v1/animations/hippocampus-base-core.png"
+    },
+    {
+      "file": "assets/animations/hippocampus-base-flight.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "3631f0b3b6ea34a0b3a4480e5174e35075907725a0bdc18c6bdbb59de137a139",
+      "runtimePath": "sea-creatures-v1/animations/hippocampus-base-flight.png"
+    },
+    {
+      "file": "assets/animations/hippocampus-upgraded-actions.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "e4ec31c4233f6c3be6390bfb6e5fe8f13b434359891796e7caaf1111c6bdb8b4",
+      "runtimePath": "sea-creatures-v1/animations/hippocampus-upgraded-actions.png"
+    },
+    {
+      "file": "assets/animations/hippocampus-upgraded-core.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "c05ece06a308a9111c3586aec176c74df856608bc4ec5a645862b3476e759995",
+      "runtimePath": "sea-creatures-v1/animations/hippocampus-upgraded-core.png"
+    },
+    {
+      "file": "assets/animations/hippocampus-upgraded-flight.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "9926769e86dbb878dd8533ffacb21a6b0063d4e188a07c08a6b5a9838829e1a8",
+      "runtimePath": "sea-creatures-v1/animations/hippocampus-upgraded-flight.png"
+    },
+    {
+      "file": "assets/animations/isonade-base-actions.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "cfe52cd411204601ee4c42436ec2e524850c7201342277288bf84223814a1dc9",
+      "runtimePath": "sea-creatures-v1/animations/isonade-base-actions.png"
+    },
+    {
+      "file": "assets/animations/isonade-base-core.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "9a635e8d655f2852d97d54ccc925e2a9e1840176ec41dda16c3c1645cc15d9fe",
+      "runtimePath": "sea-creatures-v1/animations/isonade-base-core.png"
+    },
+    {
+      "file": "assets/animations/isonade-upgraded-actions.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "2934c220ad08c3e03cd3a742e96f9b7b803c6fde22864e4ed0896c875adb3282",
+      "runtimePath": "sea-creatures-v1/animations/isonade-upgraded-actions.png"
+    },
+    {
+      "file": "assets/animations/isonade-upgraded-core.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "fb03d754bc834a172c14d061a09d01e73e5dc7d49489689ea4c06b68c187f83b",
+      "runtimePath": "sea-creatures-v1/animations/isonade-upgraded-core.png"
+    },
+    {
+      "file": "assets/animations/triton-base-actions.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "06b5880d9a2921fcc94c0de008d20d6179486bb30946d1d7ffa71d7d04f5f8e6",
+      "runtimePath": "sea-creatures-v1/animations/triton-base-actions.png"
+    },
+    {
+      "file": "assets/animations/triton-base-core.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "e40b4891c134a1d89b739207abb61565b61dcd1a1b5d4fe57142bd48756a8e94",
+      "runtimePath": "sea-creatures-v1/animations/triton-base-core.png"
+    },
+    {
+      "file": "assets/animations/triton-upgraded-actions.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "597b2247471a3c113d3b236da862ba422dd5d8fe2be93de29c5d82279f125ddd",
+      "runtimePath": "sea-creatures-v1/animations/triton-upgraded-actions.png"
+    },
+    {
+      "file": "assets/animations/triton-upgraded-core.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "sha256": "781a7906f3052e26ad836fdcf0dc1ed5ec99cf4743562532327ba184daf0be72",
+      "runtimePath": "sea-creatures-v1/animations/triton-upgraded-core.png"
+    },
+    {
+      "file": "assets/cetus-base.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "sha256": "fa4648b4b2d2d6686a92600800c60dd9ad8294fe7e6ae825b42e8c081355eecf",
+      "runtimePath": "sea-creatures-v1/cetus-base.png"
+    },
+    {
+      "file": "assets/cetus-upgraded.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "sha256": "330a897af63f80d101748e4949d62b275633d8f2043f5bddd13e3a9cd58b2bf9",
+      "runtimePath": "sea-creatures-v1/cetus-upgraded.png"
+    },
+    {
+      "file": "assets/hafgufa-base.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "sha256": "5eab9cae513fee756193165dbf19e732e2027feb038085e9209f8452f9a6abbe",
+      "runtimePath": "sea-creatures-v1/hafgufa-base.png"
+    },
+    {
+      "file": "assets/hafgufa-upgraded.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "sha256": "fd27c511365189e0d57b2ddcb822922b3038ab8dad1e89c5ae20a9b900e3320b",
+      "runtimePath": "sea-creatures-v1/hafgufa-upgraded.png"
+    },
+    {
+      "file": "assets/hippocampus-base.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "sha256": "1e5a065c5fde5a8b91f15356d8db490ca8d53ded65fde52d215757f434c59cd3",
+      "runtimePath": "sea-creatures-v1/hippocampus-base.png"
+    },
+    {
+      "file": "assets/hippocampus-upgraded.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "sha256": "3dfd842349a48004df4a9b406172566d38ef087acc6341d783bae53721b872d1",
+      "runtimePath": "sea-creatures-v1/hippocampus-upgraded.png"
+    },
+    {
+      "file": "assets/isonade-base.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "sha256": "de7dadcb7559a3032e105224662c16db15cfc80cf3b37bd3462bf5f385997a2e",
+      "runtimePath": "sea-creatures-v1/isonade-base.png"
+    },
+    {
+      "file": "assets/isonade-upgraded.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "sha256": "6bb37a431cbbd35a64a7c98a1b0ce46b223be44d0b74a74594f99f1d79012007",
+      "runtimePath": "sea-creatures-v1/isonade-upgraded.png"
+    },
+    {
+      "file": "assets/single-ship-battlefield.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "sha256": "58fbe4d4458a9e15c34d3d03ab288de7c3dbcbe0d232b0e6f944ac23af3f079c",
+      "runtimePath": "sea-creatures-v1/single-ship-battlefield.png"
+    },
+    {
+      "file": "assets/triton-base.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "sha256": "a0162995e6b17dd1002d36489b8fc5a58ee897c08b07aa970f48cf973e56813d",
+      "runtimePath": "sea-creatures-v1/triton-base.png"
+    },
+    {
+      "file": "assets/triton-upgraded.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "sha256": "f86806015f86b1d5701bfe474352438678f1281bdc425596cdeb9b0013c5a93d",
+      "runtimePath": "sea-creatures-v1/triton-upgraded.png"
+    }
+  ],
+  "generator": "built-in image_gen",
+  "pixelEditing": false,
+  "nativeResolutionPreserved": true,
+  "gameFilesModified": false
+}

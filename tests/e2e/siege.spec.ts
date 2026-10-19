@@ -60,6 +60,9 @@ test('siege with Tactics: deploy, batter the walls with a Cyclops, take the town
   test.setTimeout(300_000);
   // Alexios (Tactics II) with Cyclopes stands next to the rival's Citadel.
   const d = skirmishDriver();
+  // The legacy automatic Catapult this test describes (older saves, The Three Beacons); the targetable
+  // catapult (targetableCatapultV1, on in skirmishes) has its own spec: siegeCatapult.spec.ts.
+  d.state.scenario.features = { ...d.state.scenario.features!, targetableCatapultV1: false };
   const east = d.state.towns['eastharbor']!;
   east.buildings['fortifications'] = 2;
   east.garrison.slots = slots([['peltast', 6]]);

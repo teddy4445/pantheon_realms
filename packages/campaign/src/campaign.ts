@@ -14,10 +14,12 @@
  * started before content v2 (no `contentVersion`) stay bound to the v1 linear
  * `missionIds` and their own mission definitions.
  */
-import { getCampaign, hashValue, matchScore, type CampaignChapterDefinition, type ContentCatalog, type GodId, type MatchState, requireScenarioMission } from '@pr/rules';
+import { getCampaign, getMission, hashValue, matchScore, type CampaignChapterDefinition, type ContentCatalog, type GodId, type MatchState, requireScenarioMission } from '@pr/rules';
 import { carryoverFromHero, createMissionMatch, type HeroCarryover, type MissionStart } from './missionFactory';
+import { captureRegion, regionalSnapshots, type RegionalJourney, type RegionalSnapshot } from './regionalState';
 
 export interface CompletionRecord {
+  readonly region?: RegionalSnapshot;
   readonly missionId: string;
   readonly campaignRunId: string;
   readonly entryHash: string;
@@ -62,6 +64,7 @@ export interface CampaignState {
   readonly currentEntryHash: string;
   /** Carryover used to create the current mission (null for mission 1). */
   readonly currentEntryCarryover: HeroCarryover | null;
+  readonly currentEntryRegions?: readonly RegionalSnapshot[];
   readonly completions: readonly CompletionRecord[];
   readonly status: 'in_progress' | 'completed';
   readonly battlesWon: number;
@@ -71,6 +74,8 @@ export interface CampaignState {
   readonly facts?: readonly string[];
   /** Content v2: the facts the current mission was created with (restart rebuilds the same entry). */
   readonly currentEntryFacts?: readonly string[];
+  /** Patron actually used for a regional chapter; legacy campaigns continue using startingGodId. */
+  readonly currentEntryGodId?: GodId | null;
 }
 
 /** The run's content version (1 for runs started before content v2). */
@@ -164,7 +169,8 @@ export function restartCurrentMission(catalog: ContentCatalog, campaign: Campaig
   const start = createMissionMatch(catalog, campaign.currentMissionId, {
     matchId: `${campaign.campaignRunId}:${campaign.currentMissionId}`,
     carryover: campaign.currentEntryCarryover,
-    startingGodId: campaign.startingGodId,
+    ...(campaign.currentEntryRegions ? { regions: campaign.currentEntryRegions } : {}),
+    startingGodId: campaign.currentEntryGodId !== undefined ? campaign.currentEntryGodId : campaign.startingGodId,
     difficultyId: campaign.difficultyId ?? null,
     ...(contentVersionOf(campaign) === 2 ? { facts: campaign.currentEntryFacts ?? [] } : {}),
   });
@@ -203,7 +209,7 @@ export function campaignScore(campaign: CampaignState): number {
 }
 
 /** Commit the completion record exactly once. */
-export function recordCompletion(catalog: ContentCatalog, campaign: CampaignState, match: MatchState): CampaignState {
+export function recordCompletion(catalog: ContentCatalog, campaign: CampaignState, match: MatchState, journeys?: readonly RegionalJourney[]): CampaignState {
   if (match.mission.missionId !== campaign.currentMissionId) throw new Error('This match is not the current campaign mission');
   const existing = campaign.completions.find((c) => c.missionId === match.mission.missionId);
   if (existing) return campaign;
@@ -228,6 +234,7 @@ export function recordCompletion(catalog: ContentCatalog, campaign: CampaignStat
     nextEntryKey: `${campaign.campaignRunId}:${mission.id}:${resultHash}`,
     summary: summarize(catalog, match, hero.id, battlesWon),
     ...(v2 ? { facts } : {}),
+    ...(mission.regionalState ? { region: captureRegion(mission.regionalState.worldId, mission.regionalState.regionId, mission.player.hero.definitionId, match, journeys) } : {}),
   };
   const camp = getCampaign(catalog, campaign.campaignId);
   const isLast = v2 ? camp.finalChapterId === mission.id : camp.missionIds[camp.missionIds.length - 1] === mission.id;
@@ -267,16 +274,24 @@ export function startNextMission(catalog: ContentCatalog, campaign: CampaignStat
     if (!avail.some((c) => c.missionId === next)) throw new Error('That chapter is not available yet');
     // The latest completion supplies the bounded hero carryover; facts carry the story.
     const latest = campaign.completions[campaign.completions.length - 1]!;
+    const camp = getCampaign(catalog, campaign.campaignId);
+    const nextDef = getMission(catalog, next);
+    const carry = camp.regionalWorldId
+      ? ([...campaign.completions].reverse().find((c) => c.carryover.definitionId === nextDef.player.hero.definitionId)?.carryover ?? null)
+      : latest.carryover;
+    const god = camp.regionalWorldId ? (carry?.patronGodId ?? nextDef.regionalState?.defaultPatronGodId ?? null) : campaign.startingGodId;
     const facts = [...(campaign.facts ?? [])];
+    const regions = nextDef.restoreRegions ? regionalSnapshots(camp.regionalWorldId!, campaign.completions, nextDef.restoreRegions) : undefined;
     const start = createMissionMatch(catalog, next, {
       matchId: `${campaign.campaignRunId}:${next}`,
-      carryover: latest.carryover,
-      startingGodId: campaign.startingGodId,
+      carryover: carry,
+      ...(regions ? { regions } : {}),
+      startingGodId: god,
       difficultyId: campaign.difficultyId ?? null,
       facts,
     });
     return {
-      campaign: { ...campaign, currentMissionId: next, currentEntryHash: start.entryHash, currentEntryCarryover: latest.carryover, currentEntryFacts: facts },
+      campaign: { ...campaign, currentMissionId: next, currentEntryHash: start.entryHash, currentEntryCarryover: carry, currentEntryRegions: regions, currentEntryFacts: facts, ...(camp.regionalWorldId ? { currentEntryGodId: god } : {}) },
       start,
     };
   }
@@ -309,6 +324,10 @@ export function startPracticeReplay(catalog: ContentCatalog, campaign: CampaignS
     if (chapter.requiresAll.some((r) => indexOf(r) < 0)) throw new Error('Chapter not yet unlocked');
     const last = Math.max(-1, ...chapter.requiresAll.map(indexOf));
     entryCarry = last >= 0 ? campaign.completions[last]!.carryover : null;
+    if (camp.regionalWorldId) {
+      const heroId = getMission(catalog, missionId).player.hero.definitionId;
+      entryCarry = [...campaign.completions.slice(0, last + 1)].reverse().find((c) => c.carryover.definitionId === heroId)?.carryover ?? null;
+    }
     facts = [...new Set(campaign.completions.slice(0, last + 1).flatMap((c) => c.facts ?? []))];
   } else {
     const idx = camp.missionIds.indexOf(missionId);
@@ -318,7 +337,9 @@ export function startPracticeReplay(catalog: ContentCatalog, campaign: CampaignS
     entryCarry = idx === 0 ? null : (campaign.completions.find((c) => c.missionId === camp.missionIds[idx - 1])?.carryover ?? null);
   }
   const runId = `${campaign.campaignRunId}:practice:${missionId}`;
-  const start = createMissionMatch(catalog, missionId, { matchId: `${runId}:${missionId}`, carryover: entryCarry, startingGodId: campaign.startingGodId, difficultyId: campaign.difficultyId ?? null, ...(facts ? { facts } : {}) });
+  const god = camp.regionalWorldId ? (entryCarry?.patronGodId ?? getMission(catalog, missionId).regionalState?.defaultPatronGodId ?? null) : campaign.startingGodId;
+  const regions = getMission(catalog, missionId).restoreRegions ? regionalSnapshots(camp.regionalWorldId!, campaign.completions, getMission(catalog, missionId).restoreRegions) : undefined;
+  const start = createMissionMatch(catalog, missionId, { matchId: `${runId}:${missionId}`, carryover: entryCarry, ...(regions ? { regions } : {}), startingGodId: god, difficultyId: campaign.difficultyId ?? null, ...(facts ? { facts } : {}) });
   return {
     campaign: {
       kind: 'campaign',
@@ -330,10 +351,12 @@ export function startPracticeReplay(catalog: ContentCatalog, campaign: CampaignS
       currentMissionId: missionId,
       currentEntryHash: start.entryHash,
       currentEntryCarryover: entryCarry,
+      ...(regions ? { currentEntryRegions: regions } : {}),
       completions: [],
       status: 'in_progress',
       battlesWon: 0,
       ...(v2 ? { contentVersion: 2 as const, facts: facts ?? [], currentEntryFacts: facts ?? [] } : {}),
+      ...(camp.regionalWorldId ? { currentEntryGodId: god } : {}),
     },
     start,
   };

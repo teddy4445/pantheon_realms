@@ -49,6 +49,8 @@ function profileOr(profiles: Profiles, id: string, still: 'arrow' | 'stone'): Mi
 export function missileFor(ev: GameEvent, creatureOf: (stackId: string) => string | null | undefined, profiles: Profiles): MissileChoice | null {
   switch (ev.kind) {
     case 'BattleAttack': {
+      // Deck Harpoon (sea encounters): the existing arrow until dedicated harpoon art exists — never a siege engine.
+      if (ev.mode === 'harpoon') return { kind: 'fallback', still: 'arrow' };
       if (ev.mode !== 'shot') return null;
       const own = profileForCreature(profiles, creatureOf(ev.attackerId));
       return own ? { kind: 'profile', profileId: own.id, profile: own.profile } : { kind: 'fallback', still: 'arrow' };
@@ -59,6 +61,12 @@ export function missileFor(ev: GameEvent, creatureOf: (stackId: string) => strin
       if (ev.source === 'catapult') return profileOr(profiles, 'catapult', 'stone');
       const own = profileForCreature(profiles, ev.attackerId ? creatureOf(ev.attackerId) : null);
       return own ? { kind: 'profile', profileId: own.id, profile: own.profile } : { kind: 'fallback', still: 'stone' };
+    }
+    // A shot at the siege engine (targetableCatapultV1): the shooter's own missile, as at a stack.
+    case 'EngineDamaged': {
+      if (ev.source !== 'shot' || !ev.attackerId) return null;
+      const own = profileForCreature(profiles, creatureOf(ev.attackerId));
+      return own ? { kind: 'profile', profileId: own.id, profile: own.profile } : { kind: 'fallback', still: 'arrow' };
     }
     default:
       return null;
@@ -302,14 +310,61 @@ export const FIGURE_FILL = 0.78;
  * frame's height above the feet, in hexes): a mouth high on the front of the body, a hand a
  * little lower; further forward for two-hex bodies. Released a third of the way into the strip.
  */
-export function releaseSocket(creatureId: string | null | undefined, opts: { readonly sourcePoint?: string; readonly heightHex: number; readonly footprint: 1 | 2; readonly ownShootStrip: boolean; readonly frames?: number }): ReleaseSocket & { readonly calibrated: boolean } {
+export function releaseSocket(
+  creatureId: string | null | undefined,
+  opts: { readonly sourcePoint?: string; readonly heightHex: number; readonly footprint: 1 | 2; readonly ownShootStrip: boolean; readonly frames?: number; readonly delivered?: ReleaseSocket | null },
+): ReleaseSocket & { readonly calibrated: boolean } {
   const own = creatureId ? RELEASE_SOCKETS[creatureId] : undefined;
   if (own && opts.ownShootStrip) return { ...own, calibrated: true };
+  // A set that carries its own socket metadata (sea creatures: `events.shoot`, measured in the release frame).
+  if (opts.delivered && opts.ownShootStrip) return { ...opts.delivered, calibrated: true };
   const visible = Math.max(0.3, opts.heightHex) * FIGURE_FILL;
-  const mouth = opts.sourcePoint === 'mouth';
   const wide = opts.footprint === 2;
   const frame = Math.round(Math.max(1, opts.frames ?? 6) / 3);
-  return { frame, x: (mouth ? 0.42 : 0.4) + (wide ? 0.3 : 0), y: visible * (mouth ? 0.82 : 0.66), calibrated: false };
+  const rule = SOURCE_POINT_RULES[opts.sourcePoint ?? ''] ?? SOURCE_POINT_RULES['hand']!;
+  return { frame, x: rule.x + (wide ? 0.3 : 0), y: visible * rule.up, calibrated: false };
+}
+
+/**
+ * Logical release points without a measured socket: how far forward (hexes) and how high (share of the
+ * visible figure) the missile leaves. `mouth` (breath, jets), `tail-tip` (a tail's lash, low and a little
+ * less forward), `conch-bell` (a shell held at the mouth, chest high), `hand` (throws; the default).
+ */
+export const SOURCE_POINT_RULES: Readonly<Record<string, { readonly x: number; readonly up: number }>> = {
+  mouth: { x: 0.42, up: 0.82 },
+  'tail-tip': { x: 0.36, up: 0.55 },
+  'conch-bell': { x: 0.44, up: 0.74 },
+  hand: { x: 0.4, up: 0.66 },
+};
+
+/**
+ * The release socket of a delivered frame-region shoot strip (sea creatures 2026-10-17): the set's
+ * `events.shoot` socket — fractions of the release frame's source rectangle — turned into hexes forward
+ * of and above the frame's own pixel anchor at the set's scale (the figure draws that frame at
+ * `hexW / pixelsPerHex × sourceScale`). Mirrored with the figure by `releasePoint`. Null when the strip
+ * or the metadata is missing.
+ */
+export function regionReleaseSocket(
+  strip: Pick<SpriteStrip, 'regions'> | null | undefined,
+  pixelsPerHex: number,
+  shoot: { readonly releaseFrame: number; readonly socket: readonly [number, number] } | null | undefined,
+): ReleaseSocket | null {
+  const r = shoot ? strip?.regions?.[shoot.releaseFrame] : undefined;
+  if (!shoot || !r) return null;
+  const k = r.sourceScale / Math.max(1e-6, pixelsPerHex);
+  const px = shoot.socket[0] * r.rect[2];
+  const py = shoot.socket[1] * r.rect[3];
+  return { frame: shoot.releaseFrame, x: (px - r.anchor[0]) * k, y: (r.anchor[1] - py) * k };
+}
+
+/** The travel art's rotation along its path: the tangent plus the profile's painted-direction offset (π for left-facing art). */
+export function travelRotation(angle: number, profile: Pick<ProjectileProfile, 'travelRotationOffsetRad'> | null | undefined): number {
+  return angle + (profile?.travelRotationOffsetRad ?? 0);
+}
+
+/** An impact's rotation: its own offset only — never the travel correction (impacts stay upright). */
+export function impactRotation(profile: Pick<ProjectileProfile, 'impactRotationOffsetRad'> | null | undefined): number {
+  return profile?.impactRotationOffsetRad ?? 0;
 }
 
 /** The old renderer let every missile go 260 ms into the attack (used when no strip timing is known). */

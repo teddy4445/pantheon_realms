@@ -1,0 +1,14 @@
+{
+  "gameVersion": "1.4.0",
+  "gods": 60,
+  "pantheons": 6,
+  "findings": [
+    "Spell learning free after spellbook; no learning-cost discount.",
+    "Spell library already fills visiting heroes mana at dawn; no redundant dawn mana perk.",
+    "Hero training already once per hero/world week.",
+    "Town population shared base/upgraded per family.",
+    "Player-wide direct god income/growth must be replaced only in the new feature profile."
+  ],
+  "reusedAssetCount": 204,
+  "gameFilesModified": false
+}

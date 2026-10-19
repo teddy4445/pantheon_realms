@@ -116,6 +116,9 @@ test('siege: the attacker aims the Catapult at a tower', async ({ page }) => {
   test.setTimeout(180_000);
   // Aim: Alexios besieges the rival's Castle.
   const d = skirmishDriver();
+  // The legacy Catapult's fortification chips (older saves, The Three Beacons); the targetable catapult
+  // (targetableCatapultV1, on in skirmishes) is aimed in its own phase: siegeCatapult.spec.ts.
+  d.state.scenario.features = { ...d.state.scenario.features!, targetableCatapultV1: false };
   const east = d.state.towns['eastharbor']!;
   east.buildings['fortifications'] = 3;
   east.garrison.slots = slots([['hoplite', 6]]);

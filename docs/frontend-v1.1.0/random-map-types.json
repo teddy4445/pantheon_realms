@@ -52,5 +52,37 @@
     "label": "Central Valley",
     "summary": "A rich valley of mines lies below a ring of ridges, reached through two guarded passes per empire.",
     "asset": "frontend.random.central_valley"
+  },
+  {
+    "id": "shattered_crown",
+    "label": "The Shattered Crown",
+    "summary": "Separate island kingdoms surround the broken Crown. Sail for distant riches, capture landing beaches, and carry your army across the sea to conquer.",
+    "asset": "frontend.random.shattered_crown",
+    "loadingAsset": "random.shattered_crown.loading",
+    "requires": "navalMovementV1",
+    "seats": [
+      2,
+      3,
+      6
+    ],
+    "sizes": [
+      "huge"
+    ],
+    "portals": false
+  },
+  {
+    "id": "serpent_straits",
+    "label": "The Serpent Straits",
+    "summary": "Rival harbors face a maze of island straits. Seize the inner passages or sail around the outer coast to land behind the enemy.",
+    "asset": "frontend.random.serpent_straits",
+    "loadingAsset": "random.serpent_straits.loading",
+    "requires": "navalMovementV1",
+    "seats": [
+      2
+    ],
+    "sizes": [
+      "huge"
+    ],
+    "portals": false
   }
 ]

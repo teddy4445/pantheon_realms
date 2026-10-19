@@ -4,6 +4,146 @@ All notable changes to Pantheon Realms. The version shown in the game comes
 from `package.json` (main menu and Settings → Saves); it is never typed into a
 screen.
 
+## 1.6.0 — 2026-10-18 · Ships and sea battles, caravans, scouting, an aimed catapult; naval random maps, sea creatures and coastal sites
+
+Four deliveries of 2026-10-17: the EXPEDITION, NAVAL & SIEGE handoff
+(docs/expedition-v1), the TWO NAVAL RANDOM-MAP TEMPLATES
+(assets-source/art/naval-random-v1), the SEA-CREATURE ANIMATION & BATTLE
+handoff (assets-source/art/sea-creatures-v1) and the COASTAL SITES AND SEA
+SALVAGE handoff (assets-source/art/sea-sites-v1). All values are proposed and
+unplaytested. Saves: format, schema and content stamp unchanged. Each new system
+has its own scenario flag, so a save from before this version keeps the old
+behaviour and nothing switches on after loading one.
+
+- **Inspect any creature in battle**: right-click it, press I, or use its info
+  button. The card shows its live Attack, Defense, damage, speed, shots and
+  retaliations left, the front creature's health apart from the stack's, and
+  every effect on it with the rounds left and who cast it. Pin it to keep it
+  open. Inspecting never gives an order.
+- **Scouting reveals armies gradually**: an enemy far away shows only its
+  banner and a rough size; within 3 hexes you see which creatures it has; a hero
+  with Scouting sees how many, as a range, from 2, 3 or 4 hexes. Out of sight
+  an army stays where it was last seen, marked with the day, until you look
+  again. Guards and garrisons show in full as before.
+- **The catapult stands on the battlefield**: in a siege the attacker's
+  catapult sits in the top-left corner (120 health, Defense 6). After all the
+  creatures have acted, you aim it at a wall, gate, tower or keep and fire, or
+  skip. The defenders can attack and destroy it; a destroyed catapult no longer
+  fires. The computer aims at the gate or tower that matters most.
+- **Recruitment caravans**: "Send by caravan" in a town or on the recruitment
+  screen buys up to seven stacks there and sends them to another of your towns
+  for 150 Gold more. The wagon moves 600 a day from your next turn and joins the
+  garrison on arrival. It stops when something blocks the road or the town is
+  lost; send it somewhere else for free. Enemy heroes can attack it; the
+  creatures defend themselves, without a hero.
+- **Hero ships**: buy a ship at a coastal town (1,500 Gold and 10 Wood), walk
+  to it and embark; sail at 100 movement per sea hex; land on an empty beach.
+  Embarking and landing need 100 movement and use all you have left that day. A
+  route across the sea stops at the shore and asks before you embark or land,
+  and a journey of several days continues with Continue journey. Each ship
+  flies its owner's colour and rocks, sails, sinks and wrecks on screen.
+- **Boarding battles**: attack an enemy ship next to yours to fight on two
+  decks joined by one narrow bridge. Flyers may cross the water but land only on
+  wood. The winner's ship takes the contested hex; the loser's sinks. Retreating
+  at sea sails your ship to the next free water hex.
+- **Two naval random maps**: The Shattered Crown (two, three or six empires;
+  hold the central relic for 7 days, or conquer) and The Serpent Straits (a
+  duel; conquer). Huge only. Every empire starts on its own island with a free
+  ship beside its harbour; islands are reached only by sea, and portals are off
+  ("Ships connect these islands."). Each has its own painted card and loading
+  picture.
+- **Sea creatures**: five neutral families met at sea, each with its upgraded
+  form — Hippocampus (flying), Triton, Isonade, Cetus and the rare Hafgufa —
+  fought on a ship-against-the-sea battlefield: your army stays on deck, they
+  swim or fly. Swimmers have two shots each round, renewed every round. A
+  creature on deck can throw a weak Deck Harpoon at anything in the water, so a
+  melee army is never helpless. They appear in the Bestiary and the map editor.
+- **Coastal sites**: coastal watchtowers you take on foot show everything
+  within 6 hexes, sea included, and warn you when an enemy ship comes in sight;
+  floating Wood, Stone and Gold are picked up by sailing onto them; shipwrecks
+  can be explored for 100 movement — some hold cargo, some raiders to fight on
+  the boarding decks, some an artifact. Both naval maps place them, equally for
+  every empire.
+- **Map editor**: place ships, sea creatures, watchtowers, salvage and wrecks;
+  a refused tile says why. The editor does not generate the naval map types.
+- **Computer players** use ships, boarding, caravans, the catapult, sea
+  creatures and coastal sites by the same rules and prices.
+- **Where they are on**: inspection everywhere. Scouting and the aimed catapult
+  in new skirmishes, random and editor maps and new campaign runs (not in The
+  Three Beacons, nor in the old missions of a campaign begun before 1.2.0).
+  Caravans, ships, sea creatures and coastal sites in new skirmishes, random
+  and editor maps; not in the campaigns.
+- Fixed: Enter or Space on a focused button on the adventure map no longer
+  also ends the day.
+
+## 1.5.0 — 2026-10-17 · City dedications: each town honors one of your gods
+
+The CITY DEDICATIONS handoff of 2026-10-17 (60 god profiles, 11 town services,
+docs/divine-city-benefits-v1). Proposed, unplaytested values, with one tuning
+(below). Saves: format, schema and content stamp unchanged; saves from before
+this version keep the old god economics and have no dedications, and nothing
+switches on after loading one.
+
+- **Dedicate a town** with Temple II to your patron or a minor god you have
+  committed to, from the medallion beside its temple. Each god gives that town
+  three things: a resource gift every week, extra weekly stock of one favored
+  creature family (+2 for tiers 1–2, +1 for tiers 3–5, one every two weeks for
+  tier 6 and every four for tier 7, once that dwelling is built), and one town
+  service — cheaper hero training, market purchases, fortifications, library,
+  civic hall, favored dwelling, spellbook, favored recruits or troop upgrades,
+  artifacts, or +2 town vision with a watchtower. Several towns may honor
+  different gods, or the same one.
+- The first dedication is free and its service works at once; the gift and the
+  growth start at the next new week. Switching to another god costs 500 Gold and
+  happens at the next new week (no cancel; not refunded if the town is taken).
+  Losing the Temple makes a dedication dormant; a captured town loses it.
+- **Economic gods change**: in new games the gods' empire-wide daily income and
+  weekly growth bonuses (12 gods, e.g. Hermes, Njord, Hathor, Inari, Demeter)
+  come through their city dedications instead; their other blessings are
+  unchanged. Inari's weekly gift is 1,200 Gold and Njord's 3 Crystal (tuned up
+  from the delivered 600 Gold and 4 Wood so they break even at about three
+  dedicated towns).
+- The town, the god cards, recruitment, every service price, the end-of-day
+  summary ("City blessings") and the Encyclopedia show what each god gives and
+  what it saves. The computer dedicates and switches its towns by the same rules.
+- On in new skirmishes, random and editor maps and new campaign runs; off in
+  The Three Beacons.
+
+## 1.4.0 — 2026-10-16 · Blows that land, neutral camps the computer uses, smarter patrols
+
+Three of the owner's ten improvement ideas (1, 3 and 5), with the owner's
+choices for the camp allowance and for who retreats. Proposed, unplaytested
+values. Saves: format, schema and content stamp unchanged; older saves load (a
+camp starts the week with its whole training allowance, a patrol continues its
+round from its first waypoint).
+
+- **Blows land on screen**: a stack's count changes when the missile, blow,
+  spell or miracle reaches it — never while it is still in the air — and a
+  destroyed stack's count disappears with the blow. Each missile has its own
+  sounds from the game's sound set (a javelin's whoosh and thud, a boulder's
+  heave and crash, the frost breath's hiss, the banshee's wail…) instead of a
+  bow and an arrow for every shooter; the towers and the catapult keep theirs. A
+  blow that kills creatures holds the battle for a beat, longer when the whole
+  stack falls, with a soft flash where it lands (no flash on Low graphics or with
+  reduced motion). Looks and sound only: no rule, damage or random draw changes.
+- **Upgrades at neutral camps are limited each week**: a neutral hiring site
+  upgrades at most as many creatures a week as it hires (its weekly stock),
+  shared by everyone and renewed with the stock. The Train strip shows how many
+  are left this week out of the weekly number and says why when none are left.
+- **The computer uses the neutral camps**: it hires the form that strengthens its
+  army most for its gold (usually the upgrade), upgrades its own base stacks
+  there within the week's allowance, and plans its routes by what a camp can give
+  it. It no longer heads for a camp whose pact it has not made.
+- **Smarter patrols**: a patrol chases the visible hero it can best beat (the
+  nearest, then the weakest), guards its route and camp when a hero comes near,
+  and never stops where a much stronger hero can reach it. A patrol with a
+  commander falls back from a much stronger hero to its camp or the safest point
+  of its route; wandering monsters stand their ground. Patrols now walk their
+  whole route in order (before, some never moved because their next waypoint
+  lay in their own fog, and others turned back halfway on long legs).
+- The computer no longer calls a hero home every day because a wandering monster
+  stands near an empty town (monsters hunt heroes, never towns).
+
 ## 1.3.0 — 2026-10-16 · Every shooter's own missile, and an upgrade for each of the six new neutrals
 
 Battle FX & neutral-upgrade delivery of 2026-10-15 (25 pictures: twelve

@@ -33,6 +33,7 @@ import {
   CUSTOM_SITE_KINDS,
   CUSTOM_SYMMETRIES,
   SKIRMISH_MAP_TYPES,
+  RANDOM_MAP_TYPES,
   SKIRMISH_PLAYER_COLORS,
   createRandomSkirmish,
   customMapFromGenerated,
@@ -68,6 +69,12 @@ import { DifficultyPicker } from './Setup';
 import { SkirmishMapThumb } from '../components/mapPreview';
 import { ArtIcon, EmptyArchive, artUrl, backdropStyle } from '../components/frontend';
 import { NEUTRAL_SITE_TABLE, neutralPalette, v2SiteSprite, v2SiteSpriteUrl, type NeutralPaletteEntry } from '../app/editorV2Sites';
+import { applyShipTool, docShipAt, removeShipAt, shipOwnerLabel, shipPlacementProblem } from '../app/editorShips';
+import { editorSeaPlacementProblem, editorSeaSitePicture, isEditorSeaSiteKind, seaSiteDefaults, seaToolHint } from '../app/editorSeaSites';
+import { SeaPaletteSection, SeaSiteFields } from '../components/editorSeaSites';
+import type { SeaPickupResource } from '@pr/rules';
+import { isSeaMonsterKind, seaMonsterCreatures } from '../app/editorSeaMonsters';
+import { mapTokenPicture, seaSiteLayout } from '@pr/presentation/core';
 
 const R = 22; // hex radius in world pixels at zoom 1
 const GROUNDS: readonly Exclude<Terrain, 'void'>[] = ['plains', 'forest', 'rough', 'marsh', 'mountain', 'water'];
@@ -81,9 +88,11 @@ type Tool =
   | { kind: 'terrain'; terrain: Exclude<Terrain, 'void'> }
   | { kind: 'road'; erase: boolean }
   | { kind: 'erase' }
-  | { kind: 'place'; site: CustomSiteKind; creatureId?: string }
+  | { kind: 'place'; site: CustomSiteKind; creatureId?: string; resource?: SeaPickupResource }
   /** Marking a sluice's channel hexes (2026-10-15): click or drag to add, start on a channel hex to remove. */
-  | { kind: 'channel'; siteId: string };
+  | { kind: 'channel'; siteId: string }
+  /** Hero ships (expedition kit): place or remove an empty ship on water; `owner` an empire slot, -1 neutral. */
+  | { kind: 'ship'; owner: number };
 
 /** The ground a sluice's channel has when the game starts. */
 function sluiceStartGround(s: Pick<CustomSite, 'openTerrain' | 'closedTerrain' | 'startsOpen'>): CustomChannelTerrain {
@@ -284,9 +293,15 @@ export function MapEditorScreen() {
 
   // --- Editing ------------------------------------------------------------------
   const placeAt = useCallback(
-    (c: HexCoord, kind: CustomSiteKind, creatureId?: string) => {
+    (c: HexCoord, kind: CustomSiteKind, creatureId?: string, resource?: SeaPickupResource) => {
       const t = terrainAt(doc, c);
-      if (t === 'water' || t === 'mountain' || t === 'void') {
+      // Coastal sites and sea salvage (sea-sites kit): their own placement rules, with the reason for a refused tile.
+      const seaProblem = editorSeaPlacementProblem(catalog, doc, c, kind);
+      if (seaProblem) {
+        store.toast(seaProblem, 'error');
+        return;
+      }
+      if (seaProblem === undefined && (t === 'water' || t === 'mountain' || t === 'void')) {
         store.toast('Sites stand on open ground (not water or mountains)', 'error');
         return;
       }
@@ -323,6 +338,7 @@ export function MapEditorScreen() {
       if (kind === 'sluice') s = { ...s, channel: autoChannel(doc, c) };
       if (kind === 'ferry' && pendingFerry) s = { ...s, twinId: pendingFerry };
       if (kind === 'supply_depot') s = { ...s, reward: { ...SUPPLY_DEPOT_REWARD } };
+      if (seaProblem !== undefined) s = { ...s, ...seaSiteDefaults(catalog, kind, resource) };
       setDoc((d) => {
         let sites = d.sites;
         if (kind === 'town' && owner >= 0) sites = sites.filter((x) => !(x.kind === 'town' && x.owner === owner)); // one town per empire: moving it
@@ -495,7 +511,14 @@ export function MapEditorScreen() {
         </Button>
       </div>
       <div className="map-editor__body">
-        <ToolPalette catalog={catalog} doc={doc} tool={tool} setTool={(t) => { setTool(t); if (t.kind !== 'place' || t.site !== 'portal') setPendingPortal(null); if (t.kind !== 'place' || t.site !== 'ferry') setPendingFerry(null); }} brush={brush} setBrush={setBrush} symmetry={symmetry} setSymmetry={setSymmetry} townOwner={townOwner} setTownOwner={setTownOwner} pendingPortal={pendingPortal} pendingFerry={pendingFerry} palette={palette} />
+        <ToolPalette catalog={catalog} doc={doc} tool={tool} setTool={(t) => { setTool(t); if (t.kind !== 'place' || t.site !== 'portal') setPendingPortal(null); if (t.kind !== 'place' || t.site !== 'ferry') setPendingFerry(null); }} brush={brush} setBrush={setBrush} symmetry={symmetry} setSymmetry={setSymmetry} townOwner={townOwner} setTownOwner={setTownOwner} pendingPortal={pendingPortal} pendingFerry={pendingFerry} palette={palette} shipNote={(() => {
+          // The document check's own reachability verdict (it counts placed ships as sea crossings).
+          const cut = errors.filter((i) => /cannot be reached/.test(i.text));
+          if (cut.length) return { text: `${cut[0]!.text}${cut.length > 1 ? ` (+${cut.length - 1} more)` : ''}`, ok: false };
+          if (!(doc.ships ?? []).length) return null;
+          // The check walks the map only once the map has no other problem (validateCustomMap).
+          return errors.length ? { text: 'Sea crossings are checked once the other problems are fixed (Check tab).', ok: null } : { text: 'Every site can be reached from Empire 1’s town (the placed ships count as crossings).', ok: true };
+        })()} />
         <EditorCanvas
           catalog={catalog}
           doc={doc}
@@ -529,9 +552,15 @@ export function MapEditorScreen() {
           onChannel={(c, add, first) => (tool.kind === 'channel' ? editChannel(tool.siteId, c, add, first) : false)}
           onClickCell={(c) => {
             const there = doc.sites.find((s) => s.q === c.q && s.r === c.r);
-            if (tool.kind === 'place') placeAt(c, tool.site, tool.creatureId);
-            else if (tool.kind === 'erase') {
+            if (tool.kind === 'place') placeAt(c, tool.site, tool.creatureId, tool.resource);
+            else if (tool.kind === 'ship') {
+              // Hero ships: water only, one per tile; a click on a ship of the chosen owner removes it.
+              const r = applyShipTool(doc, c, tool.owner);
+              if (r.error) store.toast(r.error, 'error');
+              else setDoc(r.doc);
+            } else if (tool.kind === 'erase') {
               if (there) removeSite(there.id);
+              else if (docShipAt(doc, c)) setDoc((d) => removeShipAt(d, c));
             } else if (tool.kind === 'select') {
               setSelected(there?.id ?? null);
               if (there) setTab('site');
@@ -539,7 +568,10 @@ export function MapEditorScreen() {
           }}
           onMoveSite={(id, c, first) => {
             const t = terrainAt(doc, c);
-            if (t === 'water' || t === 'mountain' || t === 'void') return;
+            const moving = doc.sites.find((s) => s.id === id);
+            const seaProblem = moving ? editorSeaPlacementProblem(catalog, doc, c, moving.kind, id) : undefined;
+            if (seaProblem) return;
+            if (seaProblem === undefined && (t === 'water' || t === 'mountain' || t === 'void')) return;
             if (doc.sites.some((s) => s.id !== id && s.q === c.q && s.r === c.r)) return;
             if (channelKeys(doc).has(hexKey(c))) return;
             setDoc((d) => ({ ...d, sites: d.sites.map((s) => (s.id === id ? { ...s, q: c.q, r: c.r } : s)) }), first);
@@ -674,11 +706,14 @@ function ToolPalette({
   pendingPortal,
   pendingFerry,
   palette,
+  shipNote,
 }: {
   catalog: ContentCatalog;
   doc: CustomMapDocument;
   tool: Tool;
   setTool: (t: Tool) => void;
+  /** The reachability check's message while ships are placed (what is still cut off from Empire 1's town). */
+  shipNote?: { readonly text: string; readonly ok: boolean | null } | null;
   brush: number;
   setBrush: (n: number) => void;
   symmetry: CustomSymmetry;
@@ -803,6 +838,32 @@ function ToolPalette({
           );
         })}
       </div>
+      {/* Sea-sites kit (2026-10-18): coastal lookouts, floating salvage and wrecks (and the other water sites). */}
+      <SectionTitle>Coastal sites and the sea</SectionTitle>
+      <SeaPaletteSection catalog={catalog} selected={tool.kind === 'place' ? { site: tool.site, resource: tool.resource } : null} onPick={(site, resource) => setTool(resource ? { kind: 'place', site, resource } : { kind: 'place', site })} />
+      {/* Hero ships (expedition kit): empty hulls on water, neutral or an empire's; Erase or a second click removes one. */}
+      <SectionTitle>Ships</SectionTitle>
+      <div className="map-editor__grid">
+        <button type="button" className={`editor-tool ${tool.kind === 'ship' ? 'is-selected' : ''}`} onClick={() => setTool({ kind: 'ship', owner: tool.kind === 'ship' ? tool.owner : -1 })} title="Place an empty ship on water (click it again to remove it)" data-testid="tool-ship" aria-pressed={tool.kind === 'ship'}>
+          Ship
+        </button>
+      </div>
+      {tool.kind === 'ship' ? (
+        <>
+          <div className="row gap small map-editor__owner">
+            <span className="dim">For</span>
+            <Segmented label="Ship owner" value={String(tool.owner)} options={[{ id: '-1', label: 'Neutral' }, ...doc.players.map((_, i) => ({ id: String(i), label: shipOwnerLabel(doc, i) }))]} onChange={(v) => setTool({ kind: 'ship', owner: Number(v) })} testId="ship-owner" />
+          </div>
+          <p className="small map-editor__hint" data-testid="ship-hint">
+            {(doc.ships ?? []).length} ship{(doc.ships ?? []).length === 1 ? '' : 's'} placed. Ships lie on water only; a neutral one is claimed by the first hero to embark. Empire 1’s heroes reach other shores only through a neutral or Empire 1 ship (the Check tab lists anything cut off).
+          </p>
+          {shipNote ? (
+            <p className={`small ${shipNote.ok ? 'success' : shipNote.ok === null ? 'dim' : 'map-editor__bad'}`} role="status" data-testid="ship-reach-note">
+              {shipNote.text}
+            </p>
+          ) : null}
+        </>
+      ) : null}
       {pendingFerry ? <p className="small map-editor__hint">Click a second shore tile for the other ferry landing.</p> : null}
       {tool.kind === 'channel' ? <p className="small map-editor__hint" data-testid="channel-hint">Click or drag over hexes to add them to the channel; start on a channel hex to remove. Escape or Done ends.</p> : null}
     </Panel>
@@ -1032,7 +1093,8 @@ function EditorCanvas({
         ctx.globalAlpha = 1;
       }
       let drew = false;
-      if (s.kind === 'monster') {
+      // A wandering monster or a sea-monster stack: its guard's portrait on a red disc.
+      if (s.kind === 'monster' || isSeaMonsterKind(s.kind)) {
         const cre = s.guard ? catalog.creatures[s.guard.creatureId] : null;
         const img = image(cre ? resolveAsset(cre.presentation.portraitAssetId).url : null, redraw);
         ctx.fillStyle = '#7d1b1b';
@@ -1050,8 +1112,18 @@ function EditorCanvas({
         drew = true;
       } else {
         const townPantheon = s.kind !== 'town' ? null : s.owner !== undefined ? doc.players[s.owner]?.pantheonId : s.pantheon && s.pantheon !== 'nearest' && s.pantheon !== 'other' ? s.pantheon : doc.players[0]?.pantheonId;
+        // Coastal sites and sea salvage: the adventure map's own pictures, scaled by their painted bounds.
+        const seaPic = editorSeaSitePicture(doc, s);
+        const seaImg = seaPic ? image(seaPic.url, redraw) : null;
+        if (seaPic && seaImg) {
+          const lay = seaSiteLayout(seaPic.art, Math.sqrt(3) * R);
+          const dw = seaPic.art.width * lay.scale;
+          const dh = seaPic.art.height * lay.scale;
+          ctx.drawImage(seaImg, p.x - dw * seaPic.art.groundAnchor[0], p.y + R * 0.35 - dh * seaPic.art.groundAnchor[1], dw, dh);
+          drew = true;
+        }
         // Campaign expansion sites use the adventure map's own pictures (a sluice in its start state).
-        const def = v2SiteSprite(s) ?? siteSprite(s.kind === 'town' ? 'town' : SPRITE_KIND[s.kind] ?? 'pickup', s.kind === 'town' ? townPantheon : s.kind === 'resource_cache' ? 'gold' : null);
+        const def = seaPic ? null : v2SiteSprite(s) ?? siteSprite(s.kind === 'town' ? 'town' : SPRITE_KIND[s.kind] ?? 'pickup', s.kind === 'town' ? townPantheon : s.kind === 'resource_cache' ? 'gold' : null);
         const img = image(def ? spriteUrl(def.file) : null, redraw);
         if (def && img) {
           const scale = (Math.sqrt(3) * R) / def.pixelsPerHex;
@@ -1067,7 +1139,7 @@ function EditorCanvas({
         ctx.arc(p.x, p.y, R * 0.45, 0, Math.PI * 2);
         ctx.fill();
       }
-      if (s.guard && s.kind !== 'monster') {
+      if (s.guard && s.kind !== 'monster' && !isSeaMonsterKind(s.kind)) {
         ctx.fillStyle = '#b3261e';
         ctx.beginPath();
         ctx.arc(p.x + R * 0.62, p.y - R * 0.55, R * 0.24, 0, Math.PI * 2);
@@ -1094,6 +1166,39 @@ function EditorCanvas({
         path(p.x, p.y);
         ctx.stroke();
       }
+    }
+    // Hero ships: the kit's hull (sized by its painted part), an owner flag in the empire's colour or a pale neutral pennant.
+    const hull = mapTokenPicture('ship', 'e');
+    const hullImg = image(hull?.url, redraw);
+    for (const sh of doc.ships ?? []) {
+      const p = axialPoint(sh, R);
+      if (Math.abs(p.x - view.x) > half.x || Math.abs(p.y - view.y) > half.y) continue;
+      const color = sh.owner !== undefined ? SKIRMISH_PLAYER_COLORS[sh.owner % SKIRMISH_PLAYER_COLORS.length]! : '#e9dfc4';
+      if (hull && hullImg) {
+        const b = hull.picture.visibleBounds;
+        const k = (Math.sqrt(3) * R * 1.15) / ((b[2] - b[0]) * hull.picture.width);
+        const dw = hull.picture.width * k;
+        const dh = hull.picture.height * k;
+        ctx.drawImage(hullImg, p.x - dw * hull.picture.groundAnchor[0], p.y + R * 0.4 - dh * hull.picture.groundAnchor[1], dw, dh);
+      } else {
+        ctx.fillStyle = '#6b4a2a';
+        ctx.beginPath();
+        ctx.ellipse(p.x, p.y, R * 0.7, R * 0.3, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.fillStyle = color;
+      ctx.strokeStyle = '#1a1208';
+      ctx.lineWidth = 1.2 / view.zoom;
+      ctx.beginPath();
+      if (sh.owner !== undefined) ctx.rect(p.x + 2, p.y - R * 1.15, R * 0.55, R * 0.4);
+      else {
+        ctx.moveTo(p.x + 2, p.y - R * 1.15);
+        ctx.lineTo(p.x + 2 + R * 0.55, p.y - R * 0.95);
+        ctx.lineTo(p.x + 2, p.y - R * 0.75);
+        ctx.closePath();
+      }
+      ctx.fill();
+      ctx.stroke();
     }
     // Hover / brush footprint.
     if (hover) {
@@ -1200,6 +1305,8 @@ function EditorCanvas({
     else if (e.key === '-') setView((v) => ({ ...v, zoom: Math.max(0.35, v.zoom / 1.12) }));
   };
 
+  // Sea tools (sea-sites kit): whether the hovered tile takes the site, or why not.
+  const seaHint = hover && tool.kind === 'place' ? seaToolHint(catalog, doc, hover, tool.site, tool.site === 'sea_pickup' ? 'salvage' : (CUSTOM_SITE_KINDS.find((k) => k.id === tool.site)?.label ?? 'site')) : null;
   return (
     <div ref={wrap} className="map-editor__canvas" tabIndex={0} onKeyDown={onKey} aria-label="Map canvas: left click to use the tool, right-drag to pan, wheel to zoom, arrow keys to scroll">
       <canvas
@@ -1217,6 +1324,16 @@ function EditorCanvas({
         <div className="map-editor__coord small" data-testid="editor-hover">
           {GROUND_LABEL[groundShown(hover) as Exclude<Terrain, 'void'>] ?? ''} · {hover.q},{hover.r}
           {shownChannel.has(hexKey(hover)) ? ' · sluice channel' : ''}
+        </div>
+      ) : null}
+      {hover && tool.kind === 'ship' ? (
+        <div className={`map-editor__habitat small ${docShipAt(doc, hover) || !shipPlacementProblem(doc, hover) ? 'is-fit' : 'is-unfit'}`} role="status" data-testid="editor-ship-hint">
+          {docShipAt(doc, hover) ? `${shipOwnerLabel(doc, docShipAt(doc, hover)!.owner)} ship — click to ${(docShipAt(doc, hover)!.owner ?? -1) === tool.owner ? 'remove it' : `give it to ${shipOwnerLabel(doc, tool.owner)}`}` : (shipPlacementProblem(doc, hover) ?? `Place a ${shipOwnerLabel(doc, tool.owner).toLowerCase()} ship here`)}
+        </div>
+      ) : null}
+      {seaHint ? (
+        <div className={`map-editor__habitat small ${seaHint.fits ? 'is-fit' : 'is-unfit'}`} role="status" data-testid="editor-sea-hint">
+          {seaHint.text}
         </div>
       ) : null}
       {hover && habitatMask ? (
@@ -1583,6 +1700,7 @@ function SitePanel({
           </div>
         </>
       ) : null}
+      {isEditorSeaSiteKind(site.kind) ? <SeaSiteFields catalog={catalog} doc={doc} site={site} update={update} /> : null}
       {site.kind === 'watchtower' ? (
         <div className="row gap">
           <span className="small">Reveals sites within</span>
@@ -1593,10 +1711,21 @@ function SitePanel({
       {info.guardable ? (
         <>
           <label className="setting-block__label">Guard</label>
-          {site.kind !== 'monster' ? <Toggle checked={!!site.guard} onChange={(on) => update(site.id, { guard: on ? { creatureId: defaultCreature(catalog, 3), count: 8 } : null })} label="Guarded by a neutral army" /> : null}
+          {site.kind !== 'monster' && !isSeaMonsterKind(site.kind) ? <Toggle checked={!!site.guard} onChange={(on) => update(site.id, { guard: on ? { creatureId: defaultCreature(catalog, 3), count: 8 } : null })} label="Guarded by a neutral army" /> : null}
           {site.guard ? (
             <div className="editor-guard">
-              {creatureSelect(site.guard.creatureId, (creatureId) => update(site.id, { guard: { ...site.guard!, creatureId } }), 'Guard creature', 'site-guard-creature')}
+              {/* A sea monster's army: sea families only (sea creatures never guard land). */}
+              {isSeaMonsterKind(site.kind) ? (
+                <select className="text-input" value={site.guard.creatureId} aria-label="Sea creature" onChange={(e) => update(site.id, { guard: { ...site.guard!, creatureId: e.target.value } })} data-testid="site-guard-creature">
+                  {seaMonsterCreatures(catalog).map((c) => (
+                    <option key={c.id} value={c.id}>
+                      T{c.tier} · {c.name}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                creatureSelect(site.guard.creatureId, (creatureId) => update(site.id, { guard: { ...site.guard!, creatureId } }), 'Guard creature', 'site-guard-creature')
+              )}
               <input
                 type="number"
                 className="text-input editor-count"
@@ -1864,9 +1993,10 @@ function GenerateMapDialog({ catalog, players, onClose, onGenerate }: { catalog:
           Map type
         </label>
         <select id="generate-type" value={mapType} onChange={(e) => setMapType(e.target.value as SkirmishMapType)} data-testid="generate-type">
-          {SKIRMISH_MAP_TYPES.map((t) => (
-            <option key={t.id} value={t.id}>
-              {t.label}
+          {/* The naval templates are listed but cannot be made here (the editor does not keep their ships and naval travel rule yet). */}
+          {RANDOM_MAP_TYPES.map((t) => (
+            <option key={t.id} value={t.id} disabled={!!t.naval} title={t.naval?.editorReason}>
+              {t.naval ? `${t.label} — not in the editor: ${t.naval.editorReason}` : t.label}
             </option>
           ))}
         </select>

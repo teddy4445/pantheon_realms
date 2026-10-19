@@ -44,11 +44,13 @@ describe('expansion neutral facts', () => {
     expect(rr.campaigns.map((c) => [c.name, c.chapters])).toEqual([
       ['The Winter Oath', 3],
       ['The Silver Branch', 1],
+      ['When the Worlds Met', 2],
+      ['The Ashes of the Accord', 2],
     ]);
-    expect(rr.text).toBe('Hired at hiring sites in The Winter Oath (3 chapters) and The Silver Branch (1 chapter); on editor maps at a Creature Camp.');
+    expect(rr.text).toBe('Hired at hiring sites in The Winter Oath (3 chapters), The Silver Branch (1 chapter), When the Worlds Met (2 chapters) and The Ashes of the Accord (2 chapters); on editor maps at a Creature Camp.');
     expect(rr.places.filter((p) => p.pact).map((p) => p.siteId)).toEqual(['sb5_root_runners']);
     const pegasus = hiringSource(catalog, 'pegasus');
-    expect(pegasus.text).toBe('Hired at hiring sites in The Silent Oracle (2 chapters); on editor maps at a Creature Camp.');
+    expect(pegasus.text).toBe('Hired at hiring sites in The Silent Oracle (2 chapters), When the Worlds Met (2 chapters) and The Ashes of the Accord (2 chapters); on editor maps at a Creature Camp.');
   });
 
   it('older two-form families keep their pages as they were', () => {

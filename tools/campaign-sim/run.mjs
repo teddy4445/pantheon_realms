@@ -158,6 +158,33 @@ function missionTable(out, rs) {
   out.push('');
 }
 
+/**
+ * City dedications (app 1.5.0): at each mission's end, how many of the player's Temple II
+ * towns the autopilot had dedicated (it plays the strategic AI's dedication choices), the
+ * gods it honored, and the rivals' dedicated towns.
+ */
+function dedicationSection(opts, results, levelOf) {
+  const rs = results.filter((r) => r.dedication);
+  if (!rs.length) return [];
+  const out = ['City dedications at the end of each mission (the autopilot dedicates through the strategic AI; the feature is off in The Three Beacons):', ''];
+  out.push('| Level | Missions with the feature | Ended with a Temple II town | …of them with a town dedicated | Player towns dedicated / eligible | Gods honored (towns) | Rival towns dedicated |');
+  out.push('|---|---|---|---|---|---|---|');
+  for (const level of opts.difficulties) {
+    const xs = rs.filter((r) => levelOf(r) === level && r.dedication.feature);
+    if (!xs.length) continue;
+    const withTemple = xs.filter((r) => r.dedication.eligibleTowns > 0);
+    const dedicated = withTemple.filter((r) => r.dedication.dedicatedTowns > 0);
+    const gods = new Map();
+    for (const r of xs) for (const g of r.dedication.gods) gods.set(g, (gods.get(g) ?? 0) + 1);
+    const top = [...gods.entries()].sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1)).slice(0, 8).map(([g, n]) => `${g} ${n}`).join(', ');
+    const towns = xs.reduce((n, r) => n + r.dedication.dedicatedTowns, 0);
+    const eligible = xs.reduce((n, r) => n + r.dedication.eligibleTowns, 0);
+    out.push(`| ${LEVEL_NAME[level]} | ${xs.length} of ${results.filter((r) => levelOf(r) === level).length} | ${withTemple.length} | ${dedicated.length} | ${towns} / ${eligible} | ${top || '—'} | ${xs.reduce((n, r) => n + r.dedication.rivalDedicatedTowns, 0)} |`);
+  }
+  out.push('');
+  return out;
+}
+
 function render(opts, results, seconds, contentVersion) {
   const out = [];
   const levelOf = (r) => r.difficultyId ?? null;
@@ -186,6 +213,7 @@ function render(opts, results, seconds, contentVersion) {
     );
   }
   out.push('');
+  out.push(...dedicationSection(opts, results, levelOf));
   out.push('Target bands (proposed): ' + Object.entries(TARGETS).map(([k, t]) => `**${LEVEL_NAME[k]}** ${t.label}`).join('; ') + '. Run share = missions won ÷ missions played at that level (every campaign, every journey).');
   out.push('');
   for (const level of opts.difficulties) {

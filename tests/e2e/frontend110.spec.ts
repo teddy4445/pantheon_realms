@@ -174,7 +174,8 @@ test('Random Map: nine types by exact id, Twin Continents for two empires, every
   const types = page.locator('[data-testid^="random-type-"][role="radio"]');
   expect(await types.evaluateAll((els) => els.map((e) => e.getAttribute('data-testid')!.replace('random-type-', '')))).toEqual(RANDOM_TYPES);
   const pics = await picturesDecoded(page, '[data-testid="random-type"]');
-  expect(pics.total).toBe(9);
+  // Nine land layouts and the two naval templates (2026-10-17), each with its painting.
+  expect(pics.total).toBe(RANDOM_TYPES.length);
   expect(pics.broken).toEqual([]);
   // The painting of the chosen type is labelled as an illustration, never as this map.
   await expect(page.getByTestId('random-type-detail')).toContainText('Illustrative landscape');

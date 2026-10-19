@@ -8,10 +8,13 @@
  * Profiles:
  *   strategic — full empire behaviour: level-ups, build, recruit, reinforce,
  *               collect, capture, fight favorable battles.
- *   patrol    — the finite M03 Scout Captain: waypoint circuit inside its region,
- *               attacks a visible target only above its documented threshold.
+ *   patrol    — hostile patrols and wandering monsters (patrol.ts): chase a
+ *               beatable visible hero, guard their ground, fall back when
+ *               outmatched (commanders only), else walk the waypoint circuit.
  */
 import {
+  visibleLibrarySignals,
+  seedTownOptions,
   axialDistance,
   axialNeighbors,
   cellIndex,
@@ -19,7 +22,6 @@ import {
   parseHexKey,
   reachableTiles,
   effectiveAttributes,
-  movementBudget,
   hexEquals,
   hexKey,
   quoteConstruction,
@@ -44,53 +46,25 @@ import {
   quoteNeutralReaction,
   worldWeek,
   dayOfWeek, heroInTown, townGate, HIRE_STARTING_TROOPS,
+  navalEnabled,
 } from '@pr/rules';
 import type { AIObservation } from './observation';
 import { armyStrength, fightingStrength } from './evaluation';
-import { buildReserve, heroPower, hireReserve, weekPlan } from './assessment';
-import { campCandidates, godCandidates, interventionCandidates,
+import { buildReserve, hireReserve, weekPlan } from './assessment';
+import { DANGER_MARGIN, byScoreThenTie, endangered, heroStrength, tieHash } from './threat';
+import { patrolCandidates } from './patrol';
+import { campCandidates, campTargetValue, godCandidates, interventionCandidates,
   giftCandidates, mapEventCandidates, offeringCandidates, siteCandidates, trainingCandidates } from './services';
 import { equipCandidates, levelUpCandidates, merchantCandidates, movementSpellCandidate, recallSpellCandidate, scoutingSpellCandidate, specialtyHireValue } from './growth';
-import { aiPersonalityFor, aiTemperamentFor, temperBuildScore } from './temperament';
+import { aiPersonalityFor, aiTemperamentFor } from './temperament';
+import { buildScore } from './build';
+import { dedicationCandidates, rededicationCandidates } from './dedication';
 import { courierMove, handOffTransfer, handOffsActive, isCourier, mainHero } from './handoff';
+import { caravanDispatchCandidates, caravanRerouteCandidates, caravanTargets } from './caravans';
+import { navalCandidates } from './naval';
+import { navalCampaignCandidates, navalEmpireCandidates, navalReserve } from './navalCampaign';
+import { seaSiteCandidates, seaSiteTargets } from './seaSites';
 import type { AITemperamentDefinition } from '@pr/rules';
-
-/**
- * Data-driven build scoring (works for any pantheon's town tree): income first,
- * then new dwellings by tier, growth, hiring/market access and prerequisites
- * that unlock many other buildings. Heuristic, not a proven build order.
- */
-function buildScore(catalog: ContentCatalog, buildingId: string, heroCount: number, temperament?: AITemperamentDefinition): number {
-  const def = catalog.buildings[buildingId];
-  if (!def) return 0;
-  let score = 0;
-  for (const e of def.effects) {
-    if (e.type === 'daily_income') score += e.resource === 'gold' ? e.amount * 2 : e.resource === 'favor' ? 300 : 700;
-    else if (e.type === 'growth_multiplier') score += 1500;
-    else if (e.type === 'enables_hero_hiring') score += heroCount < 3 ? 900 : 200;
-    else if (e.type === 'enables_market') score += 500;
-    else if (e.type === 'spell_library') score += 350;
-    else if (e.type === 'enables_hero_training') score += 260;
-    else if (e.type === 'town_vision_radius') score += 220;
-    else if (e.type === 'enables_artifact_merchant') score += 300;
-  }
-  if (def.dwelling) {
-    const tier = catalog.families[def.dwelling.familyId]?.tier ?? 1;
-    score += def.dwelling.form === 'base' ? 600 + tier * 350 : 300 + tier * 220;
-  }
-  // Prerequisite value: how many other buildings name this one directly.
-  let unlocks = 0;
-  for (const other of Object.values(catalog.buildings)) {
-    if (other.pantheonId !== def.pantheonId || other.implementationStatus !== 'implemented') continue;
-    if (other.requirements.some((r) => r.type === 'has_building' && r.buildingId === buildingId)) unlocks++;
-  }
-  score += unlocks * 380;
-  // Temperament (scenario feature aiTemperaments): weights by kind of building, plus a
-  // bonus for favoured kinds the score above values little (walls, Temple).
-  if (temperament) score = temperBuildScore(catalog, buildingId, temperament, score);
-  const gold = def.cost.gold ?? 0;
-  return score / (1 + gold / 6000);
-}
 
 const HIRE_RESERVE_GOLD = 3000;
 
@@ -110,8 +84,6 @@ function hireValue(catalog: ContentCatalog, definitionId: string, pantheonId: st
 const THREAT_RADIUS = 8;
 /** Strength ratio a hero needs before it attacks an enemy hero in the field. */
 const HERO_ATTACK_MARGIN = 1.2;
-/** A visible enemy at least this strong (relative) that can reach a tile next turn makes it dangerous. */
-const DANGER_MARGIN = 1.0;
 
 /**
  * Home guard (owner request 2026-10-06: "the computer leaves its towns empty").
@@ -222,32 +194,6 @@ function homeGuardTransfers(catalog: ContentCatalog, town: MatchState['towns'][s
   return out;
 }
 
-/**
- * Tie-break for equally scored moves: a hash of the empire and the option key.
- * Ordering ties by the key alone (its coordinates) made empires on opposite
- * sides of a mirrored map prefer different directions — the west explored
- * toward the middle, the east away from it.
- */
-function tieHash(playerId: PlayerId, key: string): number {
-  let h = 0x811c9dc5;
-  const s = `${playerId}|${key}`;
-  for (let i = 0; i < s.length; i++) {
-    h ^= s.charCodeAt(i);
-    h = Math.imul(h, 0x01000193);
-  }
-  return h >>> 0;
-}
-
-function byScoreThenTie(playerId: PlayerId) {
-  return (a: { score: number; key: string }, b: { score: number; key: string }) =>
-    b.score - a.score || tieHash(playerId, a.key) - tieHash(playerId, b.key) || (a.key < b.key ? -1 : 1);
-}
-
-/** A hero's fighting power as the AI judges it: army, commander, skills, set and pantheon bonuses, morale, luck, magic (assessment.ts). */
-function heroStrength(catalog: ContentCatalog, state: MatchState, hero: HeroState): number {
-  return heroPower(catalog, state, hero);
-}
-
 /** Expected strength of an unseen town's garrison (see heroTargets): a public-information prior. */
 function unseenGarrisonPrior(catalog: ContentCatalog, belief: MatchState, pantheonId: string): number {
   const roster = catalog.pantheons[pantheonId]?.roster ?? [];
@@ -260,13 +206,7 @@ function unseenGarrisonPrior(catalog: ContentCatalog, belief: MatchState, panthe
   return 0.5 * fightingStrength(catalog, week) * weeks;
 }
 
-function withinRegion(hero: HeroState, c: HexCoord): boolean {
-  if (!hero.ai) return true;
-  if (hero.ai.regionCenter && hero.ai.regionRadius !== undefined && axialDistance(hero.ai.regionCenter, c) > hero.ai.regionRadius) return false;
-  return c.q >= hero.ai.regionMinQ && c.q <= hero.ai.regionMaxQ;
-}
-
-interface Target {
+export interface Target {
   readonly coord: HexCoord;
   readonly value: number;
   readonly encounter: boolean;
@@ -291,7 +231,7 @@ export function recentlyLostTowns(belief: MatchState, playerId: PlayerId): Set<s
   return new Set((belief.players[playerId]?.lostTowns ?? []).filter((x) => belief.day - x.day <= RETAKE_DAYS && belief.towns[x.townId]?.ownerId !== playerId).map((x) => x.townId));
 }
 
-function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, hero: HeroState): Target[] {
+export function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, hero: HeroState): Target[] {
   const out: Target[] = [];
   const mission = requireScenarioMission(catalog, belief);
   const persona = aiPersonalityFor(catalog, belief, playerId);
@@ -299,7 +239,6 @@ function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: Play
   // Temperament: rival heroes, towns and mines are worth more (or less) to raiders.
   const raid = aiTemperamentFor(catalog, belief, playerId).aggression;
   const holdRelic = mission.victoryCondition?.type === 'hold_site' ? mission.victoryCondition.siteId : null;
-  const wallet = belief.players[playerId]?.wallet;
   const myStrength = heroStrength(catalog, belief, hero);
   const visible = visibleCells(catalog, belief, playerId);
   for (const def of mission.sites) {
@@ -352,12 +291,9 @@ function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: Play
         break;
       }
       case 'creature_camp': {
-        const creature = catalog.creatures[def.kind.creatureId];
-        const stock = st.stock ?? def.kind.initialStock;
-        const unit = creature?.cost?.gold ?? 0;
-        if (creature && stock > 0 && wallet && unit > 0 && wallet.gold >= unit * Math.min(stock, 3) + 1500 && hero.army.slots.some((x) => !x || x.creatureId === creature.id)) {
-          out.push({ coord: def.coord, value: 500 + Math.min(stock * unit, wallet.gold) * 0.25, encounter: false, label: def.name });
-        }
+        // The best form it could buy, and the training of the base stacks it carries (services.ts).
+        const value = campTargetValue(catalog, belief, playerId, hero, def);
+        if (value !== null) out.push({ coord: def.coord, value, encounter: false, label: def.name });
         break;
       }
       case 'map_event':
@@ -415,27 +351,11 @@ function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: Play
     const value = enemy.monster ? 900 + (enemy.monster.bounty.gold ?? 0) + theirs * 0.2 : (3000 + theirs * 0.5) * raid;
     if (myStrength >= theirs * margin) out.push({ coord: enemy.position, value, encounter: true, label: enemy.name, fights: theirs, enemyHeroId: enemy.id });
   }
+  // Recruitment caravans in sight (their cargo the permitted estimate): intercept the beatable ones.
+  out.push(...caravanTargets(catalog, belief, playerId, hero, myStrength, persona.heroAttackMargin));
+  // Coastal watchtowers, floating salvage and the water beside wrecks (seaSites.ts; the wreck's outcome is never read).
+  out.push(...seaSiteTargets(catalog, belief, playerId, hero, persona.guardMargin, raid));
   return out;
-}
-
-/**
- * Field danger: would a visible enemy hero at least as strong as `strength` be
- * able to reach `stop` on its next turn? Uses only what the belief shows (the
- * enemy's visible army decides its movement budget). Heroes inside a town are
- * judged by the town threat logic instead.
- */
-function endangered(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, stop: HexCoord, strength: number, ignoreHeroId?: string): boolean {
-  // Heroes visiting a town stand at its gate.
-  const townCoords = new Set(Object.values(belief.towns).map((t) => hexKey(townGate(catalog, belief, t.id))));
-  for (const e of Object.values(belief.heroes)) {
-    if (e.ownerId === playerId || e.status !== 'active' || e.id === ignoreHeroId) continue;
-    const theirs = heroStrength(catalog, belief, e);
-    if (theirs < strength * DANGER_MARGIN) continue;
-    if (townCoords.has(hexKey(e.position)) && hexEquals(e.position, stop)) continue;
-    const q = quoteMovement(catalog, belief, e.id, stop);
-    if (q.reachable && q.totalCost <= movementBudget(catalog, belief, e).total) return true;
-  }
-  return false;
 }
 
 /** A hero below this share of its empire's strongest hero is a secondary (a scout or mine-taker). */
@@ -651,54 +571,6 @@ function explorationTargets(catalog: ContentCatalog, belief: MatchState, playerI
   return out.slice(0, 3);
 }
 
-function patrolCandidates(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, hero: HeroState): CommandPayload[] {
-  const ai = hero.ai!;
-  const out: CommandPayload[] = [];
-  // Campaign v2: an announced counterattack waits in its camp until its trigger flag is set.
-  if (ai.dormantUntilFlag && !belief.mission.flags[ai.dormantUntilFlag]) return out;
-  const mine = heroStrength(catalog, belief, hero);
-  // Attack a visible enemy inside the region above the documented threshold.
-  for (const enemy of Object.values(belief.heroes).sort((a, b) => (a.id < b.id ? -1 : 1))) {
-    if (enemy.ownerId === playerId || enemy.status !== 'active' || !withinRegion(hero, enemy.position)) continue;
-    const theirs = heroStrength(catalog, belief, enemy);
-    if (mine * ai.attackThreshold.denominator >= theirs * ai.attackThreshold.numerator) {
-      const q = quoteMovement(catalog, belief, hero.id, enemy.position);
-      if (q.reachable && q.path.every((c) => withinRegion(hero, c))) {
-        out.push({ kind: 'MoveHero', heroId: hero.id, destination: enemy.position, confirmEncounter: true });
-      }
-    }
-  }
-  // Otherwise advance along the waypoint circuit (stateless: next after the one we stand on).
-  const wps = ai.waypoints;
-  if (wps.length > 0) {
-    const at = wps.findIndex((w) => hexEquals(w, hero.position));
-    let targetIdx: number;
-    if (at >= 0) targetIdx = (at + 1) % wps.length;
-    else {
-      let bestI = 0;
-      let bestD = Number.POSITIVE_INFINITY;
-      wps.forEach((w, i) => {
-        const d = axialDistance(w, hero.position);
-        if (d < bestD) {
-          bestD = d;
-          bestI = i;
-        }
-      });
-      targetIdx = bestI;
-    }
-    for (let k = 0; k < wps.length; k++) {
-      const wp = wps[(targetIdx + k) % wps.length]!;
-      if (hexEquals(wp, hero.position)) continue;
-      const q = quoteMovement(catalog, belief, hero.id, wp);
-      if (q.reachable && q.stopIndex >= 0 && !q.endsInEncounter && q.path.slice(0, q.stopIndex + 1).every((c) => withinRegion(hero, c))) {
-        out.push({ kind: 'MoveHero', heroId: hero.id, destination: wp });
-        break;
-      }
-    }
-  }
-  return out;
-}
-
 /**
  * Adventure spells before the hero's moves: Recall to a threatened town, a look at
  * an unseen rival town (scouting) and a movement spell when the chosen move falls
@@ -748,7 +620,10 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
         const near = enemies.filter((e) => axialDistance(e.position, t.coord) <= THREAT_RADIUS);
         if (near.length === 0) return false;
         const visitor = strategic.find((h) => heroInTown(catalog, belief, h, t.id));
-        if (!visitor) return true;
+        // A wandering monster hunts heroes, never towns: near a town with no hero inside it is no
+        // threat to the town (2026-10-16). Smarter patrols hold their ground beside a town, and a
+        // strong hero was recalled home every day for it and never left again (Lantern Road ch. 6).
+        if (!visitor) return near.some((e) => !e.monster);
         // Judge the sally with the garrison folded into the visitor (it is moved into the
         // hero below when the town is not held). Two empires used to freeze for the rest
         // of a random map: each hero camped beside the other's town, each defender stayed
@@ -773,16 +648,32 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
   if (player.role !== 'scripted_hostile') {
     // Divine commitments and equipment first: they only ever help.
     out.push(...godCandidates(catalog, belief, playerId));
+    // City dedications (app 1.5.0): a town's first dedication is free and its service works at
+    // once, so it comes before any spending (Temple II just built, a god just committed).
+    out.push(...dedicationCandidates(catalog, belief, playerId));
     out.push(...equipCandidates(catalog, strategic));
     out.push(...offeringCandidates(catalog, belief, playerId, threatened));
     out.push(...trainingCandidates(catalog, belief, playerId, strategic));
     out.push(...merchantCandidates(catalog, belief, playerId, strategic));
     out.push(...mapEventCandidates(catalog, belief, playerId, strategic));
     out.push(...siteCandidates(catalog, belief, playerId, strategic));
+    // Shipwrecks beside a hero's ship: explore when strong enough, take a waiting artifact (seaSites.ts).
+    out.push(...seaSiteCandidates(catalog, belief, playerId, strategic, aiPersonalityFor(catalog, belief, playerId).guardMargin));
     out.push(...campCandidates(catalog, belief, playerId, strategic));
     out.push(...interventionCandidates(catalog, belief, playerId, strategic));
     out.push(...giftCandidates(catalog, belief, playerId, threatened));
+    // A paid switch of a town's god (500 Gold, next world week): only after an important
+    // construction or a new commitment, above the fee by the margin, keeping the build reserve.
+    out.push(...rededicationCandidates(catalog, belief, playerId));
+    // Naval-only maps (navalCampaign.ts): a ship for a main hero stranded without one comes before any spending,
+    // and the price of a ship is kept back while the empire has none at its coasts.
+    const mainStrategic = strongestHero(catalog, belief, playerId);
+    if (mainStrategic && mainStrategic.hero.ai?.profile !== 'patrol' && navalEnabled(belief)) out.push(...navalEmpireCandidates(catalog, belief, playerId, mainStrategic.hero, heroTargets(catalog, belief, playerId, mainStrategic.hero)));
+    const shipReserve = navalReserve(catalog, belief, playerId);
     const plan = weekPlan(catalog, belief, playerId);
+    // Recruitment caravans: idle stock of a safe town goes to a threatened one (same quote as a human).
+    out.push(...caravanRerouteCandidates(catalog, belief, playerId));
+    if (!saving) out.push(...caravanDispatchCandidates(catalog, belief, playerId, threatened, buildReserve(plan, 1500)));
     // One hero hire a week for every empire (owner request 2026-10-07): propose it at one town only.
     let hireProposed = false;
     for (const town of playerTowns(belief, playerId)) {
@@ -792,11 +683,11 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
         const options = townSlots(catalog, town)
           .map((slot) => slot.chain[town.buildings[slot.id] ?? 0])
           .filter((x): x is string => !!x)
-          .map((b) => ({ b, score: buildScore(catalog, b, myHeroes.length, temperament) }))
+          .map((b) => ({ b, score: buildScore(catalog, b, myHeroes.length, temperament, { belief, playerId, townId: town.id }) }))
           .sort((x, y) => y.score - x.score || (x.b < y.b ? -1 : 1));
         for (const { b } of options) {
           const q = quoteConstruction(catalog, belief, playerId, town.id, b);
-          if (q.legal && q.balanceAfter.gold >= buildReserve(plan, 1500)) {
+          if (q.legal && q.balanceAfter.gold >= buildReserve(plan, 1500) + shipReserve.gold && q.balanceAfter.wood >= shipReserve.wood) {
             out.push({ kind: 'BuildStructure', townId: town.id, buildingId: b });
             break;
           }
@@ -828,7 +719,10 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
       for (const c of saving && !underThreat ? [] : forms) {
         const dest = visitor && !underThreat ? { kind: 'hero' as const, heroId: visitor.id } : { kind: 'garrison' as const };
         const probe = quoteRecruitment(catalog, belief, playerId, town.id, c.id, 1, dest);
-        const qty = probe.maxQuantity;
+        // Keep the ship reserve (naval-only maps; zero elsewhere) unless the town is threatened.
+        const unitGold = probe.unitCost.gold;
+        const spare = shipReserve.gold > 0 && !underThreat && unitGold > 0 ? Math.max(0, Math.floor((player.wallet.gold - shipReserve.gold) / unitGold)) : Infinity;
+        const qty = Math.min(probe.maxQuantity, spare);
         if (qty > 0) {
           const q = quoteRecruitment(catalog, belief, playerId, town.id, c.id, qty, dest);
           if (q.legal) out.push({ kind: 'RecruitUnits', townId: town.id, creatureId: c.id, quantity: qty, destination: dest });
@@ -858,6 +752,11 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
     }
   }
 
+  if (belief.scenario.features?.mythicLibraryV2 && !player.libraryEconomy?.seedTown) {
+    const seedHero = myHeroes.find((h) => seedTownOptions(catalog, belief, h.id).length);
+    if (seedHero) out.push({ kind: 'SelectSeedTown', heroId: seedHero.id, townId: seedTownOptions(catalog, belief, seedHero.id)[0]!.id });
+  }
+  const strongest = strongestHero(catalog, belief, playerId);
   for (const hero of myHeroes) {
     if (holding.has(hero.id)) continue;
     if (hero.ai?.profile === 'patrol') {
@@ -871,8 +770,21 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
       if (walk) out.push(walk);
     }
     const moves = movementCandidates(catalog, belief, playerId, hero);
+    // Hero ships (navalMovementV1, naval.ts): voyages to targets beyond the water, boarding, launching.
+    // Only maps with ships need the targets here (heroTargets recomputes vision; skip it everywhere else).
+    const targets = player.role !== 'scripted_hostile' && navalEnabled(belief) ? heroTargets(catalog, belief, playerId, hero) : [];
+    const naval = player.role !== 'scripted_hostile' ? navalCandidates(catalog, belief, playerId, hero, targets, moves.length > 0) : { first: [], last: [] };
+    // Naval-only maps (navalCampaign.ts): exploring by sea, reinforcing by sea; nothing elsewhere.
+    const campaign = player.role !== 'scripted_hostile' ? navalCampaignCandidates(catalog, belief, playerId, hero, targets, strongest?.hero.id === hero.id) : { first: [], last: [] };
     if (player.role !== 'scripted_hostile') out.push(...adventureSpellCandidates(catalog, belief, playerId, hero, moves[0], threatened));
-    out.push(...moves);
+    out.push(...naval.first, ...campaign.first, ...moves, ...campaign.last, ...naval.last);
+    if (!moves.length && !naval.first.length && !campaign.first.length && !campaign.last.length && !naval.last.length && !hero.monster && hero.movementPoints > 0) {
+      const signal = visibleLibrarySignals(catalog, belief, playerId).filter((s) => !s.identified && axialDistance(hero.position, s.coord) > 2 && axialDistance(hero.position, s.coord) <= 4).sort((a, b) => a.id.localeCompare(b.id))[0];
+      if (signal) {
+        const step = axialNeighbors(hero.position).filter((c) => axialDistance(c, signal.coord) < axialDistance(hero.position, signal.coord) && !endangered(catalog, belief, playerId, c, heroStrength(catalog, belief, hero))).find((c) => { const q = quoteMovement(catalog, belief, hero.id, c); return q.reachable && q.reachesDestinationToday && !q.endsInEncounter; });
+        if (step) out.push({ kind: 'MoveHero', heroId: hero.id, destination: step });
+      }
+    }
   }
   out.push({ kind: 'EndTurn' });
   return out;

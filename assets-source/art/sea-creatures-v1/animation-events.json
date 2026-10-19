@@ -1,0 +1,256 @@
+{
+  "schema": "sea-animation-events-1",
+  "simulationIndependent": true,
+  "units": {
+    "hippocampus": {
+      "attack": {
+        "contactFrame": 2,
+        "returnTo": "idle"
+      },
+      "death": {
+        "holdLastFrame": true,
+        "onWater": "after pose completes, translate down 0.12 hex and fade over 450ms; cosmetic only",
+        "onDeck": "hold last pose, no sinking"
+      },
+      "hover": {
+        "idleHeightHex": 0.12,
+        "travelHeightHex": 0.4
+      },
+      "meleeMovement": "short lunge stays in legal origin; never moves logical footprint"
+    },
+    "tempest_hippocampus": {
+      "attack": {
+        "contactFrame": 2,
+        "returnTo": "idle"
+      },
+      "death": {
+        "holdLastFrame": true,
+        "onWater": "after pose completes, translate down 0.12 hex and fade over 450ms; cosmetic only",
+        "onDeck": "hold last pose, no sinking"
+      },
+      "hover": {
+        "idleHeightHex": 0.12,
+        "travelHeightHex": 0.4
+      },
+      "meleeMovement": "short lunge stays in legal origin; never moves logical footprint"
+    },
+    "cetus": {
+      "attack": {
+        "contactFrame": 2,
+        "returnTo": "idle"
+      },
+      "death": {
+        "holdLastFrame": true,
+        "onWater": "after pose completes, translate down 0.12 hex and fade over 450ms; cosmetic only",
+        "onDeck": "hold last pose, no sinking"
+      },
+      "hover": {
+        "idleHeightHex": 0,
+        "travelHeightHex": 0
+      },
+      "meleeMovement": "short lunge stays in legal origin; never moves logical footprint",
+      "shoot": {
+        "releaseFrame": 2,
+        "returnTo": "idle",
+        "sourcePoint": "mouth",
+        "socketNormalizedInReleaseRect": [
+          0.88,
+          0.45
+        ]
+      }
+    },
+    "crownfin_cetus": {
+      "attack": {
+        "contactFrame": 2,
+        "returnTo": "idle"
+      },
+      "death": {
+        "holdLastFrame": true,
+        "onWater": "after pose completes, translate down 0.12 hex and fade over 450ms; cosmetic only",
+        "onDeck": "hold last pose, no sinking"
+      },
+      "hover": {
+        "idleHeightHex": 0,
+        "travelHeightHex": 0
+      },
+      "meleeMovement": "short lunge stays in legal origin; never moves logical footprint",
+      "shoot": {
+        "releaseFrame": 2,
+        "returnTo": "idle",
+        "sourcePoint": "mouth",
+        "socketNormalizedInReleaseRect": [
+          0.88,
+          0.45
+        ]
+      }
+    },
+    "hafgufa": {
+      "attack": {
+        "contactFrame": 2,
+        "returnTo": "idle"
+      },
+      "death": {
+        "holdLastFrame": true,
+        "onWater": "after pose completes, translate down 0.12 hex and fade over 450ms; cosmetic only",
+        "onDeck": "hold last pose, no sinking"
+      },
+      "hover": {
+        "idleHeightHex": 0,
+        "travelHeightHex": 0
+      },
+      "meleeMovement": "short lunge stays in legal origin; never moves logical footprint",
+      "shoot": {
+        "releaseFrame": 2,
+        "returnTo": "idle",
+        "sourcePoint": "mouth",
+        "socketNormalizedInReleaseRect": [
+          0.88,
+          0.45
+        ]
+      }
+    },
+    "abyssal_hafgufa": {
+      "attack": {
+        "contactFrame": 2,
+        "returnTo": "idle"
+      },
+      "death": {
+        "holdLastFrame": true,
+        "onWater": "after pose completes, translate down 0.12 hex and fade over 450ms; cosmetic only",
+        "onDeck": "hold last pose, no sinking"
+      },
+      "hover": {
+        "idleHeightHex": 0,
+        "travelHeightHex": 0
+      },
+      "meleeMovement": "short lunge stays in legal origin; never moves logical footprint",
+      "shoot": {
+        "releaseFrame": 2,
+        "returnTo": "idle",
+        "sourcePoint": "mouth",
+        "socketNormalizedInReleaseRect": [
+          0.88,
+          0.45
+        ]
+      }
+    },
+    "isonade": {
+      "attack": {
+        "contactFrame": 2,
+        "returnTo": "idle"
+      },
+      "death": {
+        "holdLastFrame": true,
+        "onWater": "after pose completes, translate down 0.12 hex and fade over 450ms; cosmetic only",
+        "onDeck": "hold last pose, no sinking"
+      },
+      "hover": {
+        "idleHeightHex": 0,
+        "travelHeightHex": 0
+      },
+      "meleeMovement": "short lunge stays in legal origin; never moves logical footprint",
+      "shoot": {
+        "releaseFrame": 2,
+        "returnTo": "idle",
+        "sourcePoint": "tail-tip",
+        "socketNormalizedInReleaseRect": [
+          0.88,
+          0.4
+        ]
+      }
+    },
+    "razorwake_isonade": {
+      "attack": {
+        "contactFrame": 2,
+        "returnTo": "idle"
+      },
+      "death": {
+        "holdLastFrame": true,
+        "onWater": "after pose completes, translate down 0.12 hex and fade over 450ms; cosmetic only",
+        "onDeck": "hold last pose, no sinking"
+      },
+      "hover": {
+        "idleHeightHex": 0,
+        "travelHeightHex": 0
+      },
+      "meleeMovement": "short lunge stays in legal origin; never moves logical footprint",
+      "shoot": {
+        "releaseFrame": 2,
+        "returnTo": "idle",
+        "sourcePoint": "tail-tip",
+        "socketNormalizedInReleaseRect": [
+          0.88,
+          0.4
+        ]
+      }
+    },
+    "triton": {
+      "attack": {
+        "contactFrame": 2,
+        "returnTo": "idle"
+      },
+      "death": {
+        "holdLastFrame": true,
+        "onWater": "after pose completes, translate down 0.12 hex and fade over 450ms; cosmetic only",
+        "onDeck": "hold last pose, no sinking"
+      },
+      "hover": {
+        "idleHeightHex": 0,
+        "travelHeightHex": 0
+      },
+      "meleeMovement": "short lunge stays in legal origin; never moves logical footprint",
+      "shoot": {
+        "releaseFrame": 2,
+        "returnTo": "idle",
+        "sourcePoint": "conch-bell",
+        "socketNormalizedInReleaseRect": [
+          0.88,
+          0.45
+        ]
+      }
+    },
+    "stormcaller_triton": {
+      "attack": {
+        "contactFrame": 2,
+        "returnTo": "idle"
+      },
+      "death": {
+        "holdLastFrame": true,
+        "onWater": "after pose completes, translate down 0.12 hex and fade over 450ms; cosmetic only",
+        "onDeck": "hold last pose, no sinking"
+      },
+      "hover": {
+        "idleHeightHex": 0,
+        "travelHeightHex": 0
+      },
+      "meleeMovement": "short lunge stays in legal origin; never moves logical footprint",
+      "shoot": {
+        "releaseFrame": 2,
+        "returnTo": "idle",
+        "sourcePoint": "conch-bell",
+        "socketNormalizedInReleaseRect": [
+          0.88,
+          0.45
+        ]
+      }
+    }
+  },
+  "fxOrientation": {
+    "cetus": {
+      "travelRotationOffsetRad": 0,
+      "impactRotationOffsetRad": 0
+    },
+    "hafgufa": {
+      "travelRotationOffsetRad": 3.141592653589793,
+      "impactRotationOffsetRad": 0
+    },
+    "isonade": {
+      "travelRotationOffsetRad": 0,
+      "impactRotationOffsetRad": 0
+    },
+    "triton": {
+      "travelRotationOffsetRad": 0,
+      "impactRotationOffsetRad": 0
+    }
+  }
+}

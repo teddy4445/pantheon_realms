@@ -122,6 +122,8 @@ describe('AI temperaments (choices)', () => {
   it('bold Raiders attack a hero they beat by a small margin that an even rival leaves alone', () => {
     const d = boldRaiders(GameDriver.mission(mission('greek', 'norse')));
     const s = deepClone(d.state);
+    // The margins are measured against the true army: full information (scouting intel off).
+    s.scenario = { ...s.scenario, features: { ...s.scenario.features!, scoutingIntelV1: false } };
     for (const fog of Object.values(s.fog)) fog.explored = fog.explored.map(() => 1);
     const rivalHero = Object.values(s.heroes).find((h) => h.ownerId === 'rival')!;
     const playerHero = Object.values(s.heroes).find((h) => h.ownerId === 'player')!;

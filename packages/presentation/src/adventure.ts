@@ -26,7 +26,7 @@ import { TERRAIN_TEXTURE_WORLD, terrainArt, type EnvironmentArt } from './enviro
 import { ROUTE_MARKER_IDS, routeMarkerArt, type RouteMarkerArt, type RouteMarkerId } from './routeArt';
 import { graphicsProfile } from './graphics';
 import { SpriteFigure } from './figure';
-import { creatureSprites, heroSprites, pickSiteSprite, spriteManifest, spriteUrl, type EffectDefinition, type GroundEdgesData, type SiteArchetype, type StaticSpriteDefinition } from './sprites';
+import { FIGURE_SITE_ARCHETYPES, creatureSprites, heroSprites, pickSiteSprite, spriteManifest, spriteUrl, type EffectDefinition, type GroundEdgesData, type SiteArchetype, type StaticSpriteDefinition } from './sprites';
 import { loadStrip, loadTexture, stripFrames } from './textures';
 import { colorOf, groundShadow, rgbOf, stillHeight, stillSprite, stillTexture } from './staticSprites';
 import { FxPainter, type FxTarget } from './fx';
@@ -34,6 +34,9 @@ import { PLANK_COLOR, ROAD_PARTS, ROAD_STEP, marksAlong, offsetRun, roadRuns, ro
 import type { FxLook } from './fxLooks';
 import { GroundCache, type GroundCacheStats } from './groundCache';
 import { groundCornerOutlines, groundEdgesComplete, groundEdgesUsable, groundPieceOutlines, planGroundCorners, planGroundEdges, type GroundEdgePiece } from './groundEdges';
+import { mapTokenPicture, mapTokenScale, tokenHeading, type MapTokenHeading } from './mapTokens';
+import { ShipLayer, type AdventureShipView, type ShipLayerDebug, type ShipMarksView, type ShipOverlayUrls } from './ships';
+import { SeaSiteLayer, type AdventureSeaSiteView, type SeaSiteDebug } from './seaSites';
 
 /**
  * Nominal map time per hex step (ms, before the Adventure animation speed
@@ -103,6 +106,42 @@ export interface AdventureHeroView {
    * e.g. `fx.spell.fleet_foot.aura`): drawn only when its strip is delivered.
    */
   readonly aura?: string | null;
+  /** Aboard a ship (navalMovementV1): the mounted avatar is hidden; the ship carries the hero's flag. */
+  readonly embarked?: boolean;
+}
+
+/**
+ * A recruitment caravan's wagon on the map (expedition kit, `recruitmentCaravansV1`): the
+ * directional painted token in its owner's colour (a base disc and a pennant — never a
+ * pantheon), turned toward its next tile. Another player's wagon is listed only while the
+ * viewer sees its tile; `toward` is the owner's own knowledge only (never sent for another's).
+ */
+export interface AdventureCaravanView {
+  readonly id: string;
+  readonly coord: HexCoord;
+  /** The owner's colour (the same source as a hero's banner). */
+  readonly color: string;
+  readonly shown: boolean;
+  /** The next tile of its route (own caravans): the resting heading. */
+  readonly toward?: HexCoord | null;
+  /** A hero shares its tile: the wagon stands aside so both read. */
+  readonly sharesTile?: boolean;
+  /** Held (blocked or waiting at a gate): a small halt mark over the wagon. */
+  readonly held?: boolean;
+}
+
+/** Read-only wagon state for tests and diagnostics. */
+export interface CaravanTokenDebug {
+  readonly coord: HexCoord;
+  readonly heading: MapTokenHeading;
+  readonly flipX: boolean;
+  readonly texture: 'ready' | 'loading' | 'missing';
+  readonly shown: boolean;
+  readonly moving: boolean;
+  readonly bob: boolean;
+  /** Screen position of the ground point (CSS pixels within the canvas). */
+  readonly x: number;
+  readonly y: number;
 }
 
 export interface AdventurePathView {
@@ -148,6 +187,34 @@ export interface AdventureView {
   readonly grid: 'always' | 'hover' | 'off';
   /** The player asked for reduced motion: looping map auras hold still. */
   readonly calm?: boolean;
+  /**
+   * Scouting intel (`scoutingIntelV1`): last-known markers — where an enemy army was last seen
+   * outside the viewer's current vision, in its banner colour. Carries no army data (the panel
+   * shows the dated report); absent or empty: none.
+   */
+  readonly signals?: readonly { id: string; coord: HexCoord; identified: boolean }[];
+  readonly lastKnown?: readonly AdventureLastKnownView[];
+  /** Recruitment caravans' wagons (absent or empty: none). */
+  readonly caravans?: readonly AdventureCaravanView[];
+  /** Hero ships (navalMovementV1; absent or empty: none): `ships.ts`. */
+  readonly ships?: readonly AdventureShipView[];
+  /** The selected hero's naval marks: landing cells, embark / disembark steps, the destination ring. */
+  readonly shipMarks?: ShipMarksView;
+  /** Picture URLs of the kit's wake and destination-ring overlays. */
+  readonly shipOverlays?: ShipOverlayUrls;
+  /** Coastal watchtowers, floating salvage and shipwrecks (sea-sites kit; absent or empty: none): `seaSites.ts`. */
+  readonly seaSites?: readonly AdventureSeaSiteView[];
+}
+
+export interface AdventureLastKnownView {
+  /** The observed army (hero ID): the marker's stable key. */
+  readonly id: string;
+  readonly coord: HexCoord;
+  /** The owner's banner colour as it was seen. */
+  readonly color: string;
+  /** World day of the observation. */
+  readonly day: number;
+  readonly monster: boolean;
 }
 
 export interface AdventureCallbacks {
@@ -170,6 +237,8 @@ export interface HeroAnimationDebug {
   readonly facing: MapDirection;
   readonly mirrored: boolean;
   readonly prepareCount: number;
+  /** The avatar is drawn (false while hidden: out of sight, or aboard a ship). */
+  readonly visible?: boolean;
   /** The looping aura strip drawn on the hero (asset ID), if any. */
   readonly aura: string | null;
 }
@@ -194,6 +263,10 @@ interface HeroEntry {
   cancel: (() => void) | null;
   /** A looping aura strip on the hero while a map spell lasts (Fleet Foot, Wings of Hermes). */
   aura: { id: string; sprite: Sprite; def: EffectDefinition } | null;
+  /** In sight, aboard a ship (avatar hidden), and fading in or out during an embark / disembark playback. */
+  shown: boolean;
+  embarked: boolean;
+  fading: boolean;
 }
 
 interface SiteEntry {
@@ -213,6 +286,26 @@ interface SiteEntry {
   bannerKey: string;
   guard: SpriteFigure | null;
   guardKey: string;
+}
+
+interface CaravanEntry {
+  root: Container;
+  /** The painted wagon (bobs in `pose`). */
+  pose: Container;
+  sprite: Sprite;
+  marks: Container;
+  halt: Graphics;
+  color: string;
+  coord: HexCoord;
+  prevCoord: HexCoord;
+  heading: MapTokenHeading;
+  /** The heading whose picture is loaded (or loading). */
+  textureKey: string;
+  texture: 'ready' | 'loading' | 'missing';
+  sharesTile: boolean;
+  locked: number;
+  snapIn: number;
+  shown: boolean;
 }
 
 /** Ground types in a fixed order. */
@@ -282,6 +375,12 @@ export class AdventureSceneController implements SceneController {
   private readonly fogSoft = new Container();
   private fogCanvas: { canvas: HTMLCanvasElement; texture: Texture; sprite: Sprite; k: number; map: WorldMapDefinition } | null = null;
   private readonly effects = new Container();
+  /** Scouting intel: last-known markers (over the fog, so a remembered sighting stays readable). */
+  private readonly signalLayer = new Container();
+  private signalKey = '';
+  private readonly lastKnownLayer = new Container();
+  private lastKnownKey = '';
+  private lastKnownDrawn: { id: string; q: number; r: number; day: number }[] = [];
   /** Whole-view moments (screen pixels, over the map). */
   private readonly screenLayer = new Container();
   private readonly painter: FxPainter;
@@ -302,6 +401,7 @@ export class AdventureSceneController implements SceneController {
   /** The nature plan the map was dressed with (read-only diagnostics). */
   private naturePlan: NaturePlan | null = null;
   private heroes = new Map<string, HeroEntry>();
+  private caravans = new Map<string, CaravanEntry>();
   private sites = new Map<string, SiteEntry>();
   private selectedHero: string | null = null;
   /**
@@ -313,6 +413,7 @@ export class AdventureSceneController implements SceneController {
   /** The site views last drawn, and the latest view received. */
   private drawnSites = new Map<string, AdventureSiteView>();
   private lastSites: readonly AdventureSiteView[] = [];
+  private lastSeaSites: readonly AdventureSeaSiteView[] = [];
   private down: { x: number; y: number; button: number; tx: number; ty: number; dragging: boolean } | null = null;
   private lastHover = '';
   /** Camera: the world point at the view's centre, and the zoom. */
@@ -325,6 +426,10 @@ export class AdventureSceneController implements SceneController {
 
   /** Wakes the renderer to the full frame rate (frame pacing) after a change it cannot see coming. */
   private readonly wake: () => void;
+  /** Hero ships (navalMovementV1): hulls, flags, wakes, their playbacks and the voyage's ground marks. */
+  private readonly shipLayer: ShipLayer;
+  /** Coastal watchtowers, floating salvage and shipwrecks (sea-sites kit). */
+  private readonly seaSiteLayer: SeaSiteLayer;
   /** The ground drawn into textures (frame-rate work 2026-10-07; `groundCache.ts`): the map shows these instead of the ground layer. */
   private readonly groundCache: GroundCache;
 
@@ -346,7 +451,8 @@ export class AdventureSceneController implements SceneController {
     this.marks.addChild(this.reach, this.ground);
     this.fogLayer.addChild(this.fog, this.fogSoft);
     // The ground cache's chunks lie over the live ground; while they cover the view the live ground is not drawn.
-    this.world.addChild(this.groundLayer, this.groundCache.view, this.marks, this.objects, this.fogLayer, this.effects);
+    this.world.addChild(this.groundLayer, this.groundCache.view, this.marks, this.objects, this.fogLayer, this.lastKnownLayer, this.signalLayer, this.effects);
+    this.lastKnownLayer.eventMode = 'none';
     // Render groups (2026-10-06 frame-rate work): moving the camera changes one
     // transform on the GPU instead of every vertex, and the animated heroes and
     // guards re-send only the objects layer each frame, never the ground or fog.
@@ -369,6 +475,30 @@ export class AdventureSceneController implements SceneController {
     on('pointerleave', () => this.onLeave());
     on('wheel', (e) => this.onWheel(e as WheelEvent));
     on('contextmenu', (e) => e.preventDefault());
+    this.shipLayer = new ShipLayer({
+      objects: this.objects,
+      marks: this.ground,
+      tweens: this.tweens,
+      hexRadius: R,
+      squash: S,
+      hexCenter: (c) => this.hexCenter(c),
+      toScreen: (x, y) => ({ x: x * this.cam.zoom + this.world.x, y: y * this.cam.zoom + this.world.y }),
+      zoom: () => this.cam.zoom,
+      wake: () => this.wake(),
+      follow: (x, y) => (this.camGoal = { x, y }),
+      calm: () => this.calm,
+    });
+    this.seaSiteLayer = new SeaSiteLayer({
+      objects: this.objects,
+      hexRadius: R,
+      squash: S,
+      hexCenter: (c) => this.hexCenter(c),
+      toScreen: (x, y) => ({ x: x * this.cam.zoom + this.world.x, y: y * this.cam.zoom + this.world.y }),
+      zoom: () => this.cam.zoom,
+      wake: () => this.wake(),
+      calm: () => this.calm,
+      held: (c) => this.held(c),
+    });
   }
 
   resize(width: number, height: number): void {
@@ -408,8 +538,16 @@ export class AdventureSceneController implements SceneController {
       this.reachKey = view.reachKey;
     }
     this.syncHeroes(view.heroes);
+    this.syncCaravans(view.caravans ?? []);
+    this.shipLayer.setOverlays(view.shipOverlays);
+    this.shipLayer.sync(view.ships ?? []);
+    this.shipLayer.syncMarks(view.shipMarks);
+    this.lastSeaSites = view.seaSites ?? [];
+    this.seaSiteLayer.sync(this.lastSeaSites);
     this.lastSites = view.sites;
     this.syncSites(view.sites);
+    this.syncLastKnown(view.lastKnown ?? []);
+    this.syncSignals(view.signals ?? []);
     const vp = view.path;
     const pk = vp ? `${vp.steps.map((s) => `${s.q},${s.r}`).join(';')}|${vp.stopIndex}|${vp.encounter}|${vp.days?.join(',') ?? ''}|${vp.arrivalDay ?? ''}|${vp.blocked ? 'blocked' : ''}|${vp.destination ? `${vp.destination.q},${vp.destination.r}` : ''}|${this.selectedHero ?? ''}` : '';
     if (pk !== this.pathKey) {
@@ -1440,10 +1578,68 @@ export class AdventureSceneController implements SceneController {
     return false;
   }
 
+  /**
+   * Scouting intel: one LAST KNOWN marker per stale report — a hollow ground ring and a faded
+   * pennant in the owner's banner colour (the existing "not yours" banner shape) with a question
+   * mark. Drawn once per change of the list; no army data is drawn (the panel holds the report).
+   */
+  private syncSignals(list: NonNullable<AdventureView['signals']>): void {
+    const key = JSON.stringify(list); if (key === this.signalKey) return; this.signalKey = key;
+    for (const child of this.signalLayer.removeChildren()) child.destroy({ children: true });
+    for (const signal of list) {
+      const p = this.hexCenter(signal.coord), root = new Container(); root.eventMode = 'none'; root.position.set(p.x, p.y);
+      root.addChild(new Graphics().ellipse(0, 0, R * .6, R * S * .3).stroke({ color: 0x75e8cd, width: 2, alpha: .75 }).circle(0, -R * .4, R * .15).fill({ color: 0xb9ffe9, alpha: .9 }));
+      const label = new Text({ text: signal.identified ? 'FOXFIRE' : 'SIGNAL ?', style: { fontFamily: 'Georgia', fontSize: 9, fill: 0xe6fbe9, stroke: { color: 0x061017, width: 3 } }, resolution: 2 }); label.anchor.set(.5, 1); label.position.set(0, -R * .6); root.addChild(label); this.signalLayer.addChild(root);
+    }
+  }
+
+  private syncLastKnown(list: readonly AdventureLastKnownView[]): void {
+    const key = list.map((m) => `${m.id}@${m.coord.q},${m.coord.r}|${m.color}|${m.day}`).join(';');
+    if (key === this.lastKnownKey) return;
+    this.lastKnownKey = key;
+    for (const old of this.lastKnownLayer.removeChildren()) old.destroy({ children: true });
+    this.lastKnownDrawn = list.map((m) => ({ id: m.id, q: m.coord.q, r: m.coord.r, day: m.day }));
+    for (const m of list) {
+      const { x, y } = this.hexCenter(m.coord);
+      const root = new Container();
+      const c = colorOf(m.color);
+      const ring = new Graphics();
+      ring
+        .ellipse(0, 0, HEX_W * 0.3, HEX_W * 0.3 * S * 0.5)
+        .fill({ color: 0x05090f, alpha: 0.35 })
+        .stroke({ width: 2, color: c, alpha: 0.9 })
+        .ellipse(0, 0, HEX_W * 0.38, HEX_W * 0.38 * S * 0.5)
+        .stroke({ width: 1, color: 0xf5e4b7, alpha: 0.55 });
+      root.addChild(ring);
+      const flag = this.banner(m.color, 'pennant', R * 1.3);
+      flag.position.set(-HEX_W * 0.04, -1);
+      flag.alpha = 0.75;
+      root.addChild(flag);
+      const mark = new Text({
+        text: '?',
+        style: { fontFamily: 'Cinzel, Georgia, serif', fontSize: Math.round(HEX_W * 0.3), fontWeight: '700', fill: 0xf5e4b7, stroke: { color: 0x05090f, width: 3 } },
+        resolution: 2,
+      });
+      mark.anchor.set(0.5, 1);
+      mark.position.set(HEX_W * 0.14, -R * 0.15);
+      root.addChild(mark);
+      root.position.set(x, y + R * S * 0.3);
+      root.alpha = 0.92;
+      this.lastKnownLayer.addChild(root);
+    }
+    this.wake();
+  }
+
+  /** Last-known markers drawn (read-only diagnostics for tests). */
+  lastKnownDebug(): readonly { id: string; q: number; r: number; day: number }[] {
+    return this.lastKnownDrawn.map((m) => ({ ...m }));
+  }
+
   /** A hero arrived (or will not be animated): its destination's locations show their current state. */
   private releaseArrival(heroId: string): void {
     if (!this.arrivals.delete(heroId)) return;
     if (!this.disposed) this.syncSites(this.lastSites);
+    if (!this.disposed) this.seaSiteLayer.sync(this.lastSeaSites);
   }
 
   private syncSites(latest: readonly AdventureSiteView[]): void {
@@ -1490,7 +1686,8 @@ export class AdventureSceneController implements SceneController {
         const { x, y } = this.hexCenter(v.coord);
         root.position.set(x, y + R * S * 0.38);
         root.zIndex = root.y;
-        if (graphicsProfile().shadows) root.addChild(groundShadow(HEX_W * 0.4, HEX_W * 0.15));
+        // A figure-only location (a sea-monster stack on water) has no picture and no ground shadow.
+        if (graphicsProfile().shadows && !FIGURE_SITE_ARCHETYPES.includes(v.archetype)) root.addChild(groundShadow(HEX_W * 0.4, HEX_W * 0.15));
         const sprite = stillSprite(def, HEX_W);
         root.addChild(sprite);
         this.objects.addChild(root);
@@ -1541,8 +1738,10 @@ export class AdventureSceneController implements SceneController {
         e.guard?.destroy();
         e.guard = null;
         if (v.guard) {
-          const f = new SpriteFigure({ set: creatureSprites(v.guard), hexWidth: HEX_W, size: 0.62, accent: 0x7a2f2a });
-          f.view.position.set(HEX_W * 0.34, R * S * 0.1);
+          // A figure-only location (sea monster): its creature stands alone in the middle of the hex, larger.
+          const alone = FIGURE_SITE_ARCHETYPES.includes(v.archetype);
+          const f = new SpriteFigure({ set: creatureSprites(v.guard), hexWidth: HEX_W, size: alone ? 0.86 : 0.62, accent: 0x7a2f2a });
+          f.view.position.set(alone ? 0 : HEX_W * 0.34, alone ? -R * S * 0.06 : R * S * 0.1);
           f.mirror = facesLeft('guard', v.id);
           e.root.addChild(f.view);
           e.guard = f;
@@ -1656,6 +1855,9 @@ export class AdventureSceneController implements SceneController {
           prepares: 0,
           cancel: null,
           aura: null,
+          shown: v.shown,
+          embarked: !!v.embarked,
+          fading: false,
         };
         if (old) {
           root.position.copyFrom(old.root.position);
@@ -1680,7 +1882,10 @@ export class AdventureSceneController implements SceneController {
       } else if (e.locked === 0 && e.snapIn === 0) {
         this.placeHero(e, v.coord);
       }
-      e.root.visible = v.shown;
+      e.shown = v.shown;
+      e.embarked = !!v.embarked;
+      // Aboard a ship the mounted avatar is hidden (the ship flies the hero's flag), except while it fades.
+      e.root.visible = v.shown && (!e.embarked || e.fading);
       this.syncAura(e, v.monster ? null : (v.aura ?? null));
       if (v.selected) this.selectedHero = v.id;
     }
@@ -1715,6 +1920,271 @@ export class AdventureSceneController implements SceneController {
         if (!sprite.destroyed && sprite.texture === Texture.EMPTY && frames[0]) sprite.texture = frames[0];
       })
       .catch(() => null);
+  }
+
+  // ------------------------------------------------------------------ recruitment caravans (wagons)
+
+  /** Where a wagon stands on a tile: the hex's ground point, aside when a hero shares the tile. */
+  private placeCaravan(e: CaravanEntry, c: HexCoord, aside: boolean): void {
+    const { x, y } = this.hexCenter(c);
+    e.root.position.set(x + (aside ? R * 0.62 : 0), y + R * S * (aside ? 0.55 : 0.3));
+    e.root.zIndex = e.root.y;
+  }
+
+  /** The owner's marks: a base disc and a pennant at the wagon's rear (never mirrored text; colour only). */
+  private drawCaravanMarks(e: CaravanEntry): void {
+    for (const c of e.marks.removeChildren()) c.destroy({ children: true });
+    const color = colorOf(e.color);
+    e.marks.addChild(new Graphics().ellipse(0, 0, HEX_W * 0.4, HEX_W * 0.4 * S * 0.5).fill({ color, alpha: 0.42 }).stroke({ width: 1.5, color, alpha: 0.9 }));
+    const west = e.heading === 'w' || e.heading === 'nw' || e.heading === 'sw';
+    const flag = new Graphics();
+    const x0 = (west ? 1 : -1) * HEX_W * 0.4;
+    const top = -R * 1.25;
+    flag.moveTo(x0, 0).lineTo(x0, top).stroke({ width: 2, color: 0x3b2a1a, alpha: 0.95 });
+    // The pennant streams away from the direction of travel.
+    const dir = west ? 1 : -1;
+    flag.poly([x0, top, x0 + dir * R * 0.62, top + R * 0.16, x0, top + R * 0.34]).fill({ color, alpha: 0.98 }).stroke({ width: 1, color: 0x1a1208, alpha: 0.8 });
+    e.marks.addChild(flag);
+  }
+
+  /** Turn a wagon to a heading: the painted facing (E, NE, SE) or its mirror, loaded once per heading. */
+  private setCaravanHeading(e: CaravanEntry, heading: MapTokenHeading): void {
+    const t = mapTokenPicture('wagon', heading);
+    const key = t ? `${t.picture.assetId}|${t.flipX}` : 'missing';
+    const turned = heading !== e.heading;
+    e.heading = heading;
+    if (turned) this.drawCaravanMarks(e);
+    if (key === e.textureKey) return;
+    e.textureKey = key;
+    if (!t) {
+      e.texture = 'missing';
+      e.sprite.visible = false;
+      return;
+    }
+    const k = mapTokenScale(t.picture, HEX_W, t.def.displayHexWidths);
+    // Mirrored by a negative x scale around the ground point (the picture's own anchor).
+    e.sprite.anchor.set(t.picture.groundAnchor[0], t.picture.groundAnchor[1]);
+    e.sprite.scale.set(t.flipX ? -k : k, k);
+    e.texture = 'loading';
+    void loadTexture(t.url)
+      .then((tex) => {
+        if (e.sprite.destroyed || e.textureKey !== key) return;
+        e.sprite.texture = tex;
+        e.sprite.visible = true;
+        e.texture = 'ready';
+        this.wake();
+      })
+      .catch(() => {
+        if (e.textureKey === key) e.texture = 'missing';
+      });
+  }
+
+  private syncCaravans(views: readonly AdventureCaravanView[]): void {
+    const seen = new Set<string>();
+    for (const v of views) {
+      seen.add(v.id);
+      let e = this.caravans.get(v.id);
+      if (!e) {
+        const root = new Container();
+        const marks = new Container();
+        const pose = new Container();
+        const sprite = new Sprite(Texture.EMPTY);
+        sprite.visible = false;
+        const halt = new Graphics();
+        // A small halt sign over a held wagon (shape and colour, never colour alone).
+        halt.circle(0, 0, R * 0.26).fill({ color: 0x8c1f1a, alpha: 0.95 }).stroke({ width: 2, color: 0xf5e4b7, alpha: 0.95 });
+        halt.rect(-R * 0.15, -R * 0.045, R * 0.3, R * 0.09).fill({ color: 0xf5e4b7 });
+        halt.position.set(0, -R * 1.55);
+        halt.visible = false;
+        if (graphicsProfile().shadows) root.addChild(groundShadow(HEX_W * 0.36, HEX_W * 0.12));
+        pose.addChild(sprite);
+        root.addChild(marks, pose, halt);
+        root.eventMode = 'none';
+        e = { root, pose, sprite, marks, halt, color: v.color, coord: v.coord, prevCoord: v.coord, heading: 'e', textureKey: '', texture: 'loading', sharesTile: !!v.sharesTile, locked: 0, snapIn: 0, shown: v.shown };
+        this.objects.addChild(root);
+        this.caravans.set(v.id, e);
+        this.drawCaravanMarks(e);
+        this.setCaravanHeading(e, 'e');
+        this.placeCaravan(e, v.coord, !!v.sharesTile);
+      }
+      if (e.color !== v.color) {
+        e.color = v.color;
+        this.drawCaravanMarks(e);
+      }
+      if (e.locked === 0 && v.toward && (v.toward.q !== v.coord.q || v.toward.r !== v.coord.r)) {
+        const a = this.hexCenter(v.coord);
+        const b = this.hexCenter(v.toward);
+        this.setCaravanHeading(e, tokenHeading(b.x - a.x, b.y - a.y, e.heading));
+      }
+      e.sharesTile = !!v.sharesTile;
+      if (e.coord.q !== v.coord.q || e.coord.r !== v.coord.r) {
+        e.prevCoord = e.coord;
+        e.coord = v.coord;
+        // A queued movement playback claims the wagon within two frames; else it snaps there.
+        if (e.locked === 0) e.snapIn = 2;
+      } else if (e.locked === 0 && e.snapIn === 0) {
+        this.placeCaravan(e, v.coord, e.sharesTile);
+      }
+      e.shown = v.shown;
+      e.root.visible = v.shown;
+      e.halt.visible = !!v.held;
+    }
+    for (const [id, e] of this.caravans) {
+      if (seen.has(id)) continue;
+      e.root.destroy({ children: true });
+      this.caravans.delete(id);
+    }
+  }
+
+  /**
+   * Movement playback for a committed CaravanMoved event (never changes state): the wagon rolls
+   * hex to hex along the committed path, turned to each step's projected direction (six headings
+   * from three paintings), with a restrained cart bob — none under reduced motion.
+   */
+  async playCaravanMove(caravanId: string, path: readonly HexCoord[], speed: number, follow = false): Promise<void> {
+    const e = this.caravans.get(caravanId);
+    if (!e || path.length === 0) return;
+    const end = path[path.length - 1]!;
+    const start = end.q === e.coord.q && end.r === e.coord.r ? e.prevCoord : e.coord;
+    // A wagon that came into view with this move has no drawn start: it simply stands where it arrived.
+    if (start.q === end.q && start.r === end.r) return;
+    e.locked += 1;
+    e.snapIn = 0;
+    this.tweens.speed = speed;
+    const bob = !this.calm && speed > 0;
+    try {
+      let from = start;
+      this.placeCaravan(e, from, false);
+      for (const step of path) {
+        const a = this.hexCenter(from);
+        const b = this.hexCenter(step);
+        this.setCaravanHeading(e, tokenHeading(b.x - a.x, b.y - a.y, e.heading));
+        const base = { x: e.root.x, y: e.root.y };
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        await this.tweens.tween(
+          STEP_MS,
+          (t) => {
+            e.root.position.set(base.x + dx * t, base.y + dy * t);
+            e.root.zIndex = e.root.y;
+            // Two small jolts per hex: the wheels over the road, not a gait.
+            if (bob) e.pose.y = -Math.abs(Math.sin(t * Math.PI * 2)) * R * 0.05;
+            if (follow) this.camGoal = { x: e.root.x, y: e.root.y };
+          },
+          linear,
+        );
+        from = step;
+      }
+    } finally {
+      e.locked -= 1;
+      if (e.locked === 0) {
+        e.pose.y = 0;
+        this.placeCaravan(e, e.coord, e.sharesTile);
+      }
+    }
+  }
+
+  /** Read-only wagon state of every caravan drawn (tests and diagnostics). */
+  caravanDebug(): Record<string, CaravanTokenDebug> {
+    const out: Record<string, CaravanTokenDebug> = {};
+    const z = this.cam.zoom;
+    for (const [id, e] of this.caravans) {
+      out[id] = {
+        coord: { q: e.coord.q, r: e.coord.r },
+        heading: e.heading,
+        flipX: e.sprite.scale.x < 0,
+        texture: e.texture,
+        shown: e.shown,
+        moving: e.locked > 0,
+        bob: e.pose.y !== 0,
+        x: Math.round(e.root.x * z + this.world.x),
+        y: Math.round(e.root.y * z + this.world.y),
+      };
+    }
+    return out;
+  }
+
+  // ------------------------------------------------------------------ hero ships (navalMovementV1)
+
+  /** Playback of a committed `ShipMoved` (never changes state): the hull sails the committed sea route. */
+  playShipMove(shipId: string, path: readonly HexCoord[], speed: number, follow: boolean): Promise<void> {
+    return this.shipLayer.playMove(shipId, path, speed, follow);
+  }
+
+  /** A boarding battle's loser withdrew (`ShipWithdrawn`): its hull sails to the new hex. */
+  playShipWithdraw(shipId: string, from: HexCoord, to: HexCoord, speed: number, follow = false): Promise<void> {
+    return this.shipLayer.playWithdraw(shipId, from, to, speed, follow);
+  }
+
+  /** A launched ship (`ShipLaunched`) rises onto its water. */
+  playShipLaunch(shipId: string, speed: number): Promise<void> {
+    return this.shipLayer.playLaunch(shipId, speed);
+  }
+
+  /** The two ships of a boarding hold still in the boarding pose while the battlefield opens. */
+  playShipBoarding(shipIds: readonly string[], speed: number): Promise<void> {
+    return this.shipLayer.playBoarding(shipIds, 1300, speed);
+  }
+
+  /** A recoil cue on a hull (no hull HP). */
+  playShipHit(shipId: string, speed: number): Promise<void> {
+    return this.shipLayer.playHit(shipId, speed);
+  }
+
+  /** A wrecked hull (`ShipWrecked`, already gone from the rules) fades into the wreck and is removed. */
+  playShipSinking(shipId: string, speed: number, fallback?: { coord: HexCoord; facing?: number; color: string | null; occupied?: boolean }): Promise<void> {
+    return this.shipLayer.playSinking(shipId, speed, fallback);
+  }
+
+  /** Hold a ship on a tile until the release is called (a boarding's winner waits while the wreck sinks). */
+  holdShip(shipId: string, at: HexCoord): () => void {
+    return this.shipLayer.holdAt(shipId, at);
+  }
+
+  /**
+   * Embark / disembark (after the command committed): the mounted avatar on the shore and the crewed
+   * ship crossfade over 650 ms — the avatar steps a little toward the hull (embark) or off it (disembark).
+   */
+  async playShipTransition(kind: 'embark' | 'disembark', heroId: string, shipId: string, shore: HexCoord, water: HexCoord, speed: number): Promise<void> {
+    const h = this.heroes.get(heroId);
+    const a = this.hexCenter(shore);
+    const b = this.hexCenter(water);
+    const lift = R * S * 0.3;
+    if (h) {
+      h.locked += 1;
+      h.snapIn = 0;
+      h.fading = true;
+      h.root.visible = h.shown;
+      this.faceToward(h, kind === 'embark' ? b.x - a.x : a.x - b.x, kind === 'embark' ? b.y - a.y : a.y - b.y);
+    }
+    try {
+      await this.shipLayer.playTransition(kind, shipId, speed, (alpha, t) => {
+        if (!h || h.root.destroyed) return;
+        const k = kind === 'embark' ? 0.35 * t : 0.35 * (1 - t);
+        h.root.position.set(a.x + (b.x - a.x) * k, a.y + (b.y - a.y) * k + lift);
+        h.root.zIndex = h.root.y + 1;
+        h.root.alpha = alpha;
+      });
+    } finally {
+      if (h && !h.root.destroyed) {
+        h.locked -= 1;
+        h.fading = false;
+        h.root.alpha = 1;
+        h.root.visible = h.shown && !h.embarked;
+        if (h.locked === 0) this.placeHero(h, h.coord);
+        this.releaseArrival(heroId);
+      }
+    }
+  }
+
+  /** Read-only state of the drawn ships (tests and diagnostics). */
+  shipDebug(): ShipLayerDebug {
+    return this.shipLayer.debug();
+  }
+
+  /** Read-only sea-site state (tests; `__prSeaSites()` under `?e2e`). */
+  seaSiteDebug(): Record<string, SeaSiteDebug> {
+    return this.seaSiteLayer.debug();
   }
 
   /** Face the avatar toward a screen vector (8 directions; mirrored when only the side view exists). */
@@ -2042,6 +2512,7 @@ export class AdventureSceneController implements SceneController {
         facing: e.figure.facing,
         mirrored: e.figure.pose.scale.x < 0,
         prepareCount: e.prepares,
+        visible: e.root.visible,
         aura: e.aura && !e.aura.sprite.destroyed ? e.aura.id : null,
       };
     }
@@ -2269,6 +2740,14 @@ export class AdventureSceneController implements SceneController {
         if (frames && frames.length) e.aura.sprite.texture = frames[motion && !this.calm ? Math.floor((this.time * Math.max(1, e.aura.def.fps)) / 1000) % frames.length : 0]!;
       }
     }
+    for (const e of this.caravans.values()) {
+      if (e.snapIn > 0 && e.locked === 0) {
+        e.snapIn -= 1;
+        if (e.snapIn === 0) this.placeCaravan(e, e.coord, e.sharesTile);
+      }
+    }
+    this.shipLayer.tick(dt);
+    this.seaSiteLayer.tick(dt);
     if (motion) for (const s of this.sites.values()) s.guard?.tick(dt);
     const sel = this.selectedHero ? this.heroes.get(this.selectedHero) : undefined;
     const ring = this.selectRing;
@@ -2321,6 +2800,8 @@ export class AdventureSceneController implements SceneController {
   pace(): FramePace {
     if (this.tweens.busy || this.camGoal || this.down || this.terrainQueued || this.groundCache.pending || this.extraTweens.some((t) => t.busy)) return 'full';
     for (const e of this.heroes.values()) if (e.clip !== 'idle' || e.locked > 0 || e.snapIn > 0) return 'full';
+    for (const e of this.caravans.values()) if (e.locked > 0 || e.snapIn > 0) return 'full';
+    if (this.shipLayer.busy || this.seaSiteLayer.busy) return 'full';
     return graphicsProfile().ambientMotion && !this.calm ? 'ambient' : 'still';
   }
 
@@ -2333,8 +2814,11 @@ export class AdventureSceneController implements SceneController {
     for (const [type, fn] of this.listeners) this.canvas.removeEventListener(type, fn);
     for (const e of this.heroes.values()) e.figure.destroy();
     for (const s of this.sites.values()) s.guard?.destroy();
+    this.shipLayer.dispose();
+    this.seaSiteLayer.dispose();
     this.groundCache.destroy();
     this.heroes.clear();
+    this.caravans.clear();
     this.sites.clear();
     this.root.destroy({ children: true });
   }

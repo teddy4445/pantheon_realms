@@ -1,0 +1,932 @@
+[
+  {
+    "godId": "zeus",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "athena",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "defense",
+        "amount": 1
+      },
+      {
+        "type": "spell_eligibility",
+        "spellId": "ward"
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "ares",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "attack",
+        "amount": 1
+      },
+      {
+        "type": "spell_eligibility",
+        "spellId": "warcry"
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "apollo",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "power",
+        "amount": 1
+      },
+      {
+        "type": "morale",
+        "amount": 1
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "artemis",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "creature_stat",
+        "stat": "attack",
+        "amount": 2,
+        "ability": "shooter"
+      },
+      {
+        "type": "vision_radius",
+        "amount": 1
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "hermes",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [
+      {
+        "type": "daily_income",
+        "resource": "gold",
+        "amount": 250
+      }
+    ],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "movement_percent",
+        "percent": 15
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "demeter",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [
+      {
+        "type": "weekly_growth_bonus",
+        "amount": 2,
+        "maxTier": 3
+      }
+    ],
+    "retainedDirectGodBenefits": [],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "hades",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "casualty_recovery",
+        "percent": 15
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "poseidon",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "movement_percent",
+        "percent": 10
+      },
+      {
+        "type": "creature_stat",
+        "stat": "attack",
+        "amount": 1,
+        "minTier": 4
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "hera",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [
+      {
+        "type": "weekly_growth_bonus",
+        "amount": 1,
+        "maxTier": 4
+      }
+    ],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "morale",
+        "amount": 1
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "norse_odin",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "norse_thor",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "attack",
+        "amount": 1
+      },
+      {
+        "type": "spell_eligibility",
+        "spellId": "warcry"
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "norse_tyr",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "defense",
+        "amount": 1
+      },
+      {
+        "type": "spell_eligibility",
+        "spellId": "ward"
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "norse_frigg",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "knowledge",
+        "amount": 1
+      },
+      {
+        "type": "vision_radius",
+        "amount": 2
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "norse_baldr",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "power",
+        "amount": 1
+      },
+      {
+        "type": "mana_regen",
+        "amount": 2
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "norse_freyja",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [
+      {
+        "type": "weekly_growth_bonus",
+        "amount": 1,
+        "maxTier": 5
+      }
+    ],
+    "retainedDirectGodBenefits": [],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "norse_heimdall",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "vision_radius",
+        "amount": 2
+      },
+      {
+        "type": "creature_stat",
+        "stat": "defense",
+        "amount": 1
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "norse_hel",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "casualty_recovery",
+        "percent": 15
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "norse_loki",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "luck",
+        "amount": 2
+      },
+      {
+        "type": "movement_percent",
+        "percent": 10
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "norse_njord",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [
+      {
+        "type": "daily_income",
+        "resource": "gold",
+        "amount": 200
+      },
+      {
+        "type": "daily_income",
+        "resource": "crystal",
+        "amount": 1
+      }
+    ],
+    "retainedDirectGodBenefits": [],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "egyptian_ra",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "egyptian_set",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "attack",
+        "amount": 1
+      },
+      {
+        "type": "spell_eligibility",
+        "spellId": "warcry"
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "egyptian_isis",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "defense",
+        "amount": 1
+      },
+      {
+        "type": "spell_eligibility",
+        "spellId": "ward"
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "egyptian_anubis",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "knowledge",
+        "amount": 1
+      },
+      {
+        "type": "casualty_recovery",
+        "percent": 10
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "egyptian_bastet",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "luck",
+        "amount": 1
+      },
+      {
+        "type": "creature_stat",
+        "stat": "defense",
+        "amount": 1,
+        "maxTier": 3
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "egyptian_osiris",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "casualty_recovery",
+        "percent": 15
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "egyptian_thoth",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "power",
+        "amount": 1
+      },
+      {
+        "type": "commander_attribute",
+        "attribute": "knowledge",
+        "amount": 1
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "egyptian_horus",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "creature_stat",
+        "stat": "attack",
+        "amount": 1,
+        "ability": "flight"
+      },
+      {
+        "type": "creature_stat",
+        "stat": "speed",
+        "amount": 1,
+        "ability": "flight"
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "egyptian_hathor",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [
+      {
+        "type": "daily_income",
+        "resource": "gold",
+        "amount": 250
+      }
+    ],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "morale",
+        "amount": 1
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "egyptian_sobek",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [
+      {
+        "type": "weekly_growth_bonus",
+        "amount": 2,
+        "maxTier": 3
+      },
+      {
+        "type": "daily_income",
+        "resource": "stone",
+        "amount": 1
+      }
+    ],
+    "retainedDirectGodBenefits": [],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "japanese_amaterasu",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "japanese_hachiman",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "attack",
+        "amount": 1
+      },
+      {
+        "type": "spell_eligibility",
+        "spellId": "warcry"
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "japanese_susanoo",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "defense",
+        "amount": 1
+      },
+      {
+        "type": "spell_eligibility",
+        "spellId": "ward"
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "japanese_tsukuyomi",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "power",
+        "amount": 1
+      },
+      {
+        "type": "vision_radius",
+        "amount": 1
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "japanese_benzaiten",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "knowledge",
+        "amount": 1
+      },
+      {
+        "type": "mana_regen",
+        "amount": 2
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "japanese_inari",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [
+      {
+        "type": "daily_income",
+        "resource": "gold",
+        "amount": 300
+      },
+      {
+        "type": "daily_income",
+        "resource": "wood",
+        "amount": 1
+      }
+    ],
+    "retainedDirectGodBenefits": [],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "japanese_fujin",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "movement_percent",
+        "percent": 20
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "japanese_raijin",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "power",
+        "amount": 1
+      },
+      {
+        "type": "creature_stat",
+        "stat": "attack",
+        "amount": 2,
+        "ability": "shooter"
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "japanese_izanagi",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [
+      {
+        "type": "weekly_growth_bonus",
+        "amount": 1,
+        "maxTier": 4
+      }
+    ],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "mana_regen",
+        "amount": 2
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "japanese_izanami",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "casualty_recovery",
+        "percent": 20
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "celtic_dagda",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "celtic_morrigan",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "attack",
+        "amount": 1
+      },
+      {
+        "type": "spell_eligibility",
+        "spellId": "warcry"
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "celtic_brigid",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "defense",
+        "amount": 1
+      },
+      {
+        "type": "spell_eligibility",
+        "spellId": "ward"
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "celtic_nuada",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "morale",
+        "amount": 1
+      },
+      {
+        "type": "creature_stat",
+        "stat": "defense",
+        "amount": 1,
+        "minTier": 4
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "celtic_danu",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [
+      {
+        "type": "weekly_growth_bonus",
+        "amount": 1,
+        "maxTier": 2
+      }
+    ],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "power",
+        "amount": 1
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "celtic_cernunnos",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "creature_stat",
+        "stat": "attack",
+        "amount": 1,
+        "maxTier": 3
+      },
+      {
+        "type": "creature_stat",
+        "stat": "defense",
+        "amount": 1,
+        "maxTier": 3
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "celtic_epona",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "movement_percent",
+        "percent": 20
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "celtic_lugh",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "luck",
+        "amount": 1
+      },
+      {
+        "type": "morale",
+        "amount": 1
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "celtic_arawn",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "casualty_recovery",
+        "percent": 15
+      },
+      {
+        "type": "luck",
+        "amount": 1
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "celtic_manannan",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "vision_radius",
+        "amount": 2
+      },
+      {
+        "type": "movement_percent",
+        "percent": 15
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "mesoamerican_quetzalcoatl",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "mesoamerican_huitzilopochtli",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "attack",
+        "amount": 1
+      },
+      {
+        "type": "spell_eligibility",
+        "spellId": "warcry"
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "mesoamerican_coatlicue",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "defense",
+        "amount": 1
+      },
+      {
+        "type": "spell_eligibility",
+        "spellId": "ward"
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "mesoamerican_mixcoatl",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "creature_stat",
+        "stat": "attack",
+        "amount": 2,
+        "ability": "shooter"
+      },
+      {
+        "type": "vision_radius",
+        "amount": 1
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "mesoamerican_xolotl",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "commander_attribute",
+        "attribute": "knowledge",
+        "amount": 1
+      },
+      {
+        "type": "movement_percent",
+        "percent": 10
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "mesoamerican_tlaloc",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [
+      {
+        "type": "weekly_growth_bonus",
+        "amount": 2,
+        "maxTier": 3
+      }
+    ],
+    "retainedDirectGodBenefits": [],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "mesoamerican_tezcatlipoca",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "luck",
+        "amount": 2
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "mesoamerican_xiuhtecuhtli",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "offering",
+        "goldPerFavor": 100,
+        "maxFavorPerWeek": 15
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "mesoamerican_chalchiuhtlicue",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [
+      {
+        "type": "weekly_growth_bonus",
+        "amount": 1,
+        "maxTier": 4
+      }
+    ],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "casualty_recovery",
+        "percent": 10
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  },
+  {
+    "godId": "mesoamerican_mictlantecuhtli",
+    "suppressedDirectGodBenefitsWhenFeatureEnabled": [],
+    "retainedDirectGodBenefits": [
+      {
+        "type": "wounded_fury",
+        "attack": 2,
+        "numerator": 1,
+        "denominator": 2
+      },
+      {
+        "type": "luck",
+        "amount": 1
+      }
+    ],
+    "legacyFeatureOff": "Keep original benefits unchanged",
+    "heroGodPerks": "Do not suppress hero perks, even if they contain daily_income."
+  }
+]

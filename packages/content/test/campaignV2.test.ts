@@ -21,10 +21,11 @@ describe('campaign content v2', () => {
       expect(camp.epilogueV2, `${camp.id}: v2 epilogue`).toBeDefined();
     }
     const chapters = v2Campaigns.reduce((n, c) => n + c.chapters!.length, 0);
-    expect(chapters).toBeLessThanOrEqual(37);
+    expect(chapters).toBe(51);
   });
 
   it('every chapter is an authored region map with reachable objectives and two approaches to its principal objective', () => {
-    checkV2Missions(catalog, v2Missions);
+    // Confluence uses mandatory voyages, validated separately by confluenceWorld and confluenceAcceptance.
+    checkV2Missions(catalog, v2Missions.filter((m)=>!catalog.campaigns[m.campaignId!]?.regionalWorldId));
   });
 });

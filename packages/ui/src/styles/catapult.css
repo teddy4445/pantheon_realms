@@ -1,0 +1,76 @@
+/* ------------------------------------------------------------------
+   The siege catapult (expedition kit 2026-10-17; components/catapultControls.tsx).
+   Its status is one line in its side's header box (both sides see it; the details card drops
+   below the box). In its own phase its commander's target list, Fire and Skip stand above the
+   battle bar on the left while no creature acts. Selected targets carry an aim icon and a heavier
+   rim (not colour alone); focus rings are white.
+   ------------------------------------------------------------------ */
+.catapult-status { position: relative; margin-top: 0.2rem; max-width: 22rem; }
+.catapult-status__line { display: flex; align-items: center; gap: 0.35rem; }
+.catapult-status__name { font-family: var(--font-ui); letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.68rem; color: var(--gold-200); }
+.catapult-status__hp { font-family: var(--font-ui); font-weight: 700; color: var(--gold-100); }
+.catapult-status__bar { flex: 1; min-width: 3rem; max-width: 7rem; }
+.catapult-status__bar .bar { height: 0.32rem; }
+.catapult-status__state { line-height: 1.25; }
+.catapult-status.is-destroyed .catapult-status__state { color: var(--warning); opacity: 1; }
+/* Beside the status line (toward the middle of the screen), never over the engine below the header box. */
+.catapult-card {
+  position: absolute;
+  top: 0;
+  left: calc(100% + 0.6rem);
+  width: min(21rem, calc(100vw - 2rem));
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.5rem 0.7rem;
+  border: 2px solid var(--gold-300);
+  box-shadow: 0 0 0 1px rgba(5, 9, 15, 0.95), 0 10px 26px rgba(0, 0, 0, 0.55);
+  text-align: left;
+}
+.catapult-card .btn { align-self: flex-end; }
+.battle-side--def .catapult-card { left: auto; right: calc(100% + 0.6rem); }
+
+.catapult-phase {
+  position: absolute;
+  left: 1rem;
+  bottom: calc(var(--bottombar-h) + 1.2rem);
+  width: min(30rem, calc(100vw - 2rem));
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.45rem 0.7rem 0.5rem;
+  border: 2px solid var(--gold-300);
+  box-shadow: 0 0 0 1px rgba(5, 9, 15, 0.95), 0 10px 26px rgba(0, 0, 0, 0.55);
+}
+.catapult-phase__head { display: flex; align-items: center; gap: 0.4rem; font-family: var(--font-display); color: var(--gold-200); }
+.catapult-phase__title { flex: 1; min-width: 0; }
+.catapult-phase__targets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.22rem; }
+.catapult-target {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  padding: 0.24rem 0.45rem;
+  border: 1px solid rgba(194, 154, 82, 0.4);
+  border-radius: 4px;
+  background: rgba(7, 24, 33, 0.72);
+  color: var(--gold-100);
+  font: inherit;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  text-align: left;
+  cursor: var(--cur-pointer, pointer);
+}
+.catapult-target:hover { background: rgba(234, 208, 143, 0.18); }
+.catapult-target:focus-visible { outline: 3px solid #ffffff; outline-offset: 1px; }
+.catapult-target.is-aimed { border: 2px solid var(--gold-300); background: rgba(234, 208, 143, 0.26); }
+.catapult-target__kind { flex: none; min-width: 2.5rem; font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--teal); }
+.catapult-target__name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.catapult-target__hp { flex: none; font-weight: 700; }
+.catapult-phase__lost { margin: 0; color: var(--warning); }
+.catapult-phase__actions { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
+/* The catapult's turn at the end of the round in the turn order. */
+.turn-order__engine { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; color: var(--gold-100); }
+.turn-order__engine svg { width: 1.6rem; height: 1.6rem; }

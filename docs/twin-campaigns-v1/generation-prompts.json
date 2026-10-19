@@ -1,0 +1,368 @@
+[
+  {
+    "id": "P1",
+    "file": "assets/story/p1-longship.png",
+    "prompt": "Use case: illustration-story. Asset: final text-free landscape chapter briefing painting for Pantheon Realms, a mythological turn-based strategy game. Wide 16:9 composition, request 1920x1080 or highest native wide size. Match the supplied game painting's readable painterly fantasy style, strong shapes, atmospheric depth, restrained material detail; not photographic, not cinematic skin realism. One coherent illustration, no panels or collage. Keep lower 20 percent relatively calm and dark enough for a separate live dialogue overlay. No lettering, titles, numerals, logos, interface, grid, watermark, modern items. No recognizable new lead character portraits: any people are small anonymous figures, established hero busts will be composited by game UI. Scene P1: THE SHIP IN THE OLIVE GROVE. A full Norse dragon-prow wooden longship rests impossibly upright in a sunlit Greek olive grove high above a newly shattered Mediterranean coastline. The longship, center-right, has red-brown planks, one furled square sail, a distinctive split dragon prow, three blue shields along the visible side and pale cloth tied at its mast. Greek white stone harbor ruins and a partly submerged bronze bell tower are visible far below on the left; across the new sea are cold snowy mountains. A few tiny survivors stand near the grounded ship, safe and awestruck, not fighting. Warm olive-green and bronze foreground, impossible cold-blue horizon; feeling of discovery rather than destruction. Focus on the stranded ship and geographic contradiction. Keep its full silhouette and the old bell tower legible; this landmark will recur eighteen years later.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-bddf9cd0-8bdd-42e3-9148-0b0bd5d79048.png",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.lantern_road.m04.briefing.webp"
+    ],
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "E1",
+    "file": "assets/story/e1-harbor-saved.png",
+    "prompt": "Use case: illustration-story. Asset: final text-free landscape chapter briefing painting for Pantheon Realms, a mythological turn-based strategy game. Wide 16:9 composition, request 1920x1080 or highest native wide size. Match the supplied game painting's readable painterly fantasy style, strong shapes, atmospheric depth, restrained material detail; not photographic, not cinematic skin realism. One coherent illustration, no panels or collage. Keep lower 20 percent relatively calm and dark enough for a separate live dialogue overlay. No lettering, titles, numerals, logos, interface, grid, watermark, modern items. No recognizable new lead character portraits: any people are small anonymous figures, established hero busts will be composited by game UI. Edit target/reference is the first-discovery scene. EIGHTEEN YEARS LATER, return to exactly this Greek olive hillside and stranded longship, same camera, coastline, drowned bell tower, split dragon prow, three blue shields and snow mountains. The longship is now a weathered refuge surrounded by a low timber military checkpoint, parts of its hull are missing, sail gone, a small cooking fire nearby. Olive trees remain with some scorched branches. The distant Greek harbor is occupied and scarred, smoke from two repaired workshops but not a burning apocalypse. Soldiers are tiny anonymous silhouettes; displaced families pass under a gate. Cold early morning punctured by warm shelter lights. Clear political occupation and costly survival; recognizable original place.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/blannder_models/twin-campaign-production-2026-10-17/assets/story/p1-longship.png"
+    ],
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-ceb4c3c0-7904-45b5-a06d-a8aa5eb81183.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "P2",
+    "file": "assets/story/p2-warm-fjord.png",
+    "scene": "A broad NORSE FJORD at first discovery. Snowy cliffs and frost-covered dark firs surround a vivid newly thawed turquoise lane through broken sea ice. A stout timber hall and small refugee camp on the near right shore, an old triangular cairn on the left headland, one simple Greek golden signal fire on a far warm-green cliff. Two small longships explore among safe ice floes. The huge gap between an icy northern world and a gentle Mediterranean horizon is the story. Stable identifying features: left three-point cairn, hooked right cliff, a timber pier with two posts and a broad S-bend channel.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/blannder_models/twin-campaign-production-2026-10-17/assets/story/p1-longship.png"
+    ],
+    "prompt": "Use case: illustration-story. Asset: final text-free landscape chapter briefing painting for Pantheon Realms, a mythological turn-based strategy game. Wide 16:9 composition, request 1920x1080 or highest native wide size. Match the supplied game painting's readable painterly fantasy style, strong shapes, atmospheric depth, restrained material detail; not photographic, not cinematic skin realism. One coherent illustration, no panels or collage. Keep lower 20 percent relatively calm and dark enough for a separate live dialogue overlay. No lettering, titles, numerals, logos, interface, grid, watermark, modern items. No recognizable new lead character portraits: any people are small anonymous figures, established hero busts will be composited by game UI. Style reference only; create a DIFFERENT location, not the longship composition. A broad NORSE FJORD at first discovery. Snowy cliffs and frost-covered dark firs surround a vivid newly thawed turquoise lane through broken sea ice. A stout timber hall and small refugee camp on the near right shore, an old triangular cairn on the left headland, one simple Greek golden signal fire on a far warm-green cliff. Two small longships explore among safe ice floes. The huge gap between an icy northern world and a gentle Mediterranean horizon is the story. Stable identifying features: left three-point cairn, hooked right cliff, a timber pier with two posts and a broad S-bend channel.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-f1c1356f-306e-4fd9-a376-d3d8ace1657b.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "E2",
+    "file": "assets/story/e2-broken-fjord.png",
+    "prompt": "Use case: illustration-story. Asset: final text-free landscape chapter briefing painting for Pantheon Realms, a mythological turn-based strategy game. Wide 16:9 composition, request 1920x1080 or highest native wide size. Match the supplied game painting's readable painterly fantasy style, strong shapes, atmospheric depth, restrained material detail; not photographic, not cinematic skin realism. One coherent illustration, no panels or collage. Keep lower 20 percent relatively calm and dark enough for a separate live dialogue overlay. No lettering, titles, numerals, logos, interface, grid, watermark, modern items. No recognizable new lead character portraits: any people are small anonymous figures, established hero busts will be composited by game UI. Edit the reference into the later era while preserving its landmark geometry and viewpoint. EIGHTEEN YEARS LATER, the identical fjord, left three-point cairn, hooked right cliff, S-bend sea channel and right timber hall. Ice breakup remains geographically consistent. Add two blockade watchtowers at the shores, a chain with a visible gate across one narrow subsidiary channel (leave the main water composition readable), abandoned ship ribs, damaged timber hall surrounded by a small rebuilt settlement and granary. One grain vessel approaches under a plain flag, guarded dark ships in middle distance. No modern weapons. Winter blue with warm civilian fires; this is the same lifesaving route now being contested.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/blannder_models/twin-campaign-production-2026-10-17/assets/story/p2-warm-fjord.png"
+    ],
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-62730a29-31bd-48ca-864d-56ec5d37527e.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "P3",
+    "file": "assets/story/p3-reversed-river.png",
+    "scene": "An EGYPTIAN DESERT DELTA altered by the world's collision. High oblique landscape view across THREE branching turquoise waterways between ochre river banks and warm sandstone terraces. Center-right a distinctive pair of square sandstone sluice towers with a bronze wheel and a short footbridge, one slender obelisk beside them; left foreground a northern wooden survey vessel incongruously grounded beside papyrus. Cultivated green strips, low granaries and tiny surveyors. In the far background water now flows into an unfamiliar deep-blue inland sea backed by snowy peaks. Clear simple composition, hydraulic mystery rather than a battle.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/blannder_models/twin-campaign-production-2026-10-17/assets/story/p1-longship.png"
+    ],
+    "prompt": "Use case: illustration-story. Asset: final text-free landscape chapter briefing painting for Pantheon Realms, a mythological turn-based strategy game. Wide 16:9 composition, request 1920x1080 or highest native wide size. Match the supplied game painting's readable painterly fantasy style, strong shapes, atmospheric depth, restrained material detail; not photographic, not cinematic skin realism. One coherent illustration, no panels or collage. Keep lower 20 percent relatively calm and dark enough for a separate live dialogue overlay. No lettering, titles, numerals, logos, interface, grid, watermark, modern items. No recognizable new lead character portraits: any people are small anonymous figures, established hero busts will be composited by game UI. Reference image sets only the painted style; create the different place described here: An EGYPTIAN DESERT DELTA altered by the world's collision. High oblique landscape view across THREE branching turquoise waterways between ochre river banks and warm sandstone terraces. Center-right a distinctive pair of square sandstone sluice towers with a bronze wheel and a short footbridge, one slender obelisk beside them; left foreground a northern wooden survey vessel incongruously grounded beside papyrus. Cultivated green strips, low granaries and tiny surveyors. In the far background water now flows into an unfamiliar deep-blue inland sea backed by snowy peaks. Clear simple composition, hydraulic mystery rather than a battle.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-cd3dbdd5-b396-489f-b399-8c3d77651064.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "E3",
+    "file": "assets/story/e3-price-river.png",
+    "prompt": "Use case: illustration-story. Asset: final text-free landscape chapter briefing painting for Pantheon Realms, a mythological turn-based strategy game. Wide 16:9 composition, request 1920x1080 or highest native wide size. Match the supplied game painting's readable painterly fantasy style, strong shapes, atmospheric depth, restrained material detail; not photographic, not cinematic skin realism. One coherent illustration, no panels or collage. Keep lower 20 percent relatively calm and dark enough for a separate live dialogue overlay. No lettering, titles, numerals, logos, interface, grid, watermark, modern items. No recognizable new lead character portraits: any people are small anonymous figures, established hero busts will be composited by game UI. Edit this same location into the later era; preserve camera and major geography. EIGHTEEN YEARS LATER, preserve the identical three-branched Egyptian delta, square paired sluice towers, bronze wheel, footbridge and obelisk from the reference. The river control station has siege scars, a broken parapet and repaired timber scaffolding; green floodplain is partly dry, one old granary roof has collapsed. New earthworks and abandoned siege wheels flank the banks. A small civilian barge and supply boats pass through a reopened channel. The main river geometry must remain the same. Somber gold and teal afternoon with hopeful reclaimed fields, not a giant magical disaster.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/blannder_models/twin-campaign-production-2026-10-17/assets/story/p3-reversed-river.png"
+    ],
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-3600624f-8c75-4689-9e6d-781f20f48b19.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "P4",
+    "file": "assets/story/p4-foreign-lanterns.png",
+    "scene": "A JAPANESE ARCHIPELAGO just after the collision. Wide atmospheric view from a red wooden lantern landing across a triangular arrangement of three coastal islands. Two distinctive red-and-ivory lighthouse shrines on opposing rocky points: nearest one on the right has a square stone pedestal, curved black roof and a gold bell; smaller partner left in distance. Glowing paper lanterns and DESERT PAPYRUS REEDS wash together against the foreground pier. One simple dark sailboat crosses a clear turquoise channel. Cherry trees on the rocky islands, an alien desert coastline barely visible far away. Focus on navigable water and paired lights. No fantastical floating mountains.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.lantern_road.m04.briefing.webp"
+    ],
+    "prompt": "Use case: illustration-story. Asset: final text-free landscape chapter briefing painting for Pantheon Realms, a mythological turn-based strategy game. Wide 16:9 composition, request 1920x1080 or highest native wide size. Match the supplied game painting's readable painterly fantasy style, strong shapes, atmospheric depth, restrained material detail; not photographic, not cinematic skin realism. One coherent illustration, no panels or collage. Keep lower 20 percent relatively calm and dark enough for a separate live dialogue overlay. No lettering, titles, numerals, logos, interface, grid, watermark, modern items. No recognizable new lead character portraits: any people are small anonymous figures, established hero busts will be composited by game UI. Use reference for style only, keeping terrain on real coastal islands. A JAPANESE ARCHIPELAGO just after the collision. Wide atmospheric view from a red wooden lantern landing across a triangular arrangement of three coastal islands. Two distinctive red-and-ivory lighthouse shrines on opposing rocky points: nearest one on the right has a square stone pedestal, curved black roof and a gold bell; smaller partner left in distance. Glowing paper lanterns and DESERT PAPYRUS REEDS wash together against the foreground pier. One simple dark sailboat crosses a clear turquoise channel. Cherry trees on the rocky islands, an alien desert coastline barely visible far away. Focus on navigable water and paired lights. No fantastical floating mountains.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-252809ff-3215-4736-8857-376646f6a648.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "E5",
+    "file": "assets/story/e5-unlit-fleet.png",
+    "prompt": "Use case: illustration-story. Asset: final text-free landscape chapter briefing painting for Pantheon Realms, a mythological turn-based strategy game. Wide 16:9 composition, request 1920x1080 or highest native wide size. Match the supplied game painting's readable painterly fantasy style, strong shapes, atmospheric depth, restrained material detail; not photographic, not cinematic skin realism. One coherent illustration, no panels or collage. Keep lower 20 percent relatively calm and dark enough for a separate live dialogue overlay. No lettering, titles, numerals, logos, interface, grid, watermark, modern items. No recognizable new lead character portraits: any people are small anonymous figures, established hero busts will be composited by game UI. Edit same location, preserve camera and terrain. EIGHTEEN YEARS LATER, same Japanese three-island strait and paired red-and-ivory light shrines. The near right lighthouse has its lantern shuttered with dark wooden panels, roof slightly damaged; the distant partner is dark. Broken ships and blockade stakes occupy a side cove while a clear main channel remains. Three small civilian vessels hide dim lanterns under sailcloth and travel together at twilight; dark military sails farther away. Weathered red lacquer, indigo water, sparks of protected warm light. Preserve the original islands and camera, show the human cost of the same passage turned into a blockade.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/blannder_models/twin-campaign-production-2026-10-17/assets/story/p4-foreign-lanterns.png"
+    ],
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-261387d5-6237-4487-b4dd-3935d52569e0.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "P5",
+    "file": "assets/story/p5-living-arch.png",
+    "scene": "A CELTIC WOODLAND after the merged-world event. A huge ancient living oak forms a recognizable ARCH of two intertwined trunks over a shallow forest-road ford. The left trunk has a broad hollow, the right has three thick upward roots. Beneath the roots sits a foreign circular carved calendar stone, moss around old geometric carvings but no readable words. A small red Japanese paper lantern hangs from a branch as a trace of other travelers. Small displaced woodland creatures and anonymous scouts stand at distance; not a new hero portrait. Green and warm amber, mystery and compassion. A coastal inlet gleams through the arch beyond the woods. Existing tiny timber fort far left.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/blannder_models/twin-campaign-production-2026-10-17/assets/story/p1-longship.png"
+    ],
+    "prompt": "Use case: illustration-story. Asset: final text-free landscape chapter briefing painting for Pantheon Realms, a mythological turn-based strategy game. Wide 16:9 composition, request 1920x1080 or highest native wide size. Match the supplied game painting's readable painterly fantasy style, strong shapes, atmospheric depth, restrained material detail; not photographic, not cinematic skin realism. One coherent illustration, no panels or collage. Keep lower 20 percent relatively calm and dark enough for a separate live dialogue overlay. No lettering, titles, numerals, logos, interface, grid, watermark, modern items. No recognizable new lead character portraits: any people are small anonymous figures, established hero busts will be composited by game UI. Reference only for painterly rendering; new woodland location: A CELTIC WOODLAND after the merged-world event. A huge ancient living oak forms a recognizable ARCH of two intertwined trunks over a shallow forest-road ford. The left trunk has a broad hollow, the right has three thick upward roots. Beneath the roots sits a foreign circular carved calendar stone, moss around old geometric carvings but no readable words. A small red Japanese paper lantern hangs from a branch as a trace of other travelers. Small displaced woodland creatures and anonymous scouts stand at distance; not a new hero portrait. Green and warm amber, mystery and compassion. A coastal inlet gleams through the arch beyond the woods. Existing tiny timber fort far left.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-612c9c86-09bd-45fd-b5a2-5d58697abfdb.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "E4",
+    "file": "assets/story/e4-ashes-arch.png",
+    "prompt": "Use case: illustration-story. Asset: final text-free landscape chapter briefing painting for Pantheon Realms, a mythological turn-based strategy game. Wide 16:9 composition, request 1920x1080 or highest native wide size. Match the supplied game painting's readable painterly fantasy style, strong shapes, atmospheric depth, restrained material detail; not photographic, not cinematic skin realism. One coherent illustration, no panels or collage. Keep lower 20 percent relatively calm and dark enough for a separate live dialogue overlay. No lettering, titles, numerals, logos, interface, grid, watermark, modern items. No recognizable new lead character portraits: any people are small anonymous figures, established hero busts will be composited by game UI. Edit the reference to the later era while keeping the identical landscape and main arch shape. EIGHTEEN YEARS LATER, identical Celtic living oak ARCH, hollow left trunk, right three roots, ford and coastal inlet. Half the arch is visibly charred but still structurally recognizable, other half regrowing green leaves. A rough frontier gate and discarded tribute crates occupy the road, a small stone witness marker stands near the old foreign calendar stone. Boats of displaced families are moored on the visible inlet, tiny figures only. Scorched woodland patches and regrowth, quiet dignity, no graphic violence and no new monstrous trees. The geographic silhouette matches the earlier place.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/blannder_models/twin-campaign-production-2026-10-17/assets/story/p5-living-arch.png"
+    ],
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-dc0a9729-728c-455f-b294-843715c1fc44.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "P6",
+    "file": "assets/story/p6-six-horizons.png",
+    "scene": "A MESOAMERICAN COASTAL OBSERVATORY at dusk: circular stepped stone observation platform centered-right on a black volcanic headland, SIX slim standing sighting pillars around a central unlettered circular stone dial; low terraced settlement on the left and an offshore observation isle beyond. An open sea channel between two black basalt cliffs. Above one coherent horizon, SIX faint differently angled arcs of stars overlap like impossible astronomical paths, subtle and beautiful, not a sci-fi HUD. Small anonymous day-keepers carry a rolled chart; most of image is the extraordinary place and sky. Gold, jade green, obsidian and deep indigo. The circular platform and sighting pillars will return eighteen years later.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/blannder_models/twin-campaign-production-2026-10-17/assets/story/p3-reversed-river.png"
+    ],
+    "prompt": "Use case: illustration-story. Asset: final text-free landscape chapter briefing painting for Pantheon Realms, a mythological turn-based strategy game. Wide 16:9 composition, request 1920x1080 or highest native wide size. Match the supplied game painting's readable painterly fantasy style, strong shapes, atmospheric depth, restrained material detail; not photographic, not cinematic skin realism. One coherent illustration, no panels or collage. Keep lower 20 percent relatively calm and dark enough for a separate live dialogue overlay. No lettering, titles, numerals, logos, interface, grid, watermark, modern items. No recognizable new lead character portraits: any people are small anonymous figures, established hero busts will be composited by game UI. Rendering style reference only, create the new Mesoamerican location described: A MESOAMERICAN COASTAL OBSERVATORY at dusk: circular stepped stone observation platform centered-right on a black volcanic headland, SIX slim standing sighting pillars around a central unlettered circular stone dial; low terraced settlement on the left and an offshore observation isle beyond. An open sea channel between two black basalt cliffs. Above one coherent horizon, SIX faint differently angled arcs of stars overlap like impossible astronomical paths, subtle and beautiful, not a sci-fi HUD. Small anonymous day-keepers carry a rolled chart; most of image is the extraordinary place and sky. Gold, jade green, obsidian and deep indigo. The circular platform and sighting pillars will return eighteen years later.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-620708ef-126b-4cbb-a9a0-ce45cad401f5.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "E6",
+    "file": "assets/story/e6-calendar-scars.png",
+    "prompt": "Use case: illustration-story. Asset: final text-free landscape chapter briefing painting for Pantheon Realms, a mythological turn-based strategy game. Wide 16:9 composition, request 1920x1080 or highest native wide size. Match the supplied game painting's readable painterly fantasy style, strong shapes, atmospheric depth, restrained material detail; not photographic, not cinematic skin realism. One coherent illustration, no panels or collage. Keep lower 20 percent relatively calm and dark enough for a separate live dialogue overlay. No lettering, titles, numerals, logos, interface, grid, watermark, modern items. No recognizable new lead character portraits: any people are small anonymous figures, established hero busts will be composited by game UI. Edit reference into later era; preserve camera and world geometry. EIGHTEEN YEARS LATER, preserve the SAME circular Mesoamerican observatory, six sighting pillars, black headland, terraced settlement and offshore isle. A narrow glowing fracture crosses the platform floor and continues subtly along a basalt seam, no chasm that destroys the building. Two pillars are repaired with pale stone bands, ruined terrace walls support small rebuilt huts. A worn unlettered star chart is spread on a low stone ledge with tiny anonymous observers comparing the sky. The same six faint star arcs are now slightly misaligned above a dusk sea. Reflective, urgent discovery, not cartoon magic or sci-fi displays.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/blannder_models/twin-campaign-production-2026-10-17/assets/story/p6-six-horizons.png"
+    ],
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-042db26c-76de-4aa0-8478-aec79e348ea3.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "P7",
+    "file": "assets/story/p7-first-accord.png",
+    "scene": "THE FIRST ACCORD on a small central island in the shared sea. An ancient modest circular council platform of pale stone occupies the center-right, its hexagonal central upright treaty stone uninscribed and SIX empty banner sockets around its perimeter. Six tiny HUMAN expedition representatives, visually distinct by Greek blue cloak, Norse fur, Egyptian ivory, Japanese red, Celtic green, Mesoamerican turquoise, stand beside the platform as equals; small distant silhouettes not portraits. Multiple small ships land at two visible beaches. Panoramic horizon hints at snowy northern mountains, green cliffs, desert banks, volcanic coast and eastern islands, woven naturally into one world. Morning hopeful light, human cooperation amid immense unknown geography. No giant gods, no fantasy boss, no text.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/blannder_models/twin-campaign-production-2026-10-17/assets/story/p1-longship.png"
+    ],
+    "prompt": "Use case: illustration-story. Asset: final text-free landscape chapter briefing painting for Pantheon Realms, a mythological turn-based strategy game. Wide 16:9 composition, request 1920x1080 or highest native wide size. Match the supplied game painting's readable painterly fantasy style, strong shapes, atmospheric depth, restrained material detail; not photographic, not cinematic skin realism. One coherent illustration, no panels or collage. Keep lower 20 percent relatively calm and dark enough for a separate live dialogue overlay. No lettering, titles, numerals, logos, interface, grid, watermark, modern items. No recognizable new lead character portraits: any people are small anonymous figures, established hero busts will be composited by game UI. Style reference only; create new central island composition. THE FIRST ACCORD on a small central island in the shared sea. An ancient modest circular council platform of pale stone occupies the center-right, its hexagonal central upright treaty stone uninscribed and SIX empty banner sockets around its perimeter. Six tiny HUMAN expedition representatives, visually distinct by Greek blue cloak, Norse fur, Egyptian ivory, Japanese red, Celtic green, Mesoamerican turquoise, stand beside the platform as equals; small distant silhouettes not portraits. Multiple small ships land at two visible beaches. Panoramic horizon hints at snowy northern mountains, green cliffs, desert banks, volcanic coast and eastern islands, woven naturally into one world. Morning hopeful light, human cooperation amid immense unknown geography. No giant gods, no fantasy boss, no text.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-c4c67141-899d-4e85-8bdf-a53b1073c4e0.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "E7",
+    "file": "assets/story/e7-world-left-behind.png",
+    "prompt": "Use case: illustration-story. Asset: final text-free landscape chapter briefing painting for Pantheon Realms, a mythological turn-based strategy game. Wide 16:9 composition, request 1920x1080 or highest native wide size. Match the supplied game painting's readable painterly fantasy style, strong shapes, atmospheric depth, restrained material detail; not photographic, not cinematic skin realism. One coherent illustration, no panels or collage. Keep lower 20 percent relatively calm and dark enough for a separate live dialogue overlay. No lettering, titles, numerals, logos, interface, grid, watermark, modern items. No recognizable new lead character portraits: any people are small anonymous figures, established hero busts will be composited by game UI. Edit this council island into its later era, preserving composition. EIGHTEEN YEARS LATER, the identical central council island, circular platform, hexagonal central treaty stone, six empty banner sockets, same two landing beaches and surrounding shared-world horizon. The platform is battle-scarred; broken walls, a few abandoned siege shields and shattered paving surround a narrow luminous seam. The treaty stone is repaired with simple bronze braces across its old crack. Six small human silhouettes gather after the battle; mixed ships moored at both beaches. Warm dawn cuts through receding storm cloud. Depict a hard-won settlement, not a faction victory: no dominant throne, no new god, no central giant champion. The horizon remains mysterious. Keep any humans small and the region recognizable.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/blannder_models/twin-campaign-production-2026-10-17/assets/story/p7-first-accord.png"
+    ],
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-be167eed-b37a-4f6e-872d-2fbd3ab2e933.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "COUNCIL",
+    "file": "assets/story/council-unanswered.png",
+    "scene": "An allegorical DIVINE COUNCIL AFTER THE FIRST ACCORD. A circular black-and-gold ancient council table, EMPTY OF PEOPLE, with six separate monumental throne alcoves around it. The seats express six pantheons through restrained visual motifs: Greek laurel and lightning, Norse ravens and carved knotwood, Egyptian sun disk and sandstone, Japanese sacred mirror and red lacquer, Celtic oak and spirals, Mesoamerican feathered serpent and jade. Six beams of different warm/cold light meet above an unlabelled miniature globe whose seams glow delicately. The rays stop short of touching each other, suggesting failed agreement without physical combat. High mythic painted architecture, no writing, no portraits of new gods, no new seventh faction. Empty lower foreground for live game dialogue portraits.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/blannder_models/twin-campaign-production-2026-10-17/assets/story/p7-first-accord.png"
+    ],
+    "prompt": "Use case: illustration-story. Asset: final text-free landscape chapter briefing painting for Pantheon Realms, a mythological turn-based strategy game. Wide 16:9 composition, request 1920x1080 or highest native wide size. Match the supplied game painting's readable painterly fantasy style, strong shapes, atmospheric depth, restrained material detail; not photographic, not cinematic skin realism. One coherent illustration, no panels or collage. Keep lower 20 percent relatively calm and dark enough for a separate live dialogue overlay. No lettering, titles, numerals, logos, interface, grid, watermark, modern items. No recognizable new lead character portraits: any people are small anonymous figures, established hero busts will be composited by game UI. Use rendering style, but create an interior symbolic council, not the island composition. An allegorical DIVINE COUNCIL AFTER THE FIRST ACCORD. A circular black-and-gold ancient council table, EMPTY OF PEOPLE, with six separate monumental throne alcoves around it. The seats express six pantheons through restrained visual motifs: Greek laurel and lightning, Norse ravens and carved knotwood, Egyptian sun disk and sandstone, Japanese sacred mirror and red lacquer, Celtic oak and spirals, Mesoamerican feathered serpent and jade. Six beams of different warm/cold light meet above an unlabelled miniature globe whose seams glow delicately. The rays stop short of touching each other, suggesting failed agreement without physical combat. High mythic painted architecture, no writing, no portraits of new gods, no new seventh faction. Empty lower foreground for live game dialogue portraits.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-8c1281cf-dc22-4b12-a3ac-ffbd42f19630.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "HORIZON",
+    "file": "assets/story/ending-moving-horizon.png",
+    "scene": "THE OPEN ENDING, after a costly peace. From a repaired coastal observation terrace in the lower right, look across a peaceful immense blue sea toward a previously unseen distant shoreline emerging through luminous dawn mist. The remote cliffs bear a subtle vertical golden fracture line identical in feel to the world's original seam, not an invasion or monster attack. In foreground a repaired cracked stone survey marker, rolled chart without writing, and two small empty flag sockets stand beside grasses beginning to grow through old stone. Very tiny boats head home, the saved world feels real and safe for now. Hope mixed with mystery, clear readable large shapes, navy, pale gold and turquoise, no hero portrait, no gigantic threatening entity.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/blannder_models/twin-campaign-production-2026-10-17/assets/story/e7-world-left-behind.png"
+    ],
+    "prompt": "Use case: illustration-story. Asset: final text-free landscape chapter briefing painting for Pantheon Realms, a mythological turn-based strategy game. Wide 16:9 composition, request 1920x1080 or highest native wide size. Match the supplied game painting's readable painterly fantasy style, strong shapes, atmospheric depth, restrained material detail; not photographic, not cinematic skin realism. One coherent illustration, no panels or collage. Keep lower 20 percent relatively calm and dark enough for a separate live dialogue overlay. No lettering, titles, numerals, logos, interface, grid, watermark, modern items. No recognizable new lead character portraits: any people are small anonymous figures, established hero busts will be composited by game UI. Style reference only. THE OPEN ENDING, after a costly peace. From a repaired coastal observation terrace in the lower right, look across a peaceful immense blue sea toward a previously unseen distant shoreline emerging through luminous dawn mist. The remote cliffs bear a subtle vertical golden fracture line identical in feel to the world's original seam, not an invasion or monster attack. In foreground a repaired cracked stone survey marker, rolled chart without writing, and two small empty flag sockets stand beside grasses beginning to grow through old stone. Very tiny boats head home, the saved world feels real and safe for now. Hope mixed with mystery, clear readable large shapes, navy, pale gold and turquoise, no hero portrait, no gigantic threatening entity.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-effe7367-0a9e-4e8b-ac4e-f208fc89ccc3.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "longship",
+    "name": "The stranded longship",
+    "states": [
+      "discovered",
+      "refuge",
+      "palisade",
+      "war_refuge",
+      "war_fort",
+      "memorial"
+    ],
+    "scene": "One grounded Norse longship on a tiny dry grassy oval, distinctive split dragon prow at left, three blue round shields on its visible side, broken mast. Six states: 1 newly stranded intact hull without shelter; 2 hull adapted as modest civilian refuge with canvas awning; 3 hull inside short timber palisade checkpoint; 4 weathered refuge with patched awning and small supply crates; 5 ruined fortified palisade and damaged old hull; 6 preserved ship relic with simple stone memorial and olive sapling. No water rectangle.",
+    "file": "assets/landmarks/longship.png",
+    "prompt": "Create a production transparent PNG sprite atlas for Pantheon Realms, painterly stylized isometric adventure map art inspired by classic fantasy strategy games. EXACTLY SIX separate object state sprites arranged in a perfectly regular THREE COLUMNS by TWO ROWS grid, reading order left to right then next row. Landscape canvas 3:2. Each object entirely inside its own equal cell, centered horizontally with ground base near 82% of cell height; at least 12% padding to every cell boundary, large clear transparent gutters. Each state uses the same fixed elevated isometric 30-degree camera, same scale, same front-right orientation, light upper left. Strong readable silhouettes, moderate simplified detail, warm worn materials, not photoreal. True alpha transparency everywhere outside object and tiny grounding contact shadow. No labels, text, gridlines, panels, pedestal tiles, frames, UI, people or huge landscape. Native highest practical resolution. State variations are separate static appearances, not movement frames. One grounded Norse longship on a tiny dry grassy oval, distinctive split dragon prow at left, three blue round shields on its visible side, broken mast. Six states: 1 newly stranded intact hull without shelter; 2 hull adapted as modest civilian refuge with canvas awning; 3 hull inside short timber palisade checkpoint; 4 weathered refuge with patched awning and small supply crates; 5 ruined fortified palisade and damaged old hull; 6 preserved ship relic with simple stone memorial and olive sapling. No water rectangle.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-a0360b0d-a5ae-4b9e-b3e3-081bcbaae533.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "fjord-quay",
+    "name": "Frostwatch landing",
+    "states": [
+      "iced",
+      "opened",
+      "supplied",
+      "blockaded",
+      "war_broken",
+      "restored"
+    ],
+    "scene": "One small Norse stone and wood landing with two tall rune posts at rear and short pier projecting lower right, tiny snow-stone grounding. Six states: 1 ice obstructs landing; 2 clear landing repaired wooden planks; 3 landing with grain sacks and three supply crates; 4 hostile chain laid across its entry between posts and heavy barricade; 5 damaged pier and broken post; 6 repaired pier with braced posts and grain supplies. No water plane. The feature is a small coastal quay, not a whole fjord.",
+    "file": "assets/landmarks/fjord-quay.png",
+    "prompt": "Create a production transparent PNG sprite atlas for Pantheon Realms, painterly stylized isometric adventure map art inspired by classic fantasy strategy games. EXACTLY SIX separate object state sprites arranged in a perfectly regular THREE COLUMNS by TWO ROWS grid, reading order left to right then next row. Landscape canvas 3:2. Each object entirely inside its own equal cell, centered horizontally with ground base near 82% of cell height; at least 12% padding to every cell boundary, large clear transparent gutters. Each state uses the same fixed elevated isometric 30-degree camera, same scale, same front-right orientation, light upper left. Strong readable silhouettes, moderate simplified detail, warm worn materials, not photoreal. True alpha transparency everywhere outside object and tiny grounding contact shadow. No labels, text, gridlines, panels, pedestal tiles, frames, UI, people or huge landscape. Native highest practical resolution. State variations are separate static appearances, not movement frames. One small Norse stone and wood landing with two tall rune posts at rear and short pier projecting lower right, tiny snow-stone grounding. Six states: 1 ice obstructs landing; 2 clear landing repaired wooden planks; 3 landing with grain sacks and three supply crates; 4 hostile chain laid across its entry between posts and heavy barricade; 5 damaged pier and broken post; 6 repaired pier with braced posts and grain supplies. No water plane. The feature is a small coastal quay, not a whole fjord.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-3c8d726f-e900-48ee-9a50-38e94db36330.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "delta-sluice",
+    "name": "The three-mouth sluice",
+    "states": [
+      "closed",
+      "canal_open",
+      "irrigation_open",
+      "war_fortified",
+      "war_broken",
+      "repaired"
+    ],
+    "scene": "One small ancient Egyptian hydraulic gate, two squat square sandstone towers with flat tops joined by wooden sluice and large bronze wheel, tiny stone foundation. Six states: 1 gate closed and sanded weathered; 2 gate lifted fully and wheel bright; 3 gate half lifted with small secondary side channel gate open; 4 timber barricades added above gate; 5 broken crossbeam and cracked left tower; 6 same towers patched and both gates open. Keep base footprint consistent. No huge water backdrop.",
+    "file": "assets/landmarks/delta-sluice.png",
+    "prompt": "Create a production transparent PNG sprite atlas for Pantheon Realms, painterly stylized isometric adventure map art inspired by classic fantasy strategy games. EXACTLY SIX separate object state sprites arranged in a perfectly regular THREE COLUMNS by TWO ROWS grid, reading order left to right then next row. Landscape canvas 3:2. Each object entirely inside its own equal cell, centered horizontally with ground base near 82% of cell height; at least 12% padding to every cell boundary, large clear transparent gutters. Each state uses the same fixed elevated isometric 30-degree camera, same scale, same front-right orientation, light upper left. Strong readable silhouettes, moderate simplified detail, warm worn materials, not photoreal. True alpha transparency everywhere outside object and tiny grounding contact shadow. No labels, text, gridlines, panels, pedestal tiles, frames, UI, people or huge landscape. Native highest practical resolution. State variations are separate static appearances, not movement frames. One small ancient Egyptian hydraulic gate, two squat square sandstone towers with flat tops joined by wooden sluice and large bronze wheel, tiny stone foundation. Six states: 1 gate closed and sanded weathered; 2 gate lifted fully and wheel bright; 3 gate half lifted with small secondary side channel gate open; 4 timber barricades added above gate; 5 broken crossbeam and cracked left tower; 6 same towers patched and both gates open. Keep base footprint consistent. No huge water backdrop.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-e67788ba-4fb2-401d-849f-8223e3fbc1bf.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "lantern-watchlight",
+    "name": "Lantern Strait watchlight",
+    "states": [
+      "unlit",
+      "lit",
+      "shuttered",
+      "war_broken",
+      "restored",
+      "memorial"
+    ],
+    "scene": "One small Japanese coastal stone lighthouse, compact two-tier pagoda roof, warm ivory stone tower, red timber housing around lantern and small bell at side, tiny rock base. Six states: 1 intact lantern dark; 2 intact lantern glowing warm gold; 3 wooden shutters closed over light; 4 roof partly broken and light dark; 5 repaired roof and gold light; 6 repaired light with small memorial stone at base. This is a single reusable lighthouse for inner and outer islands, same exact body and camera each frame.",
+    "file": "assets/landmarks/lantern-watchlight.png",
+    "prompt": "Create a production transparent PNG sprite atlas for Pantheon Realms, painterly stylized isometric adventure map art inspired by classic fantasy strategy games. EXACTLY SIX separate object state sprites arranged in a perfectly regular THREE COLUMNS by TWO ROWS grid, reading order left to right then next row. Landscape canvas 3:2. Each object entirely inside its own equal cell, centered horizontally with ground base near 82% of cell height; at least 12% padding to every cell boundary, large clear transparent gutters. Each state uses the same fixed elevated isometric 30-degree camera, same scale, same front-right orientation, light upper left. Strong readable silhouettes, moderate simplified detail, warm worn materials, not photoreal. True alpha transparency everywhere outside object and tiny grounding contact shadow. No labels, text, gridlines, panels, pedestal tiles, frames, UI, people or huge landscape. Native highest practical resolution. State variations are separate static appearances, not movement frames. One small Japanese coastal stone lighthouse, compact two-tier pagoda roof, warm ivory stone tower, red timber housing around lantern and small bell at side, tiny rock base. Six states: 1 intact lantern dark; 2 intact lantern glowing warm gold; 3 wooden shutters closed over light; 4 roof partly broken and light dark; 5 repaired roof and gold light; 6 repaired light with small memorial stone at base. This is a single reusable lighthouse for inner and outer islands, same exact body and camera each frame.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-52a69072-22ac-44e4-b1fe-29d1caf490e2.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "living-arch",
+    "name": "The Living Arch",
+    "states": [
+      "untouched",
+      "sanctuary",
+      "road",
+      "burned_gate",
+      "witness_grove",
+      "reopened_road"
+    ],
+    "scene": "One Celtic living tree arch, two thick trunks joining overhead, hollow opening in left trunk, round old Mesoamerican calendar stone at foot of right trunk, small green earth oval. Six states: 1 lush natural arch no paving; 2 sanctuary with little stone votive cairns and flowering roots; 3 narrow cobbled road through arch with low timber rail; 4 left trunk charred and a timber checkpoint blocks opening, right trunk still living; 5 checkpoint removed, young shoots and simple witness stones at foot; 6 repaired cobbled passage and green regrowth, left trunk visibly scarred. Roots and openings stay same silhouette. No giant landscape.",
+    "file": "assets/landmarks/living-arch.png",
+    "prompt": "Create a production transparent PNG sprite atlas for Pantheon Realms, painterly stylized isometric adventure map art inspired by classic fantasy strategy games. EXACTLY SIX separate object state sprites arranged in a perfectly regular THREE COLUMNS by TWO ROWS grid, reading order left to right then next row. Landscape canvas 3:2. Each object entirely inside its own equal cell, centered horizontally with ground base near 82% of cell height; at least 12% padding to every cell boundary, large clear transparent gutters. Each state uses the same fixed elevated isometric 30-degree camera, same scale, same front-right orientation, light upper left. Strong readable silhouettes, moderate simplified detail, warm worn materials, not photoreal. True alpha transparency everywhere outside object and tiny grounding contact shadow. No labels, text, gridlines, panels, pedestal tiles, frames, UI, people or huge landscape. Native highest practical resolution. State variations are separate static appearances, not movement frames. One Celtic living tree arch, two thick trunks joining overhead, hollow opening in left trunk, round old Mesoamerican calendar stone at foot of right trunk, small green earth oval. Six states: 1 lush natural arch no paving; 2 sanctuary with little stone votive cairns and flowering roots; 3 narrow cobbled road through arch with low timber rail; 4 left trunk charred and a timber checkpoint blocks opening, right trunk still living; 5 checkpoint removed, young shoots and simple witness stones at foot; 6 repaired cobbled passage and green regrowth, left trunk visibly scarred. Roots and openings stay same silhouette. No giant landscape.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-2c9589b4-9dfe-4c92-b4cc-014923be804a.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "observatory",
+    "name": "Ember Quay observatory",
+    "states": [
+      "weathered",
+      "records_kept",
+      "supplied",
+      "fractured",
+      "braced",
+      "stabilized"
+    ],
+    "scene": "One Mesoamerican circular stone observatory platform, six modest equal stone sighting pillars around its back rim and circular engraved stone table at center, shallow stairs lower front. Six states: 1 weathered mossy dormant; 2 cleaned restored with tiny rolled charts on central table; 3 restored with two small supply crates at stairs; 4 thin golden fracture through middle and two pillars chipped; 5 fracture with timber and bronze braces across platform; 6 repaired stone with faint fine golden seam and no scaffolding. Same camera and footprint. No readable text, no laser beams.",
+    "file": "assets/landmarks/observatory.png",
+    "prompt": "Create a production transparent PNG sprite atlas for Pantheon Realms, painterly stylized isometric adventure map art inspired by classic fantasy strategy games. EXACTLY SIX separate object state sprites arranged in a perfectly regular THREE COLUMNS by TWO ROWS grid, reading order left to right then next row. Landscape canvas 3:2. Each object entirely inside its own equal cell, centered horizontally with ground base near 82% of cell height; at least 12% padding to every cell boundary, large clear transparent gutters. Each state uses the same fixed elevated isometric 30-degree camera, same scale, same front-right orientation, light upper left. Strong readable silhouettes, moderate simplified detail, warm worn materials, not photoreal. True alpha transparency everywhere outside object and tiny grounding contact shadow. No labels, text, gridlines, panels, pedestal tiles, frames, UI, people or huge landscape. Native highest practical resolution. State variations are separate static appearances, not movement frames. One Mesoamerican circular stone observatory platform, six modest equal stone sighting pillars around its back rim and circular engraved stone table at center, shallow stairs lower front. Six states: 1 weathered mossy dormant; 2 cleaned restored with tiny rolled charts on central table; 3 restored with two small supply crates at stairs; 4 thin golden fracture through middle and two pillars chipped; 5 fracture with timber and bronze braces across platform; 6 repaired stone with faint fine golden seam and no scaffolding. Same camera and footprint. No readable text, no laser beams.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-8dd45034-257f-4799-b10e-8a9933872eab.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "accord-platform",
+    "name": "The Accord stone",
+    "states": [
+      "empty",
+      "ratified",
+      "ruined",
+      "occupied",
+      "shared_custody",
+      "open_passage"
+    ],
+    "scene": "One small circular neutral stone council platform, shallow steps front, standing cracked treaty slab at center and six empty short flag sockets around edge. Six states: 1 pristine empty slab and sockets; 2 gold circular inlay joins sockets and slab; 3 war damaged broken edge and leaning slab; 4 war damaged with timber barricade on back edge; 5 repaired slab with six equal small gold inset stones and linked ring motif for shared custody; 6 repaired slab with an open arch-shaped bronze motif and restored clear radial paths for open passage. No banners, no people. These are small game map landmarks.",
+    "file": "assets/landmarks/accord-platform.png",
+    "prompt": "Create a production transparent PNG sprite atlas for Pantheon Realms, painterly stylized isometric adventure map art inspired by classic fantasy strategy games. EXACTLY SIX separate object state sprites arranged in a perfectly regular THREE COLUMNS by TWO ROWS grid, reading order left to right then next row. Landscape canvas 3:2. Each object entirely inside its own equal cell, centered horizontally with ground base near 82% of cell height; at least 12% padding to every cell boundary, large clear transparent gutters. Each state uses the same fixed elevated isometric 30-degree camera, same scale, same front-right orientation, light upper left. Strong readable silhouettes, moderate simplified detail, warm worn materials, not photoreal. True alpha transparency everywhere outside object and tiny grounding contact shadow. No labels, text, gridlines, panels, pedestal tiles, frames, UI, people or huge landscape. Native highest practical resolution. State variations are separate static appearances, not movement frames. One small circular neutral stone council platform, shallow steps front, standing cracked treaty slab at center and six empty short flag sockets around edge. Six states: 1 pristine empty slab and sockets; 2 gold circular inlay joins sockets and slab; 3 war damaged broken edge and leaning slab; 4 war damaged with timber barricade on back edge; 5 repaired slab with six equal small gold inset stones and linked ring motif for shared custody; 6 repaired slab with an open arch-shaped bronze motif and restored clear radial paths for open passage. No banners, no people. These are small game map landmarks.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-440c81fd-7ff9-4ca0-b911-1e62c616440f.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "town-greek",
+    "file": "assets/towns/greek-war-damaged.png",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.greek.background.l1.webp"
+    ],
+    "prompt": "Edit this exact greek town background for the later campaign of Pantheon Realms. Keep the exact camera, landscape horizon, every circular or oval building pad, ALL pad center positions, connecting roads, shoreline, and bottom center entrance road unchanged. Preserve 4:3 aspect ratio and composition. Change ONLY vegetation and small decorative spaces OUTSIDE the pads and roads into subtle aftermath of an old war: scattered broken greek masonry wall fragments, burned shrubs, small collapsed beams at outer margins, a few weathered stones and grass regrowing. Damage should be most visible along the distant back edges and outer left/right margins, not on building plots. Retain beautiful painted fantasy strategy game style, readable warm light and faction climate. Every building pad remains completely EMPTY and clear for separate game building sprites. No standing buildings, no new functional towers or gates, no smoke obscuring placement, no characters, no writing, no UI. The central and bottom road must remain clear and meet the exact same entrance. Keep existing topography precisely so normal town buildings still align. This is a subtle war-scarred terrain background, not a new town layout.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-22de284a-4fb3-44c6-8c0c-d8777bc289bb.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "town-norse",
+    "file": "assets/towns/norse-war-damaged.png",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.norse.background.l1.webp"
+    ],
+    "prompt": "Edit this exact norse town background for the later campaign of Pantheon Realms. Keep the exact camera, landscape horizon, every circular or oval building pad, ALL pad center positions, connecting roads, shoreline, and bottom center entrance road unchanged. Preserve 4:3 aspect ratio and composition. Change ONLY vegetation and small decorative spaces OUTSIDE the pads and roads into subtle aftermath of an old war: scattered broken norse masonry wall fragments, burned shrubs, small collapsed beams at outer margins, a few weathered stones and grass regrowing. Damage should be most visible along the distant back edges and outer left/right margins, not on building plots. Retain beautiful painted fantasy strategy game style, readable warm light and faction climate. Every building pad remains completely EMPTY and clear for separate game building sprites. No standing buildings, no new functional towers or gates, no smoke obscuring placement, no characters, no writing, no UI. The central and bottom road must remain clear and meet the exact same entrance. Keep existing topography precisely so normal town buildings still align. This is a subtle war-scarred terrain background, not a new town layout.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-e521c120-06a3-4b1b-b3e6-4a7c35ede2bb.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "town-egyptian",
+    "file": "assets/towns/egyptian-war-damaged.png",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.egyptian.background.l1.webp"
+    ],
+    "prompt": "Edit this exact egyptian town background for the later campaign of Pantheon Realms. Keep the exact camera, landscape horizon, every circular or oval building pad, ALL pad center positions, connecting roads, shoreline, and bottom center entrance road unchanged. Preserve 4:3 aspect ratio and composition. Change ONLY vegetation and small decorative spaces OUTSIDE the pads and roads into subtle aftermath of an old war: scattered broken egyptian masonry wall fragments, burned shrubs, small collapsed beams at outer margins, a few weathered stones and grass regrowing. Damage should be most visible along the distant back edges and outer left/right margins, not on building plots. Retain beautiful painted fantasy strategy game style, readable warm light and faction climate. Every building pad remains completely EMPTY and clear for separate game building sprites. No standing buildings, no new functional towers or gates, no smoke obscuring placement, no characters, no writing, no UI. The central and bottom road must remain clear and meet the exact same entrance. Keep existing topography precisely so normal town buildings still align. This is a subtle war-scarred terrain background, not a new town layout.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-9b72b0ce-33f7-4d4e-a310-1d00fa40d720.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "town-japanese",
+    "file": "assets/towns/japanese-war-damaged.png",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.japanese.background.l1.webp"
+    ],
+    "prompt": "Edit this exact japanese town background for the later campaign of Pantheon Realms. Keep the exact camera, landscape horizon, every circular or oval building pad, ALL pad center positions, connecting roads, shoreline, and bottom center entrance road unchanged. Preserve 4:3 aspect ratio and composition. Change ONLY vegetation and small decorative spaces OUTSIDE the pads and roads into subtle aftermath of an old war: scattered broken japanese masonry wall fragments, burned shrubs, small collapsed beams at outer margins, a few weathered stones and grass regrowing. Damage should be most visible along the distant back edges and outer left/right margins, not on building plots. Retain beautiful painted fantasy strategy game style, readable warm light and faction climate. Every building pad remains completely EMPTY and clear for separate game building sprites. No standing buildings, no new functional towers or gates, no smoke obscuring placement, no characters, no writing, no UI. The central and bottom road must remain clear and meet the exact same entrance. Keep existing topography precisely so normal town buildings still align. This is a subtle war-scarred terrain background, not a new town layout.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-58705c10-33b9-4d22-876d-80b5200e3c5f.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "town-celtic",
+    "file": "assets/towns/celtic-war-damaged.png",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.celtic.background.l1.webp"
+    ],
+    "prompt": "Edit this exact celtic town background for the later campaign of Pantheon Realms. Keep the exact camera, landscape horizon, every circular or oval building pad, ALL pad center positions, connecting roads, shoreline, and bottom center entrance road unchanged. Preserve 4:3 aspect ratio and composition. Change ONLY vegetation and small decorative spaces OUTSIDE the pads and roads into subtle aftermath of an old war: scattered broken celtic masonry wall fragments, burned shrubs, small collapsed beams at outer margins, a few weathered stones and grass regrowing. Damage should be most visible along the distant back edges and outer left/right margins, not on building plots. Retain beautiful painted fantasy strategy game style, readable warm light and faction climate. Every building pad remains completely EMPTY and clear for separate game building sprites. No standing buildings, no new functional towers or gates, no smoke obscuring placement, no characters, no writing, no UI. The central and bottom road must remain clear and meet the exact same entrance. Keep existing topography precisely so normal town buildings still align. This is a subtle war-scarred terrain background, not a new town layout.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-ab72ee5b-f391-4ce3-b258-d609fa99f8d0.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "town-mesoamerican",
+    "file": "assets/towns/mesoamerican-war-damaged.png",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.mesoamerican.background.l1.webp"
+    ],
+    "prompt": "Edit this exact mesoamerican town background for the later campaign of Pantheon Realms. Keep the exact camera, landscape horizon, every circular or oval building pad, ALL pad center positions, connecting roads, shoreline, and bottom center entrance road unchanged. Preserve 4:3 aspect ratio and composition. Change ONLY vegetation and small decorative spaces OUTSIDE the pads and roads into subtle aftermath of an old war: scattered broken mesoamerican masonry wall fragments, burned shrubs, small collapsed beams at outer margins, a few weathered stones and grass regrowing. Damage should be most visible along the distant back edges and outer left/right margins, not on building plots. Retain beautiful painted fantasy strategy game style, readable warm light and faction climate. Every building pad remains completely EMPTY and clear for separate game building sprites. No standing buildings, no new functional towers or gates, no smoke obscuring placement, no characters, no writing, no UI. The central and bottom road must remain clear and meet the exact same entrance. Keep existing topography precisely so normal town buildings still align. This is a subtle war-scarred terrain background, not a new town layout.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-c3a9114a-d0fb-4f7f-810c-c94f9533ec9b.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "town-ruins",
+    "file": "assets/towns/town-ruins.png",
+    "states": [
+      "greek",
+      "norse",
+      "egyptian",
+      "japanese",
+      "celtic",
+      "mesoamerican"
+    ],
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/sites/map.site.town.greek.webp",
+      "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/sites/map.site.town.norse.webp"
+    ],
+    "prompt": "Create a production transparent PNG sprite atlas for Pantheon Realms, painterly stylized isometric adventure map art inspired by classic fantasy strategy games. EXACTLY SIX separate object state sprites arranged in a perfectly regular THREE COLUMNS by TWO ROWS grid, reading order left to right then next row. Landscape canvas 3:2. Each object entirely inside its own equal cell, centered horizontally with ground base near 82% of cell height; at least 12% padding to every cell boundary, large clear transparent gutters. Each state uses the same fixed elevated isometric 30-degree camera, same scale, same front-right orientation, light upper left. Strong readable silhouettes, moderate simplified detail, warm worn materials, not photoreal. True alpha transparency everywhere outside object and tiny grounding contact shadow. No labels, text, gridlines, panels, pedestal tiles, frames, UI, people or huge landscape. Native highest practical resolution. State variations are separate static appearances, not movement frames.  The two input pictures are style and camera references only, showing the game's completed towns. Create SIX different small ruined frontier town map sprites, one per pantheon. All have BROKEN OLD OUTER WALLS and destroyed former higher-tier building foundations around ONE small inhabited level-one civic core. No intact grand temple or palace, no armies, no flags, no text, no flames or smoke. In each town the front entrance is open and core has one warm-lit door and a simple modest roof; towns look recoverable, not abandoned. Top left Greek: pale limestone broken columns, blue and clay roof civic house, cypress. Top middle Norse: broken gray walls and collapsed timber beams, one modest dark wooden hall, pine and snow. Top right Egyptian: broken sandstone walls and obelisk stump, small flat-roof mudbrick civic hall, palm and sand. Bottom left Japanese: broken plaster walls and collapsed dark roof debris, modest curved-roof timber civic hall, maple. Bottom middle Celtic: broken mossy fieldstone and burned stakes, modest thatched roundhouse, oak saplings. Bottom right Mesoamerican: shattered basalt stepped foundations and jade fragments, one small low stone civic building with red woven awning, jungle vegetation. Exactly six nonoverlapping whole sprites, regular3columns2rows, full transparency and wide gutters, consistent footprint size.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-601515e9-7b7c-4d42-bef6-4d93b42090e6.png",
+    "tool": "built-in image_gen"
+  }
+]

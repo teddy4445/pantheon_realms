@@ -35,6 +35,17 @@ import { placementSlot, resolveArmy, armyRefLabel } from '../resolvers/army';
 import { movementBudget } from '../resolvers/heroes';
 import { reject, type RejectionCode, type Tx } from '../engine/tx';
 import { bumpTotal } from './stats';
+import type { DedicationSaving } from './dedication';
+import {
+  dedicatedMarketBuyRate,
+  dedicatedRecruitUnitCost,
+  dedicatedUnitCost,
+  dedicatedUpgradeUnitCost,
+  dedicationSaving,
+  sumDedicationSavings,
+} from './dedicationServices';
+import { heroShip } from '../resolvers/naval';
+import { discountedRecruitTotal, maxDiscountedRecruit, townRelicRecruitment } from '../resolvers/libraryRecruitment';
 
 // ---------------------------------------------------------------------------
 // Construction
@@ -54,6 +65,8 @@ export interface ConstructionQuote {
   readonly code: RejectionCode | null;
   /** Every missing prerequisite (expanded chain). */
   readonly missing: string[];
+  /** The town's dedication service lowered `cost.gold` (fortify / library / civic / favored dwelling): normal, final, saved. */
+  readonly dedication?: DedicationSaving;
 }
 
 export function quoteConstruction(
@@ -66,7 +79,10 @@ export function quoteConstruction(
   const town = state.towns[townId];
   const def = catalog.buildings[buildingId];
   const player = state.players[playerId];
-  const cost = resources(def?.cost ?? {});
+  // Ordinary cost, then the town's dedication discount on its Gold (requirements unchanged).
+  const priced = dedicatedUnitCost(catalog, state, playerId, townId, { kind: 'construction', buildingId }, def?.cost ?? {});
+  const cost = priced.unit;
+  const dedication = dedicationSaving(priced.discount, priced.normal.gold, cost.gold);
   const wallet = player?.wallet ?? resources();
   const base = {
     buildingId,
@@ -74,6 +90,7 @@ export function quoteConstruction(
     balanceAfter: subtractResources(wallet, cost),
     shortfall: shortfall(wallet, cost),
     missing: [] as string[],
+    ...(dedication ? { dedication } : {}),
   };
   const result = (st: BuildState, code: RejectionCode | null, reason: string | null, missing: string[] = []): ConstructionQuote => ({
     ...base,
@@ -171,6 +188,8 @@ export interface RecruitmentQuote {
   readonly destinationLabel: string;
   readonly destinationSlot: number | null;
   readonly balanceAfter: ResourceBundle;
+  /** The favored-family discount (per unit, × quantity): normal, final, saved Gold for the quoted quantity. */
+  readonly dedication?: DedicationSaving;
 }
 
 export function quoteRecruitment(
@@ -185,12 +204,16 @@ export function quoteRecruitment(
   const town = state.towns[townId];
   const player = state.players[playerId];
   const creature = catalog.creatures[creatureId];
-  const unitCost = resources(creature?.cost ?? {});
+  // THE per-unit price (shared with the batch quote, the AI and the commits); totals = unit × quantity.
+  const priced = dedicatedRecruitUnitCost(catalog, state, playerId, townId, creatureId);
+  const unitCost = priced.unit;
   const wallet = player?.wallet ?? resources();
   const qty = Number.isInteger(quantity) ? quantity : 0;
-  const totalCost = scaleResources(unitCost, Math.max(0, qty));
+  const relicSaving = townRelicRecruitment(catalog, state, playerId, townId, creatureId);
+  const totalCost = discountedRecruitTotal(unitCost, Math.max(0, qty), relicSaving);
+  const dedication = dedicationSaving(priced.discount, priced.normal.gold, unitCost.gold, Math.max(0, qty));
   const available = town && creature ? (town.population[creature.familyId] ?? 0) : 0;
-  const maxQuantity = Math.max(0, Math.min(available, maxAffordable(wallet, unitCost)));
+  const maxQuantity = maxDiscountedRecruit(wallet, unitCost, available, relicSaving);
   let destinationLabel = 'Garrison';
   let destinationSlot: number | null = null;
   const fail = (code: RejectionCode, reason: string): RecruitmentQuote => ({
@@ -204,6 +227,7 @@ export function quoteRecruitment(
     destinationLabel,
     destinationSlot,
     balanceAfter: subtractResources(wallet, totalCost),
+    ...(dedication ? { dedication } : {}),
   });
   if (!town || !player || !creature) return fail('not_found', 'Unknown town or creature');
   if (town.ownerId !== playerId) return fail('not_owner', 'You do not own this town');
@@ -239,6 +263,7 @@ export function quoteRecruitment(
     destinationLabel,
     destinationSlot,
     balanceAfter: subtractResources(wallet, totalCost),
+    ...(dedication ? { dedication } : {}),
   };
 }
 
@@ -254,6 +279,7 @@ export function commitRecruitment(
   const town = tx.state.towns[townId]!;
   const creature = getCreature(tx.catalog, creatureId);
   spend(tx, tx.actorId, q.totalCost, `Recruited ${quantity} ${creature.pluralName}`);
+  if (townRelicRecruitment(tx.catalog, tx.state, tx.actorId, townId, creatureId)) (tx.state.players[tx.actorId]!.libraryEconomy ??= {}).recruitPurchaseDay = tx.state.day;
   town.population[creature.familyId] = (town.population[creature.familyId] ?? 0) - quantity;
   const army = destination.kind === 'hero' ? tx.state.heroes[destination.heroId]!.army : town.garrison;
   const slot = army.slots[q.destinationSlot];
@@ -284,6 +310,8 @@ export interface RecruitBatchLine extends RecruitBatchItem {
   readonly slot: number | null;
   /** True when the line joins a stack of the same creature already there (or placed earlier in the batch). */
   readonly merges: boolean;
+  /** The favored-family discount on this line (per unit, × quantity). */
+  readonly dedication?: DedicationSaving;
 }
 
 export interface RecruitBatchQuote {
@@ -298,6 +326,8 @@ export interface RecruitBatchQuote {
   /** Army slots still missing for the whole batch (zero when everything fits). */
   readonly slotsShort: number;
   readonly destinationLabel: string;
+  /** The lines' favored-family discounts added up (normal, final, saved Gold). */
+  readonly dedication?: DedicationSaving;
 }
 
 /**
@@ -367,17 +397,21 @@ export function quoteRecruitBatch(
   let totalCost = resources();
   let totalCount = 0;
   let destinationLabel = 'Garrison';
-  const result = (code: RejectionCode | null, reason: string | null, slotsShort = 0): RecruitBatchQuote => ({
-    legal: code === null,
-    code,
-    reason,
-    lines,
-    totalCount,
-    totalCost,
-    shortfall: shortfall(wallet, totalCost),
-    slotsShort,
-    destinationLabel,
-  });
+  const result = (code: RejectionCode | null, reason: string | null, slotsShort = 0): RecruitBatchQuote => {
+    const dedication = sumDedicationSavings(lines.map((l) => l.dedication));
+    return {
+      legal: code === null,
+      code,
+      reason,
+      lines,
+      totalCount,
+      totalCost,
+      shortfall: shortfall(wallet, totalCost),
+      slotsShort,
+      destinationLabel,
+      ...(dedication ? { dedication } : {}),
+    };
+  };
   if (!town || !player) return result('not_found', 'Unknown town');
   if (town.ownerId !== playerId) return result('not_owner', 'You do not own this town');
   let army;
@@ -396,6 +430,7 @@ export function quoteRecruitBatch(
   // A scratch copy of the destination's slots: placement evolves line by line.
   const sim = { slots: army.slots.map((s) => (s ? { stackId: s.stackId, creatureId: s.creatureId, count: s.count } : null)) };
   const families = new Set<string>();
+  let relicUsed = false;
   let slotsShort = 0;
   let firstProblem: { code: RejectionCode; reason: string } | null = null;
   for (const item of items) {
@@ -407,8 +442,13 @@ export function quoteRecruitBatch(
     if (!recruitable.has(creature.id)) return result('not_recruitable', `${creature.name} requires its dwelling in this town`);
     const pool = town.population[creature.familyId] ?? 0;
     if (pool < item.quantity) firstProblem ??= { code: 'no_population', reason: `Only ${pool} ${creature.pluralName} available this week` };
-    const unitCost = resources(creature.cost ?? {});
-    const lineCost = scaleResources(unitCost, item.quantity);
+    // The same per-unit resolver as a single recruit (never a discount on the batch total).
+    const priced = dedicatedRecruitUnitCost(catalog, state, playerId, townId, creature.id);
+    const unitCost = priced.unit;
+    const relicSaving = relicUsed ? undefined : townRelicRecruitment(catalog, state, playerId, townId, creature.id);
+    const lineCost = discountedRecruitTotal(unitCost, item.quantity, relicSaving);
+    if (relicSaving) relicUsed = true;
+    const lineSaving = dedicationSaving(priced.discount, priced.normal.gold, unitCost.gold, item.quantity);
     totalCost = addResources(totalCost, lineCost);
     totalCount += item.quantity;
     const slot = placementSlot(sim as typeof army, creature.id);
@@ -416,7 +456,7 @@ export function quoteRecruitBatch(
     if (slot === null) slotsShort += 1;
     else if (merges) sim.slots[slot]!.count += item.quantity;
     else sim.slots[slot] = { stackId: `batch-${lines.length}`, creatureId: creature.id, count: item.quantity };
-    lines.push({ creatureId: creature.id, quantity: item.quantity, familyId: creature.familyId, unitCost, totalCost: lineCost, slot, merges });
+    lines.push({ creatureId: creature.id, quantity: item.quantity, familyId: creature.familyId, unitCost, totalCost: lineCost, slot, merges, ...(lineSaving ? { dedication: lineSaving } : {}) });
   }
   if (firstProblem) return result(firstProblem.code, firstProblem.reason, slotsShort);
   const short = shortfall(wallet, totalCost);
@@ -459,6 +499,8 @@ export interface UpgradeQuote {
   readonly totalCost: ResourceBundle;
   readonly maxQuantity: number;
   readonly targetSlot: number | null;
+  /** The favored-family discount on the catalog upgrade difference (per unit, × quantity). */
+  readonly dedication?: DedicationSaving;
 }
 
 export function quoteUpgrade(
@@ -476,9 +518,12 @@ export function quoteUpgrade(
   const base = stack ? catalog.creatures[stack.creatureId] : undefined;
   const upgradeId = base?.upgradeId ?? null;
   const up = upgradeId ? catalog.creatures[upgradeId] : undefined;
-  const unitCost = base?.cost && up?.cost ? subtractResources(up.cost, base.cost) : resources();
+  // The catalog difference (upgraded − base) per unit, then the favored family's discount on its Gold.
+  const priced = base && up ? dedicatedUpgradeUnitCost(catalog, state, playerId, townId, base.id) : null;
+  const unitCost = priced?.unit ?? resources();
   const qty = Number.isInteger(quantity) ? quantity : 0;
   const totalCost = scaleResources(unitCost, Math.max(0, qty));
+  const dedication = priced ? dedicationSaving(priced.discount, priced.normal.gold, unitCost.gold, Math.max(0, qty)) : undefined;
   const wallet = state.players[playerId]?.wallet ?? resources();
   const maxQuantity = stack ? Math.min(stack.count, maxAffordable(wallet, unitCost)) : 0;
   const fail = (code: RejectionCode, reason: string, targetSlot: number | null = null): UpgradeQuote => ({
@@ -491,6 +536,7 @@ export function quoteUpgrade(
     totalCost,
     maxQuantity,
     targetSlot,
+    ...(dedication ? { dedication } : {}),
   });
   if (!town || !army || !stack || !base) return fail('not_found', 'No stack in that slot');
   if (town.ownerId !== playerId) return fail('not_owner', 'You do not own this town');
@@ -517,7 +563,7 @@ export function quoteUpgrade(
   }
   if (targetSlot === null) return fail('no_capacity', 'A partial upgrade needs a free slot or an existing upgraded stack');
   if (!canAfford(wallet, totalCost)) return fail('insufficient_resources', 'Not enough resources', targetSlot);
-  return { legal: true, code: null, reason: null, fromId: base.id, toId: up.id, unitCost, totalCost, maxQuantity, targetSlot };
+  return { legal: true, code: null, reason: null, fromId: base.id, toId: up.id, unitCost, totalCost, maxQuantity, targetSlot, ...(dedication ? { dedication } : {}) };
 }
 
 export function commitUpgrade(tx: Tx, townId: TownId, armyRef: ArmyRef, slot: number, quantity: number): void {
@@ -553,6 +599,8 @@ export interface TradeQuote {
   readonly pay: ResourceBundle;
   readonly receive: ResourceBundle;
   readonly rate: number;
+  /** Buying at a town with the market discount: normal, final, saved Gold (sell prices never change). */
+  readonly dedication?: DedicationSaving;
 }
 
 export function marketRates(catalog: ContentCatalog, markets: number) {
@@ -560,6 +608,19 @@ export function marketRates(catalog: ContentCatalog, markets: number) {
   let tier = tiers[0]!;
   for (const t of tiers) if (markets >= t.minMarkets) tier = t;
   return tier;
+}
+
+/**
+ * The rates of one town's market for `playerId`: the player's ordinary tier (from the
+ * markets actually owned), with this town's dedication discount on the Gold BUY rates
+ * (never below the best ordinary sell rate across all tiers + 1). Sell rates unchanged.
+ * `normalBuyCommon` / `normalBuyCrystal` are the tier's ordinary buy rates.
+ */
+export function townMarketRates(catalog: ContentCatalog, state: MatchState, playerId: PlayerId, townId: TownId) {
+  const tier = marketRates(catalog, playerMarketCount(catalog, state, playerId));
+  const common = dedicatedMarketBuyRate(catalog, state, playerId, townId, 'wood', tier.buyCommon);
+  const crystal = dedicatedMarketBuyRate(catalog, state, playerId, townId, 'crystal', tier.buyCrystal);
+  return { ...tier, buyCommon: common.rate, buyCrystal: crystal.rate, normalBuyCommon: tier.buyCommon, normalBuyCrystal: tier.buyCrystal };
 }
 
 export function quoteTrade(
@@ -592,8 +653,13 @@ export function quoteTrade(
   let pay: ResourceBundle;
   let receive: ResourceBundle;
   let rate: number;
+  let dedication: DedicationSaving | undefined;
   if (sell === 'gold') {
-    rate = buy === 'crystal' ? tier.buyCrystal : tier.buyCommon;
+    // Per-unit buy rate (this town's market discount, floored above every sell rate) × amount.
+    const normalRate = buy === 'crystal' ? tier.buyCrystal : tier.buyCommon;
+    const priced = dedicatedMarketBuyRate(catalog, state, playerId, townId, buy, normalRate);
+    rate = priced.rate;
+    dedication = dedicationSaving(priced.discount, normalRate, rate, amount);
     pay = resources({ gold: rate * amount });
     receive = resources({ [buy]: amount });
   } else {
@@ -601,8 +667,9 @@ export function quoteTrade(
     pay = resources({ [sell]: amount });
     receive = resources({ gold: rate * amount });
   }
-  if (!canAfford(player.wallet, pay)) return { legal: false, reason: 'Not enough resources', code: 'insufficient_resources', pay, receive, rate };
-  return { legal: true, reason: null, code: null, pay, receive, rate };
+  const saving = dedication ? { dedication } : {};
+  if (!canAfford(player.wallet, pay)) return { legal: false, reason: 'Not enough resources', code: 'insufficient_resources', pay, receive, rate, ...saving };
+  return { legal: true, reason: null, code: null, pay, receive, rate, ...saving };
 }
 
 export function commitTrade(tx: Tx, townId: TownId, sell: ResourceKey, buy: ResourceKey, amount: number): void {
@@ -640,6 +707,8 @@ function armiesColocated(catalog: ContentCatalog, state: MatchState, playerId: P
   if (!pa || !pb) return 'You do not control both armies';
   if (a.kind === 'garrison' && b.kind === 'garrison' && a.townId !== b.townId) return 'Garrisons in different towns cannot exchange troops';
   const d = Math.abs(pa.q - pb.q) + Math.abs(pa.r - pb.r) + Math.abs(pa.q + pa.r - pb.q - pb.r);
+  // Hero ships (navalMovementV1): a hero at sea meets only another ship, never a hero on the shore.
+  if (a.kind === 'hero' && b.kind === 'hero' && !!heroShip(state, a.heroId) !== !!heroShip(state, b.heroId)) return 'A hero at sea exchanges troops only with another ship: land first';
   if (d / 2 > (a.kind === 'hero' && b.kind === 'hero' ? 1 : 0)) {
     return a.kind === 'hero' && b.kind === 'hero'
       ? 'Heroes must stand on adjacent tiles to exchange troops'

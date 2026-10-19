@@ -288,6 +288,9 @@ export interface FxSiege {
  */
 export function fxSiege(): FxSiege {
   const d = skirmishDriver();
+  // The legacy automatic Catapult these playback checks were written for (older saves, The Three Beacons);
+  // the targetable catapult (targetableCatapultV1, on in skirmishes) is covered by siegeCatapult.spec.ts.
+  d.state.scenario.features = { ...d.state.scenario.features!, targetableCatapultV1: false };
   const east = d.state.towns['eastharbor']!;
   east.buildings['fortifications'] = 3;
   east.garrison.slots = slots([['hoplite', 6]]);
@@ -345,6 +348,9 @@ export function fxSiege(): FxSiege {
  */
 export function fxDefence(): FxBattle {
   const d = skirmishDriver();
+  // The legacy automatic Catapult these playback checks were written for (older saves, The Three Beacons);
+  // the targetable catapult (targetableCatapultV1, on in skirmishes) is covered by siegeCatapult.spec.ts.
+  d.state.scenario.features = { ...d.state.scenario.features!, targetableCatapultV1: false };
   const alexios = d.state.heroes['alexios']!;
   const rival = d.state.heroes['rival_odysseus']!;
   alexios.army.slots = slots([['peltast', 12], ['cyclops', 3], ['temple_seer', 8]]);

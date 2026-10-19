@@ -1,0 +1,76 @@
+{
+  "generator": "Built-in image_gen",
+  "tasks": [
+    {
+      "id": "ship-e",
+      "file": "assets/ship-e.png",
+      "alpha": true,
+      "refs": [],
+      "prompt": "Painted 2D strategy-game asset for Pantheon Realms. Stylized readable hand-painted fantasy, controlled detail, warm wood, antique bronze, ivory cloth, coherent isometric light from upper left. Crisp readable silhouette at small game scale. Not a photoreal render. No letters, numbers, UI, labels, watermark, symbols or faction crests. One single neutral wooden sailing transport, bow points exactly screen RIGHT east, stern left. Orthographic isometric view looking down about40degrees; not side elevation. Entire ship centered, ample transparent margins. Compact merchant-war transport with raised stern, single central mast, SMALL ivory square sail that does not obscure hull, bronze fittings, rope rail, unpainted wood, small bare stern flagpole with NO cloth so runtime hero pennant can be added. No baked captain or crew. No large water patch, no shadow background, no foam. Genuine transparent background. 1024x1024 square. Fixed intact asset for runtime buoyancy and sailing animation."
+    },
+    {
+      "id": "wagon-e",
+      "file": "assets/wagon-e.png",
+      "alpha": true,
+      "refs": [],
+      "prompt": "Painted 2D strategy-game asset for Pantheon Realms. Stylized readable hand-painted fantasy, controlled detail, warm wood, antique bronze, ivory cloth, coherent isometric light from upper left. Crisp readable silhouette at small game scale. Not a photoreal render. No letters, numbers, UI, labels, watermark, symbols or faction crests. One single supply caravan map token, one chestnut horse pulling a sturdy four-wheel wooden canvas wagon. All wheels attached sensibly. Horse and front point exactly screenRIGHT east, wagon behindleft. Orthographic isometric40degree down-view, same apparent map scale as fantasy adventure props. Neutral ivory canvas, bronze fittings, no painted emblem, little bare upright pole on wagon for live owner pennant. Harness and shafts visibly connect horse and wagon. No people. Entirehorseandwagoninsidecanvas, generous transparent margins, no groundplane/dust/shadow. 1024x1024 genuine transparent background. Moderate detail for80px map token."
+    },
+    {
+      "id": "boarding-battle",
+      "file": "assets/boarding-battle.png",
+      "alpha": false,
+      "refs": [],
+      "prompt": "Painted 2D strategy-game asset for Pantheon Realms. Stylized readable hand-painted fantasy, controlled detail, warm wood, antique bronze, ivory cloth, coherent isometric light from upper left. Crisp readable silhouette at small game scale. Not a photoreal render. No letters, numbers, UI, labels, watermark, symbols or faction crests. Full 16:9 battle stage, native high resolution preferably2560x1440. Two LARGE wooden ships side by side floating in deeptealbluewater; ships oriented vertically withbows atTOPofimage, bothentirehullsvisible. Clear topdown orthographic view tiltedonlyslightlyto showthin hull sides. LEFTship occupies normalizedx.06to.44 y.06to.94; RIGHTship x.56to.94 y.06to.94. Both have huge empty broad RECTANGULAR flush combat decks with NO masts, barrels, crates, rails or ropes inside their playable rectangles: leftdeck x.10to.42 y.16to.84, rightdeck x.58to.90 y.16to.84. Bow/sternornaments, furledsails and shortmaststubs only outside theserectangles nearverytop/bottom. ExactlyONE sturdy wide boardinggangplank ofbrownwood connects innerdeckedges horizontally acrosswatergap in center, normalizedx.40to.60 y.46to.61. Bridgeattachedflushbothends, supports2rows of creaturehexes, narrowrelativetodecks. No otherbridges. No paintedgrid, no characters, no ships'flags, no factioncolors, no UI. Calm subdued water, clear wood floor, lowcontrastdeckgrain ensures troops visible. Symmetric fair battlelayout, usable actual empty gamebackground not cinematic poster."
+    },
+    {
+      "id": "scout-unknown",
+      "file": "assets/scout-unknown.png",
+      "alpha": true,
+      "refs": [],
+      "prompt": "Painted 2D strategy-game asset for Pantheon Realms. Stylized readable hand-painted fantasy, controlled detail, warm wood, antique bronze, ivory cloth, coherent isometric light from upper left. Crisp readable silhouette at small game scale. Not a photoreal render. No letters, numbers, UI, labels, watermark, symbols or faction crests. One mysterious unreadable army intelligence silhouette vignette for sidebar. A single blended anonymous distant dark smoky group mass behind a blank unmarked tattered banner pole. Do NOT reveal distinct troop species, weapons, number of stacks, helmets or countable individuals. Fogshape blacknavywithsoft grayedges, dimlight on plainbanner. No questionmark text; game overlays ownquestionmark. Transparent background with soft alpha mist aroundedges, widesquarecomposition. No landscape ground or panel. 1024square."
+    },
+    {
+      "id": "caravan-dispatch-art",
+      "file": "assets/caravan-dispatch-art.png",
+      "alpha": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/blannder_models/battle-scouting-caravan-concepts-2026-10-17/05-caravan-dispatch.png"
+      ],
+      "prompt": "Painted 2D strategy-game asset for Pantheon Realms. Stylized readable hand-painted fantasy, controlled detail, warm wood, antique bronze, ivory cloth, coherent isometric light from upper left. Crisp readable silhouette at small game scale. Not a photoreal render. No letters, numbers, UI, labels, watermark, symbols or faction crests. Attached image STYLE guidanceonly. Create an independent wide text-free illustration to be used as the dispatchwindow header. A horse-drawn neutralivorycanvas supplywagon travels LEFTtoRIGHT on an ancientstone road through an open mythicvalley, tiny unobtrusive generic distant stone settlement silhouettes at farleft and farright only. Neutral noGreek-specific temple, noJapanese-specific gate, suitableall6pantheons. Lowhorizon with coolblue mountain, goldengreenland, nopeople or creatures. Wagondominantcenter and meaningfulcargo. No UIframe,text,buttons,flags,bluefactionornament. 3:1panoramic crop composition, filledillustration not transparency."
+    },
+    {
+      "id": "caravan-arrival-art",
+      "file": "assets/caravan-arrival-art.png",
+      "alpha": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/blannder_models/battle-scouting-caravan-concepts-2026-10-17/07-caravan-arrival.png"
+      ],
+      "prompt": "Painted 2D strategy-game asset for Pantheon Realms. Stylized readable hand-painted fantasy, controlled detail, warm wood, antique bronze, ivory cloth, coherent isometric light from upper left. Crisp readable silhouette at small game scale. Not a photoreal render. No letters, numbers, UI, labels, watermark, symbols or faction crests. Attachedimagevisualstyleonly. Independent widescreen text-free illustration for arrivalnotification: neutralivorycanvas horsewagon rolls through a plain ancientstone gateway at sunrise; warm arch at right, departingroad at left, tastefulbronze fittings and ivy. Generic structure suitable6mythologies, noGreekcolumns,noAsianroof,noNorsecarving. Absolutelynopeople, troops, emblems,flags,names,UI,borders. Clearcenter wagon and open lower area for separate liveUI. 2:1horizontal headerpainting."
+    },
+    {
+      "id": "catapult-damaged",
+      "file": "assets/catapult-damaged.png",
+      "alpha": true,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/siege/catapult.intact.webp"
+      ],
+      "prompt": "Painted 2D strategy-game asset for Pantheon Realms. Stylized readable hand-painted fantasy, controlled detail, warm wood, antique bronze, ivory cloth, coherent isometric light from upper left. Crisp readable silhouette at small game scale. Not a photoreal render. No letters, numbers, UI, labels, watermark, symbols or faction crests. REFERENCE IS EXACT IDENTITY AND CAMERA target: same existing compact wooden torsioncatapult, same wheels, beam proportions, brassfittings, orientationandlighting, samefacing. Generate a faithful damaged variant only. Scuffedwood, one split sidebrace andcrackedwheelrim butengine stillstandingfunctional, throwingarmvisible. No flamesorbigsmoke obstructingsilhouette. Wholeobject visible centered ontransparentcanvas, no ground. Increase native detail moderately to1024square without addingnoveldesign. Leave generousmargins. AbsolutelynoUI."
+    },
+    {
+      "id": "catapult-destroyed",
+      "file": "assets/catapult-destroyed.png",
+      "alpha": true,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/siege/catapult.intact.webp"
+      ],
+      "prompt": "Painted 2D strategy-game asset for Pantheon Realms. Stylized readable hand-painted fantasy, controlled detail, warm wood, antique bronze, ivory cloth, coherent isometric light from upper left. Crisp readable silhouette at small game scale. Not a photoreal render. No letters, numbers, UI, labels, watermark, symbols or faction crests. REFERENCE EXACT identity/camera: the sameexistingwoodentorsioncatapult destroyedinto a low recognizable wreck occupying samegroundfootprint. Broken throwarm falls acrosssamechassis, crackedwheels, snappedrope, splintered sidebeam. Keep originalbrownwoodbronzehardware, orientationandlighting. No fire orsmoke cloud, noextra scenery/debris outsidesmallfootprint. Transparentbackground and generousmargin, 1024square. This is a dead battlefieldengine nonblocking wrecksprite; no UI."
+    },
+    {
+      "id": "ship-wreck",
+      "file": "assets/ship-wreck.png",
+      "alpha": true,
+      "refs": [],
+      "prompt": "Painted 2D strategy-game asset for Pantheon Realms. Stylized readable hand-painted fantasy, controlled detail, warm wood, antique bronze, ivory cloth, coherent isometric light from upper left. Crisp readable silhouette at small game scale. Not a photoreal render. No letters, numbers, UI, labels, watermark, symbols or faction crests. One low shipwreck token matching neutral singlemasted wooden sailingtransport. Broken hull halfsubmerged, snapped central mast, torn ivorycloth overwood, bow facesRIGHT. Orthographic isometric40deg lookingdown. Nopeople, flags, factionmarks, no fullwaterpatch orbackground. Small soft foam edge only attachedhull, genuinealpha, wholeobject centeredwithmargin. 1024square. Temporarydecorative defeat/sinkingstate, not a living selectable ship."
+    }
+  ]
+}

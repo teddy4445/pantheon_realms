@@ -1,0 +1,197 @@
+{
+  "missions": [
+    {
+      "designId": "P1",
+      "campaignId": "worlds_met",
+      "missionId": "worlds_met_m01",
+      "title": "The Ship in the Olive Grove",
+      "hero": "Alexios",
+      "pantheon": "Greek",
+      "asset": "twin.p1",
+      "briefingArtId": "mission.worlds_met.m01.briefing",
+      "thumbnailArtId": "mission.worlds_met.m01.thumbnail",
+      "file": "assets/story/p1-longship.png"
+    },
+    {
+      "designId": "P2",
+      "campaignId": "worlds_met",
+      "missionId": "worlds_met_m02",
+      "title": "A Warm Tide beneath the Ice",
+      "hero": "Hervor",
+      "pantheon": "Norse",
+      "asset": "twin.p2",
+      "briefingArtId": "mission.worlds_met.m02.briefing",
+      "thumbnailArtId": "mission.worlds_met.m02.thumbnail",
+      "file": "assets/story/p2-warm-fjord.png"
+    },
+    {
+      "designId": "P3",
+      "campaignId": "worlds_met",
+      "missionId": "worlds_met_m03",
+      "title": "The River That Forgot the Sea",
+      "hero": "Seshet",
+      "pantheon": "Egyptian",
+      "asset": "twin.p3",
+      "briefingArtId": "mission.worlds_met.m03.briefing",
+      "thumbnailArtId": "mission.worlds_met.m03.thumbnail",
+      "file": "assets/story/p3-reversed-river.png"
+    },
+    {
+      "designId": "P4",
+      "campaignId": "worlds_met",
+      "missionId": "worlds_met_m04",
+      "title": "Lanterns on a Foreign Shore",
+      "hero": "Akane",
+      "pantheon": "Japanese",
+      "asset": "twin.p4",
+      "briefingArtId": "mission.worlds_met.m04.briefing",
+      "thumbnailArtId": "mission.worlds_met.m04.thumbnail",
+      "file": "assets/story/p4-foreign-lanterns.png"
+    },
+    {
+      "designId": "P5",
+      "campaignId": "worlds_met",
+      "missionId": "worlds_met_m05",
+      "title": "Roots beneath Foreign Stones",
+      "hero": "Orla",
+      "pantheon": "Celtic",
+      "asset": "twin.p5",
+      "briefingArtId": "mission.worlds_met.m05.briefing",
+      "thumbnailArtId": "mission.worlds_met.m05.thumbnail",
+      "file": "assets/story/p5-living-arch.png"
+    },
+    {
+      "designId": "P6",
+      "campaignId": "worlds_met",
+      "missionId": "worlds_met_m06",
+      "title": "The Night with Six Horizons",
+      "hero": "Itzel",
+      "pantheon": "Mesoamerican",
+      "asset": "twin.p6",
+      "briefingArtId": "mission.worlds_met.m06.briefing",
+      "thumbnailArtId": "mission.worlds_met.m06.thumbnail",
+      "file": "assets/story/p6-six-horizons.png"
+    },
+    {
+      "designId": "P7",
+      "campaignId": "worlds_met",
+      "missionId": "worlds_met_m07",
+      "title": "The First Accord",
+      "hero": "All six heroes",
+      "pantheon": "Coalition",
+      "asset": "twin.p7",
+      "briefingArtId": "mission.worlds_met.m07.briefing",
+      "thumbnailArtId": "mission.worlds_met.m07.thumbnail",
+      "file": "assets/story/p7-first-accord.png"
+    },
+    {
+      "designId": "E1",
+      "campaignId": "ashes_accord",
+      "missionId": "ashes_accord_m01",
+      "title": "The Harbor We Once Saved",
+      "hero": "Alexios",
+      "pantheon": "Greek",
+      "asset": "twin.e1",
+      "briefingArtId": "mission.ashes_accord.m01.briefing",
+      "thumbnailArtId": "mission.ashes_accord.m01.thumbnail",
+      "file": "assets/story/e1-harbor-saved.png"
+    },
+    {
+      "designId": "E2",
+      "campaignId": "ashes_accord",
+      "missionId": "ashes_accord_m02",
+      "title": "Bread across the Broken Fjord",
+      "hero": "Hervor",
+      "pantheon": "Norse",
+      "asset": "twin.e2",
+      "briefingArtId": "mission.ashes_accord.m02.briefing",
+      "thumbnailArtId": "mission.ashes_accord.m02.thumbnail",
+      "file": "assets/story/e2-broken-fjord.png"
+    },
+    {
+      "designId": "E3",
+      "campaignId": "ashes_accord",
+      "missionId": "ashes_accord_m03",
+      "title": "The Price of the River",
+      "hero": "Seshet",
+      "pantheon": "Egyptian",
+      "asset": "twin.e3",
+      "briefingArtId": "mission.ashes_accord.m03.briefing",
+      "thumbnailArtId": "mission.ashes_accord.m03.thumbnail",
+      "file": "assets/story/e3-price-river.png"
+    },
+    {
+      "designId": "E4",
+      "campaignId": "ashes_accord",
+      "missionId": "ashes_accord_m04",
+      "title": "The Ashes of the Living Arch",
+      "hero": "Orla",
+      "pantheon": "Celtic",
+      "asset": "twin.e4",
+      "briefingArtId": "mission.ashes_accord.m04.briefing",
+      "thumbnailArtId": "mission.ashes_accord.m04.thumbnail",
+      "file": "assets/story/e4-ashes-arch.png"
+    },
+    {
+      "designId": "E5",
+      "campaignId": "ashes_accord",
+      "missionId": "ashes_accord_m05",
+      "title": "The Fleet of Unlit Lanterns",
+      "hero": "Akane",
+      "pantheon": "Japanese",
+      "asset": "twin.e5",
+      "briefingArtId": "mission.ashes_accord.m05.briefing",
+      "thumbnailArtId": "mission.ashes_accord.m05.thumbnail",
+      "file": "assets/story/e5-unlit-fleet.png"
+    },
+    {
+      "designId": "E6",
+      "campaignId": "ashes_accord",
+      "missionId": "ashes_accord_m06",
+      "title": "The Calendar of Scars",
+      "hero": "Itzel",
+      "pantheon": "Mesoamerican",
+      "asset": "twin.e6",
+      "briefingArtId": "mission.ashes_accord.m06.briefing",
+      "thumbnailArtId": "mission.ashes_accord.m06.thumbnail",
+      "file": "assets/story/e6-calendar-scars.png"
+    },
+    {
+      "designId": "E7",
+      "campaignId": "ashes_accord",
+      "missionId": "ashes_accord_m07",
+      "title": "The World We Leave Behind",
+      "hero": "All six heroes",
+      "pantheon": "Coalition",
+      "asset": "twin.e7",
+      "briefingArtId": "mission.ashes_accord.m07.briefing",
+      "thumbnailArtId": "mission.ashes_accord.m07.thumbnail",
+      "file": "assets/story/e7-world-left-behind.png"
+    }
+  ],
+  "covers": [
+    {
+      "campaignId": "worlds_met",
+      "artId": "campaign.worlds_met.cover",
+      "asset": "twin.p7"
+    },
+    {
+      "campaignId": "ashes_accord",
+      "artId": "campaign.ashes_accord.cover",
+      "asset": "twin.e7"
+    }
+  ],
+  "otherScenes": [
+    {
+      "scene": "P7 after ratification; gods fail to agree",
+      "asset": "twin.council",
+      "artId": "ending.worlds_met.epilogue"
+    },
+    {
+      "scene": "E7 both endings; unresolved distant coastline",
+      "asset": "twin.horizon",
+      "artId": "ending.ashes_accord.epilogue"
+    }
+  ],
+  "thumbnailRule": "Alias the same native image; runtime contain or center crop. No new physical thumbnail required."
+}

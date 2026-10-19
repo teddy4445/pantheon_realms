@@ -79,7 +79,36 @@ export type IconName =
   | 'journey'
   | 'army'
   | 'recruitall'
-  | 'train';
+  | 'train'
+  // Expedition, naval & siege kit (2026-10-17): the 28 controls (paths of assets-runtime/expedition-v1/icons/).
+  | 'inspect'
+  | 'pin'
+  | 'source'
+  | 'remaining'
+  | 'sighting'
+  | 'identified'
+  | 'scouted'
+  | 'staleReport'
+  | 'caravan'
+  | 'dispatch'
+  | 'arrival'
+  | 'cargo'
+  | 'route'
+  | 'blocked'
+  | 'intercept'
+  | 'garrison'
+  | 'ship'
+  | 'embark'
+  | 'disembark'
+  | 'boarding'
+  | 'anchor'
+  | 'catapult'
+  | 'aim'
+  | 'fire'
+  | 'skip'
+  | 'wreck'
+  | 'ownerFlag'
+  | 'water';
 
 const common = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.6, strokeLinecap: 'round', strokeLinejoin: 'round' } as const;
 
@@ -186,6 +215,36 @@ const PATHS: Record<IconName, JSX.Element> = {
   journey: <path {...common} d="M5 4h5v8l4 3v4H5zM5 15h9M15 9h6m-2.5-2.5L21 9l-2.5 2.5" />,
   recruitall: <path {...common} d="M7 4v16M12 2v18M17 4v16M5 13a2 3 0 004 0v-3H5zm5 0a2 3 0 004 0v-3h-4zm5 0a2 3 0 004 0v-3h-4z" />,
   train: <path {...common} d="M4 14h12l-2 3H6zM8 17v3h4v-3M14 4l6 6-2 2-6-6zM11 9l-5 5" />,
+  // Expedition, naval & siege kit (2026-10-17): the kit's own paths, drawn in the current colour like
+  // every glyph (the kit's files draw the same path in gold; `EXPEDITION_ICONS` names each file's ID).
+  inspect: <path {...common} d="M3 11s3-6 9-6 9 6 9 6-3 6-9 6-9-6-9-6zm9-3a3 3 0 100 6 3 3 0 000-6" />,
+  pin: <path {...common} d="M8 3h8l-1 6 3 4H6l3-4zM12 13v8" />,
+  source: <path {...common} d="M5 5h6v6H5zM13 15h6v6h-6zM11 8h5v7" />,
+  remaining: <path {...common} d="M7 3h10M7 21h10M8 3c0 5 8 6 8 9s-8 4-8 9m8-18c0 5-8 6-8 9s8 4 8 9" />,
+  sighting: <path {...common} d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12M12 9v6" />,
+  identified: <path {...common} d="M8 10a3 3 0 100-6 3 3 0 000 6M3 20v-3a5 5 0 0110 0v3M15 7l2 2 4-5M16 15h5m-5 4h5" />,
+  scouted: <path {...common} d="M3 16l3-9h4v9a4 4 0 11-7 0zm11 0V7h4l3 9a4 4 0 11-7 0zM10 10h4" />,
+  staleReport: <path {...common} d="M4 3h11v9M4 3v18h6M7 7h5m-5 4h5M17 13a4 4 0 100 8 4 4 0 000-8M17 15v2l2 1" />,
+  caravan: <path {...common} d="M3 14V7h12v7H3zm1-7a5 5 0 0110 0M4 14v2m9-2v2M5 16a2 2 0 100 4 2 2 0 000-4m8 0a2 2 0 100 4 2 2 0 000-4M15 12h5l1 5m-3-5V8l3-1" />,
+  dispatch: <path {...common} d="M3 12h17m-6-6l6 6-6 6M3 5h5M3 19h5" />,
+  arrival: <path {...common} d="M3 21h18M5 21V9l7-5 7 5v16M9 15l2 2 5-6" />,
+  cargo: <path {...common} d="M4 7l8-4 8 4v13H4V7zm0 0h16M12 3v17M8 5l8 4v4" />,
+  route: <path {...common} d="M5 5a2 2 0 100 4 2 2 0 000-4M19 15a2 2 0 100 4 2 2 0 000-4M7 7h8a3 3 0 010 6H9a3 3 0 000 6h8" />,
+  blocked: <path {...common} d="M4 5l16 14M4 19L20 5M3 12a9 9 0 1018 0 9 9 0 10-18 0" />,
+  intercept: <path {...common} d="M4 20L17 7l3-4-4 3L4 20M20 20L7 7 4 3l3 4 13 13M5 15l4 4m6-14l4 4" />,
+  garrison: <path {...common} d="M3 21h18M5 21V6h3V3h3v3h2V3h3v3h3v15M10 21v-6h4v6" />,
+  ship: <path {...common} d="M3 15h18l-4 5H7zM12 3v12M11 4L5 12h6m2-8l6 8h-6M3 22q3-2 6 0 3-2 6 0 3-2 6 0" />,
+  embark: <path {...common} d="M3 15h18l-4 5H7zM6 4v8m-3-3l3 3 3-3M12 5h7v7" />,
+  disembark: <path {...common} d="M3 15h18l-4 5H7zM6 12V4M3 7l3-3 3 3M12 5h7v7" />,
+  boarding: <path {...common} d="M2 9h6v10H2zm14 0h6v10h-6M8 12h8v4H8M4 3v6m16-6v6" />,
+  anchor: <path {...common} d="M12 6v15M5 13v3c0 3 7 5 7 5s7-2 7-5v-3M9 6h6M12 2a2 2 0 100 4 2 2 0 000-4M3 14l2-2 2 2m10 0l2-2 2 2" />,
+  catapult: <path {...common} d="M3 17h17M5 17l4-9 6 9M9 8l10-4M17 3l3 1-1 3M5 18a2 2 0 100 4 2 2 0 000-4m12 0a2 2 0 100 4 2 2 0 000-4" />,
+  aim: <path {...common} d="M12 2v5m0 10v5M2 12h5m10 0h5M12 5a7 7 0 100 14 7 7 0 000-14M12 10a2 2 0 100 4 2 2 0 000-4" />,
+  fire: <path {...common} d="M4 20L17 7m-5 0h5v5M4 6l3 1-1-4m12 14l3 1-1-4" />,
+  skip: <path {...common} d="M5 5l10 7-10 7zM19 5v14" />,
+  wreck: <path {...common} d="M4 17l4 4h9l4-6-6 2-3-5-3 5zM12 12V3l4 2-3 3M3 23h18" />,
+  ownerFlag: <path {...common} d="M5 22V3M5 4h14l-3 5 3 5H5" />,
+  water: <path {...common} d="M2 7q3-3 6 0t6 0 6 0M2 12q3-3 6 0t6 0 6 0M2 17q3-3 6 0t6 0 6 0" />,
 };
 
 /** Illustrative icons drawn from the UI art manifest (asset IDs, never file paths). */
@@ -233,6 +292,43 @@ export const ICON_ART: Partial<Record<IconName, string>> = {
   journey: 'recruitroute.icon-resume-route',
   recruitall: 'recruitroute.icon-recruit-all',
   train: 'recruitroute.icon-train-troops',
+};
+
+/**
+ * The expedition kit's controls (2026-10-17) by Icon name → their kit asset ID (`expedition.icon.*`,
+ * files in assets-runtime/expedition-v1/icons/). Drawn as glyphs (their paths above), never as icon art,
+ * so they follow the text colour and contrast settings. `flag` stays the delivered objective flag
+ * (icon.ui.flag); the kit's ship/owner flag is `ownerFlag`.
+ */
+export const EXPEDITION_ICONS: Readonly<Partial<Record<IconName, string>>> = {
+  inspect: 'expedition.icon.inspect',
+  pin: 'expedition.icon.pin',
+  source: 'expedition.icon.source',
+  remaining: 'expedition.icon.remaining',
+  sighting: 'expedition.icon.sighting',
+  identified: 'expedition.icon.identified',
+  scouted: 'expedition.icon.scouted',
+  staleReport: 'expedition.icon.stale-report',
+  caravan: 'expedition.icon.caravan',
+  dispatch: 'expedition.icon.dispatch',
+  arrival: 'expedition.icon.arrival',
+  cargo: 'expedition.icon.cargo',
+  route: 'expedition.icon.route',
+  blocked: 'expedition.icon.blocked',
+  intercept: 'expedition.icon.intercept',
+  garrison: 'expedition.icon.garrison',
+  ship: 'expedition.icon.ship',
+  embark: 'expedition.icon.embark',
+  disembark: 'expedition.icon.disembark',
+  boarding: 'expedition.icon.boarding',
+  anchor: 'expedition.icon.anchor',
+  catapult: 'expedition.icon.catapult',
+  aim: 'expedition.icon.aim',
+  fire: 'expedition.icon.fire',
+  skip: 'expedition.icon.skip',
+  wreck: 'expedition.icon.wreck',
+  ownerFlag: 'expedition.icon.flag',
+  water: 'expedition.icon.water',
 };
 
 /** Every icon name, in declaration order (the icon catalog tool lists them). */

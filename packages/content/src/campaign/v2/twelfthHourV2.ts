@@ -99,7 +99,7 @@ export function buildTwelfthHourV2(camp: V2Campaign): V2Built {
     map: {
       cols: 32,
       rows: 20,
-      biome: 'desert',
+      biome: 'desert', desertGround: true,
       base: 'plains',
       seed: 950001,
       texture: { rough: 50, forest: 12 },
@@ -326,7 +326,7 @@ export function buildTwelfthHourV2(camp: V2Campaign): V2Built {
     map: {
       cols: 34,
       rows: 21,
-      biome: 'desert',
+      biome: 'desert', desertGround: true,
       base: 'plains',
       seed: 950002,
       texture: { rough: 40, forest: 25 },
@@ -600,7 +600,7 @@ export function buildTwelfthHourV2(camp: V2Campaign): V2Built {
     map: {
       cols: 38,
       rows: 22,
-      biome: 'desert',
+      biome: 'desert', desertGround: true,
       base: 'plains',
       seed: 950003,
       texture: { rough: 45, forest: 15 },
@@ -879,7 +879,7 @@ export function buildTwelfthHourV2(camp: V2Campaign): V2Built {
     map: {
       cols: 36,
       rows: 22,
-      biome: 'desert',
+      biome: 'desert', desertGround: true,
       base: 'plains',
       seed: 950004,
       texture: { rough: 45, forest: 15 },
@@ -1191,7 +1191,7 @@ export function buildTwelfthHourV2(camp: V2Campaign): V2Built {
     map: {
       cols: 34,
       rows: R5,
-      biome: 'desert',
+      biome: 'desert', desertGround: true,
       base: 'plains',
       seed: 950005,
       texture: { rough: 60, forest: 20 },
@@ -1461,7 +1461,7 @@ export function buildTwelfthHourV2(camp: V2Campaign): V2Built {
     map: {
       cols: 42,
       rows: R6,
-      biome: 'desert',
+      biome: 'desert', desertGround: true,
       base: 'plains',
       seed: 950006,
       texture: { rough: 55, forest: 12 },

@@ -1,0 +1,78 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "asset": "coastal-watchtower-warm",
+      "copiedExact": true,
+      "transparencyCorrect": true,
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "asset": "coastal-watchtower-cold",
+      "copiedExact": true,
+      "transparencyCorrect": true,
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "asset": "shipwreck-broken-mast",
+      "copiedExact": true,
+      "transparencyCorrect": true,
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "asset": "shipwreck-split-hull",
+      "copiedExact": true,
+      "transparencyCorrect": true,
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "asset": "sea-pickup-wood",
+      "copiedExact": true,
+      "transparencyCorrect": true,
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "asset": "sea-pickup-stone",
+      "copiedExact": true,
+      "transparencyCorrect": true,
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "asset": "sea-pickup-gold",
+      "copiedExact": true,
+      "transparencyCorrect": true,
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "asset": "shipwreck-expedition-scene",
+      "copiedExact": true,
+      "transparencyCorrect": true,
+      "nativeSize": [
+        1672,
+        941
+      ]
+    }
+  ],
+  "scope": "File integrity and alpha, not game implementation."
+}

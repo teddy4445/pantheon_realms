@@ -57,7 +57,8 @@ describe('recruitment & route kit', () => {
     const catalog = loadCatalog();
     // The six neutrals of the campaign kit and their six upgrades (2026-10-15) have frame-region atlases,
     // no horizontal idle strip: their stages show the kits' native portraits instead (checked below).
-    const ids = Object.keys(catalog.creatures).filter((id) => !hasKitPortrait(catalog, id));
+    // The sea creatures (2026-10-17) are never recruited: no recruitment stage (their portraits are the delivery's).
+    const ids = Object.keys(catalog.creatures).filter((id) => !hasKitPortrait(catalog, id) && catalog.families[catalog.creatures[id]!.familyId]?.availability !== 'sea_encounters');
     expect(ids.length).toBeGreaterThanOrEqual(84);
     let pantheonForms = 0;
     for (const id of ids) {

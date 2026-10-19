@@ -10,12 +10,21 @@
  * Journeys travel with the session (SaveSnapshot.presentation, version 1), scoped by
  * match, player and hero. Older saves have none and load with an empty set.
  */
-import { hexEquals, movementTarget, quoteMovement, type ContentCatalog, type HexCoord, type MatchState } from '@pr/rules';
+import { hexEquals, movementTarget, quoteTravel, type ContentCatalog, type HexCoord, type MatchState } from '@pr/rules';
 
 export const JOURNEYS_VERSION = 1;
 
 /** planned: on its way; paused: interrupted (a battle or an event) and kept; blocked: no legal route right now (kept). */
 export type JourneyStatus = 'planned' | 'paused' | 'blocked';
+
+/**
+ * Why a journey is paused or blocked (hero ships, navalMovementV1; absent on older saves and on a
+ * planned journey): `interrupted` a battle or being carried elsewhere; `embark` / `disembark` the
+ * route stands at a mode change the player confirms (Embark / Disembark — never automatic);
+ * `no_ship` the ship it was waiting for is gone; `no_route` nothing reaches the destination now.
+ */
+export type JourneyReason = 'interrupted' | 'embark' | 'disembark' | 'no_ship' | 'no_route';
+const JOURNEY_REASONS: readonly JourneyReason[] = ['interrupted', 'embark', 'disembark', 'no_ship', 'no_route'];
 
 export interface JourneyIntent {
   readonly version: 1;
@@ -27,6 +36,8 @@ export interface JourneyIntent {
   /** The site at the target when it was chosen, kept for its name and identity. */
   readonly targetSiteId?: string;
   readonly status: JourneyStatus;
+  /** Why it is paused or blocked (see JourneyReason); absent when planned. */
+  readonly reason?: JourneyReason;
 }
 
 /** Per player, per hero. */
@@ -64,6 +75,7 @@ export function sanitizePresentation(raw: unknown, match: MatchState): SessionPr
         target: { q: j.target.q, r: j.target.r },
         ...(typeof j.targetSiteId === 'string' ? { targetSiteId: j.targetSiteId } : {}),
         status,
+        ...(status !== 'planned' && JOURNEY_REASONS.includes(j.reason as JourneyReason) ? { reason: j.reason } : {}),
       };
     }
   }
@@ -96,7 +108,9 @@ export function journeyArrived(catalog: ContentCatalog, state: MatchState, j: Jo
  * ones whose hero is gone, captured or arrived, or that belong to another match; mark the
  * ones without a legal route as blocked (kept — the destination is not forgotten), and a
  * blocked one with a route again as planned. `interrupted` heroes (a battle started) are
- * marked paused. Pure.
+ * marked paused. Routes are the commit's own quote (`quoteTravel`), so a destination beyond
+ * the water survives the days: a journey standing at an embark or landing step pauses with
+ * that reason until the player confirms it, and plans on once the hero has changed mode. Pure.
  */
 export function reconcileJourneys(
   catalog: ContentCatalog,
@@ -114,14 +128,31 @@ export function reconcileJourneys(
         continue;
       }
       let status = j.status;
-      if (interrupted.has(heroId)) status = 'paused';
-      else {
-        const q = quoteMovement(catalog, state, heroId, j.target);
-        if (!q.reachable) status = 'blocked';
-        else if (status === 'blocked') status = 'planned';
+      let reason: JourneyReason | undefined = j.reason;
+      if (interrupted.has(heroId)) {
+        status = 'paused';
+        reason = 'interrupted';
+      } else {
+        const q = quoteTravel(catalog, state, heroId, j.target);
+        if (!q.reachable) {
+          status = 'blocked';
+          // Waiting to embark and the ship is gone (taken, sunk): say so.
+          reason = j.reason === 'embark' || j.reason === 'no_ship' ? 'no_ship' : 'no_route';
+        } else if (q.transition && q.path.length === 0) {
+          status = 'paused';
+          reason = q.transition.kind;
+        } else if (status === 'blocked' || (status === 'paused' && (reason === 'embark' || reason === 'disembark'))) {
+          status = 'planned';
+          reason = undefined;
+        }
       }
-      if (status !== j.status) changed = true;
-      (out[playerId] ??= {})[heroId] = status === j.status ? j : { ...j, status };
+      if (status === 'planned') reason = undefined;
+      if (status !== j.status || reason !== j.reason) changed = true;
+      if (status === j.status && reason === j.reason) (out[playerId] ??= {})[heroId] = j;
+      else {
+        const { reason: _old, ...rest } = j;
+        (out[playerId] ??= {})[heroId] = { ...rest, status, ...(reason ? { reason } : {}) };
+      }
     }
   }
   return changed ? { version: 1, journeys: out } : p;

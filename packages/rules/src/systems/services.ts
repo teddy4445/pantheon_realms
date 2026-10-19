@@ -21,6 +21,8 @@ import { scopeAllowed } from '../resolvers/scenario';
 import { reject, type RejectionCode, type Tx } from '../engine/tx';
 import { clampMovement, grant, spend } from './economy';
 import { grantExperience } from './heroes';
+import type { DedicationSaving } from './dedication';
+import { dedicatedUnitCost, dedicationSaving } from './dedicationServices';
 
 export function worldWeek(state: MatchState, daysPerWeek: number): number {
   return 1 + Math.floor((state.day - 1) / daysPerWeek);
@@ -126,13 +128,36 @@ export interface TrainingQuote {
   readonly reason: string | null;
   readonly xp: number;
   readonly cost: ResourceBundle;
+  /** The town's hero-training discount: normal, final, saved Gold (XP and the weekly limit unchanged). */
+  readonly dedication?: DedicationSaving;
+}
+
+/**
+ * The Training Academy's terms in this town for `playerId` (null without an academy): the
+ * XP, and the Gold charged after the town's dedication discount (`normalGold` = the
+ * academy's ordinary price). Screens show these; `quoteTraining` charges them.
+ */
+export function townTrainingTerms(
+  catalog: ContentCatalog,
+  state: MatchState,
+  playerId: PlayerId,
+  townId: TownId,
+): { readonly xp: number; readonly gold: number; readonly normalGold: number; readonly dedication?: DedicationSaving } | null {
+  const town = state.towns[townId];
+  const terms = town ? townTraining(catalog, town) : null;
+  if (!terms) return null;
+  const priced = dedicatedUnitCost(catalog, state, playerId, townId, { kind: 'town_service', effect: 'enables_hero_training' }, { gold: terms.gold });
+  const dedication = dedicationSaving(priced.discount, priced.normal.gold, priced.unit.gold);
+  return { xp: terms.xp, gold: priced.unit.gold, normalGold: terms.gold, ...(dedication ? { dedication } : {}) };
 }
 
 export function quoteTraining(catalog: ContentCatalog, state: MatchState, playerId: PlayerId, townId: TownId, heroId: HeroId): TrainingQuote {
   const town = state.towns[townId];
-  const terms = town ? townTraining(catalog, town) : null;
+  // The academy's terms, with the town's dedication discount on the Gold.
+  const terms = townTrainingTerms(catalog, state, playerId, townId);
   const cost = resources({ gold: terms?.gold ?? 0 });
-  const fail = (code: RejectionCode, reason: string): TrainingQuote => ({ legal: false, code, reason, xp: terms?.xp ?? 0, cost });
+  const saving = terms?.dedication ? { dedication: terms.dedication } : {};
+  const fail = (code: RejectionCode, reason: string): TrainingQuote => ({ legal: false, code, reason, xp: terms?.xp ?? 0, cost, ...saving });
   if (!town) return fail('not_found', 'Unknown town');
   if (town.ownerId !== playerId) return fail('not_owner', 'You do not own this town');
   if (!terms) return fail('missing_requirement', 'Requires a Training Academy');
@@ -143,8 +168,8 @@ export function quoteTraining(catalog: ContentCatalog, state: MatchState, player
   const cap = state.scenario.xpCap;
   if (cap !== null && hero.xp >= cap) return fail('illegal_action', `${hero.name} is at this mission's experience cap`);
   const wallet = state.players[playerId]?.wallet ?? resources();
-  if (!canAfford(wallet, cost)) return fail('insufficient_resources', `Requires ${terms.gold} Gold`);
-  return { legal: true, code: null, reason: null, xp: terms.xp, cost };
+  if (!canAfford(wallet, cost)) return fail('insufficient_resources', `Requires ${cost.gold} Gold`);
+  return { legal: true, code: null, reason: null, xp: terms.xp, cost, ...saving };
 }
 
 export function commitTraining(tx: Tx, townId: TownId, heroId: HeroId): void {
@@ -233,6 +258,28 @@ export interface PurchaseQuote {
   readonly reason: string | null;
   readonly artifactId: ArtifactId | null;
   readonly cost: ResourceBundle;
+  /** The town's shop discount (Artifact Merchant and Workshop): normal, final, saved Gold; stock unchanged. */
+  readonly dedication?: DedicationSaving;
+}
+
+/**
+ * What one item costs at this town's Artifact Merchant or Workshop for `playerId`: the
+ * item's price, then the town's shop discount on its Gold (other resources unchanged).
+ * Screens show it (also before a hero visits); `quoteArtifactPurchase` charges it.
+ */
+export function townShopPrice(
+  catalog: ContentCatalog,
+  state: MatchState,
+  playerId: PlayerId,
+  townId: TownId,
+  artifactId: ArtifactId | null,
+  shop: 'merchant' | 'workshop' = 'merchant',
+): { readonly cost: ResourceBundle; readonly dedication?: DedicationSaving } {
+  const def = artifactId ? catalog.artifacts[artifactId] : undefined;
+  const effect = shop === 'workshop' ? 'enables_workshop' : 'enables_artifact_merchant';
+  const priced = dedicatedUnitCost(catalog, state, playerId, townId, { kind: 'town_service', effect }, def?.merchantPrice ?? {});
+  const dedication = dedicationSaving(priced.discount, priced.normal.gold, priced.unit.gold);
+  return { cost: priced.unit, ...(dedication ? { dedication } : {}) };
 }
 
 export function quoteArtifactPurchase(catalog: ContentCatalog, state: MatchState, playerId: PlayerId, townId: TownId, heroId: HeroId, index: number, shop: 'merchant' | 'workshop' = 'merchant'): PurchaseQuote {
@@ -240,8 +287,10 @@ export function quoteArtifactPurchase(catalog: ContentCatalog, state: MatchState
   const stockOf = shop === 'workshop' ? town?.workshop : town?.merchant;
   const artifactId = stockOf?.stock[index] ?? null;
   const def = artifactId ? catalog.artifacts[artifactId] : undefined;
-  const cost = resources(def?.merchantPrice ?? {});
-  const fail = (code: RejectionCode, reason: string): PurchaseQuote => ({ legal: false, code, reason, artifactId, cost });
+  // The item's price, then this town's shop discount on its Gold (other resources unchanged).
+  const { cost, dedication } = townShopPrice(catalog, state, playerId, townId, artifactId, shop);
+  const saving = dedication ? { dedication } : {};
+  const fail = (code: RejectionCode, reason: string): PurchaseQuote => ({ legal: false, code, reason, artifactId, cost, ...saving });
   if (!town) return fail('not_found', 'Unknown town');
   if (town.ownerId !== playerId) return fail('not_owner', 'You do not own this town');
   if (shop === 'workshop' ? !townWorkshopStock(catalog, town) : townMerchantStockSize(catalog, town) <= 0) return fail('missing_requirement', shop === 'workshop' ? 'Requires a Workshop' : 'Requires an Artifact Merchant');
@@ -253,7 +302,7 @@ export function quoteArtifactPurchase(catalog: ContentCatalog, state: MatchState
   if (!freeEquipSlot(hero.equipment, def.slot) && hero.backpack.length >= catalog.rulesProfile.backpackCapacity) return fail('no_capacity', `${hero.name}'s backpack is full`);
   const wallet = state.players[playerId]?.wallet ?? resources();
   if (!canAfford(wallet, cost)) return fail('insufficient_resources', 'Not enough resources');
-  return { legal: true, code: null, reason: null, artifactId, cost };
+  return { legal: true, code: null, reason: null, artifactId, cost, ...saving };
 }
 
 export function commitArtifactPurchase(tx: Tx, townId: TownId, heroId: HeroId, index: number, shop: 'merchant' | 'workshop' = 'merchant'): void {

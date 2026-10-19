@@ -1,0 +1,85 @@
+{
+  "feature": "scoutingIntelV1",
+  "rankRetainsExistingVisionBonus": true,
+  "defaultStage": "sighting",
+  "identifiedWithinHexes": 3,
+  "detailedDistanceByRank": {
+    "0": 0,
+    "1": 2,
+    "2": 3,
+    "3": 4
+  },
+  "requiresCurrentVisibility": true,
+  "rank0Adjacent": "identified, quantities still hidden",
+  "quantityBins": [
+    [
+      1,
+      4
+    ],
+    [
+      5,
+      9
+    ],
+    [
+      10,
+      19
+    ],
+    [
+      20,
+      39
+    ],
+    [
+      40,
+      79
+    ],
+    [
+      80,
+      159
+    ],
+    [
+      160,
+      319
+    ],
+    [
+      320,
+      null
+    ]
+  ],
+  "strengthBands": [
+    {
+      "maxExclusive": 500,
+      "label": "Small patrol"
+    },
+    {
+      "maxExclusive": 1500,
+      "label": "Modest force"
+    },
+    {
+      "maxExclusive": 4500,
+      "label": "Substantial force"
+    },
+    {
+      "maxExclusive": 10000,
+      "label": "Large army"
+    },
+    {
+      "maxExclusive": null,
+      "label": "Vast army"
+    }
+  ],
+  "strengthBasis": "Sum normal catalog Gold cost times living creatures, excluding hero power; deliberately broad, never a win prediction.",
+  "snapshotFields": [
+    "targetId",
+    "lastSeenCoord",
+    "observedDay",
+    "stage",
+    "knownOwner",
+    "strengthBand",
+    "permittedCreatureTypes",
+    "permittedCountRanges"
+  ],
+  "noHiddenRefresh": true,
+  "alliedArmies": "Full existing information",
+  "reportAging": "Stale immediately outside current visibility; retain observed timestamp and permitted fields only.",
+  "currentVisibilityPriority": "Never show an older more-detailed report as if it were current; separate last-known details with timestamp."
+}

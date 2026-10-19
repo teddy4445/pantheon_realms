@@ -67,6 +67,7 @@ export const ABILITIES: readonly AbilityDefinition[] = [
   },
   {
     id: 'family_ward',
+    spellcasting: true,
     name: 'Ward',
     activation: 'active',
     summary: 'Places a protective ward on a friendly stack.',
@@ -108,6 +109,7 @@ export const ABILITIES: readonly AbilityDefinition[] = [
     return {
       id,
       name: `Shapeshift (${aspect})`,
+      spellcasting: true,
       activation: 'active',
       summary,
       exactRule: `Spend the activation to take the ${aspect} aspect (${parts}) or return to the normal aspect. With the Shapeshifting rite the change is free at the start of the activation, once per activation.`,

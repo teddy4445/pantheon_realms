@@ -1,0 +1,94 @@
+/*
+ * Coastal sites and sea salvage (sea-sites kit 2026-10-17): the wreck panel over the map (the delivered
+ * expedition painting, danger and salvage, Explore / Leave, the waiting artifact) and the tile panel's
+ * sea-site lines. Shared kit tokens only; the owner's colour appears on the flag swatch alone.
+ */
+
+.wreck-panel {
+  pointer-events: auto;
+}
+.wreck-panel__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.wreck-panel__title svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  color: var(--gold-400);
+}
+.wreck-panel__art {
+  margin: 0 0 0.45rem;
+  border: 1px solid var(--rim);
+  border-radius: var(--radius-s, 3px);
+  box-shadow: var(--rim-double);
+  overflow: hidden;
+  background: var(--plate-sunken);
+}
+/* The painting keeps its proportions; on a short window it is cropped to a band rather than pushing the buttons off screen. */
+.wreck-panel__art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(11rem, 22vh);
+  object-fit: cover;
+  object-position: 50% 45%;
+}
+.wreck-panel__state {
+  font-family: var(--font-display);
+  color: var(--gold-200);
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.wreck-panel__facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.2rem 0.5rem;
+  margin: 0 0 0.5rem;
+}
+.wreck-panel__facts dt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.wreck-panel__facts dd {
+  margin: 0;
+  line-height: 1.3;
+}
+.wreck-panel__claim {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+  padding: 0.4rem;
+  border: 1px solid var(--rim);
+  border-radius: var(--radius-s, 3px);
+  background: var(--plate-sunken);
+}
+.wreck-panel__swaps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+.wreck-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.wreck-panel__reason {
+  margin: 0.4rem 0 0;
+  line-height: 1.3;
+}
+.sea-site-lines {
+  margin-top: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.sea-site-lines__state {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}

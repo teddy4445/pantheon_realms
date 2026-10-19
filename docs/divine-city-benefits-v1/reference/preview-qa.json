@@ -1,0 +1,11 @@
+{
+  "errors": [],
+  "imageErrors": [],
+  "godProfilesVisited": 60,
+  "uniqueProfiles": 60,
+  "desktopOverflow": false,
+  "mobileOverflow": false,
+  "handoffMobileOverflow": false,
+  "dormantForecastZero": true,
+  "missingDwellingGrowthZero": true
+}

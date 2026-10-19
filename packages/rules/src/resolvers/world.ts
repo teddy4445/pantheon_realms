@@ -21,6 +21,11 @@ import type { HeroState, MatchState, SiteState } from '../state/match';
 import { heroVisionRadius } from './heroes';
 import { townVisionRadius } from './town';
 import { scenarioMission } from './scenario';
+import { findSeaPath, heroShip, reachableSeaTiles } from './naval';
+import { caravansOnMap, enemyCaravanAt } from './caravans';
+import { libraryLandTree, libraryPathResult, movementPricing, type LibraryPathTree } from './libraryMovement';
+import { allied } from '../systems/coalition';
+import { ownedTowerSight } from './seaSites';
 
 export function inMap(map: WorldMapDefinition, c: HexCoord): boolean {
   return c.q >= 0 && c.q < map.width && c.r >= 0 && c.r < map.height;
@@ -46,7 +51,7 @@ export function roadSet(map: WorldMapDefinition): Set<string> {
 }
 
 /** Min-heap of (distance, key) pairs ordered by distance, then key (string order). */
-class KeyHeap {
+export class KeyHeap {
   private readonly d: number[] = [];
   private readonly k: string[] = [];
   private less(i: number, j: number): boolean {
@@ -287,17 +292,19 @@ export function tileRole(catalog: ContentCatalog, state: MatchState, playerId: P
   // A town's own tile is a building: heroes use the town from its gate.
   if (isTownTile(catalog, state, c)) return 'blocked';
   const other = occupancy ? occupancy.get(hexKey(c)) : heroAt(state, c, movingHeroId);
-  if (other) return other.ownerId === playerId ? 'blocked' : 'encounter';
+  if (other) return allied(state, other.ownerId, playerId) ? 'blocked' : 'encounter';
+  // Recruitment caravans: another player's shipment can only be met in battle (never walked through); one's own shares tiles.
+  if (state.caravans && enemyCaravanAt(state, c, playerId)) return 'encounter';
   const site = siteAt(catalog, state, c);
   if (!site) return 'open';
   const { def, state: st } = site;
-  if (def.kind.type === 'gate') return st.open ? 'open' : 'blocked';
+  if (def.kind.type === 'gate') return !st.open ? 'blocked' : def.guard && !st.cleared ? 'encounter' : 'open';
   // Key gates open only for players holding the key of their colour (from a key tent).
   if (def.kind.type === 'key_gate') return state.players[playerId]?.keys?.includes(def.kind.color) ? 'open' : 'blocked';
   if (def.kind.type === 'town') {
     // Another player's (or an ownerless) garrisoned town must be besieged (design/04 §8).
     const town = state.towns[def.kind.townId];
-    if (town && town.ownerId !== playerId && town.garrison.slots.some((s) => s && s.count > 0)) return 'encounter';
+    if (town && !allied(state, town.ownerId, playerId) && town.garrison.slots.some((s) => s && s.count > 0)) return 'encounter';
   }
   if (def.guard && !st.cleared) return 'encounter';
   if (def.kind.type === 'crossing') return 'open';
@@ -378,13 +385,16 @@ function searchPaths(catalog: ContentCatalog, state: MatchState, heroId: HeroId,
 }
 
 /** Shared route trees while `withSharedPaths` runs: one search per (state, hero) instead of one per destination. */
-let pathMemo: WeakMap<MatchState, Map<HeroId, PathTree>> | null = null;
+/** Keyed by state, then `<heroId>|land` (the walking graph; the sea and voyage trees live in resolvers/naval.ts under their own mode keys). */
+let pathMemo: WeakMap<MatchState, Map<string, PathTree>> | null = null;
+const libraryTreeMemo = new WeakMap<object, WeakMap<MatchState, Map<string, LibraryPathTree>>>();
 
-function sharedPathTree(catalog: ContentCatalog, state: MatchState, heroId: HeroId, memo: WeakMap<MatchState, Map<HeroId, PathTree>>): PathTree {
+function sharedPathTree(catalog: ContentCatalog, state: MatchState, heroId: HeroId, memo: WeakMap<MatchState, Map<string, PathTree>>): PathTree {
   let byHero = memo.get(state);
   if (!byHero) memo.set(state, (byHero = new Map()));
-  let tree = byHero.get(heroId);
-  if (!tree) byHero.set(heroId, (tree = searchPaths(catalog, state, heroId, null)));
+  const key = `${heroId}|land`;
+  let tree = byHero.get(key);
+  if (!tree) byHero.set(key, (tree = searchPaths(catalog, state, heroId, null)));
   return tree;
 }
 
@@ -396,6 +406,11 @@ function sharedPathTree(catalog: ContentCatalog, state: MatchState, heroId: Hero
  * their turns run between the map's frames). The routes are identical. The
  * states read inside `fn` must not be changed while it runs.
  */
+/** True while `withSharedPaths` runs (the naval route trees share its lifetime; resolvers/naval.ts). */
+export function sharedPathsActive(): boolean {
+  return pathMemo !== null;
+}
+
 export function withSharedPaths<T>(fn: () => T): T {
   const outer = pathMemo;
   pathMemo = outer ?? new WeakMap();
@@ -421,6 +436,8 @@ export function findHeroPath(catalog: ContentCatalog, state: MatchState, heroId:
     reason,
   });
   if (!hero) return fail('Unknown hero');
+  // An embarked hero moves on the water-only graph (navalMovementV1; resolvers/naval.ts).
+  if (heroShip(state, heroId)) return findSeaPath(catalog, state, heroId, dest);
   const map = state.world.map;
   if (!inMap(map, dest)) return fail('Outside the map');
   dest = movementTarget(catalog, state, dest);
@@ -432,6 +449,19 @@ export function findHeroPath(catalog: ContentCatalog, state: MatchState, heroId:
   const destRole = tileRole(catalog, state, hero.ownerId, dest, heroId, occupancy);
   if (destRole === 'blocked') return fail('That location cannot be entered');
 
+  const pricing = movementPricing(catalog, state, hero);
+  if (pricing.rules.some((r) => r.terrain !== 'sea')) {
+    let tree: LibraryPathTree;
+    if (pathMemo) {
+      let states = libraryTreeMemo.get(pathMemo);
+      if (!states) libraryTreeMemo.set(pathMemo, states = new WeakMap());
+      let heroes = states.get(state);
+      if (!heroes) states.set(state, heroes = new Map());
+      tree = heroes.get(heroId) ?? libraryLandTree(pricing, hero, null);
+      heroes.set(heroId, tree);
+    } else tree = libraryLandTree(pricing, hero, dest);
+    return libraryPathResult(tree, dest, destRole === 'encounter');
+  }
   const startKey = hexKey(hero.position);
   const destKey = hexKey(dest);
   const shared = pathMemo ? sharedPathTree(catalog, state, heroId, pathMemo) : null;
@@ -467,9 +497,17 @@ export function reachableTiles(catalog: ContentCatalog, state: MatchState, heroI
   const hero = state.heroes[heroId];
   const out = new Map<string, number>();
   if (!hero) return out;
+  // An embarked hero's range is on the water (navalMovementV1).
+  if (heroShip(state, heroId)) return reachableSeaTiles(catalog, state, heroId);
   const map = state.world.map;
   const fog = state.fog[hero.ownerId];
   const budget = hero.movementPoints;
+  const pricing = movementPricing(catalog, state, hero);
+  if (pricing.rules.some((r) => r.terrain !== 'sea')) {
+    const tree = libraryLandTree(pricing, hero, null, budget);
+    for (const [k, node] of tree.best) if (k !== hexKey(hero.position)) out.set(k, node.cost);
+    return out;
+  }
   const occupancy = heroOccupancy(state, heroId);
   const startKey = hexKey(hero.position);
   const dist = new Map<string, number>([[startKey, 0]]);
@@ -528,15 +566,22 @@ export function visibleCells(catalog: ContentCatalog, state: MatchState, playerI
   const map = state.world.map;
   const out = new Set<number>();
   for (const h of Object.values(state.heroes)) {
-    if (h.ownerId !== playerId || h.status !== 'active') continue;
+    if (!allied(state, h.ownerId, playerId) || h.status !== 'active') continue;
     for (const c of cellsWithin(map, h.position, heroVisionRadius(catalog, h, state))) out.add(cellIndex(map, c));
   }
   for (const t of Object.values(state.towns)) {
-    if (t.ownerId !== playerId) continue;
-    for (const c of cellsWithin(map, t.coord, townVisionRadius(catalog, t))) out.add(cellIndex(map, c));
+    if (!allied(state, t.ownerId, playerId)) continue;
+    for (const c of cellsWithin(map, t.coord, townVisionRadius(catalog, state, t))) out.add(cellIndex(map, c));
+  }
+  // Coastal watchtowers (sea-sites kit): live ordinary sight around every tower the player owns.
+  for (const owner of Object.keys(state.players).filter((id) => allied(state, id, playerId))) for (const t of ownedTowerSight(catalog, state, owner)) for (const c of cellsWithin(map, t.coord, t.radius)) out.add(cellIndex(map, c));
+  // Recruitment caravans see one hex around their wagon (no distant route reveal).
+  if (state.caravans) {
+    const radius = catalog.caravanPolicy?.visionRadius ?? 1;
+    for (const owner of Object.keys(state.players).filter((id) => allied(state, id, playerId))) for (const k of caravansOnMap(state, owner)) for (const c of cellsWithin(map, k.coord, radius)) out.add(cellIndex(map, c));
   }
   // Temporary adventure-spell vision (Divine Sight) until the next dawn.
-  for (const r of state.fog[playerId]?.temporaryReveals ?? []) {
+  for (const owner of Object.keys(state.players).filter((id) => allied(state, id, playerId))) for (const r of state.fog[owner]?.temporaryReveals ?? []) {
     if (r.untilDay <= state.day) continue;
     for (const c of cellsWithin(map, r.center, r.radius)) out.add(cellIndex(map, c));
   }

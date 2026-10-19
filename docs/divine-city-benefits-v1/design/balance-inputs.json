@@ -1,0 +1,482 @@
+[
+  {
+    "godId": "zeus",
+    "resourceGift": {
+      "crystal": 1
+    },
+    "nominalBaseCreatureGoldPerWeek": 750.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "athena",
+    "resourceGift": {
+      "stone": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 120.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "ares",
+    "resourceGift": {
+      "gold": 300
+    },
+    "nominalBaseCreatureGoldPerWeek": 200.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "apollo",
+    "resourceGift": {
+      "crystal": 1
+    },
+    "nominalBaseCreatureGoldPerWeek": 400.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "artemis",
+    "resourceGift": {
+      "wood": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 240.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "hermes",
+    "resourceGift": {
+      "gold": 600
+    },
+    "nominalBaseCreatureGoldPerWeek": 350.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "demeter",
+    "resourceGift": {
+      "wood": 4
+    },
+    "nominalBaseCreatureGoldPerWeek": 120.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "hades",
+    "resourceGift": {
+      "stone": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 500.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "poseidon",
+    "resourceGift": {
+      "wood": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 350.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "hera",
+    "resourceGift": {
+      "gold": 400
+    },
+    "nominalBaseCreatureGoldPerWeek": 240.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "norse_odin",
+    "resourceGift": {
+      "crystal": 1
+    },
+    "nominalBaseCreatureGoldPerWeek": 420.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "norse_thor",
+    "resourceGift": {
+      "stone": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 500.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "norse_tyr",
+    "resourceGift": {
+      "stone": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 120.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "norse_frigg",
+    "resourceGift": {
+      "crystal": 1
+    },
+    "nominalBaseCreatureGoldPerWeek": 370.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "norse_baldr",
+    "resourceGift": {
+      "gold": 300
+    },
+    "nominalBaseCreatureGoldPerWeek": 370.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "norse_freyja",
+    "resourceGift": {
+      "wood": 4
+    },
+    "nominalBaseCreatureGoldPerWeek": 370.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "norse_heimdall",
+    "resourceGift": {
+      "stone": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 120.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "norse_hel",
+    "resourceGift": {
+      "crystal": 1
+    },
+    "nominalBaseCreatureGoldPerWeek": 120.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "norse_loki",
+    "resourceGift": {
+      "gold": 400
+    },
+    "nominalBaseCreatureGoldPerWeek": 420.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "norse_njord",
+    "resourceGift": {
+      "wood": 4
+    },
+    "nominalBaseCreatureGoldPerWeek": 250.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "egyptian_ra",
+    "resourceGift": {
+      "gold": 400
+    },
+    "nominalBaseCreatureGoldPerWeek": 120.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "egyptian_set",
+    "resourceGift": {
+      "stone": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 750.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "egyptian_isis",
+    "resourceGift": {
+      "crystal": 1
+    },
+    "nominalBaseCreatureGoldPerWeek": 500.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "egyptian_anubis",
+    "resourceGift": {
+      "crystal": 1
+    },
+    "nominalBaseCreatureGoldPerWeek": 200.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "egyptian_bastet",
+    "resourceGift": {
+      "gold": 300
+    },
+    "nominalBaseCreatureGoldPerWeek": 350.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "egyptian_osiris",
+    "resourceGift": {
+      "stone": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 240.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "egyptian_thoth",
+    "resourceGift": {
+      "crystal": 2
+    },
+    "nominalBaseCreatureGoldPerWeek": 350.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "egyptian_horus",
+    "resourceGift": {
+      "wood": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 500.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "egyptian_hathor",
+    "resourceGift": {
+      "gold": 600
+    },
+    "nominalBaseCreatureGoldPerWeek": 120.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "egyptian_sobek",
+    "resourceGift": {
+      "stone": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 400.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "japanese_amaterasu",
+    "resourceGift": {
+      "gold": 400
+    },
+    "nominalBaseCreatureGoldPerWeek": 120.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "japanese_hachiman",
+    "resourceGift": {
+      "stone": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 350.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "japanese_susanoo",
+    "resourceGift": {
+      "wood": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 750.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "japanese_tsukuyomi",
+    "resourceGift": {
+      "crystal": 1
+    },
+    "nominalBaseCreatureGoldPerWeek": 400.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "japanese_benzaiten",
+    "resourceGift": {
+      "crystal": 1
+    },
+    "nominalBaseCreatureGoldPerWeek": 500.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "japanese_inari",
+    "resourceGift": {
+      "gold": 600
+    },
+    "nominalBaseCreatureGoldPerWeek": 120.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "japanese_fujin",
+    "resourceGift": {
+      "wood": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 240.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "japanese_raijin",
+    "resourceGift": {
+      "crystal": 2
+    },
+    "nominalBaseCreatureGoldPerWeek": 500.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "japanese_izanagi",
+    "resourceGift": {
+      "stone": 4
+    },
+    "nominalBaseCreatureGoldPerWeek": 200.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "japanese_izanami",
+    "resourceGift": {
+      "crystal": 1
+    },
+    "nominalBaseCreatureGoldPerWeek": 400.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "celtic_dagda",
+    "resourceGift": {
+      "wood": 4
+    },
+    "nominalBaseCreatureGoldPerWeek": 120.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "celtic_morrigan",
+    "resourceGift": {
+      "crystal": 1
+    },
+    "nominalBaseCreatureGoldPerWeek": 380.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "celtic_brigid",
+    "resourceGift": {
+      "stone": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 220.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "celtic_nuada",
+    "resourceGift": {
+      "gold": 300
+    },
+    "nominalBaseCreatureGoldPerWeek": 750.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "celtic_danu",
+    "resourceGift": {
+      "wood": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 500.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "celtic_cernunnos",
+    "resourceGift": {
+      "wood": 4
+    },
+    "nominalBaseCreatureGoldPerWeek": 220.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "celtic_epona",
+    "resourceGift": {
+      "gold": 400
+    },
+    "nominalBaseCreatureGoldPerWeek": 250.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "celtic_lugh",
+    "resourceGift": {
+      "crystal": 1
+    },
+    "nominalBaseCreatureGoldPerWeek": 500.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "celtic_arawn",
+    "resourceGift": {
+      "crystal": 1
+    },
+    "nominalBaseCreatureGoldPerWeek": 220.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "celtic_manannan",
+    "resourceGift": {
+      "wood": 4
+    },
+    "nominalBaseCreatureGoldPerWeek": 400.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "mesoamerican_quetzalcoatl",
+    "resourceGift": {
+      "crystal": 1
+    },
+    "nominalBaseCreatureGoldPerWeek": 120.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "mesoamerican_huitzilopochtli",
+    "resourceGift": {
+      "gold": 300
+    },
+    "nominalBaseCreatureGoldPerWeek": 250.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "mesoamerican_coatlicue",
+    "resourceGift": {
+      "stone": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 750.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "mesoamerican_mixcoatl",
+    "resourceGift": {
+      "wood": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 250.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "mesoamerican_xolotl",
+    "resourceGift": {
+      "gold": 400
+    },
+    "nominalBaseCreatureGoldPerWeek": 220.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "mesoamerican_tlaloc",
+    "resourceGift": {
+      "wood": 4
+    },
+    "nominalBaseCreatureGoldPerWeek": 350.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "mesoamerican_tezcatlipoca",
+    "resourceGift": {
+      "crystal": 1
+    },
+    "nominalBaseCreatureGoldPerWeek": 400.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "mesoamerican_xiuhtecuhtli",
+    "resourceGift": {
+      "stone": 3
+    },
+    "nominalBaseCreatureGoldPerWeek": 500.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "mesoamerican_chalchiuhtlicue",
+    "resourceGift": {
+      "wood": 4
+    },
+    "nominalBaseCreatureGoldPerWeek": 350.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  },
+  {
+    "godId": "mesoamerican_mictlantecuhtli",
+    "resourceGift": {
+      "crystal": 1
+    },
+    "nominalBaseCreatureGoldPerWeek": 400.0,
+    "interpretation": "Recruitment stock value only; NOT free gold or free troops. Service savings depend on usage."
+  }
+]

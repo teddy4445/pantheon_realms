@@ -1,0 +1,55 @@
+{
+  "version": "1.4.0",
+  "heroes": 77,
+  "creatures": 114,
+  "facts": [
+    "Water is currently impassable: terrainCost.water is null.",
+    "Catapult aim command and target UI already exist.",
+    "Current catapult shot occurs automatically at round start without a destructible on-board body.",
+    "Adventure hero already displays owner-colored square banner.",
+    "Scouting currently extends vision by 1/2/3 hexes.",
+    "Battle uses 15x11 odd-r cells; two-hex creature footprint is horizontal."
+  ],
+  "files": [
+    {
+      "path": "C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/siege.ts",
+      "sha256": "911a968c5989cc2ea171c665704ada703f9f31917921e1b3e74104e633d11af9"
+    },
+    {
+      "path": "C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/state/match.ts",
+      "sha256": "84d330b21001231e2b0e71b66a504fafa1ddd0714c041c95cd86c4df651cda02"
+    },
+    {
+      "path": "C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/resolvers/world.ts",
+      "sha256": "a391b2181e4791a456b187506e92cb61bd341fa1359c1a47fc89edbebb53a8fd"
+    },
+    {
+      "path": "C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/adventure.ts",
+      "sha256": "6f504a66a9b4987cd33ec75bbc21c8e0956a090fe690cbecac5527765f12b76a"
+    },
+    {
+      "path": "C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/core/hex.ts",
+      "sha256": "809b06c053ad4c5afed33a24738f281f320005a1035095a9990390f3d4a49659"
+    },
+    {
+      "path": "C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Battle.tsx",
+      "sha256": "bfe8fee03f9720b410c40130c41f468fc29f2ac5ab8a3c3674cecc2b3b430652"
+    },
+    {
+      "path": "C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/adventure.ts",
+      "sha256": "5d93c2f64a00866e902d6f713e25d7a309520762bb3a61ab4622306848bf7d6f"
+    },
+    {
+      "path": "C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/battle.ts",
+      "sha256": "4b49225c35d0775e063c2c84e648b553d5a442f04c78ca18043dd1694b725ac2"
+    },
+    {
+      "path": "C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/siegeLayout.ts",
+      "sha256": "4f76cc7876e58095fc1a8aa24e51cd2c5f647f3769251e4c7f32c70f4bea4e0f"
+    },
+    {
+      "path": "C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/assets/icons.tsx",
+      "sha256": "11adf3194e0f4035f290394f64a19faadee88b385bebde066da5e28527d1c193"
+    }
+  ]
+}

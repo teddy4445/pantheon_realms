@@ -309,7 +309,8 @@ export function quoteNeutralReaction(catalog: ContentCatalog, state: MatchState,
   const theirs = armyStrength(catalog, stacks);
   const ratio = theirs > 0 ? heroArmyStrength(catalog, state, hero) / theirs : Number.POSITIVE_INFINITY;
   if (ratio < NEUTRAL_FLEE_RATIO) return none('They are not afraid of your army', ratio, stacks, siteId, monsterHeroId);
-  const fits = placementPlan(hero.army, stacks).every((s) => s !== null);
+  // Sea creatures (`availability: 'sea_encounters'`) never join an army: they may only flee.
+  const fits = placementPlan(hero.army, stacks).every((s) => s !== null) && stacks.every((s) => catalog.families[catalog.creatures[s.creatureId]?.familyId ?? '']?.availability !== 'sea_encounters');
   const roll = neutralReactionRoll(state, hero.id, siteId ?? monsterHeroId ?? `${dest.q},${dest.r}`);
   let kind: 'join' | 'flee' | null;
   if (ratio >= NEUTRAL_JOIN_RATIO && fits) kind = roll < NEUTRAL_JOIN_CHANCE ? 'join' : roll < NEUTRAL_JOIN_CHANCE + (1 - NEUTRAL_JOIN_CHANCE) * NEUTRAL_FLEE_CHANCE ? 'flee' : null;

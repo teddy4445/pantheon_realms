@@ -10,6 +10,7 @@
  */
 import type { AssetId } from '../ids';
 import type { KeyColor, MapTemplateDefinition, Terrain } from './world';
+import type { NavalTraversalPolicy } from './navalPolicy';
 
 export const CUSTOM_MAP_FORMAT = 'pantheon-realms-map';
 export const CUSTOM_MAP_VERSION = 1;
@@ -44,7 +45,14 @@ export type CustomSiteKind =
   | 'neutral_dwelling'
   | 'sluice'
   | 'ferry'
-  | 'supply_depot';
+  | 'supply_depot'
+  // Added 2026-10-18 (sea-sites kit; optional, older documents never hold them): a capturable coastal
+  // lookout on land, floating salvage and a shipwreck on water.
+  | 'coastal_watchtower'
+  | 'sea_pickup'
+  | 'shipwreck'
+  // Added 2026-10-18 (sea creatures; optional): a neutral sea-monster stack on one water hex (`seaEncountersV1`).
+  | 'sea_monster';
 
 /** Ground a sluice channel switches between (never void). */
 export type CustomChannelTerrain = Exclude<Terrain, 'void'>;
@@ -134,7 +142,7 @@ export interface CustomSite {
   readonly quest?: CustomQuest;
   /** Quest huts and artifact caches: what the site gives; guarded sites: what beating the guard gives (default: Gold worth a quarter of the guard). */
   readonly reward?: CustomReward;
-  /** Watchtowers: sites within this many hexes are revealed (default 9). */
+  /** Watchtowers: sites within this many hexes are revealed (default 9). Coastal watchtowers: their owner's sight (default: the policy's, 6). */
   readonly radius?: number;
   /** Optional text shown in the site panel instead of the default description. */
   readonly text?: string;
@@ -145,6 +153,25 @@ export interface CustomSite {
   readonly closedTerrain?: CustomChannelTerrain;
   /** Sluices: open when the game starts (default closed). */
   readonly startsOpen?: boolean;
+  /** Floating salvage (sea-sites kit): what floats here (default gold) and how much (absent: drawn once when the map is compiled). */
+  readonly resource?: 'wood' | 'stone' | 'gold';
+  readonly amount?: number;
+  /** Shipwrecks: what lies aboard (absent: drawn once when the map is compiled, by the policy's weights). */
+  readonly outcome?: 'abandoned_cargo' | 'guarded_salvage' | 'rare_cache';
+  /** Shipwrecks: the picture (absent: drawn when compiled). Presentation only. */
+  readonly skin?: 'broken_mast' | 'split_hull';
+}
+
+/**
+ * An empty ship placed on a water tile (expedition kit, scenario feature `navalMovementV1`;
+ * optional, older documents never hold one). Neutral without `owner`, else the empire slot
+ * that owns it. Any hero may claim a neutral ship by embarking; an owned one serves its empire.
+ */
+export interface CustomShip {
+  readonly id: string;
+  readonly q: number;
+  readonly r: number;
+  readonly owner?: number;
 }
 
 export interface CustomPlayer {
@@ -169,6 +196,13 @@ export interface CustomMapDocument {
   readonly biome?: MapTemplateDefinition['biome'];
   readonly players: readonly CustomPlayer[];
   readonly sites: readonly CustomSite[];
+  /** Empty ships on water (absent = none; kept by every export and import, never dropped silently). */
+  readonly ships?: readonly CustomShip[];
+  /**
+   * Naval-only travel (naval random templates, 2026-10-17; optional): islands are reached by ship only and
+   * portals stay off. Kept by every export and import; a damaged rule or `portals: true` is refused.
+   */
+  readonly navalPolicy?: NavalTraversalPolicy;
   readonly victory: CustomVictory;
   readonly startWealth?: 'low' | 'normal' | 'high';
   readonly revealMap?: boolean;

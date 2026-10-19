@@ -1,0 +1,1177 @@
+{
+ "schema": "pantheon-realms-expedition-1",
+ "notice": "Written by tools/assets/import_expedition.py from the expedition, naval & siege kit of 2026-10-17 (sources: assets-source/expedition-v1). Relative paths only (expedition-v1/...); merged by packages/ui/src/assets/manifest.ts (asset IDs `expedition.*`, sprite manifest `mapTokens`). Native pixels: never resized, alpha kept. The kit's reused IDs (reuse-manifest.json) keep their existing registrations and are not listed here.",
+ "assets": {
+  "expedition.ship-e": {
+   "file": "expedition-v1/ship-e.png",
+   "kind": "map-token",
+   "width": 1254,
+   "height": 1254,
+   "bytes": 1512871,
+   "sha256": "53fe88ee37295b9197f49051ee0070edaa84f231644993830e38c0ec6a367f2e",
+   "alphaRange": [
+    0,
+    255
+   ],
+   "visibleBoundsPixels": [
+    30,
+    95,
+    1240,
+    1061
+   ],
+   "visibleBounds": [
+    0.02392,
+    0.07576,
+    0.98884,
+    0.84609
+   ],
+   "status": "final",
+   "provenance": "Expedition, naval & siege kit 2026-10-17: Native generated art, visually reviewed; no upscaling or code retouching. Copied byte for byte by tools/assets/import_expedition.py.",
+   "groundAnchor": [
+    0.5,
+    0.84609
+   ],
+   "display": "Map token, visible bounds scaled to approximately1.2hex widths; do not use canvaswidth as hullwidth."
+  },
+  "expedition.ship-ne": {
+   "file": "expedition-v1/ship-ne.png",
+   "kind": "map-token",
+   "width": 1254,
+   "height": 1254,
+   "bytes": 1491912,
+   "sha256": "300acbc0b19d30630e5e371c259904a88f8761a4988dce207f8e2679b6d40331",
+   "alphaRange": [
+    0,
+    255
+   ],
+   "visibleBoundsPixels": [
+    96,
+    91,
+    1217,
+    1145
+   ],
+   "visibleBounds": [
+    0.07656,
+    0.07257,
+    0.97049,
+    0.91308
+   ],
+   "status": "final",
+   "provenance": "Expedition, naval & siege kit 2026-10-17: Native generated art, visually reviewed; no upscaling or code retouching. Copied byte for byte by tools/assets/import_expedition.py.",
+   "groundAnchor": [
+    0.5,
+    0.91308
+   ],
+   "display": "Map token, visible bounds scaled to approximately1.2hex widths; do not use canvaswidth as hullwidth."
+  },
+  "expedition.ship-se": {
+   "file": "expedition-v1/ship-se.png",
+   "kind": "map-token",
+   "width": 1254,
+   "height": 1254,
+   "bytes": 1605749,
+   "sha256": "e861d7971795345982c992445beefe68664c5233320e191c925128fc90aa5040",
+   "alphaRange": [
+    0,
+    255
+   ],
+   "visibleBoundsPixels": [
+    105,
+    90,
+    1231,
+    1173
+   ],
+   "visibleBounds": [
+    0.08373,
+    0.07177,
+    0.98166,
+    0.93541
+   ],
+   "status": "final",
+   "provenance": "Expedition, naval & siege kit 2026-10-17: Native generated art, visually reviewed; no upscaling or code retouching. Copied byte for byte by tools/assets/import_expedition.py.",
+   "groundAnchor": [
+    0.5,
+    0.93541
+   ],
+   "display": "Map token, visible bounds scaled to approximately1.2hex widths; do not use canvaswidth as hullwidth."
+  },
+  "expedition.wagon-e": {
+   "file": "expedition-v1/wagon-e.png",
+   "kind": "map-token",
+   "width": 1254,
+   "height": 1254,
+   "bytes": 1249412,
+   "sha256": "c417378d563d21fdfcda05fdde211d8947fe7d46ec04dd74c15a5f277a97382b",
+   "alphaRange": [
+    0,
+    255
+   ],
+   "visibleBoundsPixels": [
+    30,
+    159,
+    1233,
+    1023
+   ],
+   "visibleBounds": [
+    0.02392,
+    0.12679,
+    0.98325,
+    0.81579
+   ],
+   "status": "final",
+   "provenance": "Expedition, naval & siege kit 2026-10-17: Native generated art, visually reviewed; no upscaling or code retouching. Copied byte for byte by tools/assets/import_expedition.py.",
+   "groundAnchor": [
+    0.5,
+    0.81579
+   ],
+   "display": "Map token, visible bounds scaled to approximately1.2hex widths; do not use canvaswidth as hullwidth."
+  },
+  "expedition.wagon-ne": {
+   "file": "expedition-v1/wagon-ne.png",
+   "kind": "map-token",
+   "width": 1254,
+   "height": 1254,
+   "bytes": 1316250,
+   "sha256": "324eea44d2fad13836ac7f937ac7685ba348f9af1181c2470f35573f908e8dcd",
+   "alphaRange": [
+    0,
+    255
+   ],
+   "visibleBoundsPixels": [
+    53,
+    111,
+    1242,
+    1158
+   ],
+   "visibleBounds": [
+    0.04226,
+    0.08852,
+    0.99043,
+    0.92344
+   ],
+   "status": "final",
+   "provenance": "Expedition, naval & siege kit 2026-10-17: Native generated art, visually reviewed; no upscaling or code retouching. Copied byte for byte by tools/assets/import_expedition.py.",
+   "groundAnchor": [
+    0.5,
+    0.92344
+   ],
+   "display": "Map token, visible bounds scaled to approximately1.2hex widths; do not use canvaswidth as hullwidth."
+  },
+  "expedition.wagon-se": {
+   "file": "expedition-v1/wagon-se.png",
+   "kind": "map-token",
+   "width": 1254,
+   "height": 1254,
+   "bytes": 1368948,
+   "sha256": "6bd3befd34f1dcc4c4500a68a0b9c28b38c4fff4c683d4959860f5d10a01bd64",
+   "alphaRange": [
+    0,
+    255
+   ],
+   "visibleBoundsPixels": [
+    50,
+    44,
+    1219,
+    1219
+   ],
+   "visibleBounds": [
+    0.03987,
+    0.03509,
+    0.97209,
+    0.97209
+   ],
+   "status": "final",
+   "provenance": "Expedition, naval & siege kit 2026-10-17: Native generated art, visually reviewed; no upscaling or code retouching. Copied byte for byte by tools/assets/import_expedition.py.",
+   "groundAnchor": [
+    0.5,
+    0.97209
+   ],
+   "display": "Map token, visible bounds scaled to approximately1.2hex widths; do not use canvaswidth as hullwidth."
+  },
+  "expedition.boarding-battle": {
+   "file": "expedition-v1/boarding-battle.png",
+   "kind": "battlefield",
+   "width": 1672,
+   "height": 941,
+   "bytes": 2442102,
+   "sha256": "8ea73af26e223cf78fc0e98280f802a79d187565c4f535787a9c41b51aeffdcb",
+   "alphaRange": [
+    255,
+    255
+   ],
+   "visibleBoundsPixels": [
+    0,
+    0,
+    1672,
+    941
+   ],
+   "visibleBounds": [
+    0.0,
+    0.0,
+    1.0,
+    1.0
+   ],
+   "status": "final",
+   "provenance": "Expedition, naval & siege kit 2026-10-17: Native generated art, visually reviewed; no upscaling or code retouching. Copied byte for byte by tools/assets/import_expedition.py.",
+   "display": "Two-ship boarding battlefield, native 1672 x 941 (below full HD: never upscaled, documented as is). Keep the aspect ratio (no crop or cover) so the board projection of design/boarding-layout.json stays valid; flags and HUD are overlays."
+  },
+  "expedition.scout-unknown": {
+   "file": "expedition-v1/scout-unknown.png",
+   "kind": "illustration",
+   "width": 1254,
+   "height": 1254,
+   "bytes": 1918626,
+   "sha256": "a47322c96746b407ce4eacb10a29be0a2f72566a022df778a8196de85b7ad66c",
+   "alphaRange": [
+    0,
+    255
+   ],
+   "visibleBoundsPixels": [
+    43,
+    15,
+    1220,
+    1244
+   ],
+   "visibleBounds": [
+    0.03429,
+    0.01196,
+    0.97289,
+    0.99203
+   ],
+   "status": "final",
+   "provenance": "Expedition, naval & siege kit 2026-10-17: Native generated art, visually reviewed; no upscaling or code retouching. Copied byte for byte by tools/assets/import_expedition.py.",
+   "display": "Generic unknown-army vignette: an anonymous illustrative mass, never a picture of the actual hidden stacks."
+  },
+  "expedition.caravan-dispatch-art": {
+   "file": "expedition-v1/caravan-dispatch-art.png",
+   "kind": "illustration",
+   "width": 2172,
+   "height": 724,
+   "bytes": 3010099,
+   "sha256": "88b169b3e1d153f7ce5c5b7e2afeb022bcce51867fa07b322cbc91c8da53f3e0",
+   "alphaRange": [
+    255,
+    255
+   ],
+   "visibleBoundsPixels": [
+    0,
+    0,
+    2172,
+    724
+   ],
+   "visibleBounds": [
+    0.0,
+    0.0,
+    1.0,
+    1.0
+   ],
+   "status": "final",
+   "provenance": "Expedition, naval & siege kit 2026-10-17: Native generated art, visually reviewed; no upscaling or code retouching. Copied byte for byte by tools/assets/import_expedition.py.",
+   "display": "Text-free caravan dispatch illustration (service header); every label, price and count stays live text."
+  },
+  "expedition.caravan-arrival-art": {
+   "file": "expedition-v1/caravan-arrival-art.png",
+   "kind": "illustration",
+   "width": 1774,
+   "height": 887,
+   "bytes": 3092639,
+   "sha256": "c172cbddc45d8a0be54991eb9c143106476eac7302595033fc6745ab546a14dd",
+   "alphaRange": [
+    255,
+    255
+   ],
+   "visibleBoundsPixels": [
+    0,
+    0,
+    1774,
+    887
+   ],
+   "visibleBounds": [
+    0.0,
+    0.0,
+    1.0,
+    1.0
+   ],
+   "status": "final",
+   "provenance": "Expedition, naval & siege kit 2026-10-17: Native generated art, visually reviewed; no upscaling or code retouching. Copied byte for byte by tools/assets/import_expedition.py.",
+   "display": "Text-free caravan arrival illustration (notification); every label and count stays live text."
+  },
+  "expedition.catapult-damaged": {
+   "file": "expedition-v1/catapult-damaged.png",
+   "kind": "siege-variant",
+   "width": 1254,
+   "height": 1254,
+   "bytes": 873144,
+   "sha256": "9ced941327c9dec741078459864baa686fbe22d6783fab20a06ba3ded0ac54a2",
+   "alphaRange": [
+    0,
+    255
+   ],
+   "visibleBoundsPixels": [
+    125,
+    541,
+    1175,
+    1132
+   ],
+   "visibleBounds": [
+    0.09968,
+    0.43142,
+    0.937,
+    0.90271
+   ],
+   "status": "final",
+   "provenance": "Expedition, naval & siege kit 2026-10-17: Native generated art, visually reviewed; no upscaling or code retouching. Copied byte for byte by tools/assets/import_expedition.py.",
+   "groundAnchor": [
+    0.5,
+    0.90271
+   ],
+   "groundAnchorDerived": true,
+   "display": "Damaged stage of siege.catapult.intact (engine HP 1-60). Faces left like the intact engine; normalize by visible bounds (the transparent margins differ). Mapped by the siege renderer."
+  },
+  "expedition.catapult-destroyed": {
+   "file": "expedition-v1/catapult-destroyed.png",
+   "kind": "siege-variant",
+   "width": 1254,
+   "height": 1254,
+   "bytes": 764389,
+   "sha256": "10d1392cb7230bf05544f5ec0ab69cded97d993ad7aedf2657a3f32547bdaff9",
+   "alphaRange": [
+    0,
+    255
+   ],
+   "visibleBoundsPixels": [
+    162,
+    653,
+    1124,
+    1185
+   ],
+   "visibleBounds": [
+    0.12919,
+    0.52073,
+    0.89633,
+    0.94498
+   ],
+   "status": "final",
+   "provenance": "Expedition, naval & siege kit 2026-10-17: Native generated art, visually reviewed; no upscaling or code retouching. Copied byte for byte by tools/assets/import_expedition.py.",
+   "groundAnchor": [
+    0.5,
+    0.94498
+   ],
+   "groundAnchorDerived": true,
+   "display": "Destroyed stage of siege.catapult.intact (engine HP 0): non-blocking wreck. Faces left; normalize by visible bounds. Mapped by the siege renderer."
+  },
+  "expedition.ship-wreck": {
+   "file": "expedition-v1/ship-wreck.png",
+   "kind": "map-token",
+   "width": 1254,
+   "height": 1254,
+   "bytes": 1658443,
+   "sha256": "e31e2beafd0c0db28cf3adea9562cc0be3940f56149c03f1ff87f845f87615e6",
+   "alphaRange": [
+    0,
+    255
+   ],
+   "visibleBoundsPixels": [
+    35,
+    178,
+    1226,
+    1070
+   ],
+   "visibleBounds": [
+    0.02791,
+    0.14195,
+    0.97767,
+    0.85327
+   ],
+   "status": "final",
+   "provenance": "Expedition, naval & siege kit 2026-10-17: Native generated art, visually reviewed; no upscaling or code retouching. Copied byte for byte by tools/assets/import_expedition.py.",
+   "groundAnchor": [
+    0.5,
+    0.85327
+   ],
+   "groundAnchorDerived": true,
+   "display": "Transient defeat/sinking aftermath of the neutral hull: shown after a confirmed defeat (sinking playback), then removed; never a persistent map object. Scale by visible bounds like the ship."
+  },
+  "expedition.overlay.flag-template": {
+   "file": "expedition-v1/flag-template.svg",
+   "kind": "overlay",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    76,
+    50
+   ],
+   "width": 76,
+   "height": 50,
+   "sha256": "4fbb862a1dd311afb808ddd9097c2c8248f7649f894db48dc5a0a8065b2a72a7",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 vector overlay (flag shape, wake, destination ring); presentation only."
+  },
+  "expedition.overlay.wake": {
+   "file": "expedition-v1/wake.svg",
+   "kind": "overlay",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    180,
+    80
+   ],
+   "width": 180,
+   "height": 80,
+   "sha256": "39bfcead24ac9bb266b28f69223b56e207944c7c9b8048feb5527c59020b306d",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 vector overlay (flag shape, wake, destination ring); presentation only."
+  },
+  "expedition.overlay.destination-ring": {
+   "file": "expedition-v1/destination-ring.svg",
+   "kind": "overlay",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    76,
+    50
+   ],
+   "width": 76,
+   "height": 50,
+   "sha256": "ba7c09887423b3becbdccc3e2c3da1c630e2c1d256fc7d3a40c13a4fb44151bb",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 vector overlay (flag shape, wake, destination ring); presentation only."
+  },
+  "expedition.icon.inspect": {
+   "file": "expedition-v1/icons/icon-inspect.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "inspect",
+   "sha256": "86ed16cacf14d4128e2085fd53c1f32a8594c1c6ce95ed4afd72eb652e564ba9",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.pin": {
+   "file": "expedition-v1/icons/icon-pin.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "pin",
+   "sha256": "c1c45f18319388a47085728057ded5d6637b120c03db92c8f60fc0df5d087ae0",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.source": {
+   "file": "expedition-v1/icons/icon-source.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "source",
+   "sha256": "dae56f3c9d8d0be71f03d763e765f93fad57a8c63a07e81372e444aeebe012b7",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.remaining": {
+   "file": "expedition-v1/icons/icon-remaining.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "remaining",
+   "sha256": "82d272fa748b9c87000480aaea76380b4069cb8b551468a15d86c42cdea5fc3c",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.sighting": {
+   "file": "expedition-v1/icons/icon-sighting.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "sighting",
+   "sha256": "66f1ef88948f1d4a413ea9cb36922922145517b1a4a2fdf2313add15940874e6",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.identified": {
+   "file": "expedition-v1/icons/icon-identified.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "identified",
+   "sha256": "a0f1d0b3617449c955c88b0f896e5c3e665044ef2db570476dcee3d164a4a7f9",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.scouted": {
+   "file": "expedition-v1/icons/icon-scouted.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "scouted",
+   "sha256": "bd98bc6138d4112ea3a70c7d5525d8932f9f3f390e5f5f2ebef2dbe9fefa7499",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.stale-report": {
+   "file": "expedition-v1/icons/icon-stale-report.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "staleReport",
+   "sha256": "46bff855c0cfe28cd1740dec763522e84581e8bd7ab2e030b8e82df7e38a3cb2",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.caravan": {
+   "file": "expedition-v1/icons/icon-caravan.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "caravan",
+   "sha256": "5cd86e92d7e6befb666a2c78df503c845fa436dc56bb7d9c93098c51538f6255",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.dispatch": {
+   "file": "expedition-v1/icons/icon-dispatch.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "dispatch",
+   "sha256": "3882c203eeaf97c919bddbb3c80b1169bc78485474255614e12e2d32988aa93a",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.arrival": {
+   "file": "expedition-v1/icons/icon-arrival.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "arrival",
+   "sha256": "7ef988141ef3450befa8cba5a540027b869e677d7b34328b3c010cdafcd9d697",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.cargo": {
+   "file": "expedition-v1/icons/icon-cargo.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "cargo",
+   "sha256": "586ba460577cf10546fa3cf398d2ed3cb374f61c5c86c3630063bb09b56a9bcc",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.route": {
+   "file": "expedition-v1/icons/icon-route.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "route",
+   "sha256": "3d4528dcd19218ddaffc5c36cd740f2bf4a0cc7f30394d077ffb2eeb5d504a1e",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.blocked": {
+   "file": "expedition-v1/icons/icon-blocked.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "blocked",
+   "sha256": "6c41815153dce0618f90538aff8b1d9cda3f59ea174c3f3eed7d60d380c4e4ff",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.intercept": {
+   "file": "expedition-v1/icons/icon-intercept.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "intercept",
+   "sha256": "2729fc2acfb90dc76a2d58aef556fa69b2b7c7c766003bddd5b0b59058cc95ab",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.garrison": {
+   "file": "expedition-v1/icons/icon-garrison.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "garrison",
+   "sha256": "36f3914ad27fa9628e27c5bd5deb4d95e4a283bd79627bde8c44481fa45813a3",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.ship": {
+   "file": "expedition-v1/icons/icon-ship.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "ship",
+   "sha256": "31140b67ebaf3e5515b197fe1e41044c06a7ac6f24a964082a4614d35bbc1950",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.embark": {
+   "file": "expedition-v1/icons/icon-embark.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "embark",
+   "sha256": "3c5f0b57ff863da62782374800b443ac11577aea6ae768f76670172165429064",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.disembark": {
+   "file": "expedition-v1/icons/icon-disembark.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "disembark",
+   "sha256": "61081f1462c0fa4e350ed680baae9082e366b5b7fa73535c54d1c982ece8409c",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.boarding": {
+   "file": "expedition-v1/icons/icon-boarding.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "boarding",
+   "sha256": "3ca21ebe5d9ddc520c198b3d0548db9837f5d5a1b414e92436de1f8656ebe661",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.anchor": {
+   "file": "expedition-v1/icons/icon-anchor.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "anchor",
+   "sha256": "963962b1fda7fa382067bca168c860bee1b9ada294cc59ba0da650591a9d5553",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.catapult": {
+   "file": "expedition-v1/icons/icon-catapult.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "catapult",
+   "sha256": "ed25547e51d079c3c6836aaf5d9715f2583de3f1b5b30801b052ac2958819b5a",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.aim": {
+   "file": "expedition-v1/icons/icon-aim.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "aim",
+   "sha256": "d3bbf305127be1bddc7b890cbb2721bc41c775fa1e3663eed79c7673e87b8cf9",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.fire": {
+   "file": "expedition-v1/icons/icon-fire.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "fire",
+   "sha256": "db946af9cde7683cd37e297981a3ad7046ed76b4b39e58e7490ad78a7c81895e",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.skip": {
+   "file": "expedition-v1/icons/icon-skip.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "skip",
+   "sha256": "c871c5b61353eb2a7a6e7c2e78f5e46ed8c0a89147693ec8d3d848c8bf0727e3",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.wreck": {
+   "file": "expedition-v1/icons/icon-wreck.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "wreck",
+   "sha256": "8d8233791cdbc6ea3b9e8af249d7464c4056e0aa738998aaeea4afbc207295ad",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.flag": {
+   "file": "expedition-v1/icons/icon-flag.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "ownerFlag",
+   "sha256": "18ec8fc96ad3750bbe1f12ec68bee5c1a2a91c1def168f325bc71a6718c6cfd6",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  },
+  "expedition.icon.water": {
+   "file": "expedition-v1/icons/icon-water.svg",
+   "kind": "icon",
+   "format": "svg",
+   "viewBox": [
+    0,
+    0,
+    24,
+    24
+   ],
+   "width": 24,
+   "height": 24,
+   "iconName": "water",
+   "sha256": "2e6081f613810ee0ef79ac57d2fe25761634e2ced43946df9385ffe59fe65398",
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17 control; its path is drawn by the interface Icon component under `iconName` (currentColor)."
+  }
+ },
+ "mapTokens": {
+  "ship": {
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17: one neutral hull painted in three facings (E, NE, SE); W, NW, SW mirror them (design/animation-contract.json). Never rotate the flat picture to steer.",
+   "displayHexWidths": 1.2,
+   "facings": {
+    "e": {
+     "assetId": "expedition.ship-e",
+     "file": "expedition-v1/ship-e.png",
+     "width": 1254,
+     "height": 1254,
+     "visibleBounds": [
+      0.02392,
+      0.07576,
+      0.98884,
+      0.84609
+     ],
+     "groundAnchor": [
+      0.5,
+      0.84609
+     ]
+    },
+    "ne": {
+     "assetId": "expedition.ship-ne",
+     "file": "expedition-v1/ship-ne.png",
+     "width": 1254,
+     "height": 1254,
+     "visibleBounds": [
+      0.07656,
+      0.07257,
+      0.97049,
+      0.91308
+     ],
+     "groundAnchor": [
+      0.5,
+      0.91308
+     ]
+    },
+    "se": {
+     "assetId": "expedition.ship-se",
+     "file": "expedition-v1/ship-se.png",
+     "width": 1254,
+     "height": 1254,
+     "visibleBounds": [
+      0.08373,
+      0.07177,
+      0.98166,
+      0.93541
+     ],
+     "groundAnchor": [
+      0.5,
+      0.93541
+     ]
+    }
+   },
+   "directions": {
+    "e": {
+     "facing": "e",
+     "flipX": false
+    },
+    "ne": {
+     "facing": "ne",
+     "flipX": false
+    },
+    "se": {
+     "facing": "se",
+     "flipX": false
+    },
+    "w": {
+     "facing": "e",
+     "flipX": true
+    },
+    "nw": {
+     "facing": "ne",
+     "flipX": true
+    },
+    "sw": {
+     "facing": "se",
+     "flipX": true
+    }
+   },
+   "flag": {
+    "mount": [
+     0.52,
+     0.08
+    ],
+    "ownerColor": "state.players[hero.ownerId].color",
+    "mirror": "Mirror only ship art; transform flag anchor x→1−x and never mirror text or portrait",
+    "emptyShip": "No hero flag, owner/neutral marker only",
+    "shapeAssetId": "expedition.overlay.flag-template"
+   },
+   "wakeAssetId": "expedition.overlay.wake",
+   "wreck": "ship-wreck",
+   "motion": {
+    "idle": {
+     "durationMs": 3200,
+     "loop": true,
+     "bobPx": 1.4,
+     "rollDeg": 0.65
+    },
+    "sailing": {
+     "durationMs": 1800,
+     "loop": true,
+     "bobPx": 2,
+     "rollDeg": 1,
+     "wakeOpacity": 0.55,
+     "path": "Interpolate committed map waypoints separately"
+    },
+    "embark": {
+     "durationMs": 650,
+     "loop": false,
+     "event": "Commit rule command first; crossfade rider avatar to vessel"
+    },
+    "disembark": {
+     "durationMs": 650,
+     "loop": false,
+     "event": "Commit legal coast landing first; crossfade vessel to rider"
+    },
+    "boarding": {
+     "durationMs": 2600,
+     "loop": true,
+     "event": "Hold vessels stationary during tactical scene transition"
+    },
+    "hit": {
+     "durationMs": 420,
+     "loop": false,
+     "event": "Presentation cue only; no new persistent hull HP implied"
+    },
+    "sinking": {
+     "durationMs": 1800,
+     "loop": false,
+     "event": "After confirmed defeat; fade old hull to wreck then remove; do not delay logical defeat"
+    }
+   },
+   "reducedMotion": "Disable bob, roll, wake and shaking; preserve state changes and readable ownership"
+  },
+  "wagon": {
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17: the shared caravan wagon painted in three facings (E, NE, SE); W, NW, SW mirror them. A map token with a path tween and a restrained cart bob; no horse gait strip.",
+   "displayHexWidths": 1.2,
+   "facings": {
+    "e": {
+     "assetId": "expedition.wagon-e",
+     "file": "expedition-v1/wagon-e.png",
+     "width": 1254,
+     "height": 1254,
+     "visibleBounds": [
+      0.02392,
+      0.12679,
+      0.98325,
+      0.81579
+     ],
+     "groundAnchor": [
+      0.5,
+      0.81579
+     ]
+    },
+    "ne": {
+     "assetId": "expedition.wagon-ne",
+     "file": "expedition-v1/wagon-ne.png",
+     "width": 1254,
+     "height": 1254,
+     "visibleBounds": [
+      0.04226,
+      0.08852,
+      0.99043,
+      0.92344
+     ],
+     "groundAnchor": [
+      0.5,
+      0.92344
+     ]
+    },
+    "se": {
+     "assetId": "expedition.wagon-se",
+     "file": "expedition-v1/wagon-se.png",
+     "width": 1254,
+     "height": 1254,
+     "visibleBounds": [
+      0.03987,
+      0.03509,
+      0.97209,
+      0.97209
+     ],
+     "groundAnchor": [
+      0.5,
+      0.97209
+     ]
+    }
+   },
+   "directions": {
+    "e": {
+     "facing": "e",
+     "flipX": false
+    },
+    "ne": {
+     "facing": "ne",
+     "flipX": false
+    },
+    "se": {
+     "facing": "se",
+     "flipX": false
+    },
+    "w": {
+     "facing": "e",
+     "flipX": true
+    },
+    "nw": {
+     "facing": "ne",
+     "flipX": true
+    },
+    "sw": {
+     "facing": "se",
+     "flipX": true
+    }
+   },
+   "motion": {
+    "states": [
+     "idle",
+     "travelling",
+     "arriving"
+    ],
+    "travelBobPx": 0.6,
+    "method": "Directional painted token with gentle cart bob and position tween; no anatomical horse gait frames"
+   },
+   "reducedMotion": "Disable bob, roll, wake and shaking; preserve state changes and readable ownership"
+  },
+  "ship-wreck": {
+   "status": "final",
+   "provenance": "Expedition kit 2026-10-17: the sinking aftermath of the neutral hull (one still, mirrored with the ship it replaces).",
+   "displayHexWidths": 1.2,
+   "still": {
+    "assetId": "expedition.ship-wreck",
+    "file": "expedition-v1/ship-wreck.png",
+    "width": 1254,
+    "height": 1254,
+    "visibleBounds": [
+     0.02791,
+     0.14195,
+     0.97767,
+     0.85327
+    ],
+    "groundAnchor": [
+     0.5,
+     0.85327
+    ]
+   },
+   "motion": {
+    "sinking": {
+     "durationMs": 1800,
+     "loop": false,
+     "event": "After confirmed defeat; fade old hull to wreck then remove; do not delay logical defeat"
+    }
+   },
+   "reducedMotion": "Disable bob, roll, wake and shaking; preserve state changes and readable ownership"
+  }
+ }
+}

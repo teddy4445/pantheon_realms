@@ -82,7 +82,7 @@ describe('big-moment runtime files', () => {
 describe('big-moment wiring', () => {
   const d = GameDriver.mission('skirmish_twin_harbors', { matchId: 'moments-test' });
   it('every divine intervention has its painted card (not its 96 px icon)', () => {
-    const ids = Object.keys(d.catalog.interventions ?? {});
+    const ids = Object.values(d.catalog.interventions ?? {}).filter((d) => d.scope !== 'mythic_library_v2').map((d) => d.id);
     expect(ids).toHaveLength(14);
     for (const id of ids) {
       expect(miracleCardArt(id)?.kind, id).toBe('miracle');

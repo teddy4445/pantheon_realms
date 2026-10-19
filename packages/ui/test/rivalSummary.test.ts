@@ -20,6 +20,18 @@ function setup() {
 }
 
 describe('rival turn summary', () => {
+  it('reports visible naval actions but never hidden routes or destinations', () => {
+    const { d, s, inView, hidden } = setup();
+    const events = [
+      ev({ kind: 'ShipLaunched', shipId: 'visible', townId: 'eastharbor', playerId: 'rival', coord: inView.coord }, 0),
+      ev({ kind: 'ShipLaunched', shipId: 'hidden', townId: 'eastharbor', playerId: 'rival', coord: hidden.coord }, 1),
+      ev({ kind: 'ShipMoved', shipId: 'passing', heroId: 'rival_odysseus', path: [hidden.coord, inView.coord], facing: 0 }, 2),
+      ev({ kind: 'ShipMoved', shipId: 'unseen', heroId: 'rival_odysseus', path: [hidden.coord], facing: 0 }, 3),
+    ];
+    const notes = rivalNotes(d.catalog, s, s, events, 'player');
+    expect(notes.map((n) => n.key)).toEqual(['launch:visible', 'naval:passing:ShipMoved']);
+    expect(JSON.stringify(notes)).not.toContain(JSON.stringify(hidden.coord));
+  });
   it('reports a capture in view or of the viewer’s own mine, not one out of sight', () => {
     const { d, s, inView, hidden } = setup();
     const before: MatchState = structuredClone(s);

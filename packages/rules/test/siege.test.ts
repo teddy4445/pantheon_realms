@@ -56,12 +56,18 @@ interface SiegeOpts {
   garrison?: Army;
   attacker?: Army;
   visitor?: Army | null;
+  /**
+   * The legacy automatic round-start Catapult (older saves and The Three Beacons: the scenario
+   * feature `targetableCatapultV1` off). Default: the scenario's own setting (on in skirmishes).
+   */
+  legacyCatapult?: boolean;
 }
 
 /** The human (Alexios) besieges the rival's Eastharbor. */
 function besiegeEast(opts: SiegeOpts = {}): GameDriver {
   const d = GameDriver.mission(SKIRMISH);
   const s = d.state;
+  if (opts.legacyCatapult) s.scenario.features = { ...s.scenario.features!, targetableCatapultV1: false };
   for (const fog of Object.values(s.fog)) fog.explored = fog.explored.map(() => 1);
   const east = s.towns['eastharbor']!;
   east.buildings['fortifications'] = opts.level ?? 1;
@@ -84,7 +90,7 @@ function setActive(d: GameDriver, id: string): void {
 
 describe('town sieges (design/04 §8)', () => {
   it('a garrisoned enemy town is an encounter and starts a Fort siege; the Catapult fires at round start', () => {
-    const d = besiegeEast({ level: 1 });
+    const d = besiegeEast({ level: 1, legacyCatapult: true });
     const b = d.state.battle!;
     expect(b.encounter.kind).toBe('town_siege');
     expect(b.encounter.label).toBe('Siege of Eastharbor');
@@ -348,7 +354,7 @@ describe('Divine Sight (adventure spell)', () => {
 
 describe('finished siege rules (2026-10-07)', () => {
   it('the attacker aims the Catapult on its own turn; the next round start hits that structure', () => {
-    const d = besiegeEast({ level: 3 });
+    const d = besiegeEast({ level: 3, legacyCatapult: true });
     const cfg = d.catalog.rulesProfile.combat.siege;
     // Round 1 (before anyone could aim): the default target, the gate.
     expect(d.state.battle!.siege!.structures.find((s) => s.id === 'gate')!.hp).toBe(cfg.gateHp - cfg.catapultDamage);

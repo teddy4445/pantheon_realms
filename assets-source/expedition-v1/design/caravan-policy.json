@@ -1,0 +1,43 @@
+{
+  "feature": "recruitmentCaravansV1",
+  "transportFee": {
+    "gold": 150
+  },
+  "dailyMovement": 600,
+  "roadCost": "Existing road cost75",
+  "visionRadius": 1,
+  "maxDistinctStacks": 7,
+  "mode": "land_only",
+  "source": "Owned town with normal unlocked recruitment stock",
+  "destination": "Owned town connected by traversable explored land",
+  "charge": "Normal existing per-unit quote including approved local discounts, plus once-per-shipment flat fee; consume shared family pool once at dispatch.",
+  "firstMovement": "Next start of owning player turn, not immediately on dispatch",
+  "movementOrder": "Stable caravan ID, one move budget each owner turn; serialize interruption.",
+  "states": [
+    "queued",
+    "travelling",
+    "blocked",
+    "intercepted",
+    "awaiting_garrison",
+    "delivered",
+    "destroyed"
+  ],
+  "settlement": "Merge same creature IDs; deposit whole shipment atomically if it fits, else hold without loss.",
+  "interception": "Enemy hero moves to attack caravan; cargo fights as hero-less defender army in existing terrain battle. Player defends manually in campaign.",
+  "saveFields": [
+    "id",
+    "ownerId",
+    "sourceTownId",
+    "destinationTownId",
+    "coord",
+    "route",
+    "cargo",
+    "status",
+    "lastMovedTurn",
+    "deliveryApplied",
+    "pendingBattleId"
+  ],
+  "lostDestination": "Hold on safe current tile, notify and permit reroute to another owned reachable town without charging recruits again.",
+  "sharedTile": "Friendly heroes and caravans may share world tile; expose actor picker. Battles lock actors; enemy cannot walk through a caravan without resolving encounter.",
+  "schedule": "No movement during someone else’s decision. Dawn interruptions persist a continuation cursor."
+}

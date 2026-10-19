@@ -1,0 +1,1842 @@
+{
+  "newRasterImagesRequired": 0,
+  "reason": "All god, creature, resource, temple and service visuals exist. New UI is composed from these assets and live controls.",
+  "assets": [
+    {
+      "assetId": "god.greek.zeus.portrait",
+      "runtimeFile": "ui/icons/final/god.greek.zeus.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.zeus.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.greek.zeus.portrait.webp",
+      "sha256": "668445f118069d943f7b56797690e94df1a7f6905cb6f7b9e26b0e07315a1911",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.greek.tier7.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.greek.tier7.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier7.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.greek.tier7.base.portrait.webp",
+      "sha256": "74f994ba17c61ef3862fd0d55120a688ec088e0893abca29151a6eb0f0e6ef54",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.greek.tier7.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.greek.tier7.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier7.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.greek.tier7.upgraded.portrait.webp",
+      "sha256": "cc40057e647e22014c3a089ac5592538963e7e627687435321a6d9ac1480db54",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "icon.res.crystal",
+      "runtimeFile": "ui/icons/final/icon.res.crystal.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.res.crystal.png",
+      "deliveryFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "sha256": "862d6b380d333a195cb84c9b8f036598b0790ee86a330992089e5043933f7ed3",
+      "purpose": "Weekly gift resource",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.greek.athena.portrait",
+      "runtimeFile": "ui/icons/final/god.greek.athena.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.athena.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.greek.athena.portrait.webp",
+      "sha256": "1ba0f6772ec04807a2b01a311c4290b8755f2d799a7b8ec96987996fa71f27ed",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.greek.tier1.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.greek.tier1.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier1.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.greek.tier1.base.portrait.webp",
+      "sha256": "c14074e773909813ff01f6284ba771db9d1a4f4a05833dec1fe1835b36c6e3a6",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.greek.tier1.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.greek.tier1.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier1.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.greek.tier1.upgraded.portrait.webp",
+      "sha256": "7e4abe349f34454e19d3918f0f6ece3e490988fb59a989cef09d894ad6bb88fc",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "icon.res.stone",
+      "runtimeFile": "ui/icons/final/icon.res.stone.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.res.stone.png",
+      "deliveryFile": "reuse/ui/icons/final/icon.res.stone.png",
+      "sha256": "3f61e4a2bb8c34458569c3f0674a86625ff40d8c9d22d8e9e1e74cd75c10174a",
+      "purpose": "Weekly gift resource",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.greek.ares.portrait",
+      "runtimeFile": "ui/icons/final/god.greek.ares.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.ares.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.greek.ares.portrait.webp",
+      "sha256": "6510bc637a991f9ad68a3329c4e04a9c1806148e80f5ee56422d11b640e3516b",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.greek.tier2.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.greek.tier2.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier2.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.greek.tier2.base.portrait.webp",
+      "sha256": "b79724541e0b18c65accc263cdad07a93c3429aa83162b5b165051cd8d1b39ea",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.greek.tier2.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.greek.tier2.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier2.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.greek.tier2.upgraded.portrait.webp",
+      "sha256": "cad0437db507ea5993a61d9344615c9120e8a5eec8400eeb54c5ecfa32fdd393",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "icon.res.gold",
+      "runtimeFile": "ui/icons/final/icon.res.gold.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.res.gold.png",
+      "deliveryFile": "reuse/ui/icons/final/icon.res.gold.png",
+      "sha256": "d1925655ee7d55bf4fc12581843962fd0a200df7fd95f4e890d61784665295ab",
+      "purpose": "Weekly gift resource",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.greek.apollo.portrait",
+      "runtimeFile": "ui/icons/final/god.greek.apollo.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.apollo.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.greek.apollo.portrait.webp",
+      "sha256": "8b2841a83cf55a24a45d064f39e5061a04344972065a25aa8c2e85d8b35749eb",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.greek.tier5.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.greek.tier5.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier5.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.greek.tier5.base.portrait.webp",
+      "sha256": "0475e60c6ad455a102f26fd84bf89004fd99ec3c654cfd03f69ba5f5ac996b68",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.greek.tier5.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.greek.tier5.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier5.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.greek.tier5.upgraded.portrait.webp",
+      "sha256": "7c8d9e218f9c07905dfd616628e56191966c3b57dca768dbdf3c7ced53af68dd",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.greek.artemis.portrait",
+      "runtimeFile": "ui/icons/final/god.greek.artemis.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.artemis.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.greek.artemis.portrait.webp",
+      "sha256": "ec94299e4200cc5b8fd86548aeb8e74468325ae66479d166d35a6f6d6ec88153",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.greek.tier3.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.greek.tier3.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier3.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.greek.tier3.base.portrait.webp",
+      "sha256": "23a3c9a5620009701641d8671e0867b370b893fe791209e29512276d768b0b05",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.greek.tier3.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.greek.tier3.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier3.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.greek.tier3.upgraded.portrait.webp",
+      "sha256": "cf642268aa677712e37fb0552ebdc0dc5f1ddf4bb556f7368879c53e9ce7ceba",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "icon.res.wood",
+      "runtimeFile": "ui/icons/final/icon.res.wood.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.res.wood.png",
+      "deliveryFile": "reuse/ui/icons/final/icon.res.wood.png",
+      "sha256": "dd4b823696c3a595101824d8b00ec03620c6396d2ccb6c90f702e2286a405370",
+      "purpose": "Weekly gift resource",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.greek.hermes.portrait",
+      "runtimeFile": "ui/icons/final/god.greek.hermes.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.hermes.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.greek.hermes.portrait.webp",
+      "sha256": "3bdf7119ab0f7311789f4a36f1bedf237696f84773609ccc5d4da951f2f1eeb5",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.greek.tier4.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.greek.tier4.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier4.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.greek.tier4.base.portrait.webp",
+      "sha256": "0b948df11e84edc226170f425df5f41d8d64c8f898ef80209118ad1cab4a805a",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.greek.tier4.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.greek.tier4.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier4.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.greek.tier4.upgraded.portrait.webp",
+      "sha256": "a83126b82654a6d8b2319fc3d94a6aae69238666ff14c98df90972fcf1f1ce59",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.greek.demeter.portrait",
+      "runtimeFile": "ui/icons/final/god.greek.demeter.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.demeter.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.greek.demeter.portrait.webp",
+      "sha256": "5655c60051a5cc430a60e5c6fc1f4f0f99349720190ad753266db93421f0a6b4",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.greek.hades.portrait",
+      "runtimeFile": "ui/icons/final/god.greek.hades.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.hades.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.greek.hades.portrait.webp",
+      "sha256": "70dae9c2f9096f1ac6ce33acd6fa185e0f18ed1c85bdf61376062f14144e8b5e",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.greek.tier6.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.greek.tier6.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier6.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.greek.tier6.base.portrait.webp",
+      "sha256": "2da50f00750cf31724ddec62d7f738c6cd86c5ac76146563fb217b963ff4f20b",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.greek.tier6.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.greek.tier6.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier6.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.greek.tier6.upgraded.portrait.webp",
+      "sha256": "04af81cbd47a89fc372df4eb4844e8356df8f13b3f8563f168d466df86e50f39",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.greek.poseidon.portrait",
+      "runtimeFile": "ui/icons/final/god.greek.poseidon.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.poseidon.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.greek.poseidon.portrait.webp",
+      "sha256": "eb92b37d371ccb534a485706465b7da60aaa18262df79fb22fe9d840edf7b884",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.greek.hera.portrait",
+      "runtimeFile": "ui/icons/final/god.greek.hera.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.hera.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.greek.hera.portrait.webp",
+      "sha256": "2cc462e7d740a77bbfbc7aa43be4d314653f51588e05e434df90e8b7de31d765",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.norse.odin.portrait",
+      "runtimeFile": "ui/icons/final/god.norse.odin.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.odin.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.norse.odin.portrait.webp",
+      "sha256": "159185f97a7e8ee262f77557e758677049f0ed14b0cef7e6322bf12a3036ab35",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.norse.tier5.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.norse.tier5.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier5.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.norse.tier5.base.portrait.webp",
+      "sha256": "1d26c276ec88cf73f5751f67c1378a0a10eed26a7cbb4705e50f80ac3e4d678d",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.norse.tier5.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.norse.tier5.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier5.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.norse.tier5.upgraded.portrait.webp",
+      "sha256": "6c16b1ab242e10f675ecf47036d4b68fa897444c98601e52536e09b4a187e90c",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.norse.thor.portrait",
+      "runtimeFile": "ui/icons/final/god.norse.thor.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.thor.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.norse.thor.portrait.webp",
+      "sha256": "ede0a3e9361f5ff6b555e85c6897e2f7270ca4a6b53a6974494e8e6ad276a823",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.norse.tier6.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.norse.tier6.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier6.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.norse.tier6.base.portrait.webp",
+      "sha256": "11bd6d9e9ce06912cb9dea282cd365ad60d86c9e00fefbb5f604e469a645d5f0",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.norse.tier6.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.norse.tier6.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier6.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.norse.tier6.upgraded.portrait.webp",
+      "sha256": "bff108c5997d67d487652543f9eda982bc039951fd0d8c700a12fdba89e97845",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.norse.tyr.portrait",
+      "runtimeFile": "ui/icons/final/god.norse.tyr.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.tyr.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.norse.tyr.portrait.webp",
+      "sha256": "cad20838665675bab6d387fac8b29da8d84f397556343b3959547dc9ca97dc71",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.norse.tier1.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.norse.tier1.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier1.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.norse.tier1.base.portrait.webp",
+      "sha256": "a4d8ff169ad759d4c9c2d45f06b028d704422700eca15516fd1328dc79b33e6a",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.norse.tier1.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.norse.tier1.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier1.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.norse.tier1.upgraded.portrait.webp",
+      "sha256": "18919c96c73e56c7e71cda391cbffda68eeb6d925600c8f2678c197dee032842",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.norse.frigg.portrait",
+      "runtimeFile": "ui/icons/final/god.norse.frigg.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.frigg.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.norse.frigg.portrait.webp",
+      "sha256": "0672e62ef10981ff91618edf2fa3c655268ef66870f5bbc9bedde7a9bcfbe4c0",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.norse.tier4.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.norse.tier4.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier4.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.norse.tier4.base.portrait.webp",
+      "sha256": "1526ca28d4fd382e3b224a7db015aecabf0886c5537ead90110e9897eda489bd",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.norse.tier4.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.norse.tier4.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier4.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.norse.tier4.upgraded.portrait.webp",
+      "sha256": "77954c754db6cb82b1046a4d07960a58a2af9bcba9362620ea1e9f33f6acf1a5",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.norse.baldr.portrait",
+      "runtimeFile": "ui/icons/final/god.norse.baldr.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.baldr.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.norse.baldr.portrait.webp",
+      "sha256": "7eeb57e12492ecbf3b26cd7ec2ce39f7da9a6974c02ce389f3188c29cae95bc6",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.norse.freyja.portrait",
+      "runtimeFile": "ui/icons/final/god.norse.freyja.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.freyja.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.norse.freyja.portrait.webp",
+      "sha256": "efdbe335b2fb8bae480707b88a6ad9ac54e6056c756476ed65b1637551d1b9b0",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.norse.heimdall.portrait",
+      "runtimeFile": "ui/icons/final/god.norse.heimdall.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.heimdall.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.norse.heimdall.portrait.webp",
+      "sha256": "ff7df674bf0daeb2cfebffb23eb5f6f908d459a7c8e12d016517e2a2b73526fc",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.norse.hel.portrait",
+      "runtimeFile": "ui/icons/final/god.norse.hel.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.hel.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.norse.hel.portrait.webp",
+      "sha256": "c00079cecaa37f7328331efac9d6d5c75127a815052f4559bcd8c89b14f1a7b1",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.norse.loki.portrait",
+      "runtimeFile": "ui/icons/final/god.norse.loki.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.loki.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.norse.loki.portrait.webp",
+      "sha256": "49352618663cf02de491409f68c8043af7732b97d1db943d515d051a6b8c9e2a",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.norse.njord.portrait",
+      "runtimeFile": "ui/icons/final/god.norse.njord.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.njord.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.norse.njord.portrait.webp",
+      "sha256": "053982fcfc3ebb8c0555584fa561eca7a34a86bdee14345fafa1a0bc5968fd9a",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.norse.tier3.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.norse.tier3.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier3.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.norse.tier3.base.portrait.webp",
+      "sha256": "5b600c224545c77baab4f052cf895826fdda56faf0cb4dfec7c6529e2bdc509a",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.norse.tier3.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.norse.tier3.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier3.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.norse.tier3.upgraded.portrait.webp",
+      "sha256": "a57903c3968990ad925c07bc0c1d9e1b2ad09d5b286a5d13a8d4008cc9850ff4",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.egyptian.ra.portrait",
+      "runtimeFile": "ui/icons/final/god.egyptian.ra.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.ra.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.egyptian.ra.portrait.webp",
+      "sha256": "3d567d1341bd30a97e54613dd6ed2b4ff346359484b71ce6d7f75fb0787e7df1",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.egyptian.tier1.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.egyptian.tier1.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier1.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.egyptian.tier1.base.portrait.webp",
+      "sha256": "19e7a9abad4f8a7659e57e2bc43024a1334ece75e7b3cfcf5b644d99d842c8ea",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.egyptian.tier1.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.egyptian.tier1.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier1.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.egyptian.tier1.upgraded.portrait.webp",
+      "sha256": "6099e9ae2018d16323b57247d48976b46f690651e2c3bae33aae3befc257a02e",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.egyptian.set.portrait",
+      "runtimeFile": "ui/icons/final/god.egyptian.set.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.set.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.egyptian.set.portrait.webp",
+      "sha256": "1cdd17fdac29baf1a5392315900f97a63eca233fb00589aa63b0cf5194cafcb9",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.egyptian.tier7.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.egyptian.tier7.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier7.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.egyptian.tier7.base.portrait.webp",
+      "sha256": "9a1b9e49285bdee03557d49a5dfb333bbc522998b3fc293e87676cd3a7cdd4ad",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.egyptian.tier7.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.egyptian.tier7.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier7.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.egyptian.tier7.upgraded.portrait.webp",
+      "sha256": "42a56f9ec95dbe0865a7cd5b19255e5db23c4c19ae863a2ca8759ea4555aed04",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.egyptian.isis.portrait",
+      "runtimeFile": "ui/icons/final/god.egyptian.isis.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.isis.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.egyptian.isis.portrait.webp",
+      "sha256": "57f08923f89bd2422b853c3ae4fc5bd62f5beb63c088699a67a28b5d35a40fcf",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.egyptian.tier6.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.egyptian.tier6.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier6.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.egyptian.tier6.base.portrait.webp",
+      "sha256": "cb229ecd3715abd39c9206db129ae097d0b4b914a280a707921c287d198f71ad",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.egyptian.tier6.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.egyptian.tier6.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier6.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.egyptian.tier6.upgraded.portrait.webp",
+      "sha256": "2b232e60e4b44cdedecb06ded78f541a5979409b65872ead0cd4cf802b7354f7",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.egyptian.anubis.portrait",
+      "runtimeFile": "ui/icons/final/god.egyptian.anubis.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.anubis.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.egyptian.anubis.portrait.webp",
+      "sha256": "d3b825a084f8fc3987251c8fa7fe2ce8799362e4d5c2cc514de7de06f445eb28",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.egyptian.tier2.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.egyptian.tier2.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier2.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.egyptian.tier2.base.portrait.webp",
+      "sha256": "73f4a09f3a27e672b6ad5e07aa8b0aa33723e7dff130a6e7c553917d88a54cc9",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.egyptian.tier2.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.egyptian.tier2.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier2.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.egyptian.tier2.upgraded.portrait.webp",
+      "sha256": "c694fbdbec29e1a5bc3c1c0449f387061fc632dcc4fc664db5bce1c4eeb8c8b1",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.egyptian.bastet.portrait",
+      "runtimeFile": "ui/icons/final/god.egyptian.bastet.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.bastet.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.egyptian.bastet.portrait.webp",
+      "sha256": "e1f5977d2bd0fd6db0275d919f15ca9c55a046287bb5667212a1e884d5f40278",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.egyptian.tier4.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.egyptian.tier4.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier4.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.egyptian.tier4.base.portrait.webp",
+      "sha256": "23a7adc1104951fbdd07e0fba8275036e20c639be304ff69f8cb5c0f43bf8e25",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.egyptian.tier4.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.egyptian.tier4.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier4.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.egyptian.tier4.upgraded.portrait.webp",
+      "sha256": "39f42f5a44b584b1ef8897dd80c0f4818c05112a73ecf77d687caba1221edaa8",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.egyptian.osiris.portrait",
+      "runtimeFile": "ui/icons/final/god.egyptian.osiris.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.osiris.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.egyptian.osiris.portrait.webp",
+      "sha256": "909b41b0a057824fa07aff7b86ac48e15ebfd39fbf98fe4b339d1d8c8ef892fd",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.egyptian.tier3.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.egyptian.tier3.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier3.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.egyptian.tier3.base.portrait.webp",
+      "sha256": "fa2ef7a37f419112aa867cd3bd614ede312fe66624cf3ed3c30a2277a47da36e",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.egyptian.tier3.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.egyptian.tier3.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier3.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.egyptian.tier3.upgraded.portrait.webp",
+      "sha256": "fe2e5422d2de41373d5174cd189482e9ebad28157620c38bfada6b73c854b7ac",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.egyptian.thoth.portrait",
+      "runtimeFile": "ui/icons/final/god.egyptian.thoth.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.thoth.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.egyptian.thoth.portrait.webp",
+      "sha256": "357f19cb984cccba7cbbd0e05e9c5946124295c3b9c0fd2119bbe829d0d2508e",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.egyptian.horus.portrait",
+      "runtimeFile": "ui/icons/final/god.egyptian.horus.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.horus.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.egyptian.horus.portrait.webp",
+      "sha256": "e9134cda0178b9edf46ac90373b3cccbe0230fac38de4167dd95c21a4548886e",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.egyptian.hathor.portrait",
+      "runtimeFile": "ui/icons/final/god.egyptian.hathor.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.hathor.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.egyptian.hathor.portrait.webp",
+      "sha256": "bf5232c67d3d73957f555352afb1b7a6ef3a3c222d9356d641d8a85c7e6e2174",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.egyptian.sobek.portrait",
+      "runtimeFile": "ui/icons/final/god.egyptian.sobek.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.sobek.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.egyptian.sobek.portrait.webp",
+      "sha256": "ee92aeef2a76b5f93d3b102d9895af95c3890f8f20ef5bb86d071a6ec1c50004",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.egyptian.tier5.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.egyptian.tier5.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier5.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.egyptian.tier5.base.portrait.webp",
+      "sha256": "855984e38d884f799fd53eb0190753e6366053bf4deb7883c27c1996ac6595ea",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.egyptian.tier5.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.egyptian.tier5.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier5.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.egyptian.tier5.upgraded.portrait.webp",
+      "sha256": "620613cd20e21e755ad5118b5d4a5fd3f41cb728ef916e1031eb7ae5795e5f9a",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.japanese.amaterasu.portrait",
+      "runtimeFile": "ui/icons/final/god.japanese.amaterasu.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.amaterasu.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.japanese.amaterasu.portrait.webp",
+      "sha256": "1c98d6bd46b7a0218de6ace525e2691c44f30a065029b1ba84db1d02071658a9",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.japanese.tier1.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.japanese.tier1.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier1.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.japanese.tier1.base.portrait.webp",
+      "sha256": "918118b14d3887f2671ef00bd8a7a7c63167b8e3271f7ac8c0cf515cc01be0cd",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.japanese.tier1.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.japanese.tier1.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier1.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.japanese.tier1.upgraded.portrait.webp",
+      "sha256": "20eed750c0ff2540fc21095d83a3ed0c0c64b0489bf3befef1ba6cbaeba2d29a",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.japanese.hachiman.portrait",
+      "runtimeFile": "ui/icons/final/god.japanese.hachiman.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.hachiman.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.japanese.hachiman.portrait.webp",
+      "sha256": "a5b1fc3f6b499a165b9000ebf60df89cfb7c03951cfa8e1aea3c3d05f08ff27a",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.japanese.tier4.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.japanese.tier4.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier4.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.japanese.tier4.base.portrait.webp",
+      "sha256": "e3ca376e31d04ae16e4765bbb9efd65512de9d365c263d7562394490716bd730",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.japanese.tier4.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.japanese.tier4.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier4.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.japanese.tier4.upgraded.portrait.webp",
+      "sha256": "58d1a8ff9ea1bcd19f91fc5f9bad6409fcda4a3e5d150df1c1fb4e130240d40e",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.japanese.susanoo.portrait",
+      "runtimeFile": "ui/icons/final/god.japanese.susanoo.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.susanoo.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.japanese.susanoo.portrait.webp",
+      "sha256": "831cd2eab0b85e61239c0216f9e26daf525b6e74a408039a254a01681ec628ac",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.japanese.tier7.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.japanese.tier7.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier7.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.japanese.tier7.base.portrait.webp",
+      "sha256": "630e0e776524e58445594b8be97bde5dcd9a15de7c76da8fe2a9b3d16a3359b1",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.japanese.tier7.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.japanese.tier7.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier7.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.japanese.tier7.upgraded.portrait.webp",
+      "sha256": "a7fd77cf403fa86f9b49cd4f85f7925f9caa223b1aa9f2c3b4c4428169b26483",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.japanese.tsukuyomi.portrait",
+      "runtimeFile": "ui/icons/final/god.japanese.tsukuyomi.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.tsukuyomi.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.japanese.tsukuyomi.portrait.webp",
+      "sha256": "cd6a2e86eba11b12030d126fe9897582f8781cacc5658a77959a7e48e7d606bc",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.japanese.tier5.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.japanese.tier5.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier5.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.japanese.tier5.base.portrait.webp",
+      "sha256": "7475ab295bdfac4ddac38e107b48405ca82eea96bf348b4761e1b885e3e3fbf9",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.japanese.tier5.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.japanese.tier5.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier5.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.japanese.tier5.upgraded.portrait.webp",
+      "sha256": "7c97d4cb7bee608ffba1cb56e7890f59466a227da0010fa36f0d42aa52d9c742",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.japanese.benzaiten.portrait",
+      "runtimeFile": "ui/icons/final/god.japanese.benzaiten.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.benzaiten.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.japanese.benzaiten.portrait.webp",
+      "sha256": "a4bb8f36255f07693fa32ada6d992aa218b2853e1b999793866598875a977a51",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.japanese.tier6.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.japanese.tier6.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier6.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.japanese.tier6.base.portrait.webp",
+      "sha256": "d8b770c823227d1a8cbc1b454fd996c744661974a27771482f8ed9b470cd3a4e",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.japanese.tier6.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.japanese.tier6.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier6.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.japanese.tier6.upgraded.portrait.webp",
+      "sha256": "973a83d77d30737100b1f0dea1370820f4feb306343eb75c8a2dd5a1cea16809",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.japanese.inari.portrait",
+      "runtimeFile": "ui/icons/final/god.japanese.inari.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.inari.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.japanese.inari.portrait.webp",
+      "sha256": "237ab248431f7adcfffb4f81f1e97cde4b7933c7ef6ef6ff679bf74d599883c1",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.japanese.fujin.portrait",
+      "runtimeFile": "ui/icons/final/god.japanese.fujin.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.fujin.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.japanese.fujin.portrait.webp",
+      "sha256": "6b73d910f294b5f538cc7178dc1a888e741c1ec24404bef29bf1e3836672287d",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.japanese.tier3.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.japanese.tier3.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier3.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.japanese.tier3.base.portrait.webp",
+      "sha256": "3ac66fca85d50c03f4f89bcb975fa1d7e75ccc491cbed1f2e2fbbf05ae3366db",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.japanese.tier3.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.japanese.tier3.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier3.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.japanese.tier3.upgraded.portrait.webp",
+      "sha256": "f01879a8164d7f6b871d88842dc15f4ab848eec78edcdb98b9b323a30b4b9400",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.japanese.raijin.portrait",
+      "runtimeFile": "ui/icons/final/god.japanese.raijin.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.raijin.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.japanese.raijin.portrait.webp",
+      "sha256": "89d3d3a9c5cda913f694ef8085cf45a9889f0d830c6e6021ed87ec1498aa40e1",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.japanese.izanagi.portrait",
+      "runtimeFile": "ui/icons/final/god.japanese.izanagi.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.izanagi.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.japanese.izanagi.portrait.webp",
+      "sha256": "cddb0b0c6d1e70007ee12ac94580c8d15bb34a97983021d52dd5a4557c505c90",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.japanese.tier2.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.japanese.tier2.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier2.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.japanese.tier2.base.portrait.webp",
+      "sha256": "5d7aedfc640a8b8c0367f8d19b96e7e1dcdaaac1917a334bcc72847136fedf1c",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.japanese.tier2.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.japanese.tier2.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier2.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.japanese.tier2.upgraded.portrait.webp",
+      "sha256": "5da85c2dbffb35cf6cfb760531b2c310459c4d58f384c1ab848895cdc2789f83",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.japanese.izanami.portrait",
+      "runtimeFile": "ui/icons/final/god.japanese.izanami.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.izanami.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.japanese.izanami.portrait.webp",
+      "sha256": "4cf2e4beae1a81518aab6dd1213e1feb77f317b21bb84ead439f50a0663d00f6",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.celtic.dagda.portrait",
+      "runtimeFile": "ui/icons/final/god.celtic.dagda.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.dagda.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.celtic.dagda.portrait.webp",
+      "sha256": "d53cf596b9001927cc64f3ca67f9eaf527273b58a03d8ba92f8473eec65b5ceb",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.celtic.tier1.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.celtic.tier1.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier1.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.celtic.tier1.base.portrait.webp",
+      "sha256": "1972c8dd4488b1f1c5e194b29e98b312389baf4cd749adbf8af53c6e8c711630",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.celtic.tier1.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.celtic.tier1.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier1.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.celtic.tier1.upgraded.portrait.webp",
+      "sha256": "6c2dceb381d994cce5135312792c0122811b8575cf318bec46e900d15a03ceb3",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.celtic.morrigan.portrait",
+      "runtimeFile": "ui/icons/final/god.celtic.morrigan.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.morrigan.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.celtic.morrigan.portrait.webp",
+      "sha256": "6b1767ad6dba6d7e4f264ddf5acb7f7a4c46871816599bfff9bc178ce08081d4",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.celtic.tier4.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.celtic.tier4.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier4.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.celtic.tier4.base.portrait.webp",
+      "sha256": "7e13e5d1dab2ac5f8586ee6bd8f756238627571fadcde0806e7eb8867597f7d7",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.celtic.tier4.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.celtic.tier4.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier4.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.celtic.tier4.upgraded.portrait.webp",
+      "sha256": "93294cd048b3aade7c8ecef3d20cf8c3046de01231a5f16ec20011e4d2d92ede",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.celtic.brigid.portrait",
+      "runtimeFile": "ui/icons/final/god.celtic.brigid.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.brigid.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.celtic.brigid.portrait.webp",
+      "sha256": "da707c0c6b434b0ff9e9955ede60c4e63f7684f2454e66f6684a75a06b56aea0",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.celtic.tier2.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.celtic.tier2.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier2.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.celtic.tier2.base.portrait.webp",
+      "sha256": "affcfc7a6ca1f7ac2900e95306748edf3208af0d4399f04d7dc7e22a64a20bd8",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.celtic.tier2.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.celtic.tier2.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier2.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.celtic.tier2.upgraded.portrait.webp",
+      "sha256": "4863b32bfbe14ca7c8f202c8a12305f52a8e3b41f6045024e1afbe94e39d7298",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.celtic.nuada.portrait",
+      "runtimeFile": "ui/icons/final/god.celtic.nuada.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.nuada.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.celtic.nuada.portrait.webp",
+      "sha256": "6b2263be72bf4c6312c04fa6c66f3f0b6a70ff02c789e2eb08491d543045bf2b",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.celtic.tier7.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.celtic.tier7.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier7.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.celtic.tier7.base.portrait.webp",
+      "sha256": "4c8bbb8e56539b408478cdcdb7c3359b464ac796de0d449ea1f8179ccb6738f4",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.celtic.tier7.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.celtic.tier7.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier7.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.celtic.tier7.upgraded.portrait.webp",
+      "sha256": "5b7368ff27d325346745b6ab04c799b2ec5073c97abadfc87fb7a8bd8898a3b6",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.celtic.danu.portrait",
+      "runtimeFile": "ui/icons/final/god.celtic.danu.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.danu.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.celtic.danu.portrait.webp",
+      "sha256": "5bf8306ddf748f2eb2ec8637dd2710ed53de0c475db87ca1d90d6e8bcc115354",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.celtic.tier6.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.celtic.tier6.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier6.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.celtic.tier6.base.portrait.webp",
+      "sha256": "19ba2a5f14a260852f78225415f6bf9f327922e6ba6c4f2cb20a201e7bc9f6e5",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.celtic.tier6.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.celtic.tier6.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier6.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.celtic.tier6.upgraded.portrait.webp",
+      "sha256": "7936321706e5e439ebfe4c8233699adc983c2931b6fc106165ca37a1df1830b3",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.celtic.cernunnos.portrait",
+      "runtimeFile": "ui/icons/final/god.celtic.cernunnos.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.cernunnos.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.celtic.cernunnos.portrait.webp",
+      "sha256": "2bfe80f9ba30db35b21b1162a2dba81a4ee019ea662ee530fd353e3247d3c01b",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.celtic.epona.portrait",
+      "runtimeFile": "ui/icons/final/god.celtic.epona.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.epona.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.celtic.epona.portrait.webp",
+      "sha256": "015b6ae9485e835fb29bed54c3cd619028b61a0d3194b6077d932d353727f32a",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.celtic.tier3.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.celtic.tier3.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier3.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.celtic.tier3.base.portrait.webp",
+      "sha256": "4b67ece36f4044255a8c1deddaa10b7f827c4e1f58740c56bd590b8142ed0162",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.celtic.tier3.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.celtic.tier3.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier3.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.celtic.tier3.upgraded.portrait.webp",
+      "sha256": "ddf809c83331f190a3f4334cbb44728bfad836ef46fa1a08c1f575125c710718",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.celtic.lugh.portrait",
+      "runtimeFile": "ui/icons/final/god.celtic.lugh.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.lugh.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.celtic.lugh.portrait.webp",
+      "sha256": "63a17294f1fe8ccc0c62d2903c10b65b9e9f188254b239882c65fbb6bb0cf585",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.celtic.arawn.portrait",
+      "runtimeFile": "ui/icons/final/god.celtic.arawn.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.arawn.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.celtic.arawn.portrait.webp",
+      "sha256": "1465ee5bcdbe24f229be86b88977bdcef35c9b8f8e379e7ccae752d9adf96eac",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.celtic.manannan.portrait",
+      "runtimeFile": "ui/icons/final/god.celtic.manannan.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.manannan.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.celtic.manannan.portrait.webp",
+      "sha256": "026b3d9ccc33b14c3370ef2fc45b2db1edc808a70cd10f8ca42ce74fde60fb9e",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.celtic.tier5.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.celtic.tier5.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier5.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.celtic.tier5.base.portrait.webp",
+      "sha256": "7e284d08c92328a2fc37152acd68bb92b3f0d35c693f022399b2b421a823c8b3",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.celtic.tier5.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.celtic.tier5.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier5.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.celtic.tier5.upgraded.portrait.webp",
+      "sha256": "529fd025486be3ccd7f5ec3895edaf1cb8ca8f92992b2aac0b9d73c6ace4d319",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.mesoamerican.quetzalcoatl.portrait",
+      "runtimeFile": "ui/icons/final/god.mesoamerican.quetzalcoatl.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.quetzalcoatl.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.mesoamerican.quetzalcoatl.portrait.webp",
+      "sha256": "5cea3846c142bde79e347b6295c0a3aa39c85cd0ab183068d3dc40029424c225",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.mesoamerican.tier1.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.mesoamerican.tier1.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier1.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.mesoamerican.tier1.base.portrait.webp",
+      "sha256": "8a37853e216e684a143467eb75f88c197aa67879c1edcd5bd1d2414c98d2f184",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.mesoamerican.tier1.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.mesoamerican.tier1.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier1.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.mesoamerican.tier1.upgraded.portrait.webp",
+      "sha256": "216cd70058402e6c40ba1b7810b592a9b813e0719fc79496a0e4b72d0568d54a",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.mesoamerican.huitzilopochtli.portrait",
+      "runtimeFile": "ui/icons/final/god.mesoamerican.huitzilopochtli.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.huitzilopochtli.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.mesoamerican.huitzilopochtli.portrait.webp",
+      "sha256": "91a19bc79c2855a3f6cb6089f169d946891e438e84a3c8c314f1c8af0cbdd833",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.mesoamerican.tier3.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.mesoamerican.tier3.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier3.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.mesoamerican.tier3.base.portrait.webp",
+      "sha256": "4e1102f5027d4071735f70f40806ec0eb969f72fda72e3f07281bd65cb802265",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.mesoamerican.tier3.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.mesoamerican.tier3.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier3.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.mesoamerican.tier3.upgraded.portrait.webp",
+      "sha256": "8353b5745e7c4dce26f5908b9b8d6df8e5ffdf399a05d1139ad26749b1793b9e",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.mesoamerican.coatlicue.portrait",
+      "runtimeFile": "ui/icons/final/god.mesoamerican.coatlicue.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.coatlicue.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.mesoamerican.coatlicue.portrait.webp",
+      "sha256": "a1c4b5b2122cf2133cd6c583987962425133ce21e6cf8f7381b9494b58a9edec",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.mesoamerican.tier7.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.mesoamerican.tier7.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier7.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.mesoamerican.tier7.base.portrait.webp",
+      "sha256": "d3f8d8ee93507c7f0be8bc739e37465e620fe26e2c0720326061cd207ef36ca3",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.mesoamerican.tier7.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.mesoamerican.tier7.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier7.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.mesoamerican.tier7.upgraded.portrait.webp",
+      "sha256": "e547de75399df52c1a83607c0d5edc432b9fbd83317845122f11fa6c5716ced7",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.mesoamerican.mixcoatl.portrait",
+      "runtimeFile": "ui/icons/final/god.mesoamerican.mixcoatl.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.mixcoatl.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.mesoamerican.mixcoatl.portrait.webp",
+      "sha256": "7fe4d7b03f6600c5721f1180a106d742ccdbe2a860c7a16ba1fcd41c5280e6cf",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.mesoamerican.xolotl.portrait",
+      "runtimeFile": "ui/icons/final/god.mesoamerican.xolotl.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.xolotl.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.mesoamerican.xolotl.portrait.webp",
+      "sha256": "98a81d4f8eb7a878eb9121a31a61b66dd73c0347dcc7a3efe99206cea1b097c1",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.mesoamerican.tier2.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.mesoamerican.tier2.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier2.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.mesoamerican.tier2.base.portrait.webp",
+      "sha256": "4bd4ed669ae2e23970fa7ed1961d9d89887053ed639c8f6b12d211d407fd31c0",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.mesoamerican.tier2.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.mesoamerican.tier2.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier2.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.mesoamerican.tier2.upgraded.portrait.webp",
+      "sha256": "f7b1ebd9d0c8ccae336b5e783f43824be9cdc2026d72762ade6161f5d943f0d1",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.mesoamerican.tlaloc.portrait",
+      "runtimeFile": "ui/icons/final/god.mesoamerican.tlaloc.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.tlaloc.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.mesoamerican.tlaloc.portrait.webp",
+      "sha256": "19b965df9875aaeef6cff4d348476b0b3fd1dbb4e7243be7af5a29a8b2aca07e",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.mesoamerican.tier4.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.mesoamerican.tier4.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier4.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.mesoamerican.tier4.base.portrait.webp",
+      "sha256": "09318e2a186f1e39481b99649927125cde2dc316a14381c7e6705fdab95d042c",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.mesoamerican.tier4.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.mesoamerican.tier4.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier4.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.mesoamerican.tier4.upgraded.portrait.webp",
+      "sha256": "90f1915db5bc0d01224ef2e1314e2732a4d8c7c3a99a4f2ea343fdd3f850f8e5",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.mesoamerican.tezcatlipoca.portrait",
+      "runtimeFile": "ui/icons/final/god.mesoamerican.tezcatlipoca.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.tezcatlipoca.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.mesoamerican.tezcatlipoca.portrait.webp",
+      "sha256": "e398fc4aa2af7f5b846ea8d9ff70a0a49d6bbc9bab4025b1330ec769161c5c15",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.mesoamerican.tier5.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.mesoamerican.tier5.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier5.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.mesoamerican.tier5.base.portrait.webp",
+      "sha256": "8fa6afb76288850cb0711806ceabce6cb120976cc027ab7d648fc93811f45bef",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.mesoamerican.tier5.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.mesoamerican.tier5.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier5.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.mesoamerican.tier5.upgraded.portrait.webp",
+      "sha256": "b3ff5248ba1a66522b1616588e215a2f1144935a27006b66fe08ef88bd10c93d",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.mesoamerican.xiuhtecuhtli.portrait",
+      "runtimeFile": "ui/icons/final/god.mesoamerican.xiuhtecuhtli.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.xiuhtecuhtli.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.mesoamerican.xiuhtecuhtli.portrait.webp",
+      "sha256": "888cf18b9611dc494cffedab8ed4c1407f04f5a99c5885ae35e0e75bf07d2bfb",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.mesoamerican.tier6.base.portrait",
+      "runtimeFile": "ui/icons/final/creature.mesoamerican.tier6.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier6.base.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.mesoamerican.tier6.base.portrait.webp",
+      "sha256": "e6729717f9aaed662b3417ce52287e4567d7be28b6ceaf2e1e53a1ddd29b59c8",
+      "purpose": "Favored family base portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "creature.mesoamerican.tier6.upgraded.portrait",
+      "runtimeFile": "ui/icons/final/creature.mesoamerican.tier6.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier6.upgraded.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/creature.mesoamerican.tier6.upgraded.portrait.webp",
+      "sha256": "ba1803720a69c071824eb20f0b3aebb036d114d613f5369eb643bf032f379afd",
+      "purpose": "Favored family upgraded portrait",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.mesoamerican.chalchiuhtlicue.portrait",
+      "runtimeFile": "ui/icons/final/god.mesoamerican.chalchiuhtlicue.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.chalchiuhtlicue.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.mesoamerican.chalchiuhtlicue.portrait.webp",
+      "sha256": "9b6c6efe2fe07738c2482743737e86ae4315ea9f56298b829575759e1897d385",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "god.mesoamerican.mictlantecuhtli.portrait",
+      "runtimeFile": "ui/icons/final/god.mesoamerican.mictlantecuhtli.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.mictlantecuhtli.portrait.webp",
+      "deliveryFile": "reuse/ui/icons/final/god.mesoamerican.mictlantecuhtli.portrait.webp",
+      "sha256": "084577ae763c641eeb432afc9ca8388d0b659f753702acf5b99c5e0d99c27846",
+      "purpose": "God card and city dedication medallion",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.greek.background.l2",
+      "runtimeFile": "art/town/town.greek.background.l2.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.greek.background.l2.webp",
+      "deliveryFile": "reuse/art/town/town.greek.background.l2.webp",
+      "sha256": "4efe32ddfd3e4bb02a1ec5dd7738795c4fec4c7eaa89794fb5a712a3366a93c8",
+      "purpose": "Reference city background; no replacement painting",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.greek.support.pantheon_temple.l2",
+      "runtimeFile": "art/town/town.greek.support.pantheon_temple.l2.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.greek.support.pantheon_temple.l2.webp",
+      "deliveryFile": "reuse/art/town/town.greek.support.pantheon_temple.l2.webp",
+      "sha256": "65d9eddf856beb76b230e3af3c2bf65607a61313845a00214e01513287f54d47",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.greek.support.training_academy.l1",
+      "runtimeFile": "art/town/town.greek.support.training_academy.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.greek.support.training_academy.l1.webp",
+      "deliveryFile": "reuse/art/town/town.greek.support.training_academy.l1.webp",
+      "sha256": "ab0c1f01889def02b6102343034d3be796d7eb6abe6d76ba8280524209d8980b",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.greek.support.marketplace.l1",
+      "runtimeFile": "art/town/town.greek.support.marketplace.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.greek.support.marketplace.l1.webp",
+      "deliveryFile": "reuse/art/town/town.greek.support.marketplace.l1.webp",
+      "sha256": "f8aff82dbfef9d644ed486f8e35850bc4f07a82cd906e42cbd6e5924adfdc36b",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.greek.support.fortifications.l1",
+      "runtimeFile": "art/town/town.greek.support.fortifications.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.greek.support.fortifications.l1.webp",
+      "deliveryFile": "reuse/art/town/town.greek.support.fortifications.l1.webp",
+      "sha256": "e7be28f7144205cad60b556db5994523d3d4033c7c3dca90105daedee99e1057",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.greek.support.mage_guild.l1",
+      "runtimeFile": "art/town/town.greek.support.mage_guild.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.greek.support.mage_guild.l1.webp",
+      "deliveryFile": "reuse/art/town/town.greek.support.mage_guild.l1.webp",
+      "sha256": "3ee3a1aea5947e62d0cc41d150f7360e46b36b131957640c053af99eb8fd0d3c",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.greek.support.artifact_merchant.l1",
+      "runtimeFile": "art/town/town.greek.support.artifact_merchant.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.greek.support.artifact_merchant.l1.webp",
+      "deliveryFile": "reuse/art/town/town.greek.support.artifact_merchant.l1.webp",
+      "sha256": "02e4f8bcf82cf3618b0acaee555585b7d66c49fd370d012b3199f5748ef5d6d2",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.greek.support.watchtower.l1",
+      "runtimeFile": "art/town/town.greek.support.watchtower.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.greek.support.watchtower.l1.webp",
+      "deliveryFile": "reuse/art/town/town.greek.support.watchtower.l1.webp",
+      "sha256": "ff4322eb340d14e9bcd7dca439864ec686ef737b078e73aaf70e46cc53fbe683",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.greek.support.civic_hall.l1",
+      "runtimeFile": "art/town/town.greek.support.civic_hall.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.greek.support.civic_hall.l1.webp",
+      "deliveryFile": "reuse/art/town/town.greek.support.civic_hall.l1.webp",
+      "sha256": "9a8c83467690e29a4dc4509fffecad0da1cd217fd10cf093e4b573d16a4f7c3a",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.norse.background.l2",
+      "runtimeFile": "art/town/town.norse.background.l2.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.norse.background.l2.webp",
+      "deliveryFile": "reuse/art/town/town.norse.background.l2.webp",
+      "sha256": "e4c0068c7ee2370edfe986cc32e6f02e72631116e94c7273013c301f41c2aa6e",
+      "purpose": "Reference city background; no replacement painting",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.norse.support.pantheon_temple.l2",
+      "runtimeFile": "art/town/town.norse.support.pantheon_temple.l2.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.norse.support.pantheon_temple.l2.webp",
+      "deliveryFile": "reuse/art/town/town.norse.support.pantheon_temple.l2.webp",
+      "sha256": "24043d7739369b5a523e149e4f28d160a8e618b3a44ecee7e1f8b6d656f6846e",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.norse.support.training_academy.l1",
+      "runtimeFile": "art/town/town.norse.support.training_academy.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.norse.support.training_academy.l1.webp",
+      "deliveryFile": "reuse/art/town/town.norse.support.training_academy.l1.webp",
+      "sha256": "5d4a815e347e3f57fa5ec5f25b344e63ed995ae47bca13ea8c10d23ef997932d",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.norse.support.marketplace.l1",
+      "runtimeFile": "art/town/town.norse.support.marketplace.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.norse.support.marketplace.l1.webp",
+      "deliveryFile": "reuse/art/town/town.norse.support.marketplace.l1.webp",
+      "sha256": "258ee0da86dbeda229c4b0b97a6d40c2779e0c71d0d9e783abbe36f9b82f5f49",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.norse.support.fortifications.l1",
+      "runtimeFile": "art/town/town.norse.support.fortifications.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.norse.support.fortifications.l1.webp",
+      "deliveryFile": "reuse/art/town/town.norse.support.fortifications.l1.webp",
+      "sha256": "2b1ecf4e2b0349fb6462b472d3393f7f0bf0181a05bccf19f6e08ce8fad0e70f",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.norse.support.mage_guild.l1",
+      "runtimeFile": "art/town/town.norse.support.mage_guild.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.norse.support.mage_guild.l1.webp",
+      "deliveryFile": "reuse/art/town/town.norse.support.mage_guild.l1.webp",
+      "sha256": "c05e169242ec4ad31b4fbe734222a5c01c17627429361dde53dd6b75428f2db2",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.norse.support.artifact_merchant.l1",
+      "runtimeFile": "art/town/town.norse.support.artifact_merchant.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.norse.support.artifact_merchant.l1.webp",
+      "deliveryFile": "reuse/art/town/town.norse.support.artifact_merchant.l1.webp",
+      "sha256": "96e188d9ceaceedc28fca77ddc0d47f448b0bd3b70e245f32d7ed5fae0f10113",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.norse.support.watchtower.l1",
+      "runtimeFile": "art/town/town.norse.support.watchtower.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.norse.support.watchtower.l1.webp",
+      "deliveryFile": "reuse/art/town/town.norse.support.watchtower.l1.webp",
+      "sha256": "a9718df131d946919eb68929dcac3f7ac8fb593201b6e21034e708778faf1841",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.norse.support.civic_hall.l1",
+      "runtimeFile": "art/town/town.norse.support.civic_hall.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.norse.support.civic_hall.l1.webp",
+      "deliveryFile": "reuse/art/town/town.norse.support.civic_hall.l1.webp",
+      "sha256": "26ec08173c149d15bda9673f6ff05ff127f7e8ba27a7a8a83cd2c3eb78066096",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.egyptian.background.l2",
+      "runtimeFile": "art/town/town.egyptian.background.l2.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.egyptian.background.l2.webp",
+      "deliveryFile": "reuse/art/town/town.egyptian.background.l2.webp",
+      "sha256": "c3eb4993841a075948652a4bc4ebc4420e8f322d603b63d7e6f6c8d04b1e8c9a",
+      "purpose": "Reference city background; no replacement painting",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.egyptian.support.pantheon_temple.l2",
+      "runtimeFile": "art/town/town.egyptian.support.pantheon_temple.l2.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.egyptian.support.pantheon_temple.l2.webp",
+      "deliveryFile": "reuse/art/town/town.egyptian.support.pantheon_temple.l2.webp",
+      "sha256": "a947c5d3996379cc209db32472209ef197e6c1d1a4f0ac3826c082e47bd488de",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.egyptian.support.training_academy.l1",
+      "runtimeFile": "art/town/town.egyptian.support.training_academy.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.egyptian.support.training_academy.l1.webp",
+      "deliveryFile": "reuse/art/town/town.egyptian.support.training_academy.l1.webp",
+      "sha256": "93899d4724671022558f94983caff71c9de97c806b9bf10eab8d40ff0e2133b5",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.egyptian.support.marketplace.l1",
+      "runtimeFile": "art/town/town.egyptian.support.marketplace.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.egyptian.support.marketplace.l1.webp",
+      "deliveryFile": "reuse/art/town/town.egyptian.support.marketplace.l1.webp",
+      "sha256": "a6d577f33999361b09d71bd4e1911e1ae6d428b8ccc8ea7ccfe01ce750b95774",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.egyptian.support.fortifications.l1",
+      "runtimeFile": "art/town/town.egyptian.support.fortifications.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.egyptian.support.fortifications.l1.webp",
+      "deliveryFile": "reuse/art/town/town.egyptian.support.fortifications.l1.webp",
+      "sha256": "4ce9b417e92378a78d75f7a631603f42abe3874a5597bd8fa4cbb97545eb8da6",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.egyptian.support.mage_guild.l1",
+      "runtimeFile": "art/town/town.egyptian.support.mage_guild.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.egyptian.support.mage_guild.l1.webp",
+      "deliveryFile": "reuse/art/town/town.egyptian.support.mage_guild.l1.webp",
+      "sha256": "06b55743e29b921e875edfc66eae765beb198a11670e0642b4f7fa9a1198d0d2",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.egyptian.support.artifact_merchant.l1",
+      "runtimeFile": "art/town/town.egyptian.support.artifact_merchant.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.egyptian.support.artifact_merchant.l1.webp",
+      "deliveryFile": "reuse/art/town/town.egyptian.support.artifact_merchant.l1.webp",
+      "sha256": "f09eb3dce0906874fd6a14c0a4f145ae6832119357cacfec5dace756090335c6",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.egyptian.support.watchtower.l1",
+      "runtimeFile": "art/town/town.egyptian.support.watchtower.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.egyptian.support.watchtower.l1.webp",
+      "deliveryFile": "reuse/art/town/town.egyptian.support.watchtower.l1.webp",
+      "sha256": "dd7ce154cd6f3327255c2a41b7a7026a00e5d94629bfce051174d0cef93203aa",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.egyptian.support.civic_hall.l1",
+      "runtimeFile": "art/town/town.egyptian.support.civic_hall.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.egyptian.support.civic_hall.l1.webp",
+      "deliveryFile": "reuse/art/town/town.egyptian.support.civic_hall.l1.webp",
+      "sha256": "cfbf59b820de13cadf48a24c3c7eb946ed34574ced712e1ab0b07af9859850d9",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.japanese.background.l2",
+      "runtimeFile": "art/town/town.japanese.background.l2.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.japanese.background.l2.webp",
+      "deliveryFile": "reuse/art/town/town.japanese.background.l2.webp",
+      "sha256": "8f31bf3474424a40fae2e281df7a69f0e5b6a8f49b2f898a02a13b303513718c",
+      "purpose": "Reference city background; no replacement painting",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.japanese.support.pantheon_temple.l2",
+      "runtimeFile": "art/town/town.japanese.support.pantheon_temple.l2.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.japanese.support.pantheon_temple.l2.webp",
+      "deliveryFile": "reuse/art/town/town.japanese.support.pantheon_temple.l2.webp",
+      "sha256": "b862f40f9a21352c6264d6f16ece02c6a753561c417be3f0253dd224953a82fc",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.japanese.support.training_academy.l1",
+      "runtimeFile": "art/town/town.japanese.support.training_academy.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.japanese.support.training_academy.l1.webp",
+      "deliveryFile": "reuse/art/town/town.japanese.support.training_academy.l1.webp",
+      "sha256": "13f353e58199a19d71ef3ce58182e8e5d828ada0afc82a22477253c8899f9e6e",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.japanese.support.marketplace.l1",
+      "runtimeFile": "art/town/town.japanese.support.marketplace.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.japanese.support.marketplace.l1.webp",
+      "deliveryFile": "reuse/art/town/town.japanese.support.marketplace.l1.webp",
+      "sha256": "a11c3c2670ad6f54e80770d7d23b2d46819d8106d6b6f8089a68db6b80f69cef",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.japanese.support.fortifications.l1",
+      "runtimeFile": "art/town/town.japanese.support.fortifications.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.japanese.support.fortifications.l1.webp",
+      "deliveryFile": "reuse/art/town/town.japanese.support.fortifications.l1.webp",
+      "sha256": "a3d6b1902e911f1db523c8bdeb5ba5c60eda0bc817f507c74f28a560bfa1dc65",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.japanese.support.mage_guild.l1",
+      "runtimeFile": "art/town/town.japanese.support.mage_guild.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.japanese.support.mage_guild.l1.webp",
+      "deliveryFile": "reuse/art/town/town.japanese.support.mage_guild.l1.webp",
+      "sha256": "4e8b6ea06665f1b982f164cbc0675bbd042bffab32871cd0f78c3fe00e2a0f68",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.japanese.support.artifact_merchant.l1",
+      "runtimeFile": "art/town/town.japanese.support.artifact_merchant.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.japanese.support.artifact_merchant.l1.webp",
+      "deliveryFile": "reuse/art/town/town.japanese.support.artifact_merchant.l1.webp",
+      "sha256": "944863584361b844b1ce0b92f8941034d7f8e4e9c264c86db69f00bb521dc4c5",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.japanese.support.watchtower.l1",
+      "runtimeFile": "art/town/town.japanese.support.watchtower.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.japanese.support.watchtower.l1.webp",
+      "deliveryFile": "reuse/art/town/town.japanese.support.watchtower.l1.webp",
+      "sha256": "22f1071c56725178c0796e9dfceb4a732c832d034ee0c203faf341b121855580",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.japanese.support.civic_hall.l1",
+      "runtimeFile": "art/town/town.japanese.support.civic_hall.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.japanese.support.civic_hall.l1.webp",
+      "deliveryFile": "reuse/art/town/town.japanese.support.civic_hall.l1.webp",
+      "sha256": "c856b1dbfa84296ba748b84582960a70d6e14d9394581243c697d8013878c47e",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.celtic.background.l2",
+      "runtimeFile": "art/town/town.celtic.background.l2.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.celtic.background.l2.webp",
+      "deliveryFile": "reuse/art/town/town.celtic.background.l2.webp",
+      "sha256": "b1d43482af06a8dd384bb56e149425c8ee74f40a052ca375ce0c1b36b9c49a59",
+      "purpose": "Reference city background; no replacement painting",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.celtic.support.pantheon_temple.l2",
+      "runtimeFile": "art/town/town.celtic.support.pantheon_temple.l2.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.celtic.support.pantheon_temple.l2.webp",
+      "deliveryFile": "reuse/art/town/town.celtic.support.pantheon_temple.l2.webp",
+      "sha256": "0013e6ff07ca9331d91c334fb646c0e9c13053a75165e6b04fac620cf21365ff",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.celtic.support.training_academy.l1",
+      "runtimeFile": "art/town/town.celtic.support.training_academy.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.celtic.support.training_academy.l1.webp",
+      "deliveryFile": "reuse/art/town/town.celtic.support.training_academy.l1.webp",
+      "sha256": "4f4f8d7cef91940557698e2b29551134f089de03bfa2dc7adb47cfa7d844a6d5",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.celtic.support.marketplace.l1",
+      "runtimeFile": "art/town/town.celtic.support.marketplace.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.celtic.support.marketplace.l1.webp",
+      "deliveryFile": "reuse/art/town/town.celtic.support.marketplace.l1.webp",
+      "sha256": "007cdc4a9fe43dd5ecc3da89794f64e21a1f6d6f6e8508a5cb1a2793b0d8ea25",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.celtic.support.fortifications.l1",
+      "runtimeFile": "art/town/town.celtic.support.fortifications.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.celtic.support.fortifications.l1.webp",
+      "deliveryFile": "reuse/art/town/town.celtic.support.fortifications.l1.webp",
+      "sha256": "442f2c4c70d61460c93f71089b7ceb7ee642601a631ff7fd7d804318b68dfa15",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.celtic.support.mage_guild.l1",
+      "runtimeFile": "art/town/town.celtic.support.mage_guild.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.celtic.support.mage_guild.l1.webp",
+      "deliveryFile": "reuse/art/town/town.celtic.support.mage_guild.l1.webp",
+      "sha256": "8e0868f9df0836338df7b519a42602432317c3bc3d685cc0853c6fff782bde0c",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.celtic.support.artifact_merchant.l1",
+      "runtimeFile": "art/town/town.celtic.support.artifact_merchant.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.celtic.support.artifact_merchant.l1.webp",
+      "deliveryFile": "reuse/art/town/town.celtic.support.artifact_merchant.l1.webp",
+      "sha256": "3eacf57078742a88775d644a9c9eca9e9797e6ca7cfa996e05ab0d4e85f26860",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.celtic.support.watchtower.l1",
+      "runtimeFile": "art/town/town.celtic.support.watchtower.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.celtic.support.watchtower.l1.webp",
+      "deliveryFile": "reuse/art/town/town.celtic.support.watchtower.l1.webp",
+      "sha256": "5b530d386d5f9bc0a4a87b00c00f43b695cc40f76bbb48680fea0cc2533a035f",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.celtic.support.civic_hall.l1",
+      "runtimeFile": "art/town/town.celtic.support.civic_hall.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.celtic.support.civic_hall.l1.webp",
+      "deliveryFile": "reuse/art/town/town.celtic.support.civic_hall.l1.webp",
+      "sha256": "abcc9747c62a5dde7764eea0cbde739f94f899160e3326cef8d83e3958e210b7",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.mesoamerican.background.l2",
+      "runtimeFile": "art/town/town.mesoamerican.background.l2.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.mesoamerican.background.l2.webp",
+      "deliveryFile": "reuse/art/town/town.mesoamerican.background.l2.webp",
+      "sha256": "c9185596d58606241dd0099a4d0f3ee0c75d943cba3b6f65f3ddee3c48417af8",
+      "purpose": "Reference city background; no replacement painting",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.mesoamerican.support.pantheon_temple.l2",
+      "runtimeFile": "art/town/town.mesoamerican.support.pantheon_temple.l2.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.mesoamerican.support.pantheon_temple.l2.webp",
+      "deliveryFile": "reuse/art/town/town.mesoamerican.support.pantheon_temple.l2.webp",
+      "sha256": "365e85d58400598bde9eb1cd81637098e2b21073df00355037791af6596b73c6",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.mesoamerican.support.training_academy.l1",
+      "runtimeFile": "art/town/town.mesoamerican.support.training_academy.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.mesoamerican.support.training_academy.l1.webp",
+      "deliveryFile": "reuse/art/town/town.mesoamerican.support.training_academy.l1.webp",
+      "sha256": "c366665e6de4723f84e1f3d6306252ef31acb0fcb33f95ded700b50375e59253",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.mesoamerican.support.marketplace.l1",
+      "runtimeFile": "art/town/town.mesoamerican.support.marketplace.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.mesoamerican.support.marketplace.l1.webp",
+      "deliveryFile": "reuse/art/town/town.mesoamerican.support.marketplace.l1.webp",
+      "sha256": "a59eb4c2385e835fe98946fc463baeb969a4307cc666ab7c96e5d1fbe5894615",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.mesoamerican.support.fortifications.l1",
+      "runtimeFile": "art/town/town.mesoamerican.support.fortifications.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.mesoamerican.support.fortifications.l1.webp",
+      "deliveryFile": "reuse/art/town/town.mesoamerican.support.fortifications.l1.webp",
+      "sha256": "7270c1d405a594a2b0d3383e3949c9a3484fff90e6e2ce522d6f321244ad01df",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.mesoamerican.support.mage_guild.l1",
+      "runtimeFile": "art/town/town.mesoamerican.support.mage_guild.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.mesoamerican.support.mage_guild.l1.webp",
+      "deliveryFile": "reuse/art/town/town.mesoamerican.support.mage_guild.l1.webp",
+      "sha256": "e35d4356b5affeb66f6d9acea639cc96d2be54b2d26cf2ec54f66ef7f629f6d4",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.mesoamerican.support.artifact_merchant.l1",
+      "runtimeFile": "art/town/town.mesoamerican.support.artifact_merchant.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.mesoamerican.support.artifact_merchant.l1.webp",
+      "deliveryFile": "reuse/art/town/town.mesoamerican.support.artifact_merchant.l1.webp",
+      "sha256": "bfafe85c332de13c8a6fab531d97023f8465f7a874cab8ad1608747c46b6eb7f",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.mesoamerican.support.watchtower.l1",
+      "runtimeFile": "art/town/town.mesoamerican.support.watchtower.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.mesoamerican.support.watchtower.l1.webp",
+      "deliveryFile": "reuse/art/town/town.mesoamerican.support.watchtower.l1.webp",
+      "sha256": "a139cc9f07001a002a2d77ce7047a0865675202bd987c1a49f8c5aab08c78bbb",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "town.mesoamerican.support.civic_hall.l1",
+      "runtimeFile": "art/town/town.mesoamerican.support.civic_hall.l1.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/town/town.mesoamerican.support.civic_hall.l1.webp",
+      "deliveryFile": "reuse/art/town/town.mesoamerican.support.civic_hall.l1.webp",
+      "sha256": "42e05dc5bf7549c45602fc0a09a7a84132a0f71dad4f9631f08796daa91a7664",
+      "purpose": "Existing city building/service illustration",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "icon.bless.growth",
+      "runtimeFile": "ui/icons/final/icon.bless.growth.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.bless.growth.png",
+      "deliveryFile": "reuse/ui/icons/final/icon.bless.growth.png",
+      "sha256": "7ab902e4baf0dd69843432fb0460c5d8c7f5f479a821de62084383810e620565",
+      "purpose": "Existing interface symbol; pair with live text and value",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "icon.god.committed",
+      "runtimeFile": "ui/icons/final/icon.god.committed.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.god.committed.png",
+      "deliveryFile": "reuse/ui/icons/final/icon.god.committed.png",
+      "sha256": "e57dd6b2554df3f94063e788c53415f47a78bddbba82e18bd3834799b6c63cbb",
+      "purpose": "Existing interface symbol; pair with live text and value",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "icon.req.grand_temple",
+      "runtimeFile": "ui/icons/final/icon.req.grand_temple.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.req.grand_temple.png",
+      "deliveryFile": "reuse/ui/icons/final/icon.req.grand_temple.png",
+      "sha256": "fe078328e2d7bb668e6686a1542fd6e2a36f3a41e67817f70b5b076eedecfd76",
+      "purpose": "Existing interface symbol; pair with live text and value",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "icon.res.favor",
+      "runtimeFile": "ui/icons/final/icon.res.favor.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.res.favor.png",
+      "deliveryFile": "reuse/ui/icons/final/icon.res.favor.png",
+      "sha256": "577d041f35fe1568b7ef494d2d4d74c35a6b96df8ee9d98ffd0c246f6f27518e",
+      "purpose": "Existing interface symbol; pair with live text and value",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "icon.ui.market",
+      "runtimeFile": "ui/icons/final/icon.ui.market.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.ui.market.png",
+      "deliveryFile": "reuse/ui/icons/final/icon.ui.market.png",
+      "sha256": "89cee072cdca7fc582fd45f1a690d19716a7de5cd55e53110ba062b83b42ce45",
+      "purpose": "Existing interface symbol; pair with live text and value",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    },
+    {
+      "assetId": "icon.stat.mana",
+      "runtimeFile": "ui/icons/final/icon.stat.mana.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.stat.mana.png",
+      "deliveryFile": "reuse/ui/icons/final/icon.stat.mana.png",
+      "sha256": "1133cd996020cd40fca0e37ee7322a28538b6b12f939af2dbc7689e565a0d76b",
+      "purpose": "Existing interface symbol; pair with live text and value",
+      "importAction": "Reuse existing runtime asset ID; do not import as duplicate new art."
+    }
+  ]
+}

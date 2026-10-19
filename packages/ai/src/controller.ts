@@ -49,8 +49,11 @@ function submit(ctx: RulesContext, state: MatchState, actor: PlayerId, payload: 
 export function battleActingSide(state: MatchState): BattleSideId | null {
   const battle = state.battle;
   if (!battle || battle.status !== 'active') return null;
+  if (battle.shadowChoice) return battle.stacks[battle.shadowChoice.stackId]?.side ?? null;
   if (battle.phase === 'selection') return 'defender';
   if (battle.phase === 'deployment') return battle.deployment?.pending[0] ?? null;
+  // The siege engine's phase (targetableCatapultV1): its side fires or skips.
+  if (battle.phase === 'engine') return battle.siege?.engine?.side ?? null;
   if (!battle.activeStackId) return null;
   return battle.stacks[battle.activeStackId]?.side ?? null;
 }
@@ -90,6 +93,12 @@ export function stepBattleAI(catalog: ContentCatalog, state: MatchState, opts: B
   if (!actor || !payload) return { state, events: [], command: null };
   const first = submit(ctx, state, actor, payload, 'ai-battle', automated);
   if (first.result.ok) return { state: first.result.state, events: first.result.events, command: first.command };
+  // The engine phase's fallback: skip the shot (always legal while the phase is open).
+  if (state.battle!.phase === 'engine') {
+    const skip = submit(ctx, state, actor, { kind: 'BattleSkipCatapult', expectedRound: state.battle!.round }, 'ai-battle', automated);
+    if (skip.result.ok) return { state: skip.result.state, events: skip.result.events, command: skip.command };
+    throw new Error(`Tactical AI could not end the engine phase: ${first.result.rejection.message}`);
+  }
   // Fallback: a legal Defend always exists for the active stack.
   const stackId = state.battle!.activeStackId;
   if (!stackId) throw new Error(`Tactical AI could not act: ${first.result.rejection.message}`);

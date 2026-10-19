@@ -13,6 +13,9 @@ const army = (a: [string, number][]): (CreatureStackState | null)[] => [...a.map
 function besiege(attacker: [string, number][]): GameDriver {
   const d = GameDriver.mission('skirmish_twin_harbors');
   const s = d.state;
+  // The legacy automatic Catapult these tests describe (older saves, The Three Beacons): the targetable
+  // catapult (targetableCatapultV1, on in skirmishes) is covered by targetableCatapultAi.test.ts.
+  s.scenario.features = { ...s.scenario.features!, targetableCatapultV1: false };
   for (const fog of Object.values(s.fog)) fog.explored = fog.explored.map(() => 1);
   const east = s.towns['eastharbor']!;
   east.buildings['fortifications'] = 3;

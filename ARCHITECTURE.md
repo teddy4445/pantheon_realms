@@ -153,6 +153,12 @@ validated against that list; both forms draw on the site's ONE weekly stock.
 `TrainAtCamp` (`quoteCampTraining`) upgrades a visiting hero's base stack of the
 site's family for the gold difference, with no stock, never merging forms and
 never losing creatures (a partial training needs a slot or an upgraded stack).
+Weekly allowance (app 1.4.0, owner decision 2026-10-16): a site trains at most
+`campTrainingAllowance` creatures a week — the kind's optional `weeklyTraining`,
+else its `weeklyGrowth` — all empires together, counted on the site
+(`SiteState.trainedThisWeek` / `trainedWeek`, optional; a count from an earlier
+world week, or none in an older save, means nothing trained this week); the
+quote reports `weeklyAllowance` / `leftThisWeek` and caps `maxQuantity`.
 
 `RecruitBatch` (Recruit all, 2026-10-14) recruits several families in one
 command: `quoteRecruitBatch` walks the items against a simulated copy of the
@@ -292,6 +298,11 @@ scenario IDs (`DESIGN_PROPOSALS.md` §4–12):
 * **Wandering monsters** are hostile heroes with `HeroState.monster`
   (bounty) owned by the scenario's hostile player; the patrol AI keeps them
   inside `regionCenter`/`regionRadius` and attacks only at its threshold.
+* **Patrol circuits** (app 1.4.0): `HeroAiState.waypointIndex` is the waypoint a
+  patrol's round points at; `commitMoveHero` advances it (`patrolWaypointIndex`,
+  modulo the round, so any stored value names a waypoint) when the patrol stands
+  on that waypoint at the start or the end of a move. A detour elsewhere leaves
+  it unchanged. Deterministic, no RNG.
 * **Skirmish outcome** (`quests.ts`): elimination of empires without heroes
   or towns (`PlayerEliminated`), `hold_site` victory, `outcome.winnerIds`;
   works for any number of empires and any mix of humans and AI.
@@ -333,6 +344,91 @@ town with `HeroTeleported`) — reveal spells store temporary vision
 in `fog.temporaryReveals` until the next dawn; `visibleCells` includes it, so
 UI and AI belief states agree.
 
+### City dedications (app 1.5.0)
+
+Scenario feature `cityDedicationsV1` (absent = off). Catalog data: `cityDedicationProfiles` (one per god: weekly resource, favored family, `weeklyGrowthQuarters` 8/4/2/1 by tier, service id), `cityServiceRules` (11 rules keyed by kind) and `cityDedicationPolicy` (Temple II, switch 500 Gold); `content/src/common/cityDedications.ts` with a recorded `CITY_DEDICATION_TUNING`.
+
+- **State**: `TownState.dedication` (`activeGodId`, `ownerId`, `pending { godId, requestedBy, activationWeek }`, `growthCredits` per family, `lastProcessedWeek`), created lazily on first use.
+- **Commands**: `DedicateTown` and `ScheduleTownRededication`, with pure quotes; commits requote.
+- **Resolvers** (`systems/dedication.ts`, a leaf module): eligibility (`townDedicationBlocker`, `godDedicationBlocker`), `activeTownDedication` (null when dormant), the read-only `townDedicationView` (`dedicationView.ts`) and pure forecasts.
+- **Dawn** (`dedicationSystem.ts`): per town and week once (`applyOnce` + stamp): pending activation before the income, the gift after it (owner `incomePercent`, floored), and one favored-family credit update after ordinary growth (never multiplied; base dwelling required).
+- **Ownership**: `changeTownOwner` → `clearTownDedication` (keeps the stamp).
+- **Legacy god economics**: with the feature on, `godEffects` drops direct `daily_income` / `weekly_growth_bonus` god benefits only (`godBenefitsForMode`). `playerEffects` is never filtered by type, and hero perks, signatures and events are untouched.
+- **Services** (`dedicationServices.ts`): one dispatcher by rule kind gives Gold-only, per-unit, local discounts (highest percentage wins) to construction, recruitment and batches, troop upgrade, market buys (never below the best sell rate of any tier + 1), training, artifact shops and spellbook. Each such quote carries `dedication?: DedicationSaving`. `townVisionRadius(catalog, state, town)` adds the watchtower bonus.
+- **AI** (`ai/src/dedication.ts`): chooses and switches through the same view, quotes and commands.
+
+### Expedition systems (app 1.6.0)
+
+Each stateful system has its own scenario flag in `ScenarioFeatures`
+(`rules/src/definitions/campaign.ts`); absent means off, so old saves keep the old
+behaviour. `scoutingIntelV1` and `targetableCatapultV1` are on in new skirmish,
+random, editor maps and the campaign-v2 chapters (explicitly false in The Three Beacons; the v1
+missions of older runs keep both off — with intel on, the campaign autopilot lost three v1
+chapter 5s);
+`recruitmentCaravansV1`, `navalMovementV1` and `seaEncountersV1` in new skirmish,
+random and editor maps only (sea encounters stay off on the land random templates,
+whose hashes would change).
+
+- **Battle inspection** (presentation-only): `ui/app/battleInspection.ts` reads the
+  authoritative resolvers; statuses carry `sourceHeroId` / `sourceStackId` /
+  `sourceSide` when applied.
+- **Scouting intel**: policy data `catalog.scoutingIntelPolicy`
+  (`content/common/scoutingIntel.ts`); `resolvers/intel.ts` (`armyIntel`: sighting,
+  identified, scouted ranges) and `systems/intel.ts` (`refreshIntelSnapshots` after each
+  command into `MatchState.intel`, the last-known snapshots per observer). The UI and the
+  AI (`estimatedArmy` in `ai/observation.ts`) see only the projection; guards and
+  garrisons stay fully visible.
+- **Targetable catapult**: `systems/battle/engine.ts`; `SiegeState.engine` (anchor
+  col 1 row 0, two cells, `hp`, `aimedStructureId`, `firedRound`), the battle phase
+  `'engine'` after both creature queues, commands `BattleFireCatapult`,
+  `BattleSkipCatapult`, `BattleAttackEngine`, `BattleCastAtEngine`; stats in
+  `rulesProfile.combat.siege.engine`. `policy.ts` `battleSideToAct` knows the phase.
+  No legacy automatic shot when the flag is on.
+- **Caravans**: `rules/{definitions,resolvers,systems}/caravans.ts`, policy
+  `CARAVAN_POLICY`; `MatchState.caravans` and the turn cursor `caravanTurn`;
+  `DispatchCaravan` (priced through `quoteRecruitment`, one transaction),
+  `RerouteCaravan`, `AttackCaravan`; movement at the owner's turn start once per turn
+  (`lastMovedTurn` + cursor); interception battles `caravan_intercept` with a hero-less
+  cargo army.
+- **Ships**: `rules/{definitions,resolvers,systems}/naval.ts`; `world.ships`
+  (`ShipState`: id, owner, coord, heroId, state, facing); commands `LaunchShip`,
+  `EmbarkHero`, `DisembarkHero`, `AttackShip`; one mode-aware pathfinder: `quoteTravel`
+  is what `MoveHero` commits and what the UI previews (`MovementQuote.mode`,
+  `transition`, `voyage`); a mixed route stops at each transition
+  (`transition_required`), and `JourneyIntent.reason` keeps why. `checkEnvelope`
+  rejects a save that breaks a ship invariant (`shipInvariantIssues`).
+- **Battle boards**: `systems/battle/board.ts` holds `BATTLEFIELD_LAYOUTS` and one
+  layout-driven occupancy policy (`cellLegalFor`, `footprintLegalFor`,
+  `footprintFree(..., movementClass)`) used by deployment, movement, flight, forced
+  moves, previews, the AI and save checks. `boarding_two_ships_v1`: 102 legal cells
+  (two decks and a two-row bridge). `single_ship_sea_encounter_v2`
+  (`systems/battle/seaBoard.ts`): deck columns 0–7 for walkers, water 8–15 for
+  swimmers, flyers either, no footprint across the rail, the ship side bound to
+  `sourceShipId`; `renewableShots.ts` refills the `renewable_shots` ability every
+  round; `BattleHarpoon` (Deck Harpoon) shares one preview and resolution. Boards
+  without a policy keep the legacy all-legal grid.
+- **Sea encounters**: `resolvers/seaEncounter.ts`, `systems/seaEncounter.ts`; a ship
+  that sails onto a `sea_monster` site fights a `site_guard` battle on the sea board;
+  defeat wrecks the ship (`ShipWrecked` reason `sea_encounter_defeat`).
+- **Coastal sites**: `rules/{definitions,resolvers,systems}/seaSites.ts`, policy
+  `catalog.seaSitePolicy`; `coastal_watchtower` (live 6-hex sight, alerts deduplicated
+  in `MatchState.seaWatch`), `sea_pickup` (claimed once by an embarked hero),
+  `shipwreck` (`ExploreWreck`, `ClaimWreckArtifact`, `SiteState.wreck`, raiders on the
+  boarding board as `wreck_expedition`).
+- **Naval random maps**: `mapgen/src/naval/` (`pr-naval-templates-1`, template v2,
+  stream labels v1); checks NAV-1…NAV-21 (`validateNavalMap`); up to 32 candidates,
+  then a reference-shaped fallback, else `NavalGenerationError`. The mission carries
+  `navalPolicy` (`rules/definitions/navalPolicy.ts`): portals forced off, and
+  validation, saves and custom maps refuse portals, ferries and sluices.
+- **AI**: `ai/src/naval.ts` (launch, embark, voyages, landing, boarding),
+  `navalCampaign.ts` (invasion and relic plans, only with `navalPolicy`),
+  `caravans.ts`, `seaSites.ts`, sea-board tactics in `tactical.ts`; all through the same
+  quotes and commands.
+- **Presentation**: `presentation/src/ships.ts` (`ShipLayer`), `shipMotion.ts`,
+  `seaSites.ts`, `seaBattle.ts`; hexmath gains layout projections
+  (`layoutBoardProjection`, `pickCellOn`) and the cell-table projection
+  (`tableProjection`, `pickTableCell`) so drawing and clicks share one transform.
+
 ### AI information and fairness
 
 The strategic AI plans on the redacted belief state, plus one piece of
@@ -361,6 +457,35 @@ approaches an unseen town with a hero strong enough for a public-information
 estimate of its garrison. The tactical AI takes a free Shapeshift when the other
 aspect gives a clearly better best action (e.g. Hare Speed lets a Pooka reach
 an enemy); it does not use a Shapeshift that costs the activation.
+
+Neutral camps (app 1.4.0, `services.ts`): at a site that hires both forms the AI
+hires the form that adds the most `fightingStrength` for the Gold above
+`CAMP_RESERVE_GOLD` (ties to the upgrade), trains its base stacks of the site's
+family above `CAMP_TRAINING_RESERVE_GOLD` within the weekly allowance (hire and
+train ranked by strength per Gold), and values a camp as a destination by the
+best form it could buy plus the possible training (`campTargetValue`). It skips
+a camp behind an unmade pact. Patrols and scripted hostile players never use
+camps. A wandering monster near a town with no hero inside does not make that
+town "threatened" (monsters hunt heroes, never towns).
+
+Patrols (app 1.4.0, `packages/ai/src/patrol.ts`; shared helpers `heroStrength`,
+`endangered`, `withinRegion`, `tieHash` in `threat.ts`), belief only and
+deterministic, in order:
+1. A dormant patrol waits.
+2. A commander falls back when a visible enemy of at least
+   `PATROL_OUTMATCH_MARGIN` (1.25) × its strength can reach it next turn: first
+   a safe chase, then its home camp (a free tile beside it while the camp's guard
+   holds the tile), then its safest waypoint, else it holds. Wandering monsters
+   never flee.
+3. It chases the best visible hero it can beat by its `attackThreshold`: nearest
+   by path cost, then the biggest margin, the whole path inside its region.
+4. It guards: with a visible enemy within `PATROL_GUARD_RADIUS` (6) of a
+   waypoint or its camp, it goes to the point nearest that enemy and holds there.
+5. Otherwise it walks its round from `waypointIndex`.
+
+Guard, round and fall-back moves never stop where a much stronger visible enemy
+can reach next turn. A waypoint still in the patrol side's fog is approached
+step by step through explored tiles.
 
 Late game (2026-10-07, `packages/ai/src/handoff.ts`): from day 15 secondary
 heroes carrying 15–80% of the main army's strength walk to it (≤ 2 days, safe
@@ -403,7 +528,7 @@ Three rules, all from public knowledge only, removed most of that edge:
 * Pathfinding uses canonical neighbor order and deterministic tie-breaking;
   only explored tiles are used, so routes never leak hidden terrain.
 * The strategic AI breaks ties between equally scored moves with a hash of
-  the empire and the move (`tieHash` in `ai/src/strategic.ts`), not by
+  the empire and the move (`tieHash` in `ai/src/threat.ts`), not by
   coordinates, so empires on opposite sides of a mirrored map are not steered
   in different directions. Still deterministic per match.
 * The map generator produces a logical hash; decor comes from its own stream.
@@ -661,6 +786,15 @@ plays them. A shooter's melee blow flies nothing; a wall-breaking shooter uses
 its own missile; the catapult's stone is only the catapult's; an unknown unit
 keeps the generic arrow. Effects with frame regions set each frame's pixel
 anchor and `sourceScale` on every frame change. Presentation only.
+Since app 1.4.0 each profile carries `sounds` (release and impact sound IDs with
+an optional `maxMs`, existing sounds only; written by the importer's `SOUNDS`
+table). The cues carry them as `BattleCue.sound`, and the audio director cuts a
+voice at `maxMs` with a 70 ms fade. A stack held for playback keeps the count
+badge it shows until its blow, heal or status lands, or until the release
+(`impactTiming.nextBadge`); a destroyed stack's badge goes with the blow. A
+killing blow holds the playback (`TweenPlayer.freeze`, 60 ms; 100 ms when the
+stack is destroyed; × battle speed) and flashes softly at the contact point
+(not on Low, not with reduced motion).
 
 ## 7. UI
 

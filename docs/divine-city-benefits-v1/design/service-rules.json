@@ -1,0 +1,83 @@
+{
+  "training": {
+    "name": "Hero training",
+    "kind": "gold_discount",
+    "percent": 20,
+    "requiredRole": "training_academy",
+    "summary": "20% less Gold for weekly hero training; XP and the once-per-hero-per-week limit stay unchanged."
+  },
+  "trade": {
+    "name": "Market purchases",
+    "kind": "market_buy_discount",
+    "percent": 10,
+    "requiredRole": "marketplace",
+    "summary": "10% less Gold when buying Wood, Stone or Crystal at this city; selling prices stay unchanged."
+  },
+  "fortify": {
+    "name": "Fortification construction",
+    "kind": "construction_gold_discount",
+    "percent": 10,
+    "targetRole": "fortifications",
+    "summary": "10% less Gold to build or upgrade this city’s Fort, Citadel and Castle; material costs and one build per day stay unchanged."
+  },
+  "library": {
+    "name": "Library construction",
+    "kind": "construction_gold_discount",
+    "percent": 10,
+    "targetRole": "mage_guild",
+    "summary": "10% less Gold to build or upgrade this city’s spell library; material costs and spell prerequisites stay unchanged."
+  },
+  "spellbook": {
+    "name": "Spellbook purchase",
+    "kind": "gold_discount",
+    "percent": 25,
+    "requiredRole": "mage_guild",
+    "requiredEffect": "enables_spellbook_purchase",
+    "summary": "25% less Gold for a visiting hero’s spellbook. Learning eligible spells remains free, as in the current game."
+  },
+  "recruit": {
+    "name": "Favored recruitment",
+    "kind": "family_recruit_gold_discount",
+    "percent": 5,
+    "requiredRole": "favored_dwelling",
+    "summary": "5% less Gold per recruited member of the favored family, both unlocked forms. Other resources, population and access checks stay unchanged."
+  },
+  "upgrade": {
+    "name": "Favored troop training",
+    "kind": "family_upgrade_gold_discount",
+    "percent": 15,
+    "requiredRole": "favored_upgraded_dwelling",
+    "summary": "15% less Gold on the normal per-unit upgrade price difference for the favored family in this city. No extra stock is consumed."
+  },
+  "equipment": {
+    "name": "Artifact purchases",
+    "kind": "shop_gold_discount",
+    "percent": 10,
+    "requiredRolesAny": [
+      "artifact_merchant",
+      "workshop"
+    ],
+    "summary": "10% less Gold for purchases from this city’s Artifact Merchant or Workshop. Stocks, rarities and other resource costs stay unchanged."
+  },
+  "watch": {
+    "name": "Watchtower vision",
+    "kind": "town_vision_bonus",
+    "amount": 2,
+    "requiredRole": "watchtower",
+    "summary": "+2 hexes to this city’s existing vision radius while its Watchtower is built; no hero vision bonus and no fog-map reveal on dedication."
+  },
+  "dwelling": {
+    "name": "Favored dwelling construction",
+    "kind": "family_dwelling_gold_discount",
+    "percent": 10,
+    "targetRole": "favored_dwelling",
+    "summary": "10% less Gold to build or upgrade the favored family’s dwelling in this city. No new creature access or covenant is granted."
+  },
+  "civic": {
+    "name": "Civic construction",
+    "kind": "construction_gold_discount",
+    "percent": 10,
+    "targetRole": "civic_hall",
+    "summary": "10% less Gold on this city’s civic-hall upgrades; level prerequisites and construction limits stay unchanged."
+  }
+}

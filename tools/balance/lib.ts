@@ -8,8 +8,9 @@
 import { GameDriver } from '@pr/testing';
 import { armyStrength, runAITurn } from '@pr/ai';
 import { compileSkirmishMap, createGeneratedMatch, createMissionMatch, createRandomSkirmish, type GeneratedScenario } from '@pr/campaign';
-import type { ContentCatalog, MatchState } from '@pr/rules';
+import type { ContentCatalog, GameEvent, MatchState } from '@pr/rules';
 import type { SkirmishMapSize, SkirmishMapType } from '@pr/mapgen';
+import { EconTracker, type MatchEcon } from './econ';
 
 export type Army = { creatureId: string; count: number }[];
 
@@ -31,6 +32,27 @@ export function skirmishMission(player: string, rival: string): string {
 export interface DuelSides {
   readonly a: string;
   readonly b: string;
+}
+
+/**
+ * `--legacy-gods`: the same match with city dedications off (the gods' direct daily income and
+ * weekly growth as before 1.5.0) — set on the new match before its first command.
+ */
+export function withLegacyGods(s: MatchState): void {
+  (s.scenario as { features?: Record<string, unknown> }).features = { ...(s.scenario.features ?? {}), cityDedicationsV1: false };
+}
+
+/**
+ * `--legacy-intel`: the whole matches of this worker with scouting intel off (every visible enemy army
+ * known in full, as before the expedition kit) — set once per worker, applied to each new match
+ * before its first command (`withLegacyIntel`).
+ */
+let legacyIntel = false;
+export function setLegacyIntel(on: boolean): void {
+  legacyIntel = on;
+}
+export function withLegacyIntel(s: MatchState): void {
+  if (legacyIntel) (s.scenario as { features?: Record<string, unknown> }).features = { ...(s.scenario.features ?? {}), scoutingIntelV1: false };
 }
 
 /** Duels measure troops (and signatures): hero specialties are switched off like the rest of the commander. */
@@ -152,6 +174,8 @@ export interface SkirmishOptions {
   readonly maxDay?: number;
   /** Pantheon AI temperaments (default on, as in the game). */
   readonly temperaments?: boolean;
+  /** City dedications off (`--legacy-gods`): the gods' old direct economy. */
+  readonly legacyGods?: boolean;
 }
 
 export interface SkirmishResult {
@@ -171,6 +195,8 @@ export interface SkirmishResult {
   readonly captures: number;
   readonly battles: number;
   readonly strength: { readonly west: number; readonly east: number };
+  /** Economy and city dedications per seat (west first). */
+  readonly econ?: MatchEcon;
 }
 
 /**
@@ -188,6 +214,8 @@ export function playSkirmish(catalog: ContentCatalog, o: SkirmishOptions): Skirm
   const s: MatchState = structuredClone(d.state);
   for (const p of Object.values(s.players)) if (p.controller === 'human') p.controller = 'ai';
   if (o.temperaments === false) (s.scenario as { features?: Record<string, unknown> }).features = { ...(s.scenario.features ?? {}), aiTemperaments: false };
+  if (o.legacyGods) withLegacyGods(s);
+  withLegacyIntel(s);
   const eastId = s.towns['eastharbor']!.ownerId!;
   const firstMover = o.firstMover ?? 'west';
   if (firstMover === 'east') {
@@ -204,12 +232,18 @@ export function playSkirmish(catalog: ContentCatalog, o: SkirmishOptions): Skirm
       if (e.kind === 'TownCaptured') captures++;
     }
   };
+  const westId = s.playerOrder.find((p) => p !== eastId)!;
+  const econ = new EconTracker(catalog, d.state, [westId, eastId]);
   for (let i = 0; i < 2000 && d.state.outcome.status === 'running' && d.state.day <= maxDay; i++) {
-    d.state = runAITurn(catalog, d.state, { onEvents });
+    econ.tick(d.state);
+    const actor = d.state.activePlayerId;
+    const day = d.state.day;
+    const turn: GameEvent[] = [];
+    d.state = runAITurn(catalog, d.state, { onEvents: (ev) => (onEvents(ev), turn.push(...ev)) });
+    econ.onEvents(turn, actor, day, d.state);
     if (d.state.battle) d.autoBattle(8000);
   }
   const out = d.state.outcome;
-  const westId = s.playerOrder.find((p) => p !== eastId)!;
   // Both seats are AI here, so read the winner from the outcome (its status is
   // written from a human seat's point of view, and no seat is human).
   let winner: SkirmishResult['winner'] = 'none';
@@ -233,7 +267,7 @@ export function playSkirmish(catalog: ContentCatalog, o: SkirmishOptions): Skirm
   if (winner === 'none') {
     pointsWinner = strength.west >= strength.east * 1.25 ? 'west' : strength.east >= strength.west * 1.25 ? 'east' : 'draw';
   }
-  return { west: o.west, east: o.east, seed: o.seed, winner, pointsWinner, day: d.state.day, firstMover, captures, battles, strength };
+  return { west: o.west, east: o.east, seed: o.seed, winner, pointsWinner, day: d.state.day, firstMover, captures, battles, strength, econ: econ.result(d.state) };
 }
 
 export interface SeriesSummary {
@@ -274,6 +308,8 @@ export interface RandomOptions {
   /** Map type (default continental) and size (default small). */
   readonly mapType?: SkirmishMapType;
   readonly size?: SkirmishMapSize;
+  /** City dedications off (`--legacy-gods`). */
+  readonly legacyGods?: boolean;
 }
 
 export interface RandomResult {
@@ -290,6 +326,8 @@ export interface RandomResult {
   readonly battles: number;
   /** Per seat on the morning of day 15 (diagnostics for tuning): army strength, building levels, gods, gold, heroes. */
   readonly snapshot?: readonly { readonly army: number; readonly buildings: number; readonly gods: readonly string[]; readonly gold: number; readonly heroes: number; readonly towns: number }[];
+  /** Economy and city dedications per seat (seat order). */
+  readonly econ?: MatchEcon;
 }
 
 /** One all-AI match on a generated symmetric map (small, few monsters, last empire standing). */
@@ -304,23 +342,29 @@ export function playRandom(catalog: ContentCatalog, o: RandomOptions): RandomRes
     monsters: 'few',
     aiTemperaments: o.temperaments !== false,
   });
-  return playGenerated(catalog, g, `rand-${seatPantheons.join('-')}-${o.mapType ?? 'continental'}-${o.seed}`, { pantheon: o.pantheon, empires: o.empires, seed: o.seed, maxDay: o.maxDay });
+  return playGenerated(catalog, g, `rand-${seatPantheons.join('-')}-${o.mapType ?? 'continental'}-${o.seed}`, { pantheon: o.pantheon, empires: o.empires, seed: o.seed, maxDay: o.maxDay, legacyGods: o.legacyGods });
 }
 
 /** One all-AI match on an authored skirmish map (catalog `skirmishMaps`), one pantheon per seat. */
-export function playMap(catalog: ContentCatalog, o: { readonly mapId: string; readonly seatPantheons: readonly string[]; readonly seed: number; readonly maxDay?: number }): RandomResult & { readonly holdWin: boolean } {
+export function playMap(catalog: ContentCatalog, o: { readonly mapId: string; readonly seatPantheons: readonly string[]; readonly seed: number; readonly maxDay?: number; readonly legacyGods?: boolean }): RandomResult & { readonly holdWin: boolean } {
   const g = compileSkirmishMap(
     catalog,
     o.mapId,
     o.seatPantheons.map((pantheonId) => ({ pantheonId, controller: 'ai' as const })),
   );
-  const r = playGenerated(catalog, g, `map-${o.mapId}-${o.seatPantheons.join('-')}-${o.seed}`, { pantheon: o.seatPantheons[0]!, empires: o.seatPantheons.length, seed: o.seed, maxDay: o.maxDay });
+  const r = playGenerated(catalog, g, `map-${o.mapId}-${o.seatPantheons.join('-')}-${o.seed}`, { pantheon: o.seatPantheons[0]!, empires: o.seatPantheons.length, seed: o.seed, maxDay: o.maxDay, legacyGods: o.legacyGods });
   return { ...r, holdWin: r.holdWin ?? false };
 }
 
-export function playGenerated(catalog: ContentCatalog, g: GeneratedScenario, matchId: string, o: { pantheon: string; empires: number; seed: number; maxDay?: number }): RandomResult & { holdWin?: boolean } {
+export function playGenerated(catalog: ContentCatalog, g: GeneratedScenario, matchId: string, o: { pantheon: string; empires: number; seed: number; maxDay?: number; legacyGods?: boolean }): RandomResult & { holdWin?: boolean } {
   const { match } = createGeneratedMatch(catalog, g, { matchId });
   const d = new GameDriver(match, catalog);
+  if (o.legacyGods || legacyIntel) {
+    const s: MatchState = structuredClone(d.state);
+    if (o.legacyGods) withLegacyGods(s);
+    withLegacyIntel(s);
+    d.state = s;
+  }
   const maxDay = o.maxDay ?? 40;
   let battles = 0;
   const onEvents = (events: readonly { kind: string }[]) => {
@@ -336,7 +380,9 @@ export function playGenerated(catalog: ContentCatalog, g: GeneratedScenario, mat
     return total;
   };
   let snapshot: RandomResult['snapshot'];
+  const econ = new EconTracker(catalog, d.state, seats);
   for (let i = 0; i < 4000 && d.state.outcome.status === 'running' && d.state.day <= maxDay; i++) {
+    econ.tick(d.state);
     if (!snapshot && d.state.day >= 15)
       snapshot = seats.map((id) => {
         const p = d.state.players[id]!;
@@ -350,7 +396,11 @@ export function playGenerated(catalog: ContentCatalog, g: GeneratedScenario, mat
           towns: towns.length,
         };
       });
-    d.state = runAITurn(catalog, d.state, { onEvents });
+    const actor = d.state.activePlayerId;
+    const day = d.state.day;
+    const turn: GameEvent[] = [];
+    d.state = runAITurn(catalog, d.state, { onEvents: (ev) => (onEvents(ev), turn.push(...ev)) });
+    econ.onEvents(turn, actor, day, d.state);
     if (d.state.battle) d.autoBattle(8000);
     seats.forEach((id, s) => {
       if (!knockedOut.some((k) => k.seat === s) && !present(id)) knockedOut.push({ seat: s, day: d.state.day });
@@ -370,5 +420,5 @@ export function playGenerated(catalog: ContentCatalog, g: GeneratedScenario, mat
   }
   // A hold-the-shrine win: the winner still had rivals standing.
   const holdWin = !!w && seats.some((id) => id !== w && present(id));
-  return { pantheon: o.pantheon, empires: o.empires, seed: o.seed, winnerSeat: w ? seats.indexOf(w) : null, pointsSeat, knockedOut, day: d.state.day, battles, snapshot, holdWin };
+  return { pantheon: o.pantheon, empires: o.empires, seed: o.seed, winnerSeat: w ? seats.indexOf(w) : null, pointsSeat, knockedOut, day: d.state.day, battles, snapshot, holdWin, econ: econ.result(d.state) };
 }

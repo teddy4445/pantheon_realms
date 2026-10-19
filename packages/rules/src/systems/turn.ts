@@ -1,9 +1,13 @@
+import { processSeedGrowth } from './libraryEconomy';
 /**
  * TurnManager / DayProcessor / WeekProcessor.
  *
  * A world day advances only after every active player ends their turn. The dawn
  * transition is one atomic step (design/02 §3): income, weekly growth, build
  * allowance reset, movement/mana refresh, then the next turn sequence begins.
+ * With city dedications (app 1.5.0) a new week also activates due switches before
+ * the income, pays the towns' weekly gifts after it and adds each favored family's
+ * extra after its ordinary growth (dedicationSystem.ts).
  * Each payout carries an idempotency key; reloading never repeats it.
  */
 import { expireTemporaryVision } from './magic';
@@ -20,6 +24,9 @@ import { refreshTownShops } from './services';
 import { playerEffects } from '../resolvers/effects';
 import { advanceRelics, restockCamps, startWeeklyEvent } from './world';
 import { recordDayStats } from './stats';
+import { applyCityDevotionGrowth, beginCityDedicationWeek, grantCityGifts } from './dedicationSystem';
+import { processCaravanTurnStart } from './caravans';
+import { processLibraryAdventureDawn } from './libraryAdventure';
 
 export function weekOf(day: number, daysPerWeek = 7): number {
   return 1 + Math.floor((day - 1) / daysPerWeek);
@@ -32,8 +39,10 @@ export function dayOfWeek(day: number, daysPerWeek = 7): number {
 export function commitEndTurn(tx: Tx): void {
   const state = tx.state;
   tx.emit({ kind: 'TurnEnded', playerId: state.activePlayerId });
-  const order = state.playerOrder;
-  const start = Math.max(0, order.indexOf(state.activePlayerId));
+  const members = state.coalition?.playerIds ?? [], lead = members[0];
+  const order = state.playerOrder.filter((id) => !members.includes(id) || id === lead);
+  const acting = members.includes(state.activePlayerId) ? lead! : state.activePlayerId;
+  const start = Math.max(0, order.indexOf(acting));
   // Walk the full order from the current seat (which may itself have just been
   // eliminated), skipping eliminated players; passing the last seat is dawn.
   let next = state.activePlayerId;
@@ -55,6 +64,8 @@ export function commitEndTurn(tx: Tx): void {
     }
   }
   state.activePlayerId = next;
+  // Recruitment caravans move at the start of their owner's turn (once per turn; saved cursor).
+  for (const owner of members.includes(next) ? members : [next]) processCaravanTurnStart(tx, owner);
   tx.emit({ kind: 'TurnStarted', playerId: state.activePlayerId, day: state.day });
 }
 
@@ -112,10 +123,15 @@ export function processDawn(tx: Tx): void {
   const week = weekOf(day, daysPerWeek);
   const newWeek = day > 1 && (day - 1) % daysPerWeek === 0;
   expireTemporaryVision(state);
+  processLibraryAdventureDawn(tx);
   tx.emit({ kind: 'DayStarted', day, week, dayOfWeek: dayOfWeek(day, daysPerWeek) });
 
   // Step 1b: a new week's event is announced before it pays or grows anything.
   if (newWeek) startWeeklyEvent(tx, week);
+
+  // Step 1c (city dedications, app 1.5.0): each dedicated town claims this week's transaction
+  // once (key + stamp) and a due valid switch takes over. Null in scenarios without the feature.
+  const dedicationWeek = newWeek ? beginCityDedicationWeek(tx, week) : null;
 
   // Step 2: recurring income from ownership and buildings already present.
   const incomeToday: Record<string, ResourceBundle> = {};
@@ -131,6 +147,9 @@ export function processDawn(tx: Tx): void {
     }
   }
 
+  // Step 2b (city dedications): each eligible dedicated town's weekly gift (never part of the daily income).
+  if (dedicationWeek) grantCityGifts(tx, dedicationWeek);
+
   // Step 3: weekly growth on days 8, 15, 22, ...
   if (newWeek) {
     for (const town of Object.values(state.towns).sort((a, b) => (a.id < b.id ? -1 : 1))) {
@@ -140,9 +159,12 @@ export function processDawn(tx: Tx): void {
         town.population[familyId] = (town.population[familyId] ?? 0) + added;
         tx.emit({ kind: 'PopulationGrown', townId: town.id, familyId, added, total: town.population[familyId]! });
       }
+      // Ordinary growth first (with its modifiers), then the dedication's favored-family extra once.
+      if (dedicationWeek) applyCityDevotionGrowth(tx, town, dedicationWeek);
       refreshTownShops(tx, town);
     }
     restockCamps(tx, week);
+    processSeedGrowth(tx, week);
   }
 
   // Step 4: build allowance resets implicitly (buildUsedDay != day); refresh heroes.

@@ -18,7 +18,8 @@ delete env.PR_DEV_URL;
 // SwiftShader flags let the WebGL 2D views render under Xvfb (test-only; not used by the app).
 // PR_SMOKE_EXE=<packaged executable> checks an installed-layout build (app.isPackaged true)
 // instead of the development layout in apps/desktop.
-const flags = ['--no-sandbox', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', `--user-data-dir=${userData}`];
+// Local Windows acceptance can use the same hardware renderer as the installed game.
+const flags = [...(process.env.PR_SMOKE_HARDWARE === '1' ? [] : ['--no-sandbox', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader']), `--user-data-dir=${userData}`];
 const exe = process.env.PR_SMOKE_EXE;
 const app = exe ? await electron.launch({ executablePath: exe, args: flags, env: { ...env, PR_DEV_URL: 'https://example.invalid/' } }) : await electron.launch({ args: [...flags, 'apps/desktop'], env });
 const fail = (m) => {
@@ -89,6 +90,25 @@ try {
     return { files: n, bad };
   });
   if (art.files < 1 || art.bad.length) fail(`painted art not served or not decodable: ${JSON.stringify(art.bad.slice(0, 5))}`);
+  // The additive packs use their own native atlas manifests, outside art/manifest.json.
+  const expansion = await win.evaluate(async () => {
+    const library = await (await fetch('./mythic-library-v2/manifest.json')).json();
+    const twins = await (await fetch('./twin-campaigns-v1/manifest.json')).json();
+    const files = new Map();
+    for (const f of Object.values(library.frames)) files.set(`mythic-library-v2/${f.file}`, [f.imageWidth, f.imageHeight]);
+    for (const a of twins.assets) files.set(a.runtime.replace(/^assets-runtime\//, ''), [a.width, a.height]);
+    const bad = [];
+    for (const [file, size] of files) {
+      try {
+        const res = await fetch(`./${file}`);
+        const bmp = await createImageBitmap(await res.blob());
+        if (!res.ok || bmp.width !== size[0] || bmp.height !== size[1]) bad.push(file);
+        bmp.close();
+      } catch { bad.push(file); }
+    }
+    return { files: files.size, bad };
+  });
+  if (expansion.files !== 40 || expansion.bad.length) fail(`expansion artwork unavailable: ${JSON.stringify(expansion)}`);
   // Mouse cursors (1x and 2x) and the final icons (emblems among them) are served by the
   // app protocol and decode; the interface cursor variable points at the delivered arrow.
   const ui = await win.evaluate(async () => {
@@ -179,7 +199,7 @@ try {
     if (packaged.devTools) fail('DevTools opened in the packaged build');
     if (packaged.name !== 'Pantheon Realms') fail(`unexpected app name ${packaged.name}`);
   }
-  if (!process.exitCode) console.log('DESKTOP SMOKE OK', { url, saves: files, records: 'records.json', sprites: sprites.files, map: mapView, art: art.files, uiImages: ui.files, cursor: ui.cursorVar.slice(0, 60), audio, ...(packaged ? { packaged } : {}) });
+  if (!process.exitCode) console.log('DESKTOP SMOKE OK', { url, saves: files, records: 'records.json', sprites: sprites.files, map: mapView, art: art.files, expansionImages: expansion.files, uiImages: ui.files, cursor: ui.cursorVar.slice(0, 60), audio, ...(packaged ? { packaged } : {}) });
 } catch (e) {
   fail(e instanceof Error ? e.message : String(e));
 } finally {

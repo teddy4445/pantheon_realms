@@ -272,3 +272,38 @@ stack (`TrainAtCamp`); other camps keep their single listed creature
 in both chapter orders (`tools/campaign-v2/sim.measure.ts`;
 `npm run campaign-sim -- --content 2`).
 
+**App 1.4.0 (2026-10-16, owner ideas 1, 3, 5):** a stack held for battle
+playback keeps its count badge until its blow lands (`impactTiming.ts`); killing
+blows hold the playback briefly (`TweenPlayer.freeze`); missile sounds are data on
+the projectile profiles (`sounds`, importer `SOUNDS` table; existing sound IDs
+only). A neutral hiring site trains at most its weekly allowance
+(`campTrainingAllowance`: `weeklyTraining` ?? `weeklyGrowth`, shared, renewed
+weekly). The AI hires and trains at camps (`services.ts`). Patrols live in
+`packages/ai/src/patrol.ts` (chase, guard, commanders fall back, round by
+`HeroAiState.waypointIndex`, which the rules advance); re-run the campaign
+simulator (both content versions) after changing them.
+
+**App 1.5.0 (2026-10-17, city dedications; docs/divine-city-benefits-v1/):** a town
+with Temple II honors its owner's patron or a committed minor god for three local
+benefits from the god's profile (data in `content/src/common/cityDedications.ts`;
+tune numbers there, record changes in `CITY_DEDICATION_TUNING`; never branch on a god
+ID). Rules: `systems/dedication.ts` (pure resolvers, view), `dedicationSystem.ts`
+(commands, dawn), `dedicationServices.ts` (the one service dispatcher; every
+discounted quote carries `dedication?: DedicationSaving`). Scenario flag
+`cityDedicationsV1`: absent = legacy god economics (old saves); explicitly false for
+The Three Beacons. Every town owner change goes through `changeTownOwner`, which
+clears the dedication.
+
+**App 1.6.0 (2026-10-18, expedition kit, naval random maps, sea creatures, coastal
+sites; docs/expedition-v1/ and assets-source/art/{naval-random,sea-creatures,sea-sites}-v1/):**
+each stateful system has a scenario flag (`scoutingIntelV1`, `targetableCatapultV1`,
+`recruitmentCaravansV1`, `navalMovementV1`, `seaEncountersV1`; absent = off, so old
+saves are legacy). Ships are world entities (`world.ships`); preview and commit hero
+movement with `quoteTravel` (never `quoteMovement` for a hero who may sail). Every
+battle placement and move goes through the layout occupancy policy in
+`systems/battle/board.ts` (`footprintFree` takes the movement class); a new board is
+data in `BATTLEFIELD_LAYOUTS` plus a hexmath projection, never a client-side filter.
+Naval random templates live in `packages/mapgen/src/naval/` (checks NAV-1…NAV-21; run
+`NAVAL_SWEEP=100 npx vitest run packages/mapgen/test/navalTemplates.test.ts` after
+changing them; `npm run naval-random:matches` for headless AI games).
+

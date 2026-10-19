@@ -16,10 +16,16 @@
  * hires both forms of its family offers a base / upgraded selector (both from the
  * site's one shared stock) and, when the visiting hero has a base stack of that
  * family, a separate training action (the price difference, no stock used).
+ *
+ * Weekly training allowance (owner decision 2026-10-16): the training action shows
+ * how many of the site's weekly allowance (shared by every empire) are left this
+ * week, its quantity limit never exceeds it (the rules' `maxQuantity`), and when
+ * none are left the rules' reason is the action's disabled state.
  */
 import {
   campForms,
   campLockedReason,
+  campTrainingLimitText,
   canAfford,
   isSingleForm,
   missionSite,
@@ -191,10 +197,15 @@ export interface TrainView {
   readonly stackCount: number;
   /** The price difference per creature (the rules' quote). */
   readonly unitCost: ResourceBundle;
-  /** Quantity selector: the chosen amount clamped to [min, max]; max is the rules' legal maximum now. */
+  /** Quantity selector: the chosen amount clamped to [min, max]; max is the rules' legal maximum now (never more than is left this week). */
   readonly quantity: number;
   readonly min: number;
   readonly max: number;
+  /** The site's weekly training allowance, shared by every empire, and how many of it are left this week (the rules' quote). */
+  readonly weeklyAllowance: number;
+  readonly leftThisWeek: number;
+  /** "6 of 8 left this week". */
+  readonly allowanceText: string;
   readonly targetSlot: number | null;
   /** "Slot 2 — all 4 become Dawncrest Pegasi." */
   readonly destinationText: string;
@@ -329,9 +340,9 @@ export function neutralRecruitView(catalog: ContentCatalog, state: MatchState, p
     issues.push({ kind: 'empty', title: 'No stock', text });
   }
   if (hero && probe.slot === null) issues.push({ kind: 'full', title: 'Army full', text: `${heroName}’s seven slots hold other creatures: free a slot to hire ${creature.pluralName}.` });
-  if (!canAfford(wallet, probe.unitCost)) {
-    const short = resourceText(shortfall(wallet, probe.unitCost));
-    issues.push({ kind: 'poor', title: 'Not enough resources', text: `One ${creature.name} costs ${resourceText(probe.unitCost)}: short ${short}.` });
+  if (!canAfford(wallet, probe.totalCost)) {
+    const short = resourceText(shortfall(wallet, probe.totalCost));
+    issues.push({ kind: 'poor', title: 'Not enough resources', text: `One ${creature.name} costs ${resourceText(probe.totalCost)}: short ${short}.` });
   }
   const explained: Record<string, RecruitIssueKind | undefined> = { no_population: 'empty', no_capacity: 'full', insufficient_resources: 'poor' };
   if (!probe.legal && probe.reason && probe.code !== 'invalid_quantity') {
@@ -437,23 +448,32 @@ function trainView(catalog: ContentCatalog, state: MatchState, playerId: string,
   const slot = hero.army.slots.findIndex((x) => x?.creatureId === from.id);
   if (slot < 0) return null;
   const probe = quoteCampTraining(catalog, state, playerId, heroId, siteId, from.id, 1, slot);
+  // A site whose content trains nobody (weeklyTraining 0) shows no training action.
+  if (probe.weeklyAllowance < 1) return null;
   const wallet = resources(state.players[playerId]?.wallet ?? {});
-  // Nothing trains while a refusal other than gold or space holds (no pact, guards, another hero's turn…).
+  // Nothing trains while a refusal other than gold or space holds (no pact, guards, another hero's turn,
+  // none left of the week's allowance…).
   const blocked = probe.code !== null && probe.code !== 'insufficient_resources' && probe.code !== 'no_capacity';
   const max = blocked ? 0 : Math.max(0, probe.maxQuantity);
   const min = max < 1 ? 0 : 1;
   const want = Number.isFinite(requested) ? Math.floor(requested) : 1;
   const quantity = max < 1 ? 0 : Math.min(max, Math.max(1, want));
   const count = probe.stackCount;
+  const allowance = probe.weeklyAllowance;
+  const left = probe.leftThisWeek;
   // Why nothing can be trained now: the rules' first refusal (a shortfall named for one creature).
   let reason: string | null = null;
   if (max < 1) {
-    if (blocked) reason = probe.reason ?? 'Cannot train now';
+    if (blocked) reason = left < 1 && probe.code === 'no_population' ? `${probe.reason}. More can train when the next week begins.` : (probe.reason ?? 'Cannot train now');
     else if (!canAfford(wallet, probe.unitCost)) reason = `Training one ${from.name} costs ${resourceText(probe.unitCost)}: short ${resourceText(shortfall(wallet, probe.unitCost))}.`;
     else {
-      // Enough for some but not the whole stack, and nowhere to put a part of it.
+      // Not the whole stack (the week's allowance, or the Gold), and nowhere to put a part of it.
       const all = scaleResources(probe.unitCost, count);
-      reason = `Training all ${count} costs ${resourceText(all)}: short ${resourceText(shortfall(wallet, all))}. A partial training needs a free slot or an existing stack of ${to.pluralName}.`;
+      const why: string[] = [];
+      if (count > left) why.push(`${campTrainingLimitText(left, allowance)}: not all ${count}.`);
+      if (!canAfford(wallet, all)) why.push(`Training all ${count} costs ${resourceText(all)}: short ${resourceText(shortfall(wallet, all))}.`);
+      why.push(`A partial training needs a free slot or an existing stack of ${to.pluralName}.`);
+      reason = why.join(' ');
     }
   }
   const q = quantity > 0 ? quoteCampTraining(catalog, state, playerId, heroId, siteId, from.id, quantity, slot) : null;
@@ -486,6 +506,9 @@ function trainView(catalog: ContentCatalog, state: MatchState, playerId: string,
     quantity,
     min,
     max,
+    weeklyAllowance: allowance,
+    leftThisWeek: left,
+    allowanceText: `${left} of ${allowance} left this week`,
     targetSlot,
     destinationText,
     reason,

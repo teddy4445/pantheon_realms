@@ -1,0 +1,38 @@
+{
+  "scope": "Two fixed reference terrain graphs only. No production generator, AI, town footprints, object placement or actual gameplay tested.",
+  "maps": [
+    {
+      "map": "shattered_crown",
+      "waterPercent": 73.5,
+      "landComponents": 13,
+      "hexes": 1951,
+      "checks": {
+        "expected_land_components": true,
+        "separate_rival_home_components": true,
+        "objective_separate_from_all_homes": true,
+        "connected_sea": true,
+        "all_start_ships_on_water": true,
+        "starting_ships_adjacent_to_town": true,
+        "every_island_has_multiple_coast_pairs": true,
+        "every_water_cell_has_two_or_more_water_neighbors": true
+      }
+    },
+    {
+      "map": "serpent_straits",
+      "waterPercent": 69.81,
+      "landComponents": 5,
+      "hexes": 1951,
+      "checks": {
+        "expected_land_components": true,
+        "separate_rival_home_components": true,
+        "objective_separate_from_all_homes": true,
+        "connected_sea": true,
+        "all_start_ships_on_water": true,
+        "starting_ships_adjacent_to_town": true,
+        "every_island_has_multiple_coast_pairs": true,
+        "every_water_cell_has_two_or_more_water_neighbors": true
+      }
+    }
+  ],
+  "passed": true
+}

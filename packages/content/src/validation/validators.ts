@@ -7,6 +7,7 @@
  *   - references to unknown definitions (buildings, gods, effects, missions)
  */
 import {
+  CITY_SERVICE_IDS,
   CREATURE_TIERS,
   SUPPORT_ROLES,
   equipSlotsFor,
@@ -501,6 +502,8 @@ function validateMission(c: ContentCatalog, m: MissionDefinition, push: Push, ch
     if (s.kind.type === 'creature_camp') {
       creatureOk(s.kind.creatureId);
       if (s.kind.initialStock < 0 || s.kind.weeklyGrowth < 0) push(`${where}/${s.id}: camp stock and growth must be non-negative`);
+      const wt = s.kind.weeklyTraining;
+      if (wt !== undefined && !(Number.isInteger(wt) && wt >= 0)) push(`${where}/${s.id}: weeklyTraining must be a non-negative whole number`);
     }
     if (s.kind.type === 'map_event') {
       if (s.kind.options.length === 0) push(`${where}/${s.id}: a map event needs at least one option`);
@@ -550,8 +553,8 @@ function validateMission(c: ContentCatalog, m: MissionDefinition, push: Push, ch
     if (o.markerSiteId && !siteIds.has(o.markerSiteId)) push(`${where}/${o.id}: unknown marker site`);
     // Condition references: sites, towns and non-player heroes of this mission.
     const walk = (cond: ObjectiveCondition): void => {
-      if ((cond.type === 'site_cleared' || cond.type === 'site_activated' || cond.type === 'site_visited') && !siteIds.has(cond.siteId)) push(`${where}/${o.id}: unknown site ${cond.siteId}`);
-      if (cond.type === 'town_owned' && !townIds.has(cond.townId)) push(`${where}/${o.id}: unknown town ${cond.townId}`);
+      if ((cond.type === 'site_cleared' || cond.type === 'site_activated' || cond.type === 'site_visited' || cond.type === 'site_owned') && !siteIds.has(cond.siteId)) push(`${where}/${o.id}: unknown site ${cond.siteId}`);
+      if ((cond.type === 'town_owned' || cond.type === 'town_building') && !townIds.has(cond.townId)) push(`${where}/${o.id}: unknown town ${cond.townId}`);
       if (cond.type === 'hero_defeated' && !foeIds.has(cond.heroDefinitionId)) push(`${where}/${o.id}: no hostile or rival hero ${cond.heroDefinitionId} in this mission`);
       if (cond.type === 'player_has_minor_god' && cond.count !== undefined && (!Number.isInteger(cond.count) || cond.count < 1)) push(`${where}/${o.id}: minor-god count must be a positive whole number`);
       if (cond.type === 'all' || cond.type === 'any') cond.conditions.forEach(walk);
@@ -623,11 +626,12 @@ function expandedContentValidator(c: ContentCatalog, push: Push): void {
   for (const b of Object.values(c.buildings)) for (const e of b.effects) if (e.type === 'spell_library') maxLibrary = Math.max(maxLibrary, e.maxTier);
   for (const sp of Object.values(c.spells)) {
     if (sp.pantheonId && !pantheons.has(sp.pantheonId)) push(`${sp.id}: unknown pantheon ${sp.pantheonId}`);
-    if (sp.access === 'sanctum' && sp.tier > maxLibrary) push(`${sp.id}: tier ${sp.tier} exceeds every Sanctum library (max ${maxLibrary})`);
-    const needsAdventure = sp.effect.type === 'reveal_radius' || sp.effect.type === 'movement_bonus' || sp.effect.type === 'recall';
+    const libraryLimit = sp.scope === 'mythic_library_v2' && maxLibrary >= 3 ? Math.max(maxLibrary, 5) : maxLibrary;
+    if (sp.access === 'sanctum' && sp.tier > libraryLimit) push(`${sp.id}: tier ${sp.tier} exceeds every Sanctum library (max ${libraryLimit})`);
+    const needsAdventure = sp.effect.type === 'reveal_radius' || sp.effect.type === 'movement_bonus' || sp.effect.type === 'recall' || sp.effect.type.startsWith('adventure_');
     if (needsAdventure !== (sp.context === 'adventure')) push(`${sp.id}: effect ${sp.effect.type} does not match context ${sp.context}`);
     const army = sp.target === 'friendly_army' || sp.target === 'enemy_army';
-    const mass = sp.effect.type === 'mass_bonus' || sp.effect.type === 'mass_heal' || sp.effect.type === 'mass_damage';
+    const mass = sp.effect.type === 'mass_bonus' || sp.effect.type === 'mass_heal' || sp.effect.type === 'mass_damage' || sp.effect.type === 'group_mind_cleanse';
     if (mass !== army) push(`${sp.id}: mass effects (and only they) target a whole army`);
     if (sp.effect.type === 'mass_heal' && sp.target !== 'friendly_army') push(`${sp.id}: a mass heal targets 'friendly_army'`);
     if (sp.effect.type === 'mass_damage' && sp.target !== 'enemy_army') push(`${sp.id}: mass damage targets 'enemy_army'`);
@@ -656,10 +660,14 @@ function expandedContentValidator(c: ContentCatalog, push: Push): void {
   for (const iv of Object.values(c.interventions)) {
     if (iv.favorCost <= 0) push(`${iv.id}: needs a positive Favor cost`);
     for (const p of iv.pantheonIds ?? []) if (!pantheons.has(p)) push(`${iv.id}: unknown pantheon ${p}`);
-    const battle = iv.effect.type.startsWith('battle_');
+    const battle = iv.effect.type.startsWith('battle_') || ['library_battle_status', 'library_spell_credit', 'library_engine_repair', 'library_dawn_ward', 'library_element_barrier', 'library_formation_swap'].includes(iv.effect.type);
     if (battle !== (iv.context === 'battle')) push(`${iv.id}: effect ${iv.effect.type} does not match context ${iv.context}`);
     if ((iv.target === 'enemy_stack') !== (iv.effect.type === 'battle_smite')) push(`${iv.id}: only a smite targets an enemy stack`);
     if ((iv.target === 'own_town') !== (iv.effect.type === 'town_growth')) push(`${iv.id}: only town growth targets a town`);
+    if ((iv.target === 'ally_stack') !== (['library_battle_status', 'library_element_barrier', 'library_formation_swap'].includes(iv.effect.type))) push(`${iv.id}: allied-stack targeting requires a targeted blessing`);
+    if ((iv.target === 'own_hero') !== (iv.effect.type === 'library_ship_blessing' || iv.effect.type === 'library_guest_right')) push(`${iv.id}: hero targeting requires an adventure blessing`);
+    if (iv.requiredGodId && !c.gods[iv.requiredGodId]) push(`${iv.id}: unknown required god ${iv.requiredGodId}`);
+    if (iv.scope === 'mythic_library_v2' && (!iv.requiredGodId || (battle && !iv.consumesCommanderAction))) push(`${iv.id}: library blessings require a god commitment and share the battle casting action`);
   }
   for (const w of Object.values(c.weeklyEvents)) {
     if (w.weight <= 0) push(`${w.id}: needs a positive weight`);
@@ -794,6 +802,87 @@ function skirmishMapValidator(c: ContentCatalog, push: Push): void {
   }
 }
 
+/**
+ * City dedications (app 1.5.0; docs/divine-city-benefits-v1): one profile per designed god
+ * (60 today) and none for an unknown god; the favored family is real, of the god's pantheon,
+ * with a dwelling (by its dwelling metadata) in that pantheon's town; one gift resource; a
+ * supported service; growth quarters matching the family's tier (tiers 1–2: 8, 3–5: 4,
+ * 6: 2, 7: 1). Every role a service rule names is a support location of every town
+ * archetype; Temple II exists everywhere; every god whose direct economy the profiles
+ * replace has explicit city-mode summary lines (one per retained benefit).
+ */
+const GROWTH_QUARTERS_BY_TIER: Readonly<Record<number, number>> = { 1: 8, 2: 8, 3: 4, 4: 4, 5: 4, 6: 2, 7: 1 };
+
+function cityDedicationValidator(c: ContentCatalog, push: Push): void {
+  const profiles = c.cityDedicationProfiles;
+  if (!profiles) return;
+  const rules = c.cityServiceRules ?? ({} as NonNullable<ContentCatalog['cityServiceRules']>);
+  const policy = c.cityDedicationPolicy;
+  if (!policy) push('city dedications: profiles without a policy');
+  const archetypes = Object.values(c.pantheons)
+    .filter((p) => p.playability === 'playable' && p.townArchetypeId)
+    .map((p) => c.townArchetypes[p.townArchetypeId!])
+    .filter((a): a is NonNullable<typeof a> => !!a);
+  for (const g of Object.values(c.gods)) if (g.role !== 'undesigned' && !profiles[g.id]) push(`god ${g.id}: no city dedication profile`);
+  for (const [id, p] of Object.entries(profiles)) {
+    if (p.godId !== id) push(`city dedication ${id}: keyed under another god (${p.godId})`);
+    const god = c.gods[p.godId];
+    if (!god) {
+      push(`city dedication ${id}: unknown god`);
+      continue;
+    }
+    const gifts = Object.entries(p.weeklyResource).filter(([, n]) => (n ?? 0) > 0);
+    if (gifts.length !== 1 || Object.values(p.weeklyResource).some((n) => (n ?? 0) < 0)) push(`city dedication ${id}: needs exactly one positive weekly resource`);
+    if (!rules[p.serviceId]) push(`city dedication ${id}: unsupported service ${p.serviceId}`);
+    const family = c.families[p.favoredFamilyId];
+    if (!family) {
+      push(`city dedication ${id}: unknown family ${p.favoredFamilyId}`);
+      continue;
+    }
+    if (family.pantheonId !== god.pantheonId) push(`city dedication ${id}: ${family.id} is not of the ${god.pantheonId} pantheon`);
+    if (GROWTH_QUARTERS_BY_TIER[family.tier] !== p.weeklyGrowthQuarters) push(`city dedication ${id}: tier ${family.tier} family needs ${GROWTH_QUARTERS_BY_TIER[family.tier]} quarters a week, not ${p.weeklyGrowthQuarters}`);
+    const pantheon = c.pantheons[god.pantheonId];
+    const arch = pantheon?.townArchetypeId ? c.townArchetypes[pantheon.townArchetypeId] : undefined;
+    if (!arch) push(`city dedication ${id}: the ${god.pantheonId} pantheon has no town`);
+    else if (!arch.slots.some((s) => s.kind === 'dwelling' && s.chain.some((b) => c.buildings[b]?.dwelling?.familyId === family.id))) push(`city dedication ${id}: ${family.id} has no dwelling in ${arch.id}`);
+  }
+  for (const sid of CITY_SERVICE_IDS) if (!rules[sid]) push(`city service ${sid}: missing rule`);
+  for (const [id, r] of Object.entries(rules)) {
+    if (r.id !== id) push(`city service ${id}: id mismatch`);
+    if (!r.summary) push(`city service ${id}: needs a summary`);
+    if (r.kind === 'town_vision_bonus' ? !((r.amount ?? 0) > 0) : !((r.percent ?? 0) > 0 && (r.percent ?? 0) < 100)) push(`city service ${id}: needs a positive ${r.kind === 'town_vision_bonus' ? 'amount' : 'percent below 100'}`);
+    const roles = [r.requiredRole, ...(r.requiredRolesAny ?? []), r.targetRole].filter((x): x is NonNullable<typeof x> => !!x);
+    for (const role of roles) {
+      if (role === 'favored_dwelling' || role === 'favored_upgraded_dwelling') continue;
+      if (!SUPPORT_ROLES.includes(role)) {
+        push(`city service ${id}: unknown role ${role}`);
+        continue;
+      }
+      for (const a of archetypes) if (!a.slots.some((s) => s.kind === 'support' && s.role === role)) push(`city service ${id}: ${a.id} has no ${role} location`);
+    }
+    if (r.requiredEffect && r.requiredRole && r.requiredRole !== 'favored_dwelling' && r.requiredRole !== 'favored_upgraded_dwelling') {
+      for (const a of archetypes) {
+        const slot = a.slots.find((s) => s.kind === 'support' && s.role === r.requiredRole);
+        if (slot && !slot.chain.some((b) => c.buildings[b]?.effects.some((e) => e.type === r.requiredEffect))) push(`city service ${id}: no ${r.requiredRole} building in ${a.id} provides ${r.requiredEffect}`);
+      }
+    }
+  }
+  if (policy) {
+    for (const a of archetypes) {
+      const temple = a.slots.find((s) => s.kind === 'support' && s.role === 'pantheon_temple');
+      if (!temple || temple.chain.length < policy.requiredTempleLevel) push(`city dedications: ${a.id} has no Temple level ${policy.requiredTempleLevel}`);
+    }
+    for (const g of Object.values(c.gods)) {
+      const replaced = g.benefits.filter((e) => policy.suppressedGodEffectTypes.includes(e.type as never)).length;
+      const lines = c.cityModeGodSummaries?.[g.id];
+      if (replaced > 0 && !lines) push(`god ${g.id}: needs city-mode summary lines (its direct economy is replaced by city dedications)`);
+      if (lines && replaced === 0) push(`god ${g.id}: city-mode summary lines but nothing is replaced`);
+      if (lines && lines.length !== g.benefits.length - replaced) push(`god ${g.id}: ${lines.length} city-mode summary lines for ${g.benefits.length - replaced} retained benefits`);
+    }
+  }
+  for (const id of Object.keys(c.cityModeGodSummaries ?? {})) if (!c.gods[id]) push(`city-mode summary for unknown god ${id}`);
+}
+
 export const VALIDATORS: Readonly<Record<string, (c: ContentCatalog, push: Push) => void>> = {
   CreatureRosterValidator: creatureRosterValidator,
   CreatureUpgradeValidator: creatureUpgradeValidator,
@@ -809,6 +898,7 @@ export const VALIDATORS: Readonly<Record<string, (c: ContentCatalog, push: Push)
   ClimateValidator: climateValidator,
   TemperamentValidator: temperamentValidator,
   SkirmishMapValidator: skirmishMapValidator,
+  CityDedicationValidator: cityDedicationValidator,
 };
 
 export function validateCatalog(c: ContentCatalog): ValidationReport {

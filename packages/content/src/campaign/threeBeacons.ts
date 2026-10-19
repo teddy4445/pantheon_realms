@@ -319,6 +319,8 @@ const M01: MissionDefinition = {
   purchasableBuildingIds: ['town_hall', 'market', 'barracks_up', 'peltast_range', 'peltast_range_up'],
   // Documented campaign rules: no pantheon signatures, first minor choice only (Athena OR Ares).
   signatureMechanics: false,
+  // The tutorial keeps the old god economics: city dedications are explicitly off (app 1.5.0).
+  features: { cityDedicationsV1: false, scoutingIntelV1: false, targetableCatapultV1: false },
   committableGodIds: ['athena', 'ares'],
   heroHiringEnabled: false,
   heroHiringDisabledReason: 'Alexios leads this expedition alone. Hero hiring is disabled in The Three Beacons.',
@@ -501,6 +503,8 @@ const M02: MissionDefinition = {
   purchasableBuildingIds: ['barracks_up', 'peltast_range_up', 'training_court', 'training_court_up', 'temple_2', 'griffin_aerie', 'griffin_aerie_up', 'sanctum_2', 'citadel'],
   // Documented campaign rules: no pantheon signatures, first minor choice only (Athena OR Ares).
   signatureMechanics: false,
+  // The tutorial keeps the old god economics: city dedications are explicitly off (app 1.5.0).
+  features: { cityDedicationsV1: false, scoutingIntelV1: false, targetableCatapultV1: false },
   committableGodIds: ['athena', 'ares'],
   heroHiringEnabled: false,
   heroHiringDisabledReason: 'Alexios leads this expedition alone. Hero hiring is disabled in The Three Beacons.',
@@ -745,6 +749,8 @@ const M03: MissionDefinition = {
   purchasableBuildingIds: ['training_court_up', 'adept_house_up', 'labyrinth', 'labyrinth_up', 'sanctum_3'],
   // Documented campaign rules: no pantheon signatures, first minor choice only (Athena OR Ares).
   signatureMechanics: false,
+  // The tutorial keeps the old god economics: city dedications are explicitly off (app 1.5.0).
+  features: { cityDedicationsV1: false, scoutingIntelV1: false, targetableCatapultV1: false },
   committableGodIds: ['athena', 'ares'],
   heroHiringEnabled: false,
   heroHiringDisabledReason: 'Alexios leads this expedition alone. Hero hiring is disabled in The Three Beacons.',

@@ -1,0 +1,263 @@
+{
+  "title": "One World, Twice Broken",
+  "subtitle": "Two seven-chapter campaigns around the six existing pantheon stories",
+  "status": "Design proposal for discussion. No game files, campaign saves or artwork changed. Names of new places and campaign mechanics below are proposals.",
+  "campaigns": [
+    {
+      "id": "before",
+      "title": "When the Worlds Met",
+      "time": "Year 0 · the weeks after the collision",
+      "theme": "Strangers discover a shared world and save its first routes together."
+    },
+    {
+      "id": "after",
+      "title": "The Ashes of the Accord",
+      "time": "Year 18 · after the six regional campaigns and years of war",
+      "theme": "The same heroes confront the human cost of the claims they helped establish."
+    }
+  ],
+  "heroes": [
+    [
+      "Greek",
+      "Alexios",
+      "alexios"
+    ],
+    [
+      "Norse",
+      "Hervor",
+      "norse_hervor"
+    ],
+    [
+      "Egyptian",
+      "Seshet",
+      "egyptian_seshet"
+    ],
+    [
+      "Japanese",
+      "Akane",
+      "japanese_akane"
+    ],
+    [
+      "Celtic",
+      "Orla",
+      "celtic_orla"
+    ],
+    [
+      "Mesoamerican",
+      "Itzel",
+      "mesoamerican_itzel"
+    ]
+  ],
+  "world": {
+    "name": "The Confluence",
+    "size": "Proposed authoring envelope: 192 × 144 hexes. Performance and travel density must be prototyped before committing to a runtime size; the regional topology is the design requirement.",
+    "water": "Target roughly 35–40% navigable water, with a large central sea, connected rivers, outer coastal lanes and an eastern archipelago.",
+    "center": "The Accord Isle is surrounded by navigable water and has two landing beaches. No permanent land bridge makes shipping optional in either finale.",
+    "regions": [
+      [
+        "north",
+        "Norse",
+        "Broken Fjord",
+        "Frostwatch",
+        "Northern mountains and fjords; western road toward First Harbor, eastern ridge toward Hazel Ford, central sea lane."
+      ],
+      [
+        "west",
+        "Greek",
+        "The Drowned Bell Coast",
+        "First Harbor",
+        "Cliff-and-valley land loop; northern pass, southwestern river road, inner sea port."
+      ],
+      [
+        "southwest",
+        "Egyptian",
+        "Three-Mouth Delta",
+        "Sunbank",
+        "Three navigable river arms; inland ridge road and productive floodplain; southern ocean separates it from Ember Quay."
+      ],
+      [
+        "southeast",
+        "Mesoamerican",
+        "The Obsidian Horseshoe",
+        "Ember Quay",
+        "Volcanic rim, lake, jungle approaches and an offshore observation isle; naval connections west and north."
+      ],
+      [
+        "east",
+        "Japanese",
+        "Lantern Strait",
+        "Lantern Haven",
+        "Three principal islands and two channels; ship-only links with Ember Quay and the northeastern coast."
+      ],
+      [
+        "northeast",
+        "Celtic",
+        "The Living Arch",
+        "Hazel Ford",
+        "Woodland circuits, ridge route west, river crossings and an island sanctuary facing the strait."
+      ]
+    ]
+  },
+  "rules": [
+    [
+      "Chronology and existing campaigns",
+      "Keep the existing six regional stories and their ending flags intact. The new prologue precedes their political conflicts; it does not prematurely solve the Silent Oracle, Winter Oath, Twelfth Hour, Lantern Road, Silver Branch or New Fire mysteries. The Three Beacons remains the existing optional training interlude before the six main stories; mechanical tutorial lessons can also be available outside the chronological menu. The new prologue must teach its own essential ship and multi-town controls. Do not renumber or delete existing campaign IDs. The inspected content-v2 roster has 37 chapters; adding these 14 would make 51, if that roster is retained."
+    ],
+    [
+      "Why the same heroes are still here",
+      "Year 18 is a proposed gap measured from the collision, with the regional stories occurring before the later wars. Eighteen years allows the existing human heroes to remain credible participants without immortality, descendants or new portraits. Their voices and responsibilities mature; graying portrait variants are optional later art, not a dependency. This is a proposed chronology, not a date established by the current game."
+    ],
+    [
+      "One world, not fourteen disconnected rectangles",
+      "Author one coast, elevation skeleton, river network and landmark ID set. Each mission uses an active region mask over that master map, plus its persistent state layer. Earlier regions remain visible as dated chronicle/chart views where known, but are not controlled during another hero's chapter. Mark expedition boundaries explicitly. Fog alone is never an impassable wall. Regional scenarios load only their active playable territory; P7 and E7 join the whole graph."
+    ],
+    [
+      "Nonlinear movement within authored chapters",
+      "Every regional chapter needs a land or island circuit, two approaches to its main target, and at least one useful shortcut or costly alternative. Do not build six left-to-right corridors and hide the joins under mountains. Required island goals make ships matter; elective sea routes must have a real travel/guard trade-off. New information should alter a plan, not merely unlock the next gate."
+    ],
+    [
+      "What persists between perspective changes",
+      "Completed events are recorded in a world ledger: opened roads/channels, shore lights, settlement condition, monuments, choices and finite reserves. Snapshot each protagonist, army, town construction, resources and explored cells when their chapter ends. Inactive regional snapshots do not simulate days, grow recruits or lose towns while another chapter is played. Their dates are narrative chapter transitions, not a hidden concurrent economy. Future chapters only change a saved region through a named, visible ledger event."
+    ],
+    [
+      "Assembling the six-player-side finale",
+      "P7 restores the six snapshots as one controlled coalition with six heroes and towns. Provide a one-time disclosed minimum garrison/army package to prevent an attrition softlock, and apply an explicit ceiling only to transferred surplus resources/reserve stocks, not secretly delete earned troops. Calibrate caps after prototype playtests and show them before committing to chapter completion. All six heroes begin useful; no compulsory army mixing. Native faction stacks can stay with their own heroes, preserving existing morale rules. Shared treasury and cross-pantheon town recruitment require explicit UI and rules support."
+    ],
+    [
+      "Epilogue town reset with an explanation",
+      "The frontier towns were burned, occupied and depopulated during the intervening wars. E1–E6 start with one inhabited level-1 civic core and small rebuilding forces inside the SAME recognizable ruin footprints. Ruined advanced structures are nonfunctional, labelled as such, and cannot be captured for instant tier-4 production. Construction restores their normal prerequisites and costs. The world has not universally forgotten how to build; these six damaged frontier towns are the playable reconstruction sites. Each restored town persists into E7, with no second reset."
+    ],
+    [
+      "Hero progression across campaigns",
+      "Do not import six arbitrarily overpowered armies into a new campaign or force veterans to pretend they have never fought. E1–E6 use disclosed veteran starting profiles with meaningful skills and a small force; story/choice imports are separate from numerical balance. Main-campaign endings influence dialogue and bounded assistance, never mandatory keys or moral verdicts. Offer a standalone 'established chronicle' preset and let a returning player choose completed runs to import. Prologue choices default to explicitly shown authored outcomes when no save exists."
+    ],
+    [
+      "Failure, recovery and manual battles",
+      "All player-involved campaign battles are manual, including garrisons, sea monsters, boarding and scripted fights. No quick resolve, exact auto-casualty preview or full-battle autoplay bypass. Enemy tactical AI and animation speed controls remain. Protagonist defeat is a stated scenario loss; defeated required opponents use explicitly staged surrender/capture when later continuity requires survival. Losing an ordinary town is recoverable until the disclosed elimination condition. Failed optional objectives alter bounded benefits rather than lock a later chapter."
+    ],
+    [
+      "Keep logistics fair",
+      "Every mandatory sailing chapter has a recoverable ship source and at least two sensible landing opportunities. A destroyed boat must not delete a unique quest record. Knowledge is recorded on discovery and survives inventory changes. Preserve destination paths across End Day and save/load; revalidate only changed route segments and pause before hostile encounters. No terrain flip may strand a stack, erase an occupied island or strand the campaign's only hero."
+    ],
+    [
+      "Sea combat uses the new rules",
+      "Single ship versus sea monsters: left half deck, right half water, supplied sea-battle layout; normal ground units stay on deck, swimmers stay in water, flyers may hover/cross. All sea enemies must fly or have sustainable ranged damage, and the deck army needs the documented harpoon/cross-rail alternatives. Ship versus ship uses the separate two-deck/bridge encounter. Existing Afanc, Ahuitzotl and other wetland-themed land neutrals do NOT automatically become swimmers. Coastal creature dwellings must validate army travel legality."
+    ],
+    [
+      "Gods remain powerful but indirect",
+      "Divine disagreement is presented through existing portraits, shrines, visions and competing instructions. No god enters combat as a target. The gods' inability to fight directly without unraveling the world remains true. The later danger comes from mutually exclusive territorial consecrations acting on old seams, not a claim that every ordinary sword strike cracks reality. The collision's original cause stays unresolved."
+    ],
+    [
+      "Enemy scale and pacing",
+      "'Huge neutral armies' means frightening compositions, upgraded silhouettes and strategic preparation—not multiplying HP or forcing twenty cleanup fights. P7 has six commander battles in three acts, with finite disclosed stock and no infinite growth. Initial tuning target: a commander is stronger than an unprepared single regional army but beatable after normal recruitment and one optional preparation benefit. Exact stack quantities require combat simulations and manual playtests. Mandatory battle budgets and durations on cards are targets, not tested promises."
+    ],
+    [
+      "Story delivery",
+      "Every chapter opens with a 20–40 second strange or emotionally charged interaction using existing portraits and scenery. Follow with two short on-map revelations and one decision scene; keep most dialogue to 2–5 lines, skippable and replayable. Changes occur visibly on the actual map, with before/after silhouettes, a short sound and a ledger entry. Ending chapters show the next hero encountering a consequence. Avoid a mandatory lore wall or a new narrated cinematic for every clue."
+    ],
+    [
+      "A war with accountable people",
+      "The six protagonists can authorize harmful policies and later recognize their costs. Their nations are not uniformly cruel, and a single secret villain does not retroactively cause every decision. E1–E6 are genuine military conflicts before the temporary truce. The finale settles this basin's immediate crisis while preserving religious differences, losses, obligations and political disputes elsewhere."
+    ],
+    [
+      "Engineering and art status",
+      "This is a design review, not an importable mission schema or a claim these systems already work. Shared-map layers, six-protagonist persistence, multi-pantheon player ownership, phased commander objectives, conditional terrain, route-based civilian counters, archive evidence and legacy-choice import need an engineering audit. Existing heroes, creature art, town tiers, ruins, ships and sea battle backgrounds are the intended visual base. Any missing destroyed/repaired landmark overlays or chapter covers should be scoped after design approval, not silently generated now."
+    ]
+  ],
+  "wardens": [
+    [
+      "Act I · west",
+      "Doros",
+      "greek_doros",
+      "The confiscated western pass",
+      "Serpopards and Crested Serpopards form a long-reach line; boars/ogres screen it.",
+      "Recover the nearby trapping stores to reduce one finite reserve, or assault via the longer ridge.",
+      "Defeat and capture; no pre-main-campaign death."
+    ],
+    [
+      "Act I · north",
+      "Ulfhild",
+      "norse_ulfhild",
+      "The fjord timber road",
+      "Root-Runners/Crownroot Runners disrupt retaliation; ogres supply weight.",
+      "Use the P2 improved pass/channel to flank the reserve depot.",
+      "Accept surrender after tactical victory."
+    ],
+    [
+      "Act II · southwest",
+      "Paser",
+      "egyptian_paser",
+      "The delta granaries",
+      "Serpopards, existing golems and a limited Pegasus wing protect the crossing.",
+      "Open the alternate sluice approach to separate a supporting guard from the main army.",
+      "Capture and release under the safe-passage settlement."
+    ],
+    [
+      "Act II · east",
+      "Kurogane",
+      "japanese_kurogane",
+      "The strait's fortified island",
+      "Baku/Dreamtusk Baku remove debuffs while ogres hold the landing.",
+      "Choose the lighthouse route that bypasses one outer guard; land before fighting this ground army.",
+      "Defeat and disarm; no canonical death."
+    ],
+    [
+      "Act III · northeast",
+      "Fiachra",
+      "celtic_fiachra",
+      "The migration-road fortress",
+      "Afanc/Ridgeback Afanc anchor the line; Root-Runners and wyverns threaten flanks.",
+      "Sanctuary volunteers or the public supply road offer different bounded preparation.",
+      "Defeat and capture; preserve later campaign continuity."
+    ],
+    [
+      "Act III · center/south",
+      "Tecuani",
+      "mesoamerican_tecuani",
+      "The council island approach",
+      "Ahuitzotl/Crownfin Ahuitzotl manipulate position; Dawncrest Pegasi and ogres support them.",
+      "Use the southern observatory intelligence or depot reserve before the final island landing.",
+      "Last commander falls in a large land battle; no new giant boss model."
+    ]
+  ],
+  "epilogueOpposition": "Use existing living hireable commanders as the war's military faces, provisionally Ragnar for the northern occupation, Achilles for the western counterforce, Medb for the delta claimant, Moctezuma Ilhuicamina for the forest expedition, Ramses for the strait fleet, and Yamato Takeru for the observatory occupation. These are proposed game-fiction roles using existing assets, not assertions about their historical/mythological lives. Confirm IDs and existing campaign appearances before binding. These opposing forces are defeated or withdraw under explicit rules; do not resurrect killed main-campaign villains. The E7 Crown Host can be an elite multi-pantheon fortress garrison without a new named boss or portrait. Its councils were foreshadowed through requisition orders in E1–E6.",
+  "finalePlan": [
+    [
+      "E7 preparation",
+      "Three anchors in any order",
+      "Western delta/road, eastern strait, northern ridge. Each capture disables one specific reserve supporting the central siege and opens a supply route. No simultaneously parked hero requirement."
+    ],
+    [
+      "E7 major battle",
+      "The Crown Host",
+      "Assault the fortified council location from one of two landings. Its mixed existing faction roster tests army composition and spell timing. Use normal finite siege rules and the existing targetable catapult design if integrated; no god unit, unbounded spawns or inflated new monster."
+    ],
+    [
+      "E7 climax",
+      "Three-day stabilization",
+      "Player starts this only after a clear briefing and save opportunity. Hold the council and at least two of three supply approaches through three announced enemy counterattacks: one land, one naval, one final council defense. Defend them with any of the six armies. Counterattacks arrive at named sites; visible deadlines and regrouping time replace arbitrary teleportation."
+    ],
+    [
+      "E7 resolution",
+      "A limited lasting settlement",
+      "Complete either custody arrangement after survival. Repaired landmarks remain, the immediate rupture closes, and the named towns survive. No ending invalidates a player's primary victory."
+    ],
+    [
+      "E7 open door",
+      "The horizon moves",
+      "A newly charted distant coastline has the original collision's signature. It may be an unmapped part of the first event, another arriving fragment, or evidence of something larger. Do not select one explanation yet or announce an unbuilt seventh pantheon."
+    ]
+  ],
+  "sourceAudit": [
+    "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/v2/index.ts",
+    "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/silentOracle.ts",
+    "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/winterOath.ts",
+    "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/twelfthHour.ts",
+    "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/lanternRoad.ts",
+    "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/silverBranch.ts",
+    "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/newFire.ts",
+    "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/neutralsV2.ts",
+    "C:/Users/lazeb/Desktop/pantheon_realms/docs/campaign-v2/design/campaign-proposal.json",
+    "C:/Users/lazeb/Desktop/pantheon_realms/docs/hero-portraits-complete/catalog-heroes.json"
+  ]
+}

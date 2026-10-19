@@ -13,7 +13,8 @@ tree. For every listed file:
   * a file that already matches is left alone;
   * a file in the checkout changed AFTER the cutoff (someone edited it since the
     last sync) and different from the bundle is NOT overwritten: it is listed as a
-    conflict for a manual merge;
+    conflict for a manual merge; a cutoff of `after-sync:<label>` is the time in
+    this checkout's `sync-report-<label>.json` (the end of the previous sync here);
   * `alsoTo` copies a file to a second path (the kit's PNGs go to both
     assets-source/ and assets-runtime/);
   * `fromKit` takes the file from a delivered kit folder instead of the bundle
@@ -81,7 +82,18 @@ def main() -> int:
     if not pkg.exists() or '"pantheon-realms"' not in pkg.read_text(encoding='utf-8'):
         print(f'{root} is not the pantheon_realms checkout (package.json name).')
         return 2
-    cutoff = datetime.fromisoformat(meta['cutoff'].replace('Z', '+00:00')).timestamp()
+    cut = meta['cutoff']
+    if cut.startswith('after-sync:'):
+        # The end of the previous sync on THIS machine (its report's time): a file
+        # changed here after it is someone's edit since then, never the last sync's own write.
+        prev = root / f'sync-report-{cut.split(":", 1)[1]}.json'
+        if not prev.exists():
+            print(f'{prev.name} is missing: apply the previous bundle first (its report sets the conflict cutoff).')
+            return 2
+        cutoff = datetime.fromisoformat(json.loads(prev.read_text(encoding='utf-8'))['at']).timestamp() + 5
+        print(f'Conflict cutoff: the end of the previous sync ({prev.name}).')
+    else:
+        cutoff = datetime.fromisoformat(cut.replace('Z', '+00:00')).timestamp()
     need = sum(f['size'] * (2 if f.get('alsoTo') else 1) for f in meta['files'])
     free = shutil.disk_usage(root).free
     print(f'Bundle {meta["label"]}: {len(meta["files"])} files, about {need / 1e6:.0f} MB; free on disk {free / 1e6:.0f} MB.')

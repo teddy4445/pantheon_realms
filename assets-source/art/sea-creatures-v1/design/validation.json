@@ -1,0 +1,10 @@
+{
+  "creatureForms": 10,
+  "creatureAnimationProfiles": 84,
+  "creatureAtlases": 22,
+  "fxAtlases": 4,
+  "artFiles": 37,
+  "excludedFrames": 1,
+  "animationReferencesWithinImages": true,
+  "allRequiredStates": true
+}

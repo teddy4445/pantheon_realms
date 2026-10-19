@@ -14,6 +14,10 @@ import { effectiveMorale, effectiveSpeed, isAlive, sideStacks } from './common';
 import { resolveBattle } from './resolution';
 import { siegeRoundStart } from './siege';
 import { expireOnActivation } from './neutralAbilities';
+import { beginEnginePhase, enginePhaseDue } from './engine';
+import { renewShots } from './renewableShots';
+import { expireTemporaryLife, permanentHp } from './libraryLife';
+import { initializeLibraryArmy, libraryEffects, originalUse, relicRoundEnd, spendOriginalUse } from './libraryRelics';
 
 function sidePriority(round: number, side: BattleSideId): number {
   const attackerFirst = round % 2 === 1;
@@ -54,6 +58,9 @@ export function turnOrderPreview(catalog: ContentCatalog, battle: BattleState): 
 }
 
 export function startRound(tx: Tx, battle: BattleState, round: number): void {
+  if (round > 1) relicRoundEnd(tx.catalog, battle);
+  expireTemporaryLife(tx, battle, round);
+  battle.spellFields = battle.spellFields?.filter((f) => f.expiresAtRound > round);
   battle.round = round;
   tx.emit({ kind: 'BattleRoundStarted', round });
   for (const s of Object.values(battle.stacks)) {
@@ -64,6 +71,8 @@ export function startRound(tx: Tx, battle: BattleState, round: number): void {
   }
   battle.sides.attacker.castThisRound = false;
   battle.sides.defender.castThisRound = false;
+  // Renewable shots (sea creatures): set to their capacity at every round start, round 1 included.
+  renewShots(tx.catalog, battle);
   siegeRoundStart(tx, battle);
   const alive = Object.values(battle.stacks)
     .filter(isAlive)
@@ -77,6 +86,7 @@ export function startRound(tx: Tx, battle: BattleState, round: number): void {
 
 /** Leave the pre-battle phases (defender selection, deployment) and start round 1. */
 export function beginRounds(tx: Tx, battle: BattleState): void {
+  initializeLibraryArmy(tx.catalog, tx.state, battle);
   battle.deployment = null;
   battle.selection = null;
   startRound(tx, battle, 1);
@@ -86,8 +96,8 @@ export function beginRounds(tx: Tx, battle: BattleState): void {
 /** Returns true when the battle has ended (and resolves it). */
 export function checkBattleEnd(tx: Tx, battle: BattleState): boolean {
   if (battle.status !== 'active') return true;
-  const attackerAlive = sideStacks(battle, 'attacker').length > 0;
-  const defenderAlive = sideStacks(battle, 'defender').length > 0;
+  const attackerAlive = sideStacks(battle, 'attacker').some((s) => permanentHp(s) > 0);
+  const defenderAlive = sideStacks(battle, 'defender').some((s) => permanentHp(s) > 0);
   if (attackerAlive && defenderAlive) return false;
   resolveBattle(tx, battle, attackerAlive ? 'attacker' : 'defender', attackerAlive ? 'victory' : 'defeat');
   return true;
@@ -99,6 +109,8 @@ export function advanceActivation(tx: Tx, battle: BattleState): void {
   for (let guard = 0; guard < 1000; guard++) {
     if (checkBattleEnd(tx, battle)) return;
     let nextId: BattleStackId | undefined;
+    // The engine phase waits for Fire / Skip (its commands close it and advance again).
+    if (battle.phase === 'engine') return;
     if (battle.phase === 'normal') {
       nextId = battle.normalQueue.shift();
       if (nextId === undefined) {
@@ -113,6 +125,9 @@ export function advanceActivation(tx: Tx, battle: BattleState): void {
           resolveBattle(tx, battle, 'defender', 'stalemate');
           return;
         }
+        // targetableCatapultV1: after both queues, before the round advances, the attacker's engine
+        // phase (Fire / Skip). It waits for its command; with no target left it is skipped at once.
+        if (enginePhaseDue(battle) && beginEnginePhase(tx, battle)) return;
         startRound(tx, battle, battle.round + 1);
         continue;
       }
@@ -129,6 +144,7 @@ function activate(tx: Tx, battle: BattleState, stack: BattleStackState): boolean
   stack.defending = false; // Defend lasts until the start of the next scheduled activation.
   // Sheltering Wings, Distract and Reed Guard last until their user's next scheduled activation.
   expireOnActivation(battle, stack);
+  for (const s of stack.statuses) if (s.expiresAfterActivation) s.nextActivationStarted = true;
   battle.activeIsBonus = false;
   battle.freeShiftUsed = false;
   if (!stack.moraleRolledThisRound) {
@@ -137,8 +153,14 @@ function activate(tx: Tx, battle: BattleState, stack: BattleStackState): boolean
     if (morale < 0) {
       const combat = tx.profile.combat;
       if (tx.rng('combat').chance(Math.abs(morale), combat.negativeMoraleDenominator)) {
-        tx.emit({ kind: 'BattleMorale', stackId: stack.id, positive: false });
-        return false;
+        if (libraryEffects(battle, stack.side, 'library_first_morale_guard').length && !originalUse(battle, stack, 'moraleGuard')) {
+          spendOriginalUse(battle, stack, 'moraleGuard');
+        } else {
+          tx.emit({ kind: 'BattleMorale', stackId: stack.id, positive: false });
+          expireAfterActivation(stack);
+          if (libraryEffects(battle, stack.side, 'library_first_flight_move').length) spendOriginalUse(battle, stack, 'activationSpent');
+          return false;
+        }
       }
     }
   }
@@ -149,12 +171,17 @@ function activate(tx: Tx, battle: BattleState, stack: BattleStackState): boolean
 
 /** After an ordinary action: positive morale may grant one immediate extra activation. */
 export function finishActivation(tx: Tx, battle: BattleState, stack: BattleStackState, allowMorale: boolean): void {
+  if (battle.shadowChoice) { battle.shadowChoice.resume = { stackId: stack.id, allowMorale }; return; }
+  battle.sides[stack.side].actedInBattle = true;
+  if (libraryEffects(battle, stack.side, 'library_first_flight_move').length) spendOriginalUse(battle, stack, 'activationSpent');
+  expireAfterActivation(stack);
   if (checkBattleEnd(tx, battle)) return;
-  if (allowMorale && !battle.activeIsBonus && isAlive(stack)) {
+  if (allowMorale && !stack.summoned && !battle.activeIsBonus && isAlive(stack)) {
     const morale = effectiveMorale(tx.catalog, battle, stack);
     if (morale > 0 && tx.rng('combat').chance(morale, tx.profile.combat.positiveMoraleDenominator)) {
       tx.emit({ kind: 'BattleMorale', stackId: stack.id, positive: true });
       battle.activeIsBonus = true;
+      for (const s of stack.statuses) if (s.expiresAfterActivation) s.nextActivationStarted = true;
       battle.freeShiftUsed = false;
       battle.activeStackId = stack.id;
       tx.emit({ kind: 'BattleStackActivated', stackId: stack.id, bonus: true });
@@ -164,4 +191,10 @@ export function finishActivation(tx: Tx, battle: BattleState, stack: BattleStack
   battle.activeStackId = null;
   battle.activeIsBonus = false;
   advanceActivation(tx, battle);
+}
+
+/** Wait never calls this: controls end only when an activation is spent or lost. */
+function expireAfterActivation(stack: BattleStackState): void {
+  stack.controlGrace = stack.statuses.filter((s) => s.expiresAfterActivation && s.nextActivationStarted !== false && (s.kind === 'ranged_lock' || s.kind === 'spell_lock' || s.kind === 'rooted')).map((s) => s.kind);
+  stack.statuses = stack.statuses.filter((s) => !s.expiresAfterActivation || s.nextActivationStarted === false);
 }

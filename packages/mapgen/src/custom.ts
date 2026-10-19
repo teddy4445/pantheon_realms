@@ -32,6 +32,17 @@ import {
   type CustomSiteKind,
   type CustomVictory,
   type CustomChannelTerrain,
+  type CustomShip,
+  type MissionShipSetup,
+  type NavalTraversalPolicy,
+  navalPolicyIssues,
+  RngCursor,
+  seedFromLabel,
+  coastalTowerPlacementProblem,
+  seaPickupPlacementProblem,
+  shipwreckPlacementProblem,
+  type SeaPlacementContext,
+  type SeaPlacementGround,
   type GuardDefinition,
   type KeyColor,
   type RewardDefinition,
@@ -49,9 +60,11 @@ import { buildDecor, deriveStreams, type DecorItem, type MapCheck } from './gene
 import { RANDOM_TEMPLATE_ID, SKIRMISH_PLAYER_COLORS, SKIRMISH_START_WALLET, WEALTH_PERCENT, randomMapTavernPool } from './skirmish';
 import { UNOWNED_GARRISON_VALUE, unownedTownGarrison, unownedTownSetup } from './unownedTowns';
 import { groundOf, habitatVerdict, neutralSiteBase, neutralSiteDefinition, type GroundAt, type HabitatVerdict } from './neutralSites';
+import { SEA_SITES_HELP, coastalTowerBody, coastalTowerSkin, seaPickupAmount, seaPickupBody, shipwreckBody, wreckName, wreckOutcome, wreckSkin } from './seaSites';
+import { SEA_MONSTERS_HELP, SEA_MONSTER_KIND, hasSeaMonsters, seaMonsterCustomProblem, seaMonsterSiteBody } from './seaMonsters';
 
 export { CUSTOM_MAP_FORMAT, CUSTOM_MAP_VERSION } from '@pr/rules';
-export type { CustomGuard, CustomMapDocument, CustomPlayer, CustomQuest, CustomReward, CustomSite, CustomSiteKind, CustomVictory, CustomChannelTerrain, NeutralHabitat, NeutralSiteTable } from '@pr/rules';
+export type { CustomGuard, CustomMapDocument, CustomPlayer, CustomQuest, CustomReward, CustomShip, CustomSite, CustomSiteKind, CustomVictory, CustomChannelTerrain, NeutralHabitat, NeutralSiteTable } from '@pr/rules';
 export const CUSTOM_GENERATOR_VERSION = 'pr-custom-map-1';
 export const CUSTOM_MAX_EMPIRES = 6;
 
@@ -75,7 +88,7 @@ export interface CustomSiteKindInfo {
    * sections ('neutral': the hiring sites of the new neutrals, one per creature;
    * 'landmark': the sluice, the ferry landings and the supply depot).
    */
-  readonly palette?: 'neutral' | 'landmark';
+  readonly palette?: 'neutral' | 'landmark' | 'sea';
 }
 
 export const CUSTOM_SITE_KINDS: readonly CustomSiteKindInfo[] = [
@@ -105,7 +118,46 @@ export const CUSTOM_SITE_KINDS: readonly CustomSiteKindInfo[] = [
   { id: 'sluice', label: 'Sluice', summary: 'A hero standing on it opens or closes it: its channel hexes switch ground (water when closed, marsh when open, unless set otherwise).', guardable: true, palette: 'landmark' },
   { id: 'ferry', label: 'Ferry Landing', summary: 'Two landings carry a hero across the water to each other (place them in pairs, each on a shore).', guardable: false, palette: 'landmark' },
   { id: 'supply_depot', label: 'Supply Depot', summary: 'A one-use cache of supplies for the first hero to arrive.', guardable: true, palette: 'landmark' },
+  // Sea-sites kit (2026-10-18): placed by their own rules (seaSiteCustomProblem), on a map with ships.
+  { id: 'coastal_watchtower', label: 'Coastal Watchtower', summary: 'A lookout on the coast: whoever holds it sees 6 hexes around, sea lanes included, and is warned of enemy ships. Taken by a hero on foot. Stands on coastal land with a beach nearby.', guardable: true, palette: 'sea' },
+  { id: 'sea_pickup', label: 'Floating Salvage', summary: 'Driftwood, stone cargo or a lost treasury adrift on one water hex: the first ship to sail onto it takes it (amount drawn when the game starts unless set).', guardable: false, palette: 'sea' },
+  { id: 'shipwreck', label: 'Shipwreck', summary: 'A wreck on the water: a hero aboard a ship beside it explores it for 100 movement — salvage, perhaps raiders moored alongside (drawn when the game starts unless set). Needs two free water hexes beside it.', guardable: false, palette: 'sea' },
+  // Sea creatures (2026-10-18): a neutral sea-monster stack, fought by a ship on the single-ship sea board.
+  { id: 'sea_monster', label: 'Sea Monster', summary: 'Neutral sea creatures on one water hex: a hero sails a ship onto them to fight from the deck. Only creatures that swim or fly; never on land.', guardable: true, palette: 'sea' },
 ];
+
+/** Custom site kinds that stand on water (every other kind stands on passable land). */
+export function customWaterSiteKind(kind: CustomSiteKind): boolean {
+  return kind === 'sea_pickup' || kind === 'shipwreck' || kind === SEA_MONSTER_KIND;
+}
+
+/** The placement context of a document (sea-sites rules) for one site, excluding that site. */
+export function customSeaContext(doc: Pick<CustomMapDocument, 'sites' | 'ships'>, exceptId: string | null): SeaPlacementContext {
+  const sites = new Set<string>();
+  const wrecks = new Set<string>();
+  const towns: HexCoord[] = [];
+  for (const s of doc.sites) {
+    if (s.kind === 'town') towns.push({ q: s.q, r: s.r });
+    if (s.id === exceptId) continue;
+    sites.add(hexKey({ q: s.q, r: s.r }));
+    if (s.kind === 'shipwreck') wrecks.add(hexKey({ q: s.q, r: s.r }));
+  }
+  return { sites, wrecks, towns, ships: new Set((doc.ships ?? []).map((sh) => hexKey({ q: sh.q, r: sh.r }))) };
+}
+
+/**
+ * Why a sea site cannot stand at its tile (null: it can, or the kind is not a sea site): the shared
+ * placement rules of rules/resolvers/seaSites.ts — the editor shows this reason on an illegal tile.
+ */
+export function seaSiteCustomProblem(doc: Pick<CustomMapDocument, 'width' | 'height' | 'terrain' | 'sites' | 'ships'>, site: Pick<CustomSite, 'id' | 'kind' | 'q' | 'r'>): string | null {
+  const ground: SeaPlacementGround = { terrainAt: (c) => terrainAt(doc, c) };
+  const ctx = customSeaContext(doc, site.id);
+  const c = { q: site.q, r: site.r };
+  if (site.kind === 'coastal_watchtower') return coastalTowerPlacementProblem(ground, c, ctx);
+  if (site.kind === 'sea_pickup') return seaPickupPlacementProblem(ground, c, ctx);
+  if (site.kind === 'shipwreck') return shipwreckPlacementProblem(ground, c, ctx);
+  return null;
+}
 
 /** Ground a sluice channel may switch to (the editor's ground tools). */
 export const CUSTOM_CHANNEL_TERRAINS: readonly CustomChannelTerrain[] = ['plains', 'forest', 'rough', 'marsh', 'mountain', 'water'];
@@ -196,10 +248,30 @@ export function parseCustomMap(text: string): { ok: true; doc: CustomMapDocument
     if (s.channel !== undefined && !(Array.isArray(s.channel) && s.channel.length <= SLUICE_MAX_CHANNEL && s.channel.every((c: { q: number; r: number } | null) => !!c && Number.isInteger(c.q) && Number.isInteger(c.r) && c.q >= 0 && c.r >= 0 && c.q < w && c.r < h))) return { ok: false, error: `The channel of ${s.id} is damaged.` };
     for (const k of ['openTerrain', 'closedTerrain'] as const) if (s[k] !== undefined && !CUSTOM_CHANNEL_TERRAINS.includes(s[k]!)) return { ok: false, error: `The channel ground of ${s.id} is damaged.` };
     if (s.startsOpen !== undefined && typeof s.startsOpen !== 'boolean') return { ok: false, error: `A site is damaged (${s.id}).` };
+    // Sea sites (2026-10-18): kept as they are, shape checked here.
+    if (s.resource !== undefined && !['wood', 'stone', 'gold'].includes(s.resource)) return { ok: false, error: `The salvage of ${s.id} is damaged.` };
+    if (s.amount !== undefined && !(Number.isInteger(s.amount) && s.amount >= 1 && s.amount <= 100_000)) return { ok: false, error: `The salvage amount of ${s.id} is damaged.` };
+    if (s.outcome !== undefined && !['abandoned_cargo', 'guarded_salvage', 'rare_cache'].includes(s.outcome)) return { ok: false, error: `The wreck outcome of ${s.id} is damaged.` };
+    if (s.skin !== undefined && !['broken_mast', 'split_hull'].includes(s.skin)) return { ok: false, error: `The wreck picture of ${s.id} is damaged.` };
     for (const k of ['name', 'text', 'heroId', 'twinId', 'spellId', 'skillId', 'creatureId'] as const) {
       const v = (s as unknown as Record<string, unknown>)[k];
       if (v !== undefined && (typeof v !== 'string' || v.length > (k === 'text' ? 400 : 60))) return { ok: false, error: `A site is damaged (${s.id}).` };
     }
+  }
+  // Ships (expedition kit, optional): kept as they are, never dropped; shape and bounds checked here.
+  const shipsRaw = (d as { ships?: unknown }).ships;
+  if (shipsRaw !== undefined) {
+    if (!Array.isArray(shipsRaw) || shipsRaw.length > 500) return { ok: false, error: 'The ships are damaged.' };
+    for (const sh of shipsRaw as CustomShip[]) {
+      if (!sh || typeof sh.id !== 'string' || !/^[a-z0-9_]{1,40}$/.test(sh.id) || !Number.isInteger(sh.q) || !Number.isInteger(sh.r) || sh.q < 0 || sh.r < 0 || sh.q >= w || sh.r >= h) return { ok: false, error: 'A ship is damaged.' };
+      if (sh.owner !== undefined && !(Number.isInteger(sh.owner) && sh.owner >= 0 && sh.owner < CUSTOM_MAX_EMPIRES)) return { ok: false, error: `The owner of ship ${sh.id} is damaged.` };
+    }
+  }
+  // The naval-only travel rule (optional): checked like a save's, never silently repaired (portals stay false).
+  const policyRaw = (d as { navalPolicy?: unknown }).navalPolicy;
+  if (policyRaw !== undefined) {
+    const problems = navalPolicyIssues({ navalPolicy: policyRaw, sites: [] }, { navalMovementV1: true });
+    if (problems.length > 0) return { ok: false, error: `The naval travel rule is damaged: ${problems[0]}.` };
   }
   const v = d.victory as CustomVictory | undefined;
   if (!v || (v.type !== 'elimination' && !(v.type === 'hold_relic' && Number.isInteger(v.days) && v.days >= 1 && v.days <= 30))) return { ok: false, error: 'The victory goal is damaged.' };
@@ -219,6 +291,8 @@ export function parseCustomMap(text: string): { ok: true; doc: CustomMapDocument
       biome: d.biome ?? 'temperate',
       players: d.players.map((p) => ({ pantheonId: p.pantheonId, ...(p.name ? { name: text50(p.name, 40) } : {}) })),
       sites: d.sites,
+      ...(Array.isArray(shipsRaw) ? { ships: (shipsRaw as CustomShip[]).map((sh) => ({ id: sh.id, q: sh.q, r: sh.r, ...(sh.owner !== undefined ? { owner: sh.owner } : {}) })) } : {}),
+      ...(policyRaw !== undefined ? { navalPolicy: policyRaw as NavalTraversalPolicy } : {}),
       victory: v,
       startWealth: d.startWealth === 'low' || d.startWealth === 'high' ? d.startWealth : 'normal',
       ...(d.revealMap ? { revealMap: true } : {}),
@@ -251,6 +325,8 @@ export function validateCustomMap(catalog: ContentCatalog, doc: CustomMapDocumen
   const err = (text: string, siteId?: string) => issues.push({ severity: 'error', text, ...(siteId ? { siteId } : {}) });
   const warn = (text: string, siteId?: string) => issues.push({ severity: 'warning', text, ...(siteId ? { siteId } : {}) });
   if (doc.players.length < 2) err('A map needs at least two empires.');
+  // Naval-only travel: no portal, ferry or sluice may cross the sea without a ship.
+  if (doc.navalPolicy) for (const s of doc.sites) if (s.kind === 'portal' || s.kind === 'ferry' || s.kind === 'sluice') err(`${s.id}: this map is crossed by ship only — remove the ${s.kind}.`, s.id);
   doc.players.forEach((p, i) => {
     if (!catalog.skirmishKits[p.pantheonId]) err(`Empire ${i + 1}: ${p.pantheonId} cannot be played in a skirmish.`);
     const towns = doc.sites.filter((s) => s.kind === 'town' && s.owner === i);
@@ -266,7 +342,13 @@ export function validateCustomMap(catalog: ContentCatalog, doc: CustomMapDocumen
     ids.add(s.id);
     const c = { q: s.q, r: s.r };
     const t = terrainAt(doc, c);
-    if (!passable(t)) err(`${label} stands on ${t === 'void' ? 'no ground' : t}.`, s.id);
+    // Sea sites (2026-10-18) have their own placement rules (salvage and wrecks on water, the lookout on the coast).
+    const seaProblem = seaSiteCustomProblem(doc, s);
+    if (seaProblem) err(`${label}: ${seaProblem}.`, s.id);
+    else if (!customWaterSiteKind(s.kind) && !passable(t)) err(`${label} stands on ${t === 'void' ? 'no ground' : t}.`, s.id);
+    // Sea creatures stay at sea: a sea monster on water with a sea army; never a land guard or camp of them.
+    const seaMonsterProblem = seaMonsterCustomProblem(catalog, (x) => terrainAt(doc, x), s);
+    if (seaMonsterProblem) err(`${label}: ${seaMonsterProblem}.`, s.id);
     const k = hexKey(c);
     if (seen.has(k)) err(`${label} shares its tile with another site.`, s.id);
     seen.set(k, s.id);
@@ -332,6 +414,22 @@ export function validateCustomMap(catalog: ContentCatalog, doc: CustomMapDocumen
       }
     }
   }
+  // Ships (expedition kit): empty hulls on water, one per tile, owned by an empire or neutral.
+  const shipIds = new Set<string>();
+  const shipTiles = new Set<string>();
+  const channels = new Set(doc.sites.flatMap((x) => (x.kind === 'sluice' ? (x.channel ?? []).map((c) => hexKey(c)) : [])));
+  for (const sh of doc.ships ?? []) {
+    const c = { q: sh.q, r: sh.r };
+    const label = `Ship ${sh.id}`;
+    if (shipIds.has(sh.id)) err(`Two ships share the ID ${sh.id}.`);
+    shipIds.add(sh.id);
+    if (terrainAt(doc, c) !== 'water') err(`${label} is not on water.`);
+    if (shipTiles.has(hexKey(c))) err(`${label} shares its tile with another ship.`);
+    shipTiles.add(hexKey(c));
+    if (sh.owner !== undefined && (sh.owner < 0 || sh.owner >= doc.players.length)) err(`${label} belongs to no empire ${sh.owner + 1}.`);
+    if (channels.has(hexKey(c))) err(`${label} lies in a sluice channel; it would run aground when the channel drains.`);
+    if (!axialNeighbors(c).some((n) => passable(terrainAt(doc, n)))) warn(`${label} has no shore beside it: no hero can ever board it.`);
+  }
   if (doc.victory.type === 'hold_relic') {
     const relics = doc.sites.filter((s) => s.kind === 'relic');
     if (relics.length !== 1) err('“Hold the shrine” needs exactly one Shrine of the First Flame on the map.');
@@ -345,7 +443,9 @@ export function validateCustomMap(catalog: ContentCatalog, doc: CustomMapDocumen
     const sluiced = doc.sites.some((s) => s.kind === 'sluice');
     const both = sluiced ? { closed: customReach(doc, first, 'closed'), open: customReach(doc, first, 'open') } : null;
     const reach = both ? new Set([...both.closed, ...both.open]) : customReach(doc, first, 'start');
-    for (const s of doc.sites) if (!reach.has(hexKey({ q: s.q, r: s.r }))) err(`${s.name || CUSTOM_SITE_KINDS.find((k) => k.id === s.kind)?.label} cannot be reached from Empire 1’s town.`, s.id);
+    // A site on water (sea salvage, a wreck) is reached by ship: its sea touches land Empire 1 reaches.
+    const sea = customSeaReach(doc, reach);
+    for (const s of doc.sites) if (!(customWaterSiteKind(s.kind) ? sea(s) : reach.has(hexKey({ q: s.q, r: s.r })))) err(`${s.name || CUSTOM_SITE_KINDS.find((k) => k.id === s.kind)?.label} cannot be reached from Empire 1’s town${customWaterSiteKind(s.kind) ? ' by ship' : ''}.`, s.id);
     const sc = both ? sluiceCut(doc, both) : null;
     for (const state of ['closed', 'open'] as const) for (const m of sc?.[state] ?? []) err(`With every sluice ${state}, ${m.label} cannot be reached from Empire 1’s town.`, m.siteId);
   }
@@ -391,9 +491,36 @@ function customReach(doc: CustomMapDocument, from: { readonly q: number; readonl
   };
   const reach = new Set<string>();
   walk({ q: from.q, r: from.r }, reach);
+  // Sea crossings (expedition kit): a neutral ship or one of Empire 1's beside reachable land carries a
+  // hero over its whole water body to every walkable shore of it. A coastal town's launch service is not
+  // counted (an island map needs a placed ship or a land link to pass this check).
+  const waterAt = (c: HexCoord) => c.q >= 0 && c.r >= 0 && c.q < ground.width && c.r < ground.height && ground.terrain[c.r * ground.width + c.q] === TERRAIN_CODES.water;
+  const boats = (doc.ships ?? []).filter((sh) => sh.owner === undefined || sh.owner === 0);
+  const sailed = new Set<string>();
   let grew = true;
   while (grew) {
     grew = false;
+    for (const boat of boats) {
+      const start = { q: boat.q, r: boat.r };
+      if (sailed.has(hexKey(start)) || !waterAt(start) || !axialNeighbors(start).some((n) => reach.has(hexKey(n)))) continue;
+      const queue = [start];
+      sailed.add(hexKey(start));
+      while (queue.length > 0) {
+        const cur = queue.pop()!;
+        for (const nb of axialNeighbors(cur)) {
+          const k = hexKey(nb);
+          if (waterAt(nb)) {
+            if (!sailed.has(k)) {
+              sailed.add(k);
+              queue.push(nb);
+            }
+          } else if (!reach.has(k) && WALKABLE_CODES.has(nb.q < 0 || nb.r < 0 || nb.q >= ground.width || nb.r >= ground.height ? 'v' : (ground.terrain[nb.r * ground.width + nb.q] ?? 'v'))) {
+            walk(nb, reach);
+            grew = true;
+          }
+        }
+      }
+    }
     for (const s of doc.sites) {
       if ((s.kind !== 'portal' && s.kind !== 'ferry') || !reach.has(hexKey({ q: s.q, r: s.r }))) continue;
       const twin = doc.sites.find((x) => x.id === s.twinId);
@@ -404,6 +531,41 @@ function customReach(doc: CustomMapDocument, from: { readonly q: number; readonl
     }
   }
   return reach;
+}
+
+/**
+ * Whether a water site can be reached by ship from land Empire 1 reaches (sea-sites kit): its sea —
+ * the water it lies in or beside (a wreck is approached from its neighbours), wrecks excluded — touches
+ * a reached land hex (a coastal town can launch a ship there, or a placed ship lies in it).
+ */
+function customSeaReach(doc: CustomMapDocument, reach: ReadonlySet<string>): (s: CustomSite) => boolean {
+  const wrecks = new Set(doc.sites.filter((x) => x.kind === 'shipwreck').map((x) => hexKey({ q: x.q, r: x.r })));
+  const water = (c: HexCoord) => terrainAt(doc, c) === 'water' && !wrecks.has(hexKey(c));
+  const bodyOf = new Map<string, boolean>();
+  const reached = (start: HexCoord): boolean => {
+    const k0 = hexKey(start);
+    if (bodyOf.has(k0)) return bodyOf.get(k0)!;
+    const seen = new Set([k0]);
+    const queue = [start];
+    let touches = false;
+    while (queue.length > 0) {
+      const cur = queue.pop()!;
+      for (const n of axialNeighbors(cur)) {
+        const k = hexKey(n);
+        if (reach.has(k)) touches = true;
+        if (seen.has(k) || !water(n)) continue;
+        seen.add(k);
+        queue.push(n);
+      }
+    }
+    for (const k of seen) bodyOf.set(k, touches);
+    return touches;
+  };
+  return (s) => {
+    const c = { q: s.q, r: s.r };
+    const starts = water(c) ? [c] : axialNeighbors(c).filter(water);
+    return starts.some(reached);
+  };
 }
 
 /** Terrain codes a hero walks on (as `travelCosts`: plains, forest, rough, marsh). */
@@ -517,7 +679,7 @@ export function compileCustomMap(catalog: ContentCatalog, authored: CustomMapDoc
   const n = doc.players.length;
   // Sluice channels start in their start state (unchanged without sluices).
   const map = toWorldMap(customSluiceGround(doc, 'start'));
-  const features = { expandedContent: true, weeklyEvents: true, interventions: true, heroSpecialties: true, neutralReactions: true, climateRules: true, aiTemperaments: true };
+  const features = { expandedContent: true, mythicLibraryV2: true, weeklyEvents: true, interventions: true, heroSpecialties: true, neutralReactions: true, climateRules: true, aiTemperaments: true, cityDedicationsV1: true, scoutingIntelV1: true, targetableCatapultV1: true, recruitmentCaravansV1: true, navalMovementV1: true, seaEncountersV1: true };
   const playerIds = doc.players.map((_, i) => (i === 0 ? 'player' : `p${i + 1}`));
   const townIds = doc.players.map((_, i) => `town_${i + 1}`);
   const kits = doc.players.map((p) => catalog.skirmishKits[p.pantheonId]!);
@@ -592,7 +754,7 @@ export function compileCustomMap(catalog: ContentCatalog, authored: CustomMapDoc
     const c = catalog.creatures[s.guard.creatureId]!;
     const value = stacks.reduce((sum, x) => sum + (catalog.creatures[x.creatureId]?.cost?.gold ?? 100) * x.count, 0);
     const reward = s.reward && s.kind !== 'quest_hut' && s.kind !== 'artifact' && s.kind !== 'supply_depot' ? rewardOf(s.reward, `${s.id}:guard`) : { resources: { gold: Math.max(100, Math.round((value * 0.25) / 50) * 50) } };
-    return { label: s.guard.label ?? (s.kind === 'monster' ? c.pluralName : `${c.pluralName} on guard`), army: stacks, reward, battlefield };
+    return { label: s.guard.label ?? (s.kind === 'monster' || s.kind === SEA_MONSTER_KIND ? c.pluralName : `${c.pluralName} on guard`), army: stacks, reward, battlefield };
   };
   // Unowned towns (2026-10-07): their pantheon by the option or the site's own setting.
   const unownedMode = opts.unownedTowns ?? 'map';
@@ -730,6 +892,10 @@ export function compileCustomMap(catalog: ContentCatalog, authored: CustomMapDoc
       case 'monster':
         sites.push({ ...base, name: named(guard?.label ?? 'Monsters'), description: s.text ?? 'A neutral army bars the way.', kind: { type: 'crossing' }, ...(guard ? { guard: { ...guard, battlefield: 'grove' as const } } : {}) });
         break;
+      case SEA_MONSTER_KIND:
+        // A sea-monster stack on water (seaEncountersV1): fought by a ship on the single-ship sea board.
+        if (guard) sites.push({ ...base, ...seaMonsterSiteBody(guard, named(guard.label), s.text) });
+        break;
       case 'artifact': {
         const reward = rewardOf(s.reward, s.id);
         const art = reward.artifactIds?.[0];
@@ -819,6 +985,31 @@ export function compileCustomMap(catalog: ContentCatalog, authored: CustomMapDoc
         sites.push({ ...base, name: named('Supply Depot'), description: `A one-use supply depot: ${rewardText(reward)} for the first hero to arrive.`, kind: { type: 'pickup', reward }, art: 'supply_depot', ...(guard ? { guard } : {}) });
         break;
       }
+      // Sea sites (2026-10-18): every unset value drawn once here from the map's own stream (the same map, the same draw).
+      case 'coastal_watchtower': {
+        const body = coastalTowerBody(catalog, named('Coastal Watchtower'), coastalTowerSkin(doc.biome, (x) => terrainAt(doc, x), coord));
+        const kind = body.kind.type === 'coastal_watchtower' && s.radius ? { ...body.kind, radius: s.radius } : body.kind;
+        sites.push({ ...base, ...body, kind, ...(guard ? { guard } : {}) });
+        break;
+      }
+      case 'sea_pickup': {
+        const rng = new RngCursor(seedFromLabel(`${CUSTOM_GENERATOR_VERSION}|${doc.name}|${s.id}|salvage`));
+        const resource = s.resource ?? 'gold';
+        const body = seaPickupBody(resource, s.amount ?? seaPickupAmount(catalog, resource, (n) => rng.nextInt(n)));
+        sites.push({ ...base, ...body, name: named(body.name) });
+        break;
+      }
+      case 'shipwreck': {
+        const rng = new RngCursor(seedFromLabel(`${CUSTOM_GENERATOR_VERSION}|${doc.name}|${s.id}|wreck`));
+        const draw = (n: number) => rng.nextInt(n);
+        const drawn = wreckOutcome(catalog, draw, 100, features.expandedContent, s.outcome);
+        // An authored army replaces the drawn raiders (an unguarded outcome stays unguarded).
+        const custom = s.guard ? [{ creatureId: s.guard.creatureId, count: s.guard.count }, ...(s.guard.more ?? [])] : null;
+        const outcome = custom && drawn.guard ? { ...drawn, guard: { label: s.guard!.label ?? drawn.guard.label, army: custom } } : drawn;
+        const name = s.name || wreckName(draw);
+        sites.push({ ...base, ...shipwreckBody(catalog, name, outcome, s.skin ?? wreckSkin(draw)) });
+        break;
+      }
     }
     // An authored description replaces the default one (towns keep theirs).
     const last = sites[sites.length - 1];
@@ -873,6 +1064,8 @@ export function compileCustomMap(catalog: ContentCatalog, authored: CustomMapDoc
     player: { playerId: 'player', name: seats[0]?.name ?? doc.players[0]!.name ?? townNames[0]!, controller: seats[0]?.controller ?? 'human', pantheonId: doc.players[0]!.pantheonId, wallet, town: seat0.town, hero: seat0.hero },
     rivals,
     ...(neutralTowns.length > 0 ? { neutralTowns } : {}),
+    ...((doc.ships ?? []).length > 0 ? { ships: (doc.ships ?? []).map((sh): MissionShipSetup => ({ shipId: `map_ship_${sh.id}`, coord: { q: sh.q, r: sh.r }, ...(sh.owner !== undefined ? { ownerId: playerIds[sh.owner] ?? null } : {}) })) } : {}),
+    ...(doc.navalPolicy ? { navalPolicy: doc.navalPolicy } : {}),
     initialFlags: ['skirmish'],
     features,
     ...(doc.revealMap ? { startExplored: true } : {}),
@@ -898,6 +1091,8 @@ export function compileCustomMap(catalog: ContentCatalog, authored: CustomMapDoc
       ...(doc.sites.some((s) => s.kind === 'neutral_dwelling' || s.kind === 'sluice' || s.kind === 'ferry' || s.kind === 'supply_depot')
         ? [{ id: 'map_landmarks', title: 'Hiring sites, sluices and ferries', text: 'A neutral hiring site hires its creatures to a hero of any pantheon: a few each week, shared by every empire; those not hired do not carry over. A hero standing on a sluice opens or closes it, and its channel changes ground at once (water to marsh, for example). A ferry landing carries a hero across to its twin landing. A supply depot gives its supplies once. Proposed; values unplaytested.' }]
         : []),
+      ...(doc.sites.some((s) => s.kind === 'coastal_watchtower' || s.kind === 'sea_pickup' || s.kind === 'shipwreck') ? [SEA_SITES_HELP] : []),
+      ...(hasSeaMonsters(doc) ? [SEA_MONSTERS_HELP] : []),
     ],
     protectedHeroFailure: false,
     thumbnailAssetId: opts.thumbnailAssetId ?? 'mission.skirmish.random.thumbnail',

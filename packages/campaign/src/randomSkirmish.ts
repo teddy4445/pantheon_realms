@@ -33,6 +33,27 @@ export {
   type UnownedTowns,
 } from '@pr/mapgen';
 
+// Naval random-map templates (2026-10-17): The Shattered Crown and The Serpent Straits, generated through
+// `createRandomSkirmish` like every random map; the chooser lists them after the nine land layouts.
+export {
+  NAVAL_GENERATOR_ID,
+  NAVAL_MAP_TYPES,
+  NAVAL_TEMPLATE_VERSION,
+  NavalGenerationError,
+  RANDOM_MAP_TYPES,
+  isNavalMapType,
+  navalSettingsProblem,
+  navalTemplate,
+  navalTemplatesReadiness,
+  validateNavalMap,
+  analyzeNavalMap,
+  type NavalMapType,
+  type NavalReadiness,
+  type NavalTemplateInfo,
+  type RandomMapType,
+  type RandomMapTypeInfo,
+} from '@pr/mapgen';
+
 export interface RandomSkirmish extends GeneratedScenario {
   /** Fairness checks the generator ran (all must pass for a returned map). */
   readonly checks: readonly MapCheck[];
@@ -100,6 +121,11 @@ export {
   type NeutralSiteTable,
   type SluiceConnectivity,
 } from '@pr/mapgen';
+
+// Sea-sites kit (2026-10-18): coastal watchtowers, floating salvage and shipwrecks in the editor.
+export { coastalTowerSkin, customWaterSiteKind, seaSiteCustomProblem } from '@pr/mapgen';
+// Sea creatures (2026-10-17): the editor's checks for sea-monster stacks.
+export { SEA_MONSTER_KIND, seaMonsterCustomProblem } from '@pr/mapgen';
 
 /** One seat of an authored skirmish map: its pantheon and who plays it. */
 export interface SkirmishMapSeat {

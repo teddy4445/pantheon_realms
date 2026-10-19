@@ -21,7 +21,7 @@ import { SkirmishMapThumb } from '../components/mapPreview';
 import { FactionBanner } from '../components/gui';
 import { guiThemeFor } from '../assets/guiArt';
 import { FrontendShell, IllustratedChoice, backdropStyle, radioKeys } from '../components/frontend';
-import { SKIRMISH_MAP_TYPES, SKIRMISH_MAX_EMPIRES } from '@pr/session';
+import { RANDOM_MAP_TYPES, SKIRMISH_MAX_EMPIRES } from '@pr/session';
 import { chronicleModel, defaultSelection } from '../app/chronicle';
 import { Chronicle } from '../components/chronicle';
 
@@ -65,7 +65,7 @@ export function GameModeScreen() {
       text: `${campaigns.length} story ${campaigns.length === 1 ? 'campaign' : 'campaigns'}${campaignPantheons > 1 ? (campaignPantheons === campaigns.length ? `, one for each of ${campaignPantheons} pantheons` : ` across ${campaignPantheons} pantheons`) : ''}, with a hero who carries on from mission to mission.`,
     },
     { id: 'skirmish' as const, art: 'frontend.mode.skirmish', title: 'Skirmish', text: `${skirmishChoices} authored maps against the AI or other players on this computer (hot-seat). All ${pantheons} pantheons.` },
-    { id: 'random' as const, art: 'frontend.mode.random-map', title: 'Random Map', text: `A new map every time: ${SKIRMISH_MAP_TYPES.length} layouts, 2 to ${SKIRMISH_MAX_EMPIRES} empires, AI or hot-seat seats and a choice of victory.` },
+    { id: 'random' as const, art: 'frontend.mode.random-map', title: 'Random Map', text: `A new map every time: ${RANDOM_MAP_TYPES.length} layouts, 2 to ${SKIRMISH_MAX_EMPIRES} empires, AI or hot-seat seats and a choice of victory.` },
     { id: 'editor' as const, art: 'frontend.mode.map-editor', title: 'Map Editor', text: 'Draw your own map — ground, roads, towns, mines, treasures and the goal — keep it in the map library and play it.' },
   ];
   return (

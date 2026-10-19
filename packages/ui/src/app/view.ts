@@ -90,6 +90,14 @@ export function siteArchetype(def: SiteDefinition): SiteArchetype {
     case 'treasure_chest':
     case 'prison':
       return k.type;
+    case 'sea_monster':
+      return 'sea_monster';
+    // Sea sites have their own map layer (app/seaSites.ts); these stand in for markers and fallbacks.
+    case 'coastal_watchtower':
+      return 'watchtower';
+    case 'sea_pickup':
+    case 'shipwreck':
+      return 'pickup';
   }
 }
 
@@ -142,6 +150,14 @@ export function siteKindLabel(def: SiteDefinition): string {
       return 'Treasure chest';
     case 'prison':
       return 'Prison';
+    case 'sea_monster':
+      return 'Sea monsters · fought from a ship';
+    case 'coastal_watchtower':
+      return 'Coastal watchtower · sight over the sea';
+    case 'sea_pickup':
+      return 'Floating salvage';
+    case 'shipwreck':
+      return 'Shipwreck';
   }
 }
 

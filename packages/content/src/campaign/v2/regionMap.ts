@@ -41,6 +41,8 @@ export interface RegionMapSpec {
   readonly rows: number;
   readonly biome: Biome;
   readonly base: Terrain;
+  /** Explicit terrain mechanics; independent of the painting biome. */
+  readonly desertGround?: boolean;
   /** The outer ring (default: water on coast-like biomes, mountain elsewhere). */
   readonly edge?: Terrain;
   readonly paint: readonly PaintOp[];
@@ -290,7 +292,7 @@ export function compileRegionMap(spec: RegionMapSpec, sites: readonly SitePlacem
     rowsOut.push(line);
   }
   return {
-    map: { id: spec.id, version: 1, width, height, rows: rowsOut, roads: [...roads].sort(), biome: spec.biome, seed: spec.seed },
+    map: { id: spec.id, version: 1, width, height, rows: rowsOut, roads: [...roads].sort(), biome: spec.biome, seed: spec.seed, ...(spec.desertGround ? { desertCells: terrain.flatMap((t, i) => t === 'rough' || t === 'plains' ? [i] : []) } : {}) },
     width,
     coords,
     gates,

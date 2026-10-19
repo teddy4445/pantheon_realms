@@ -1,0 +1,39 @@
+{
+  "feature": "navalMovementV1",
+  "hull": "Shared across six pantheons; live hero/owner flag",
+  "shipCost": {
+    "gold": 1500,
+    "wood": 10
+  },
+  "shipConstruction": "Immediate at owned coastal town; choose empty adjacent water hex; no new building required",
+  "coastalTown": "At least one water neighbor of actual town footprint; launch does not make mountains or gates passable.",
+  "terrain": "Occupied ship moves water-to-water only, cost100 per hex, no road bonus; use hero daily movement budget.",
+  "embarkDisembark": "Adjacent legal coast/empty friendly-or-neutral ship. Requires at least100 movement; consumes all remaining movement. No free refresh by switching modes.",
+  "armyCapacity": "One hero with current army; normal existing stack limit. No separate creature headcount limit.",
+  "states": [
+    "empty",
+    "occupied",
+    "in_battle",
+    "wrecked"
+  ],
+  "heroFlag": "Use hero’s current player color and existing banner shape. Hide mounted avatar; show hero portrait/name on inspect. Empty ship gets neutral owner marker, not a fictitious hero.",
+  "combat": "Move into adjacent hostile occupied-ship hex to request boarding battle; no remote cannon fire, no sea catapult.",
+  "victory": "Winner stays on own ship. Attacker victory moves own ship to contested water hex; loser ship removed after transient wreck visual. Defender victory keeps defender position.",
+  "defeat": "Use existing hero/army defeat persistence; do not leave dead hero aboard. No persistent combat hull HP in this version.",
+  "retreat": "If existing rules permit retreat, require a deterministic legal unoccupied water destination; hero remains on same ship with existing retreat casualties. No free land teleport. Disable with reason if none.",
+  "battleLayout": "boarding_two_ships_v1",
+  "flyers": "May cross water but must land complete footprint on deck/bridge.",
+  "normalLandInteraction": "Embarked hero cannot claim inland sites/towns or attack shore units directly; must disembark legally.",
+  "routePersistence": "Store final destination and remaining mixed-mode route across days; pause with embark/disembark confirmation where needed; never re-mark automatically or auto-confirm a battle.",
+  "saveFields": [
+    "shipId",
+    "ownerId",
+    "coord",
+    "heroId",
+    "state",
+    "facing",
+    "lastActionTurn"
+  ],
+  "mapSupport": "Editor can place empty/occupied ships; random-map generator must test land-water connectivity and coastal starts.",
+  "numbers": "Proposed starting balance; verify by playtesting."
+}

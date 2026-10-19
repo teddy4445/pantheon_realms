@@ -1,3 +1,4 @@
+import { allied } from './coalition';
 /**
  * QuestSystem: rewards, objective state machine and mission outcome.
  *
@@ -18,6 +19,7 @@ import { grantArtifact, grantExperience } from './heroes';
 import { grantEntitlement } from './divine';
 import { commitEndTurn } from './turn';
 import { scenarioMission } from '../resolvers/scenario';
+import { removeEliminatedCaravans } from './caravans';
 
 export const MISSION_VICTORY_FLAG = 'mission_victory_pending';
 
@@ -96,8 +98,12 @@ export function evaluateCondition(catalog: ContentCatalog, state: MatchState, co
       return (state.players[playerId]?.pantheon.minorGodIds.length ?? 0) >= (cond.count ?? 1);
     case 'hero_defeated':
       return Object.values(state.heroes).some((h) => h.definitionId === cond.heroDefinitionId && h.ownerId !== playerId && h.status !== 'active');
+    case 'town_building':
+      return allied(state, state.towns[cond.townId]?.ownerId, playerId) && (state.towns[cond.townId]?.buildings[cond.slotId] ?? 0) >= cond.level;
+    case 'site_owned':
+      return allied(state, state.world.sites[cond.siteId]?.owner, playerId);
     case 'town_owned':
-      return state.towns[cond.townId]?.ownerId === playerId;
+      return allied(state, state.towns[cond.townId]?.ownerId, playerId);
     case 'hero_army_contains': {
       const hero = state.heroes[cond.heroId];
       if (!hero) return false;
@@ -256,7 +262,7 @@ export function evaluateMissionOutcome(tx: Tx): void {
   if (state.mission.flags[MISSION_VICTORY_FLAG] && !state.pendingDecisions.some((d) => state.heroes[d.heroId]?.ownerId === playerId)) {
     const mission = scenarioMission(tx.catalog, state);
     const reason = mission ? `${mission.name} complete` : 'Mission complete';
-    state.outcome = { status: 'victory', reason, day: state.day, winnerIds: [playerId] };
+    state.outcome = { status: 'victory', reason, day: state.day, winnerIds: state.coalition?.playerIds ?? [playerId] };
     tx.emit({ kind: 'MissionCompleted', reason });
   }
 }
@@ -286,9 +292,12 @@ function evaluateSkirmishOutcome(tx: Tx): void {
   const contenders = contenderIds(state);
   for (const id of contenders) {
     const p = state.players[id]!;
-    if (p.eliminated || hasPresence(state, id)) continue;
-    p.eliminated = true;
-    tx.emit({ kind: 'PlayerEliminated', playerId: id });
+    if (!p.eliminated) {
+      if (hasPresence(state, id)) continue;
+      p.eliminated = true;
+      tx.emit({ kind: 'PlayerEliminated', playerId: id });
+    }
+    removeEliminatedCaravans(tx, id);
   }
   const alive = contenders.filter((id) => !state.players[id]!.eliminated);
   const humansAlive = alive.filter((id) => state.players[id]!.controller === 'human');

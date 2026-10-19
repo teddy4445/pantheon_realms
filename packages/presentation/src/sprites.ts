@@ -19,6 +19,7 @@
  */
 import type { CreatureDefinition, ContentCatalog, SiteDefinition } from '@pr/rules';
 import type { MapDirection } from './hexmath';
+import type { MapTokenDefinition } from './mapTokens';
 
 /** Battle and bestiary animation names (directive §9). */
 export const CREATURE_ANIMATIONS = ['idle', 'move', 'attack', 'shoot', 'defend', 'hit', 'death', 'victory', 'takeoff', 'fly', 'landing', 'cast', 'ability'] as const;
@@ -36,11 +37,16 @@ export const SITE_ARCHETYPES = [
   'nest', 'refuge', 'quarry_cache', 'grove', 'beacon', 'relay', 'gate', 'camp', 'event_site', 'relic', 'portal',
   'learning_stone', 'spell_shrine', 'skill_trainer', 'quest_hut', 'key_tent', 'key_gate', 'windmill', 'treasure_chest', 'prison',
   'sluice',
+  // A neutral sea-monster stack on water (sea creatures 2026-10-17): no site picture — the creature itself is drawn.
+  'sea_monster',
 ] as const;
 export type SiteArchetype = (typeof SITE_ARCHETYPES)[number];
 
 /** Location kinds whose pictures are one per state (campaign v2: the sluice, `open` or `closed`). */
 export const STATE_SITE_ARCHETYPES: Readonly<Partial<Record<SiteArchetype, readonly string[]>>> = { sluice: ['closed', 'open'] };
+
+/** Location kinds drawn as their guard creature alone, without a site picture (a sea-monster stack on water). */
+export const FIGURE_SITE_ARCHETYPES: readonly SiteArchetype[] = ['sea_monster'];
 
 /** Map-avatar animation names (directive §16 D: 8 directions, idle and walk). */
 export const HERO_MAP_ANIMATIONS = ['idle', 'walk'] as const;
@@ -128,6 +134,24 @@ export interface SpriteSetDefinition {
   /** Silhouette placeholders are tinted with the owner's colour. */
   readonly tint?: 'accent';
   readonly animations: Readonly<Partial<Record<string, SpriteAnimationDefinition>>>;
+  /** Cosmetic event metadata of a delivered set (sea creatures 2026-10-17); absent = the renderer's defaults. */
+  readonly events?: SpriteSetEvents;
+}
+
+/**
+ * Cosmetic timing and placement of a delivered sprite set (sea-creature delivery 2026-10-17,
+ * `animation-events.json`; presentation only — never a rule, a hit or a damage value). Frame indices
+ * are zero-based within the strip.
+ */
+export interface SpriteSetEvents {
+  /** The attack strip's contact frame (the blow lands). */
+  readonly attackContactFrame?: number;
+  /** The shoot strip's release: frame, logical release point and the socket inside that frame's source rectangle (fractions). */
+  readonly shoot?: { readonly releaseFrame: number; readonly sourcePoint: string; readonly socket: readonly [number, number] };
+  /** Visual hover above the ground in hexes (intrinsic flyers over water): standing and travelling. */
+  readonly hover?: { readonly idleHex: number; readonly travelHex: number };
+  /** Death: hold the last pose; over water optionally sink by `sinkHex` and fade over `fadeMs` after it. */
+  readonly death?: { readonly holdLastFrame: boolean; readonly onWater?: 'sink-fade' | 'hold'; readonly sinkHex?: number; readonly fadeMs?: number; readonly onDeck?: 'hold' };
 }
 
 /** A single still image (map sites, decoration, obstacles, siege pieces, projectiles). */
@@ -203,6 +227,27 @@ export interface ProjectileProfile {
   readonly sizeHex: number;
   readonly impactSizeHex: number;
   readonly blend: string;
+  /**
+   * Added to the travel art's angle along its path (radians; sea creatures 2026-10-17): art painted
+   * facing another way than +X — Deepwater Blast faces left, so π. Absent = 0. Never applied to the impact.
+   */
+  readonly travelRotationOffsetRad?: number;
+  /** The impact's own rotation (radians). The delivered impacts stay upright: absent or 0. */
+  readonly impactRotationOffsetRad?: number;
+  /**
+   * What the missile sounds like (2026-10-16): leaving the shooter and striking, by missile family
+   * (the importer's `SOUNDS` table). Absent (an older manifest): the generic bow and arrow-hit.
+   */
+  readonly sounds?: { readonly release?: ProfileSound; readonly impact?: ProfileSound };
+}
+
+/**
+ * One sound of a missile: a sound ID of `assets-runtime/audio/manifest.json` (never a file), cut
+ * at `maxMs` with a short fade when given (long magic sounds), else played whole.
+ */
+export interface ProfileSound {
+  readonly id: string;
+  readonly maxMs?: number;
 }
 
 export interface HeroSpriteDefinition extends SpriteSetDefinition {
@@ -230,6 +275,12 @@ export interface SpriteManifest {
     readonly edges?: GroundEdgesDefinition;
     readonly foam?: GroundFoamDefinition;
   };
+  /**
+   * Expedition kit map tokens (2026-10-17): the ship, the caravan wagon and the wreck, keyed
+   * `ship`, `wagon`, `ship-wreck`; merged by the interface from `assets-runtime/expedition-v1/manifest.json`
+   * (`npm run expedition:import`). Look up through `mapTokens.ts`.
+   */
+  readonly mapTokens?: Readonly<Record<string, MapTokenDefinition>>;
 }
 
 /** The traced ground-transition masks (`edges.json`), one per ground character. */

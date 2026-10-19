@@ -39,8 +39,10 @@ async function load(page: Page, file: string) {
 }
 
 /** The player's leader attacks Eastharbor, rebuilt as a town of `pantheon` with fortifications of `level`. */
-function siegeDriver(pantheon: string, level: 2 | 3, damage = false, garrison: [string, number][] = [['hoplite', 4]]): GameDriver {
+function siegeDriver(pantheon: string, level: 2 | 3, damage = false, garrison: [string, number][] = [['hoplite', 4]], legacyCatapult = false): GameDriver {
   const d = GameDriver.mission('skirmish_twin_harbors', { matchId: `e2e-b15-${pantheon}-${level}` });
+  // The legacy automatic Catapult (older saves, The Three Beacons) where a test films its round-start throw.
+  if (legacyCatapult) d.state.scenario.features = { ...d.state.scenario.features!, targetableCatapultV1: false };
   for (const fog of Object.values(d.state.fog)) fog.explored = fog.explored.map(() => 1);
   const arch = Object.values(d.catalog.townArchetypes).find((a) => a.pantheonId === pantheon)!;
   const east = d.state.towns['eastharbor']!;
@@ -113,7 +115,7 @@ test('the catapult: the throw strip plays in place of the still, and the stone f
   const { urls, errors } = watch(page);
   // The catapult shoots at the start of every round (round 1's shot was fired when the save was made):
   // play on automatically and film the start of round 2.
-  await load(page, writeSave(siegeDriver('greek', 3, false, [['hoplite', 60], ['peltast', 40], ['hoplite', 60]]), 'b15 catapult'));
+  await load(page, writeSave(siegeDriver('greek', 3, false, [['hoplite', 60], ['peltast', 40], ['hoplite', 60]], true), 'b15 catapult'));
   await toHumanBattleTurn(page);
   await page.getByTestId('battle-auto').click();
   await waitFor(page, (x) => x.state.battle?.round >= 2, 'round 2', 120_000);

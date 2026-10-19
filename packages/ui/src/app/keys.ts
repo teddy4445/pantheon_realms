@@ -43,6 +43,7 @@ export const KEY_ACTIONS: readonly KeyAction[] = [
   { id: 'battle_skip', label: 'Skip the current animation', context: 'battle', defaultKey: 'Space' },
   { id: 'battle_auto', label: 'Toggle auto-combat', context: 'battle', defaultKey: 'q' },
   { id: 'battle_log', label: 'Show or hide the combat log', context: 'battle', defaultKey: 'l' },
+  { id: 'battle_inspect', label: 'Inspect a creature (the stack under the pointer, else the acting one)', context: 'battle', defaultKey: 'i' },
 ];
 
 export const FIXED_KEYS: readonly { keys: string; label: string }[] = [

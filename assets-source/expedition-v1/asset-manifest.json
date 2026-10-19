@@ -1,0 +1,362 @@
+{
+  "schema": "pantheon-expedition-art-v1",
+  "sourceGameVersion": "1.4.0",
+  "runtimeCopyRoot": "assets-runtime/expedition-v1",
+  "assets": [
+    {
+      "id": "expedition.ship-e",
+      "file": "assets/ship-e.png",
+      "width": 1254,
+      "height": 1254,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        30,
+        95,
+        1240,
+        1061
+      ],
+      "visibleBoundsNormalized": [
+        0.02392,
+        0.07576,
+        0.98884,
+        0.84609
+      ],
+      "sha256": "53fe88ee37295b9197f49051ee0070edaa84f231644993830e38c0ec6a367f2e",
+      "sourceAbsolute": "C:/Users/lazeb/.codex/generated_images/01a0f6e7-d6d1-7111-938b-0a4f17ff42f3/exec-a29ae58b-5afe-4015-ab9f-0bc550138035.png",
+      "status": "Native generated art, visually reviewed; no upscaling or code retouching",
+      "runtimeDisplay": "Map token, visible bounds scaled to approximately1.2hex widths; do not use canvaswidth as hullwidth.",
+      "groundAnchor": [
+        0.5,
+        0.84609
+      ]
+    },
+    {
+      "id": "expedition.ship-ne",
+      "file": "assets/ship-ne.png",
+      "width": 1254,
+      "height": 1254,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        96,
+        91,
+        1217,
+        1145
+      ],
+      "visibleBoundsNormalized": [
+        0.07656,
+        0.07257,
+        0.97049,
+        0.91308
+      ],
+      "sha256": "300acbc0b19d30630e5e371c259904a88f8761a4988dce207f8e2679b6d40331",
+      "sourceAbsolute": "C:/Users/lazeb/.codex/generated_images/01a0f6e7-d6d1-7111-938b-0a4f17ff42f3/exec-03a43881-1c02-47d3-ba5f-2e82e7c28974.png",
+      "status": "Native generated art, visually reviewed; no upscaling or code retouching",
+      "runtimeDisplay": "Map token, visible bounds scaled to approximately1.2hex widths; do not use canvaswidth as hullwidth.",
+      "groundAnchor": [
+        0.5,
+        0.91308
+      ]
+    },
+    {
+      "id": "expedition.ship-se",
+      "file": "assets/ship-se.png",
+      "width": 1254,
+      "height": 1254,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        105,
+        90,
+        1231,
+        1173
+      ],
+      "visibleBoundsNormalized": [
+        0.08373,
+        0.07177,
+        0.98166,
+        0.93541
+      ],
+      "sha256": "e861d7971795345982c992445beefe68664c5233320e191c925128fc90aa5040",
+      "sourceAbsolute": "C:/Users/lazeb/.codex/generated_images/01a0f6e7-d6d1-7111-938b-0a4f17ff42f3/exec-70b57cb9-da97-4e51-bbe6-f0e959b63766.png",
+      "status": "Native generated art, visually reviewed; no upscaling or code retouching",
+      "runtimeDisplay": "Map token, visible bounds scaled to approximately1.2hex widths; do not use canvaswidth as hullwidth.",
+      "groundAnchor": [
+        0.5,
+        0.93541
+      ]
+    },
+    {
+      "id": "expedition.wagon-e",
+      "file": "assets/wagon-e.png",
+      "width": 1254,
+      "height": 1254,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        30,
+        159,
+        1233,
+        1023
+      ],
+      "visibleBoundsNormalized": [
+        0.02392,
+        0.12679,
+        0.98325,
+        0.81579
+      ],
+      "sha256": "c417378d563d21fdfcda05fdde211d8947fe7d46ec04dd74c15a5f277a97382b",
+      "sourceAbsolute": "C:/Users/lazeb/.codex/generated_images/01a0f6e7-d6d1-7111-938b-0a4f17ff42f3/exec-1d41fc4c-f42d-46ae-afba-3466957a3d68.png",
+      "status": "Native generated art, visually reviewed; no upscaling or code retouching",
+      "runtimeDisplay": "Map token, visible bounds scaled to approximately1.2hex widths; do not use canvaswidth as hullwidth.",
+      "groundAnchor": [
+        0.5,
+        0.81579
+      ]
+    },
+    {
+      "id": "expedition.wagon-ne",
+      "file": "assets/wagon-ne.png",
+      "width": 1254,
+      "height": 1254,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        53,
+        111,
+        1242,
+        1158
+      ],
+      "visibleBoundsNormalized": [
+        0.04226,
+        0.08852,
+        0.99043,
+        0.92344
+      ],
+      "sha256": "324eea44d2fad13836ac7f937ac7685ba348f9af1181c2470f35573f908e8dcd",
+      "sourceAbsolute": "C:/Users/lazeb/.codex/generated_images/01a0f6e7-d6d1-7111-938b-0a4f17ff42f3/exec-dd6d8ec3-1a1f-4c84-a02a-bd4825a272ef.png",
+      "status": "Native generated art, visually reviewed; no upscaling or code retouching",
+      "runtimeDisplay": "Map token, visible bounds scaled to approximately1.2hex widths; do not use canvaswidth as hullwidth.",
+      "groundAnchor": [
+        0.5,
+        0.92344
+      ]
+    },
+    {
+      "id": "expedition.wagon-se",
+      "file": "assets/wagon-se.png",
+      "width": 1254,
+      "height": 1254,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        50,
+        44,
+        1219,
+        1219
+      ],
+      "visibleBoundsNormalized": [
+        0.03987,
+        0.03509,
+        0.97209,
+        0.97209
+      ],
+      "sha256": "6bd3befd34f1dcc4c4500a68a0b9c28b38c4fff4c683d4959860f5d10a01bd64",
+      "sourceAbsolute": "C:/Users/lazeb/.codex/generated_images/01a0f6e7-d6d1-7111-938b-0a4f17ff42f3/exec-c8d27f16-384e-4e7c-aab1-f830fb88c728.png",
+      "status": "Native generated art, visually reviewed; no upscaling or code retouching",
+      "runtimeDisplay": "Map token, visible bounds scaled to approximately1.2hex widths; do not use canvaswidth as hullwidth.",
+      "groundAnchor": [
+        0.5,
+        0.97209
+      ]
+    },
+    {
+      "id": "expedition.boarding-battle",
+      "file": "assets/boarding-battle.png",
+      "width": 1672,
+      "height": 941,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBoundsPixels": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "visibleBoundsNormalized": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "sha256": "8ea73af26e223cf78fc0e98280f802a79d187565c4f535787a9c41b51aeffdcb",
+      "sourceAbsolute": "C:/Users/lazeb/.codex/generated_images/01a0f6e7-d6d1-7111-938b-0a4f17ff42f3/exec-bc33ea0d-208a-402a-a756-884f1c90cbe4.png",
+      "status": "Native generated art, visually reviewed; no upscaling or code retouching"
+    },
+    {
+      "id": "expedition.scout-unknown",
+      "file": "assets/scout-unknown.png",
+      "width": 1254,
+      "height": 1254,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        43,
+        15,
+        1220,
+        1244
+      ],
+      "visibleBoundsNormalized": [
+        0.03429,
+        0.01196,
+        0.97289,
+        0.99203
+      ],
+      "sha256": "a47322c96746b407ce4eacb10a29be0a2f72566a022df778a8196de85b7ad66c",
+      "sourceAbsolute": "C:/Users/lazeb/.codex/generated_images/01a0f6e7-d6d1-7111-938b-0a4f17ff42f3/exec-6e8ea701-be33-4373-b768-3479c99fc8a6.png",
+      "status": "Native generated art, visually reviewed; no upscaling or code retouching"
+    },
+    {
+      "id": "expedition.caravan-dispatch-art",
+      "file": "assets/caravan-dispatch-art.png",
+      "width": 2172,
+      "height": 724,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBoundsPixels": [
+        0,
+        0,
+        2172,
+        724
+      ],
+      "visibleBoundsNormalized": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "sha256": "88b169b3e1d153f7ce5c5b7e2afeb022bcce51867fa07b322cbc91c8da53f3e0",
+      "sourceAbsolute": "C:/Users/lazeb/.codex/generated_images/01a0f6e7-d6d1-7111-938b-0a4f17ff42f3/exec-8789da91-2048-4510-9759-0bd909d0da79.png",
+      "status": "Native generated art, visually reviewed; no upscaling or code retouching"
+    },
+    {
+      "id": "expedition.caravan-arrival-art",
+      "file": "assets/caravan-arrival-art.png",
+      "width": 1774,
+      "height": 887,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBoundsPixels": [
+        0,
+        0,
+        1774,
+        887
+      ],
+      "visibleBoundsNormalized": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "sha256": "c172cbddc45d8a0be54991eb9c143106476eac7302595033fc6745ab546a14dd",
+      "sourceAbsolute": "C:/Users/lazeb/.codex/generated_images/01a0f6e7-d6d1-7111-938b-0a4f17ff42f3/exec-ac48a804-3275-41de-ad86-d4bc3c73d0c5.png",
+      "status": "Native generated art, visually reviewed; no upscaling or code retouching"
+    },
+    {
+      "id": "expedition.catapult-damaged",
+      "file": "assets/catapult-damaged.png",
+      "width": 1254,
+      "height": 1254,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        125,
+        541,
+        1175,
+        1132
+      ],
+      "visibleBoundsNormalized": [
+        0.09968,
+        0.43142,
+        0.937,
+        0.90271
+      ],
+      "sha256": "9ced941327c9dec741078459864baa686fbe22d6783fab20a06ba3ded0ac54a2",
+      "sourceAbsolute": "C:/Users/lazeb/.codex/generated_images/01a0f6e7-d6d1-7111-938b-0a4f17ff42f3/exec-6e4784df-049e-446a-9016-7645d8a925ba.png",
+      "status": "Native generated art, visually reviewed; no upscaling or code retouching"
+    },
+    {
+      "id": "expedition.catapult-destroyed",
+      "file": "assets/catapult-destroyed.png",
+      "width": 1254,
+      "height": 1254,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        162,
+        653,
+        1124,
+        1185
+      ],
+      "visibleBoundsNormalized": [
+        0.12919,
+        0.52073,
+        0.89633,
+        0.94498
+      ],
+      "sha256": "10d1392cb7230bf05544f5ec0ab69cded97d993ad7aedf2657a3f32547bdaff9",
+      "sourceAbsolute": "C:/Users/lazeb/.codex/generated_images/01a0f6e7-d6d1-7111-938b-0a4f17ff42f3/exec-5561c1e7-722a-40bf-a753-87c4e0f139dd.png",
+      "status": "Native generated art, visually reviewed; no upscaling or code retouching"
+    },
+    {
+      "id": "expedition.ship-wreck",
+      "file": "assets/ship-wreck.png",
+      "width": 1254,
+      "height": 1254,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        35,
+        178,
+        1226,
+        1070
+      ],
+      "visibleBoundsNormalized": [
+        0.02791,
+        0.14195,
+        0.97767,
+        0.85327
+      ],
+      "sha256": "e31e2beafd0c0db28cf3adea9562cc0be3940f56149c03f1ff87f845f87615e6",
+      "sourceAbsolute": "C:/Users/lazeb/.codex/generated_images/01a0f6e7-d6d1-7111-938b-0a4f17ff42f3/exec-ea9cdeb8-31dd-4931-8e76-89572cc8818d.png",
+      "status": "Native generated art, visually reviewed; no upscaling or code retouching"
+    }
+  ]
+}

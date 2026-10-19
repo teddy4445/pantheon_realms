@@ -60,18 +60,36 @@ function rivalOf(state: MatchState, playerId: string | null | undefined, viewerI
 /** Notes for `viewerId` from one committed batch (`before` → `after`) of other empires' actions. */
 export function rivalNotes(catalog: ContentCatalog, before: MatchState, after: MatchState, events: readonly GameEvent[], viewerId: PlayerId): RivalNote[] {
   const relevant = events.some((e) =>
-    ['SiteCaptured', 'TownCaptured', 'UnitsRecruited', 'HeroHired', 'BuildingConstructed', 'BattleEnded', 'PlayerEliminated'].includes(e.kind),
+    ['SiteCaptured', 'TownCaptured', 'UnitsRecruited', 'HeroHired', 'BuildingConstructed', 'BattleEnded', 'PlayerEliminated', 'ShipSightedNearTower', 'ShipLaunched', 'ShipMoved', 'HeroEmbarked', 'HeroDisembarked'].includes(e.kind),
   );
   if (!relevant) return [];
   const map = after.world.map;
   let seen: Set<number> | null = null;
   const sees = (c: HexCoord) => (seen ??= visibleCells(catalog, after, viewerId)).has(cellIndex(map, c));
+  let previouslySeen: Set<number> | null = null;
+  const saw = (c: HexCoord) => (previouslySeen ??= visibleCells(catalog, before, viewerId)).has(cellIndex(before.world.map, c));
   const mission = scenarioMission(catalog, after);
   const siteDef = (id: string) => mission?.sites.find((s) => s.id === id);
   const townIds = new Set(Object.values(after.towns).map((t) => t.siteId as string));
   const out: RivalNote[] = [];
   for (const e of events) {
     switch (e.kind) {
+      case 'ShipLaunched': {
+        if (!rivalOf(after, e.playerId, viewerId) || !(sees(e.coord) || saw(e.coord))) break;
+        out.push({ playerId: e.playerId, key: `launch:${e.shipId}`, text: 'launched a ship', mine: false });
+        break;
+      }
+      case 'ShipMoved':
+      case 'HeroEmbarked':
+      case 'HeroDisembarked': {
+        const owner = after.heroes[e.heroId]?.ownerId ?? before.heroes[e.heroId]?.ownerId;
+        if (!rivalOf(after, owner, viewerId)) break;
+        const cells = e.kind === 'ShipMoved' ? e.path : [e.from, e.to];
+        if (!cells.some((c) => sees(c) || saw(c))) break;
+        // No destination, path, army or unseen ship name is disclosed.
+        out.push({ playerId: owner, key: `naval:${e.shipId}:${e.kind}`, text: e.kind === 'ShipMoved' ? 'sailed through waters in view' : e.kind === 'HeroEmbarked' ? 'boarded a ship in view' : 'landed troops in view', mine: false });
+        break;
+      }
       case 'TownCaptured': {
         if (!rivalOf(after, e.playerId, viewerId)) break;
         const town = after.towns[e.townId];
@@ -112,6 +130,12 @@ export function rivalNotes(catalog: ContentCatalog, before: MatchState, after: M
         const won = r.winner === mySide;
         const what = mySide === 'defender' ? `attacked you (${r.label})` : `fought you (${r.label})`;
         out.push({ playerId: foe, key: `battle:${r.battleId}`, text: `${what} — ${won ? 'you won' : 'you lost'}`, mine: true });
+        break;
+      }
+      case 'ShipSightedNearTower': {
+        // Coastal watchtowers (sea-sites kit): the viewer's own alert, one line per ship.
+        if (e.playerId !== viewerId || !rivalOf(after, e.shipOwnerId, viewerId)) break;
+        out.push({ playerId: e.shipOwnerId!, key: `seen:${e.shipId}`, text: `ship sighted near ${siteDef(e.siteId)?.name ?? 'your lookout'}`, mine: true });
         break;
       }
       case 'PlayerEliminated': {

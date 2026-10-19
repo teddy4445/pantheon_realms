@@ -101,7 +101,7 @@ describe('story art wiring', () => {
 
   it('a cover and a card for every campaign (The Silent Oracle’s from Brief 18, imported 2026-10-14)', () => {
     const camps = Object.values(catalog.campaigns);
-    expect(camps).toHaveLength(7);
+    expect(camps).toHaveLength(9);
     for (const c of camps.filter((x) => awaitingCampaign(x.id))) {
       expect(resolveArt(`campaign.${c.id}.cover`), `${c.id}: delivered — empty AWAITING_BRIEF_18`).toBeFalsy();
       expect(resolveAsset(c.thumbnailAssetId).status).toBe('procedural');
@@ -113,7 +113,7 @@ describe('story art wiring', () => {
     }
   });
 
-  it('thirteen ending routes: one epilogue for The Three Beacons, the chosen one of two elsewhere — never the other', () => {
+  it('fifteen ending routes: one epilogue for The Three Beacons, the chosen one of two elsewhere — never the other', () => {
     let routes = 0;
     for (const c of Object.values(catalog.campaigns)) {
       if (!c.epilogueVariants?.length) {
@@ -139,12 +139,12 @@ describe('story art wiring', () => {
         routes += 1;
       }
     }
-    expect(routes).toBe(13);
+    expect(routes).toBe(15);
   });
 
-  it('45 campaign mission pictures (The Silent Oracle’s seven from Brief 18) and 2 skirmish pictures: briefing art and 640 × 360 cards', () => {
+  it('59 campaign mission pictures (The Silent Oracle’s seven from Brief 18) and 2 skirmish pictures: briefing art and 640 × 360 cards', () => {
     const campaignMissions = Object.values(catalog.campaigns).flatMap((c) => c.missionIds.map((id) => catalog.missions[id]!));
-    expect(campaignMissions).toHaveLength(45);
+    expect(campaignMissions).toHaveLength(59);
     const awaited = campaignMissions.filter((m) => awaitingCampaign(m.campaignId));
     expect(awaited).toHaveLength(7 * AWAITING_BRIEF_18.campaigns.length);
     for (const m of awaited) {

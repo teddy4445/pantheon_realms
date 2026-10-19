@@ -30,6 +30,12 @@ const ALLOWED = {
 };
 
 const RELATIVE_EXCEPTIONS = [
+  { from: 'packages/ui/src/assets/expansionArt.ts', to: 'assets-runtime/mythic-library-v2/manifest.json' },
+  { from: 'packages/ui/src/assets/expansionArt.ts', to: 'assets-runtime/mythic-library-v2/design/vfx-recipes.json' },
+  { from: 'packages/ui/src/assets/expansionArt.ts', to: 'assets-runtime/twin-campaigns-v1/manifest.json' },
+  { from: 'packages/ui/src/assets/expansionArt.ts', to: 'assets-runtime/twin-campaigns-v1/sprite-frames.json' },
+  { from: 'packages/ui/src/assets/expansionArt.ts', to: 'assets-runtime/twin-campaigns-v1/chapter-art-bindings.json' },
+
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/placeholders/manifest.json' },
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/ui/manifest.json' },
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/ui/final-manifest.json' },
@@ -46,6 +52,10 @@ const RELATIVE_EXCEPTIONS = [
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/adventure-gui-v1.1.0/manifest.json' },
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/hero-portraits-complete/manifest.json' },
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/recruitment-route-v1/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/expedition-v1/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/naval-random-v1/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/sea-creatures-v1/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/sea-sites-v1/manifest.json' },
   { from: 'packages/ui/src/audio/gameAudio.ts', to: 'assets-runtime/audio/manifest.json' },
   { from: 'packages/ui/src/assets/cursors.ts', to: 'assets-runtime/ui/cursors/manifest.json' },
 ];

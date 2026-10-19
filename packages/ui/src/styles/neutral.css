@@ -200,6 +200,10 @@
 .nr-train__arrow { width: 1.1em; height: 1.1em; transform: scaleX(-1); color: #f2cf6e; flex: none; }
 .nr-train__text { grid-area: text; display: flex; flex-direction: column; gap: 0.05rem; min-width: 0; }
 .nr-train__title { margin: 0; }
+/* The title and the week's training allowance on one line (they wrap at the largest interface scale). */
+.nr-train__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.6rem; min-width: 0; }
+.nr-train__left { font-size: var(--nr-small); color: #e2d6bd; }
+.nr-train__left.is-spent { color: #f0c28a; }
 .nr-train__what { color: #e2d6bd; }
 .nr-train__what .cost { display: inline-flex; vertical-align: middle; }
 .nr-train__what .cost__item { font-size: var(--nr-small); }

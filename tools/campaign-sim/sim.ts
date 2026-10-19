@@ -7,7 +7,7 @@
  * starts each mission directly (its own starting hero), so every mission is
  * still measured.
  */
-import { processCommand, requireScenarioMission, type ContentCatalog, type GameCommand, type MatchState } from '@pr/rules';
+import { cityDedicationsEnabled, processCommand, requireScenarioMission, townRoleLevel, type ContentCatalog, type GameCommand, type MatchState, type PlayerId } from '@pr/rules';
 import { createMissionMatch, recordCompletion, startCampaign, startNextMission, type CampaignState } from '@pr/campaign';
 import { heroPower, levelUpCandidates, runAITurn } from '@pr/ai';
 import { fightOut, mainHeroOf, newPilotMemory, pilotTurn, type PilotBlock } from './pilot';
@@ -36,6 +36,40 @@ export interface MissionRun {
   readonly heroLevel: number;
   readonly heroPower: number;
   readonly seconds: number;
+  /** City dedications at the mission's end (app 1.5.0): whether the chapter has them, and what the player's autopilot and the rivals honored. */
+  readonly dedication?: DedicationFacts;
+}
+
+export interface DedicationFacts {
+  readonly feature: boolean;
+  /** The player's own-pantheon towns with Temple II (able to hold a dedication). */
+  readonly eligibleTowns: number;
+  /** The player's towns honoring a god, and those gods. */
+  readonly dedicatedTowns: number;
+  readonly gods: readonly string[];
+  /** Towns of the other empires honoring a god. */
+  readonly rivalDedicatedTowns: number;
+}
+
+/** What the end state says about city dedications (from the state; nothing is replayed). */
+export function dedicationFacts(catalog: ContentCatalog, s: MatchState, playerId: PlayerId): DedicationFacts {
+  const need = catalog.cityDedicationPolicy?.requiredTempleLevel ?? 2;
+  const pantheonId = s.players[playerId]?.pantheonId;
+  let eligibleTowns = 0;
+  let dedicatedTowns = 0;
+  let rivalDedicatedTowns = 0;
+  const gods: string[] = [];
+  for (const t of Object.values(s.towns)) {
+    const honored = t.dedication?.activeGodId && t.ownerId && t.dedication.ownerId === t.ownerId ? t.dedication.activeGodId : null;
+    if (t.ownerId === playerId) {
+      if (t.pantheonId === pantheonId && townRoleLevel(catalog, t, 'pantheon_temple') >= need) eligibleTowns++;
+      if (honored) {
+        dedicatedTowns++;
+        gods.push(honored);
+      }
+    } else if (honored) rivalDedicatedTowns++;
+  }
+  return { feature: cityDedicationsEnabled(s), eligibleTowns, dedicatedTowns, gods, rivalDedicatedTowns };
 }
 
 function patronOf(catalog: ContentCatalog, campaignId: string): string | null {
@@ -109,6 +143,7 @@ function summarize(catalog: ContentCatalog, campaignId: string, difficultyId: st
     heroLevel: hero?.level ?? 0,
     heroPower: hero ? Math.round(heroPower(catalog, s, hero)) : 0,
     seconds,
+    dedication: dedicationFacts(catalog, s, mission.player.playerId),
   };
 }
 

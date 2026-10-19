@@ -15,6 +15,7 @@ import type { ArtifactRarity } from '../definitions/pantheons';
 import type { BuildingDefinition, BuildingSlotDefinition } from '../definitions/towns';
 import type { MatchState, TownState } from '../state/match';
 import { playerEffects } from './effects';
+import { townVisionBonus } from '../systems/dedicationServices';
 
 export function townSlots(catalog: ContentCatalog, town: TownState): readonly BuildingSlotDefinition[] {
   return getTownArchetype(catalog, town.archetypeId).slots;
@@ -100,11 +101,16 @@ export function weeklyGrowthFor(catalog: ContentCatalog, town: TownState, family
   return base + bonus;
 }
 
-/** Adventure vision radius around the town: the highest `town_vision_radius`, else the rules default. */
-export function townVisionRadius(catalog: ContentCatalog, town: TownState): number {
+/**
+ * Adventure vision radius around the town: the highest `town_vision_radius`, else the rules
+ * default, plus the town's own dedication vision bonus (city dedications: only while its
+ * Watchtower stands and the dedication is active and eligible). State-aware and derived —
+ * never cached — so it follows dedication, temple or watchtower loss, capture and load.
+ */
+export function townVisionRadius(catalog: ContentCatalog, state: MatchState, town: TownState): number {
   let r = catalog.rulesProfile.townVisionRadius;
   for (const e of townEffects(catalog, town)) if (e.type === 'town_vision_radius') r = Math.max(r, e.radius);
-  return r;
+  return r + townVisionBonus(catalog, state, town.id);
 }
 
 /** Training Academy terms in this town (null without one). */
@@ -133,10 +139,12 @@ export function townRoleBuilding(catalog: ContentCatalog, town: TownState, role:
   return slot ? activeBuildingInSlot(catalog, town, slot.id) : null;
 }
 
-export function townSpellLibraryTier(catalog: ContentCatalog, town: TownState): number {
+export function townSpellLibraryTier(catalog: ContentCatalog, town: TownState, state?: Pick<MatchState, 'scenario'>): number {
   let tier = 0;
   for (const e of townEffects(catalog, town)) if (e.type === 'spell_library') tier = Math.max(tier, e.maxTier);
-  return tier;
+  // The existing final Sanctum houses the new advanced shelves; Wisdom still gates learning.
+  // This changes only explicitly opted-in games and needs no fabricated building artwork.
+  return tier >= 3 && state?.scenario.features?.mythicLibraryV2 ? Math.max(tier, 5) : tier;
 }
 
 /**
@@ -146,7 +154,7 @@ export function townSpellLibraryTier(catalog: ContentCatalog, town: TownState): 
  * The draw is a pure function of match, town and tier, so it never changes in a game.
  */
 export function townLibrarySpells(catalog: ContentCatalog, state: Pick<MatchState, 'matchId' | 'scenario'>, town: TownState): SpellId[] {
-  const maxTier = townSpellLibraryTier(catalog, town);
+  const maxTier = townSpellLibraryTier(catalog, town, state);
   const out: SpellId[] = [];
   const sizes = catalog.rulesProfile.librarySpellsPerTier;
   for (let tier = 1; tier <= maxTier; tier++) {

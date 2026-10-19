@@ -1,0 +1,15 @@
+{
+  "ship-e": "exec-a29ae58b-5afe-4015-ab9f-0bc550138035.png",
+  "ship-ne": "exec-03a43881-1c02-47d3-ba5f-2e82e7c28974.png",
+  "ship-se": "exec-70b57cb9-da97-4e51-bbe6-f0e959b63766.png",
+  "wagon-e": "exec-1d41fc4c-f42d-46ae-afba-3466957a3d68.png",
+  "wagon-ne": "exec-dd6d8ec3-1a1f-4c84-a02a-bd4825a272ef.png",
+  "wagon-se": "exec-c8d27f16-384e-4e7c-aab1-f830fb88c728.png",
+  "boarding-battle": "exec-bc33ea0d-208a-402a-a756-884f1c90cbe4.png",
+  "scout-unknown": "exec-6e8ea701-be33-4373-b768-3479c99fc8a6.png",
+  "caravan-dispatch-art": "exec-8789da91-2048-4510-9759-0bd909d0da79.png",
+  "caravan-arrival-art": "exec-ac48a804-3275-41de-ad86-d4bc3c73d0c5.png",
+  "catapult-damaged": "exec-6e4784df-049e-446a-9016-7645d8a925ba.png",
+  "catapult-destroyed": "exec-5561c1e7-722a-40bf-a753-87c4e0f139dd.png",
+  "ship-wreck": "exec-ea9cdeb8-31dd-4931-8e76-89572cc8818d.png"
+}

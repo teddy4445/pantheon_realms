@@ -1,0 +1,20 @@
+[
+  {
+    "id": "naval",
+    "originalRoot": "C:/Users/lazeb/Desktop/blannder_models/naval-scouting-caravan-siege-kit-2026-10-17",
+    "bundledRoot": "dependencies/naval",
+    "status": "Art bundled; engine integration must be verified and implemented if missing"
+  },
+  {
+    "id": "sea-creatures",
+    "originalRoot": "C:/Users/lazeb/Desktop/blannder_models/sea-creatures-complete-2026-10-17",
+    "bundledRoot": "dependencies/sea-creatures",
+    "status": "Art bundled; engine integration must be verified and implemented if missing"
+  },
+  {
+    "id": "sea-objects",
+    "originalRoot": "C:/Users/lazeb/Desktop/blannder_models/sea-map-objects-2026-10-17",
+    "bundledRoot": "dependencies/sea-objects",
+    "status": "Art bundled; engine integration must be verified and implemented if missing"
+  }
+]

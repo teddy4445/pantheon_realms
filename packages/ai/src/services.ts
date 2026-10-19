@@ -7,6 +7,12 @@
  * values.
  */
 import {
+  armyStrength,
+  campForms,
+  campLockedReason,
+  campStock,
+  campTrainingLeft,
+  effectiveAttributes,
   divineGifts,
   giftNeedsHero,
   quoteDivineGift,
@@ -14,6 +20,10 @@ import {
   interventionsFor,
   interventionUsedThisWeek,
   quoteCampRecruitment,
+  quoteCampTraining,
+  type CommanderBonus,
+  type SiteDefinition,
+  type StackSpec,
   quoteIntervention,
   quoteMapEvent,
   quoteOpenChest,
@@ -34,9 +44,14 @@ import {
   type MatchState,
   type OfferingLine,
   type PlayerId, heroInTown,
+  cityDedicationsEnabled,
+  godBenefitsInMatch,
+  type GodId,
 } from '@pr/rules';
 import { aiTemperamentFor, faithFavorGoal } from './temperament';
+import { profileWeeklyGlance } from './build';
 import { lateInWeek } from './handoff';
+import { fightingStrength } from './evaluation';
 
 /** Rough value of a blessing for an AI empire (higher is better). */
 export function effectScore(e: EffectDefinition): number {
@@ -71,13 +86,41 @@ export function effectScore(e: EffectDefinition): number {
   }
 }
 
+/** Gold equivalent per week that `effectScore` counts as one point (a Gold `daily_income` of 25 a day). */
+const GOLD_PER_WEEK_PER_POINT = 175;
+
+/**
+ * City dedications on (app 1.5.0): what committing `godId` adds as a city dedication, in
+ * `effectScore` points — its profile at a glance (weekly gift after the income handicap, extra
+ * stock of the favored family where its dwelling stands) in the empire's best own-pantheon
+ * town. Zero with the feature off.
+ */
+export function dedicationCommitScore(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, godId: GodId): number {
+  if (!cityDedicationsEnabled(belief)) return 0;
+  const pantheonId = belief.players[playerId]?.pantheonId;
+  let best = 0;
+  for (const t of playerTowns(belief, playerId)) if (t.pantheonId === pantheonId) best = Math.max(best, profileWeeklyGlance(catalog, belief, playerId, t.id, godId));
+  return best / GOLD_PER_WEEK_PER_POINT;
+}
+
+/**
+ * A god's blessing score in this match: its direct benefits that apply in the match's rules
+ * mode (with city dedications on, its `daily_income` / `weekly_growth_bonus` are replaced by
+ * its city profile — `godBenefitsInMatch`), plus the profile's worth as a dedication.
+ * Legacy mode: exactly the authored benefits, as before.
+ */
+export function godCommitScore(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, godId: GodId): number {
+  const direct = godBenefitsInMatch(catalog, belief, godId).retained.reduce((n, e) => n + effectScore(e), 0);
+  return direct + dedicationCommitScore(catalog, belief, playerId, godId);
+}
+
 /** Commit to the best legal god (any group), highest blessing score first. */
 export function godCandidates(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId): CommandPayload[] {
   const player = belief.players[playerId];
   if (!player) return [];
   const gods = (catalog.pantheons[player.pantheonId]?.godIds ?? [])
     .filter((g) => quoteGodSelection(catalog, belief, playerId, g).legal)
-    .map((g) => ({ g, score: catalog.gods[g]!.benefits.reduce((n, e) => n + effectScore(e), 0) }))
+    .map((g) => ({ g, score: godCommitScore(catalog, belief, playerId, g) }))
     .sort((a, b) => b.score - a.score || (a.g < b.g ? -1 : 1));
   return gods.slice(0, 1).map(({ g }) => ({ kind: 'SelectGod', godId: g }));
 }
@@ -172,9 +215,105 @@ export function trainingCandidates(catalog: ContentCatalog, belief: MatchState, 
 // World map and divine interventions (proposed this build)
 // ---------------------------------------------------------------------------
 
-const CAMP_RESERVE_GOLD = 1500;
+/** Gold an empire keeps when it hires at a creature camp. */
+export const CAMP_RESERVE_GOLD = 1500;
+/**
+ * Gold it keeps when it trains at a neutral hiring site (2026-10-16, proposed
+ * value): below the hiring reserve, because training improves creatures the hero
+ * already leads for the price difference alone (35–75 Gold each) — at least as
+ * much strength per Gold as hiring (`fightingStrength`), and the week's allowance
+ * is shared with every rival.
+ */
+export const CAMP_TRAINING_RESERVE_GOLD = 1000;
 
-/** A hero standing on a creature camp recruits as many as it can afford above a reserve. */
+/** Two strengths this close count as equal (the tie goes to the upgraded form). */
+const STRENGTH_EPSILON = 1e-9;
+
+type ArmySlots = readonly ({ readonly creatureId: string; readonly count: number } | null | undefined)[];
+const specs = (slots: ArmySlots): (StackSpec | null)[] => slots.map((s) => (s && s.count > 0 ? { creatureId: s.creatureId, count: s.count } : null));
+
+/** A camp action with what it adds to the hero's fighting strength and what it costs. */
+interface CampOption {
+  readonly gain: number;
+  readonly gold: number;
+  readonly training: boolean;
+  readonly payload: CommandPayload;
+}
+
+/**
+ * Hiring at the camp the hero stands on (2026-10-16): of the forms the site hires,
+ * the one that adds the most fighting strength (`fightingStrength`, the hero's army
+ * before and after, its commander included) for as many as the treasury pays above
+ * `CAMP_RESERVE_GOLD` (and the shared stock and a slot allow); a tie goes to the
+ * upgraded form, then the site's order. A camp that hires one form keeps the old
+ * command (no `creatureId`). Null when nothing can be hired. The controller plans
+ * again after each command, so with stock and Gold left the other form may follow.
+ */
+function campHireOption(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, hero: HeroState, siteId: string, gold: number, commander: CommanderBonus): CampOption | null {
+  const forms = campForms(catalog, belief, siteId);
+  const choose = forms.length > 1;
+  const before = fightingStrength(catalog, specs(hero.army.slots), commander);
+  let best: (CampOption & { upgraded: boolean }) | null = null;
+  for (const id of forms) {
+    const creatureId = choose ? id : undefined;
+    const probe = quoteCampRecruitment(catalog, belief, playerId, hero.id, siteId, 1, creatureId);
+    const unit = probe.unitCost.gold;
+    const affordable = unit > 0 ? Math.floor((gold - CAMP_RESERVE_GOLD) / unit) : 0;
+    const qty = Math.min(probe.maxQuantity, affordable);
+    if (qty <= 0 || probe.slot === null || !quoteCampRecruitment(catalog, belief, playerId, hero.id, siteId, qty, creatureId).legal) continue;
+    const after = specs(hero.army.slots);
+    const there = after[probe.slot];
+    after[probe.slot] = { creatureId: id, count: (there?.creatureId === id ? there.count : 0) + qty };
+    const gain = fightingStrength(catalog, after, commander) - before;
+    const upgraded = catalog.creatures[id]?.form === 'upgraded';
+    const better = !best || gain > best.gain + STRENGTH_EPSILON || (Math.abs(gain - best.gain) <= STRENGTH_EPSILON && upgraded && !best.upgraded);
+    if (better) best = { gain, gold: qty * unit, training: false, upgraded, payload: { kind: 'RecruitFromCamp', heroId: hero.id, siteId, quantity: qty, ...(creatureId ? { creatureId } : {}) } };
+  }
+  return best && best.gain > 0 ? best : null;
+}
+
+/**
+ * Training at the neutral hiring site the hero stands on (2026-10-16): the hero's
+ * first base stack of a family the site trains, as many as the week's shared
+ * allowance, the slot rules and the treasury above `CAMP_TRAINING_RESERVE_GOLD`
+ * allow (all of them when it can; a part only where the rules find it a slot).
+ * Null at a site that trains nothing, or when nothing can be trained now.
+ */
+function campTrainingOption(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, hero: HeroState, siteId: string, gold: number, commander: CommanderBonus): CampOption | null {
+  if (campTrainingLeft(catalog, belief, siteId) <= 0) return null;
+  const forms = campForms(catalog, belief, siteId);
+  const before = fightingStrength(catalog, specs(hero.army.slots), commander);
+  for (let i = 0; i < hero.army.slots.length; i++) {
+    const s = hero.army.slots[i];
+    const from = s ? catalog.creatures[s.creatureId] : undefined;
+    if (!s || s.count <= 0 || !from || from.form !== 'base' || !from.upgradeId || !forms.includes(from.id) || !forms.includes(from.upgradeId)) continue;
+    const probe = quoteCampTraining(catalog, belief, playerId, hero.id, siteId, from.id, 1, i);
+    const unit = probe.unitCost.gold;
+    const affordable = unit > 0 ? Math.floor((gold - CAMP_TRAINING_RESERVE_GOLD) / unit) : s.count;
+    const qty = Math.min(probe.maxQuantity, affordable);
+    if (qty <= 0) continue;
+    const q = quoteCampTraining(catalog, belief, playerId, hero.id, siteId, from.id, qty, i);
+    if (!q.legal || q.targetSlot === null) continue;
+    const after = specs(hero.army.slots);
+    if (qty === s.count && q.targetSlot === i) after[i] = { creatureId: from.upgradeId, count: qty };
+    else {
+      after[i] = s.count - qty > 0 ? { creatureId: from.id, count: s.count - qty } : null;
+      const there = after[q.targetSlot];
+      after[q.targetSlot] = { creatureId: from.upgradeId, count: (there?.creatureId === from.upgradeId ? there.count : 0) + qty };
+    }
+    const gain = fightingStrength(catalog, after, commander) - before;
+    if (gain > 0) return { gain, gold: qty * unit, training: true, payload: { kind: 'TrainAtCamp', heroId: hero.id, siteId, fromCreatureId: from.id, quantity: qty, slot: i } };
+  }
+  return null;
+}
+
+/**
+ * A hero standing on a creature camp: trains its base stacks of the site's family
+ * (a site that hires both forms) and hires the form that adds the most strength,
+ * each above its Gold reserve — the better strength per Gold first (a tie: the
+ * training). Every quantity comes from the rules' quotes; no random draw; only the
+ * belief state. Patrols and scripted hostile players never come here (strategic.ts).
+ */
 export function campCandidates(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, heroes: readonly HeroState[]): CommandPayload[] {
   const out: CommandPayload[] = [];
   const mission = scenarioMission(catalog, belief);
@@ -183,13 +322,62 @@ export function campCandidates(catalog: ContentCatalog, belief: MatchState, play
   for (const h of heroes) {
     const def = mission.sites.find((s) => s.kind.type === 'creature_camp' && hexEquals(s.coord, h.position));
     if (!def) continue;
-    const probe = quoteCampRecruitment(catalog, belief, playerId, h.id, def.id, 1);
-    const unit = probe.unitCost.gold;
-    const affordable = unit > 0 ? Math.floor((wallet.gold - CAMP_RESERVE_GOLD) / unit) : 0;
-    const qty = Math.min(probe.maxQuantity, affordable);
-    if (qty > 0 && quoteCampRecruitment(catalog, belief, playerId, h.id, def.id, qty).legal) out.push({ kind: 'RecruitFromCamp', heroId: h.id, siteId: def.id, quantity: qty });
+    const eff = effectiveAttributes(catalog, belief, h);
+    const commander = { attack: eff.attack.total, defense: eff.defense.total };
+    const options = [campTrainingOption(catalog, belief, playerId, h, def.id, wallet.gold, commander), campHireOption(catalog, belief, playerId, h, def.id, wallet.gold, commander)].filter((o): o is CampOption => !!o);
+    options.sort((a, b) => b.gain / Math.max(1, b.gold) - a.gain / Math.max(1, a.gold) || Number(b.training) - Number(a.training));
+    out.push(...options.map((o) => o.payload));
   }
   return out;
+}
+
+/**
+ * A creature camp as a destination (2026-10-16): worth 500 plus a quarter of the
+ * best army the hero could buy there — the form whose purchase adds the most
+ * strength (as many as the stock and the treasury allow) — and, at a site that
+ * trains, of the training its base stacks of the family could get this week. Both
+ * are counted in Gold at the listed creature's strength per Gold, so a camp that
+ * hires one form is valued exactly as before (a quarter of what the hero would
+ * spend there). Null when the visit would buy and train nothing: no stock, too
+ * little Gold above the reserves, no slot, a pact not yet made — and always for a
+ * scripted hostile player, which never hires. Belief state only; no random draw.
+ */
+export function campTargetValue(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, hero: HeroState, def: SiteDefinition): number | null {
+  if (def.kind.type !== 'creature_camp') return null;
+  const player = belief.players[playerId];
+  const listed = catalog.creatures[def.kind.creatureId];
+  if (!player || !listed || !belief.world.sites[def.id] || player.role === 'scripted_hostile') return null;
+  if (campLockedReason(catalog, belief, def.id)) return null;
+  const gold = player.wallet.gold;
+  const per = (id: string) => armyStrength(catalog, [{ creatureId: id, count: 1 }]);
+  const listedUnit = listed.cost?.gold ?? 0;
+  const listedPer = per(listed.id);
+  // Strength in Gold at the listed creature's rate.
+  const inGold = (strength: number) => (listedPer > 0 && listedUnit > 0 ? (strength * listedUnit) / listedPer : 0);
+  const stock = campStock(catalog, belief, def.id);
+  const forms = campForms(catalog, belief, def.id);
+  const room = (id: string) => hero.army.slots.some((x) => !x || x.creatureId === id);
+  let hire = 0;
+  for (const id of forms) {
+    const unit = catalog.creatures[id]?.cost?.gold ?? 0;
+    if (stock <= 0 || unit <= 0 || gold < unit * Math.min(stock, 3) + CAMP_RESERVE_GOLD || !room(id)) continue;
+    hire = Math.max(hire, inGold((Math.min(stock * unit, gold) / unit) * per(id)));
+  }
+  let train = 0;
+  let left = campTrainingLeft(catalog, belief, def.id);
+  for (const s of hero.army.slots) {
+    const from = s ? catalog.creatures[s.creatureId] : undefined;
+    const up = from?.form === 'base' && from.upgradeId && forms.includes(from.id) && forms.includes(from.upgradeId) ? catalog.creatures[from.upgradeId] : undefined;
+    if (!s || !from || !up || left <= 0) continue;
+    const unit = Math.max(0, (up.cost?.gold ?? 0) - (from.cost?.gold ?? 0));
+    let n = Math.min(s.count, left, unit > 0 ? Math.floor((gold - CAMP_TRAINING_RESERVE_GOLD) / unit) : s.count);
+    // A part of the stack needs a free slot or an upgraded stack.
+    if (n < s.count && !room(up.id)) n = 0;
+    if (n <= 0) continue;
+    train += inGold(n * (per(up.id) - per(from.id)));
+    left -= n;
+  }
+  return hire > 0 || train > 0 ? 500 + 0.25 * (hire + train) : null;
 }
 
 /** Rough Gold-equivalent value of a map-event option for the AI. */

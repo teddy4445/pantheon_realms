@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
-import { AudioDirector, busGain, intensityGain, mayStart, nextPlaylistIndex, sliderGain, validateSoundManifest, voiceLimit, type AudioLevels, type SoundDefinition, type SoundManifest } from '../src';
+import { AudioDirector, CUT_FADE_MS, busGain, intensityGain, mayStart, nextPlaylistIndex, sliderGain, validateSoundManifest, voiceLimit, type AudioLevels, type SoundDefinition, type SoundManifest } from '../src';
 import { REQUIRED_SOUND_IDS, SOUNDSCAPES, MUSIC, AMBIENCE } from '../../ui/src/audio/sounds';
 import { loadCatalog } from '@pr/content';
 
@@ -167,15 +167,19 @@ describe('mixing policy', () => {
 
 class FakeParam {
   value = 1;
-  events: string[] = [];
-  setTargetAtTime(v: number) {
+  /** Scheduled automation, in order: [kind, value, time]. */
+  events: [string, number, number][] = [];
+  setTargetAtTime(v: number, t = 0) {
     this.value = v;
+    this.events.push(['target', v, t]);
   }
-  setValueAtTime(v: number) {
+  setValueAtTime(v: number, t = 0) {
     this.value = v;
+    this.events.push(['set', v, t]);
   }
-  linearRampToValueAtTime(v: number) {
+  linearRampToValueAtTime(v: number, t = 0) {
     this.value = v;
+    this.events.push(['ramp', v, t]);
   }
   cancelScheduledValues() {}
 }
@@ -198,6 +202,8 @@ class FakeSource extends FakeNode {
   onended: (() => void) | null = null;
   started = false;
   stopped = false;
+  /** When stop() was asked for (context seconds; undefined: at once). */
+  stopAt: number | undefined = undefined;
   constructor(private readonly log: FakeSource[]) {
     super();
   }
@@ -205,8 +211,9 @@ class FakeSource extends FakeNode {
     this.started = true;
     this.log.push(this);
   }
-  stop() {
+  stop(t?: number) {
     this.stopped = true;
+    this.stopAt = t;
   }
 }
 /** A streamed track: fires its listeners when the test says so. */
@@ -244,11 +251,14 @@ class FakeContext {
   currentTime = 0;
   destination = new FakeNode();
   sources: FakeSource[] = [];
+  gains: FakeNode[] = [];
   createMediaElementSource() {
     return new FakeNode();
   }
   createGain() {
-    return new FakeNode();
+    const g = new FakeNode();
+    this.gains.push(g);
+    return g;
   }
   createDynamicsCompressor() {
     return new FakeNode();
@@ -319,6 +329,42 @@ describe('AudioDirector', () => {
     // Cooldown blocks immediate repeats of the same sound.
     expect(started).toBe(1);
     expect(d.status().recent.at(-1)).toBe('combat.hit');
+  });
+
+  it('cuts a one-shot at maxMs: holds its level, fades out over the last ~70 ms ending at maxMs, stops there (no click)', async () => {
+    const { d, ctx } = director();
+    d.warm(['magic.cast', 'combat.hit', 'magic.strike', 'magic.frost']);
+    await tick();
+    await tick();
+    ctx.currentTime = 10;
+    // The fake decodes every file as 1 s long.
+    expect(d.play('magic.cast', { maxMs: 600 })).toBe(true);
+    const src = ctx.sources.at(-1)!;
+    const g = ctx.gains.at(-1)!;
+    const level = manifest.sounds.find((s) => s.id === 'magic.cast')!.gain;
+    expect(g.gain.events).toHaveLength(2);
+    const [hold, ramp] = g.gain.events as [[string, number, number], [string, number, number]];
+    expect(hold[0]).toBe('set');
+    expect(hold[1]).toBeCloseTo(level);
+    expect(hold[2]).toBeCloseTo(10.6 - CUT_FADE_MS / 1000);
+    expect(ramp).toEqual(['ramp', 0, expect.closeTo(10.6, 6)]);
+    expect(CUT_FADE_MS).toBeGreaterThanOrEqual(60);
+    expect(CUT_FADE_MS).toBeLessThanOrEqual(80);
+    expect(src.stopped).toBe(true);
+    expect(src.stopAt).toBeCloseTo(10.6);
+    // Longer than the sound, or no cap: played whole, nothing scheduled.
+    expect(d.play('combat.hit', { maxMs: 5000 })).toBe(true);
+    expect(ctx.gains.at(-1)!.gain.events).toEqual([]);
+    expect(ctx.sources.at(-1)!.stopped).toBe(false);
+    ctx.currentTime = 20;
+    expect(d.play('magic.strike')).toBe(true);
+    expect(ctx.gains.at(-1)!.gain.events).toEqual([]);
+    expect(ctx.sources.at(-1)!.stopped).toBe(false);
+    // A cap shorter than the fade fades over the whole of it.
+    ctx.currentTime = 30;
+    expect(d.play('magic.frost', { maxMs: 40 })).toBe(true);
+    const frost = manifest.sounds.find((s) => s.id === 'magic.frost')!.gain;
+    expect(ctx.gains.at(-1)!.gain.events.map(([k, v, t]) => [k, v, Math.round(t * 1000)])).toEqual([['set', frost, 30000], ['ramp', 0, 30040]]);
   });
 
   it('reports files that fail to decode and stays silent for them', async () => {

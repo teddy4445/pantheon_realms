@@ -21,8 +21,11 @@ export function manualBattlesRequired(state: MatchState): boolean {
 export function battleSideToAct(state: MatchState): BattleSideId | null {
   const battle = state.battle;
   if (!battle || battle.status !== 'active') return null;
+  if (battle.shadowChoice) return battle.stacks[battle.shadowChoice.stackId]?.side ?? null;
   if (battle.phase === 'selection') return 'defender';
   if (battle.phase === 'deployment') return battle.deployment?.pending[0] ?? null;
+  // The siege engine's phase (targetableCatapultV1): its side fires or skips — by hand in a campaign.
+  if (battle.phase === 'engine') return battle.siege?.engine?.side ?? null;
   if (!battle.activeStackId) return null;
   return battle.stacks[battle.activeStackId]?.side ?? null;
 }

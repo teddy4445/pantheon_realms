@@ -18,9 +18,17 @@ export interface BattleOrientation {
   readonly rightSide: BattleSideId;
 }
 
-export function battleOrientation(battle: Pick<BattleState, 'sides'>): BattleOrientation {
+export function battleOrientation(battle: Pick<BattleState, 'sides'> & { readonly board?: BattleState['board'] }): BattleOrientation {
   const humanAttacker = battle.sides.attacker.controller === 'human';
   const humanDefender = battle.sides.defender.controller === 'human';
+  // A sea encounter's painting has the ship on the left (deck columns 0–7): never mirrored; the ship's
+  // side stands on the left whether it attacked or was attacked, and the human's side is blue.
+  const shipSide = battle.board?.shipSide;
+  if (shipSide) {
+    const other: BattleSideId = shipSide === 'attacker' ? 'defender' : 'attacker';
+    const blueSide: BattleSideId = humanAttacker !== humanDefender ? (humanAttacker ? 'attacker' : 'defender') : shipSide;
+    return { mirrored: false, blueSide, leftSide: shipSide, rightSide: other };
+  }
   const mirrored = humanDefender && !humanAttacker;
   return mirrored
     ? { mirrored, blueSide: 'defender', leftSide: 'defender', rightSide: 'attacker' }

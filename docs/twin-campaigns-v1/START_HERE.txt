@@ -1,0 +1,21 @@
+PANTHEON REALMS — TWIN CAMPAIGNS PRODUCTION PACK
+
+Open index.html in a browser. It works locally without a build.
+Read CLAUDE_HANDOFF.html or send CLAUDE_HANDOFF.txt to Claude Code.
+
+NEW: 30 native PNG files, including 14 chapter paintings, 2 shared story/ending paintings, 6 town backgrounds and 8 transparent atlases containing 48 static states.
+REUSED: Existing portraits, campaign icons, town references, ships, sea creatures, naval battlefields and map sea objects are included with their source paths and SHA-256 hashes in reuse-manifest.json.
+The game itself was not modified. Campaign implementation and balance testing remain for Claude.
+
+These are different projects:
+Delivery: C:/Users/lazeb/Desktop/blannder_models/twin-campaign-production-2026-10-17
+Game: C:/Users/lazeb/Desktop/pantheon_realms
+
+Only assets/ contains the NEW runtime images. reference/original-*.png are superseded drafts; do not import them.
+final-generation-records.json is the current generation provenance. Earlier generation logs are retained as history.
+Do not resize/upscale source files. Use exact sprite-frames.json source rectangles in the renderer.
+The design JSON is authoring material, not a ready-to-import engine mission schema.
+
+CLAUDE PROMPT
+Read C:/Users/lazeb/Desktop/blannder_models/twin-campaign-production-2026-10-17/CLAUDE_HANDOFF.txt and the linked design and manifests. Implement the two approved seven-chapter campaigns in C:/Users/lazeb/Desktop/pantheon_realms. Copy the new and required reused assets into that game project as instructed; do not reference the external art workspace at runtime. Preserve existing campaigns and saves. Implement shared-map history, frozen regional snapshots, all-six-hero finales, ships and mandatory manual campaign battles. Use the supplied fourteen chapter paintings, state-based landmarks and six town recovery backgrounds. Follow the acceptance cases and report implementation/test evidence; this art delivery does not mean those engine features already exist.
+

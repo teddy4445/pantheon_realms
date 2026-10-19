@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ship-ne",
+    "file": "assets/ship-ne.png",
+    "alpha": true,
+    "refs": [
+      "C:/Users/lazeb/.codex/generated_images/01a0f6e7-d6d1-7111-938b-0a4f17ff42f3/exec-a29ae58b-5afe-4015-ab9f-0bc550138035.png"
+    ],
+    "prompt": "Precise-object-edit / game directional sprite. Same neutral wooden ship as reference EXACT design: bronze fittings singlemast ivorysail baresternflagpole. Rotate whole vessel in world space to bow heading toward UPPER RIGHT of screen, northeast, showing stern nearer bottomleft. Keep orthographic isometric40degree camera and lightingupperleft. Fully visible centered transparent1024square withpadding. No crew/flag/text/water/shadowplane. Do not rotate flat2D image; show correct3D ship hull fromnewheading. Same proportions and colors."
+  },
+  {
+    "id": "ship-se",
+    "file": "assets/ship-se.png",
+    "alpha": true,
+    "refs": [
+      "C:/Users/lazeb/.codex/generated_images/01a0f6e7-d6d1-7111-938b-0a4f17ff42f3/exec-a29ae58b-5afe-4015-ab9f-0bc550138035.png"
+    ],
+    "prompt": "Precise-object-edit / game directional sprite. Same neutral woodenship as reference EXACTdesign: bronze fittings singlemast ivorysail baresternflagpole. Rotate wholevessel inworldspace to bow heading LOWER RIGHT ofscreen, southeast, showing bow nearer bottomright stern fartherupperleft. Keep orthographic isometric40degreecamera/lightupperleft. Fullyvisiblecentered transparent1024square withpadding. No crew/flag/text/water/shadowplane. Correct3D hullangle notflat2D rotation. Same proportions/colors."
+  },
+  {
+    "id": "boarding-battle-final",
+    "file": "assets/boarding-battle.png",
+    "alpha": false,
+    "refs": [
+      "C:/Users/lazeb/.codex/generated_images/01a0f6e7-d6d1-7111-938b-0a4f17ff42f3/exec-c77117e6-8ea9-40da-8424-a65d414ed5c1.png"
+    ],
+    "prompt": "Precise-object-edit. Preserve this entire two-ship battlepainting exactly, all decks ships water cameracolor. Only widen the SINGLE horizontal boarding bridge vertically: new rectangle extends from40% to55% of totalimageheight, leftedge at39% imagewidth rightedge61%. Sturdy wood flushwithbothdecks with innerrailopenings widened correspondingly. Thus bridge is15%ofimageheight and22%width, stillnarrowrelative each largedeck. Mustsupporttwo rows of creaturehexes. Nosecondbridge, nocharacters/noUI/nohexgrid/nootherchanges. Preserve full widescreencanvas."
+  },
+  {
+    "id": "wagon-ne",
+    "file": "assets/wagon-ne.png",
+    "alpha": true,
+    "refs": [
+      "C:/Users/lazeb/.codex/generated_images/01a0f6e7-d6d1-7111-938b-0a4f17ff42f3/exec-1d41fc4c-f42d-46ae-afba-3466957a3d68.png"
+    ],
+    "prompt": "Usecase precise-object-edit, directional game sprite. Preserve EXACT neutralivorycanvas woodenwagon withbronze fittings pulled byone chestnuthorse, bareflagpole, matchingreference. Rotate wholehorse-and-wagon inworldspace to head UPPER RIGHT northeast, horse fartheraway upperright andwagon closerlowerleft. Orthographicisometric40degree camera, sameupperleftlight, harnessclearlyconnectshorseandwagon. Fullyvisiblemargin genuine transparentbackground1024square. No ground/shadow/people/text/flagcloth. Do not merelyrotateflatimage; showcorrect3D newview. No changesidentity."
+  },
+  {
+    "id": "wagon-se",
+    "file": "assets/wagon-se.png",
+    "alpha": true,
+    "refs": [
+      "C:/Users/lazeb/.codex/generated_images/01a0f6e7-d6d1-7111-938b-0a4f17ff42f3/exec-1d41fc4c-f42d-46ae-afba-3466957a3d68.png"
+    ],
+    "prompt": "Usecase precise-object-edit, directional game sprite. Preserve EXACT neutralivorycanvas woodenwagon withbronze fittings pulled byone chestnuthorse, bareflagpole, matchingreference. Rotate wholehorse-and-wagon inworldspace to head LOWER RIGHT southeast, horse closerlower right andwagon fartherupperleft. Orthographicisometric40degree camera, sameupperleftlight, harnessclearlyconnectshorseandwagon. Fullyvisiblemargin genuine transparentbackground1024square. No ground/shadow/people/text/flagcloth. Do not merelyrotateflatimage; showcorrect3D newview. No changesidentity."
+  }
+]

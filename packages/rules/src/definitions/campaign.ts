@@ -27,6 +27,8 @@ import type {
   TownId,
 } from '../ids';
 import type { ResourceCost } from '../core/resources';
+import type { HexCoord } from '../core/hex';
+import type { NavalTraversalPolicy } from './navalPolicy';
 import type { HeroAttribute, RewardDefinition } from './logic';
 import type { HostileHeroDefinition, MapTemplateDefinition, SiteDefinition, StackSpec } from './world';
 
@@ -57,6 +59,8 @@ export type ObjectiveCondition =
   | { readonly type: 'hero_defeated'; readonly heroDefinitionId: HeroDefinitionId }
   /** The mission player owns this town (e.g. a rival's town taken by siege). */
   | { readonly type: 'town_owned'; readonly townId: TownId }
+  | { readonly type: 'town_building'; readonly townId: TownId; readonly slotId: string; readonly level: number }
+  | { readonly type: 'site_owned'; readonly siteId: SiteId }
   /** Completes only through an explicit ClaimObjective command once its prerequisites complete. */
   | { readonly type: 'claim'; readonly after: readonly ObjectiveId[] }
   | { readonly type: 'all'; readonly conditions: readonly ObjectiveCondition[] }
@@ -95,6 +99,8 @@ export interface ObjectiveDefinition {
 }
 
 export interface MissionTownSetup {
+  /** Cosmetic war ruins remain until the hall reaches level two. */
+  readonly warDamaged?: boolean;
   readonly townId: TownId;
   readonly siteId: SiteId;
   readonly name: string;
@@ -104,6 +110,18 @@ export interface MissionTownSetup {
   readonly covenants: readonly CreatureFamilyId[];
   /** Starting garrison (default none), e.g. a rival's hall guard. */
   readonly garrison?: readonly StackSpec[];
+}
+
+/** A ship placed by a scenario (`MissionDefinition.ships`): always empty at the start. */
+export interface MissionShipSetup {
+  /** Stable ship ID (unique within the mission). */
+  readonly shipId: string;
+  /** A water tile of the map. */
+  readonly coord: HexCoord;
+  /** The owning player, or absent/null for a neutral ship any hero may claim by embarking. */
+  readonly ownerId?: PlayerId | null;
+  /** Heading: index into AXIAL_DIRECTIONS (default 0, east). */
+  readonly facing?: number;
 }
 
 export interface MissionHeroSetup {
@@ -150,6 +168,40 @@ export interface ScenarioFeatures {
   readonly climateRules?: boolean;
   /** AI rivals play by their pantheon's temperament (proposed 2026-10-04; absent = off). */
   readonly aiTemperaments?: boolean;
+  /**
+   * City dedications (app 1.5.0, `cityDedicationsV1`): a town with Temple II honors its owner's patron or a
+   * committed minor god for local weekly gifts, growth and a service; the gods' direct `daily_income` and
+   * `weekly_growth_bonus` benefits are then replaced by these profiles. Absent = off (older saves keep the old
+   * god economics); set by the scenario factories for new games, explicitly false for The Three Beacons.
+   */
+  readonly cityDedicationsV1?: boolean;
+  /**
+   * Expedition kit (app 1.6.0, docs/expedition-v1/): stateful features, each absent = off (older saves keep
+   * the legacy behaviour; never switched on after a load). Set by the scenario factories for new games:
+   *  - `scoutingIntelV1`: enemy armies are reported by observation stage (sighting / identified / scouted),
+   *    with per-player last-known snapshots;
+   *  - `targetableCatapultV1`: a siege's attacker has a stationary, killable catapult in the upper left that
+   *    fires once per round at an aimed structure (Fire / Skip) instead of the automatic round-start shot;
+   *  - `recruitmentCaravansV1`: recruits bought in one owned town travel by land to another (skirmish maps);
+   *  - `navalMovementV1`: hero ships, embarking, sailing and ship-to-ship boarding battles (skirmish maps).
+   * Campaign runs get scouting intel and the catapult (not The Three Beacons); caravans and ships stay off in
+   * authored campaign chapters, whose routes and pacing are designed for land travel.
+   */
+  readonly scoutingIntelV1?: boolean;
+  readonly targetableCatapultV1?: boolean;
+  readonly recruitmentCaravansV1?: boolean;
+  readonly navalMovementV1?: boolean;
+  /**
+   * Sea encounters (sea-creature delivery 2026-10-17): neutral sea-monster stacks on water, fought by a
+   * hero's ship on the single-ship sea encounter board (`single_ship_sea_encounter_v2`). Absent = off:
+   * older saves and existing campaigns keep their behaviour (never switched on after a load). Set with
+   * `navalMovementV1` for new editor/custom maps, authored skirmish maps and naval random maps (the land
+   * random templates place no sea monster, so they keep their legacy features and seeds); a campaign
+   * enables it explicitly in its mission data.
+   */
+  readonly seaEncountersV1?: boolean;
+  /** Mythic Library II. Absent stays off, including loaded expanded-content saves. */
+  readonly mythicLibraryV2?: boolean;
 }
 
 export const NO_SCENARIO_FEATURES: ScenarioFeatures = { expandedContent: false, weeklyEvents: false, interventions: false };
@@ -195,6 +247,7 @@ export interface StorySceneDefinition {
  * channel cells.
  */
 export interface AuthoredMapDefinition {
+  readonly desertCells?: readonly number[];
   readonly id: string;
   readonly version: number;
   readonly width: number;
@@ -223,6 +276,10 @@ export interface MissionTimerDefinition {
   readonly metWhen: ObjectiveCondition;
   /** Known consequence of missing it (shown with the deadline). */
   readonly consequence: string;
+  /** Inclusive scheduled arrival; old deadlines remain end-of-day by default. */
+  readonly expiresOnDeadline?: boolean;
+  /** A continuous hold: loss of control restarts this clock, without spawning further waves. */
+  readonly holdWhile?: ObjectiveCondition;
   readonly announce?: string;
   readonly onExpire: { readonly flags?: readonly string[]; readonly failObjectives?: readonly ObjectiveId[] };
 }
@@ -267,6 +324,8 @@ export interface HelpTopicDefinition {
 }
 
 export interface MissionDefinition {
+  readonly coalitionPlayerIds?: readonly PlayerId[];
+  readonly restoreRegions?: readonly string[];
   readonly id: MissionId;
   readonly scenarioId: ScenarioId;
   readonly campaignId: CampaignId | null;
@@ -323,6 +382,17 @@ export interface MissionDefinition {
    * archetype decides the town's pantheon, so it may match its taker's or not.
    */
   readonly neutralTowns?: readonly MissionTownSetup[];
+  /**
+   * Empty ships the scenario places on water (custom and editor maps; scenario feature
+   * `navalMovementV1`, expedition kit): neutral, or owned by one of the mission's players.
+   * Ignored (never created) when the scenario turns ships off; absent = none.
+   */
+  readonly ships?: readonly MissionShipSetup[];
+  /**
+   * Naval-only inter-island travel (naval random templates, 2026-10-17; definitions/navalPolicy.ts):
+   * ships are the only first access between islands and portals stay off. Absent = no such rule.
+   */
+  readonly navalPolicy?: NavalTraversalPolicy;
   /** Mission flags set at initialization (e.g. "skirmish"). */
   readonly initialFlags?: readonly string[];
   readonly purchasableBuildingIds: readonly BuildingId[] | null;
@@ -359,9 +429,13 @@ export interface MissionDefinition {
   readonly briefingArt?: readonly AssetId[];
   /** The chapter's principal objective (its known task; reachable two independent ways). */
   readonly principalObjectiveId?: ObjectiveId;
+  /** Regional campaigns freeze this region on completion; ordinary campaigns omit it. */
+  readonly regionalState?: { readonly worldId: string; readonly regionId: string; readonly defaultPatronGodId?: GodId };
 }
 
 export interface CampaignDefinition {
+  /** Shared-world campaign: each protagonist retains its own carryover and frozen region. */
+  readonly regionalWorldId?: string;
   readonly id: CampaignId;
   readonly name: string;
   readonly tagline: string;

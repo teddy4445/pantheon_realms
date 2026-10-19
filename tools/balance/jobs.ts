@@ -31,16 +31,20 @@ export interface BalanceOptions {
   readonly focus?: readonly string[];
   /** maps: only these authored skirmish maps (default: all). */
   readonly maps?: readonly string[];
+  /** `--legacy-gods`: play the matches with city dedications off (the gods' old direct economy). */
+  readonly legacyGods?: boolean;
+  /** `--legacy-intel`: play the whole matches with scouting intel off (applied per worker: `setLegacyIntel`). */
+  readonly legacyIntel?: boolean;
 }
 
 export type Job =
-  | { readonly suite: 'skirmish'; readonly west: string; readonly east: string; readonly firstMover: 'west' | 'east'; readonly seed: number; readonly maxDay: number; readonly temperaments?: boolean }
+  | { readonly suite: 'skirmish'; readonly west: string; readonly east: string; readonly firstMover: 'west' | 'east'; readonly seed: number; readonly maxDay: number; readonly temperaments?: boolean; readonly legacyGods?: boolean }
   | { readonly suite: 'armies'; readonly weeks: number; readonly form: 'base' | 'upgraded'; readonly a: string; readonly b: string; readonly seeds: number; readonly signatures: boolean }
   | { readonly suite: 'starts'; readonly a: string; readonly b: string; readonly seeds: number; readonly signatures: boolean }
   | { readonly suite: 'tiers'; readonly tier: number; readonly form: 'base' | 'upgraded'; readonly a: string; readonly b: string; readonly seeds: number; readonly signatures: boolean }
-  | { readonly suite: 'random'; readonly pantheon: string; readonly empires: 2 | 3; readonly seed: number; readonly maxDay: number; readonly temperaments?: boolean }
-  | { readonly suite: 'random1v1'; readonly a: string; readonly b: string; readonly mapType: SkirmishMapType; readonly size: SkirmishMapSize; readonly seed: number; readonly maxDay: number; readonly temperaments?: boolean }
-  | { readonly suite: 'maps'; readonly mapId: string; readonly seats: readonly string[]; readonly seed: number; readonly maxDay: number };
+  | { readonly suite: 'random'; readonly pantheon: string; readonly empires: 2 | 3; readonly seed: number; readonly maxDay: number; readonly temperaments?: boolean; readonly legacyGods?: boolean }
+  | { readonly suite: 'random1v1'; readonly a: string; readonly b: string; readonly mapType: SkirmishMapType; readonly size: SkirmishMapSize; readonly seed: number; readonly maxDay: number; readonly temperaments?: boolean; readonly legacyGods?: boolean }
+  | { readonly suite: 'maps'; readonly mapId: string; readonly seats: readonly string[]; readonly seed: number; readonly maxDay: number; readonly legacyGods?: boolean };
 
 export type JobResult =
   | { readonly job: Job; readonly skirmish: SkirmishResult }
@@ -62,7 +66,7 @@ export function buildJobs(catalog: ContentCatalog, o: BalanceOptions): Job[] {
     for (const west of P)
       for (const east of P)
         for (const firstMover of ['west', 'east'] as const)
-          for (let seed = 0; seed < o.matches; seed++) jobs.push({ suite: 'skirmish', west, east, firstMover, seed, maxDay: o.maxDay, temperaments: o.temperaments !== false });
+          for (let seed = 0; seed < o.matches; seed++) jobs.push({ suite: 'skirmish', west, east, firstMover, seed, maxDay: o.maxDay, temperaments: o.temperaments !== false, legacyGods: o.legacyGods === true });
   }
   if (o.suites.includes('armies')) {
     for (const weeks of [1, 2])
@@ -77,7 +81,7 @@ export function buildJobs(catalog: ContentCatalog, o: BalanceOptions): Job[] {
     // Mirror matches on generated maps: every seat the same pantheon, so only seat order and the map differ.
     // Every match gets its own map (a pantheon offset in the seed): five maps played by six
     // pantheons used to measure five maps, not thirty (2026-10-02).
-    for (const pantheon of P) for (const empires of o.empires ?? ([2, 3] as const)) for (let seed = 0; seed < o.matches; seed++) jobs.push({ suite: 'random', pantheon, empires, seed: P.indexOf(pantheon) * 100 + seed, maxDay: o.maxDay, temperaments: o.temperaments !== false });
+    for (const pantheon of P) for (const empires of o.empires ?? ([2, 3] as const)) for (let seed = 0; seed < o.matches; seed++) jobs.push({ suite: 'random', pantheon, empires, seed: P.indexOf(pantheon) * 100 + seed, maxDay: o.maxDay, temperaments: o.temperaments !== false, legacyGods: o.legacyGods === true });
   }
   if (o.suites.includes('random1v1')) {
     // One against one on generated maps: every pairing, each map played from both seats (so
@@ -94,7 +98,7 @@ export function buildJobs(catalog: ContentCatalog, o: BalanceOptions): Job[] {
           [a, b],
           [b, a],
         ] as const)
-          jobs.push({ suite: 'random1v1', a: x, b: y, mapType, size, seed, maxDay: o.maxDay, temperaments: o.temperaments !== false });
+          jobs.push({ suite: 'random1v1', a: x, b: y, mapType, size, seed, maxDay: o.maxDay, temperaments: o.temperaments !== false, legacyGods: o.legacyGods === true });
       }
     });
   }
@@ -108,7 +112,7 @@ export function buildJobs(catalog: ContentCatalog, o: BalanceOptions): Job[] {
       const n = m.map.players.length;
       for (let k = 0; k < o.matches; k++) {
         const lineup = Array.from({ length: n }, (_, i) => P[(k + i) % P.length]!);
-        for (let r = 0; r < n; r++) jobs.push({ suite: 'maps', mapId: m.id, seats: lineup.map((_, i) => lineup[(i + r) % n]!), seed: k * 10 + r, maxDay: o.maxDay });
+        for (let r = 0; r < n; r++) jobs.push({ suite: 'maps', mapId: m.id, seats: lineup.map((_, i) => lineup[(i + r) % n]!), seed: k * 10 + r, maxDay: o.maxDay, legacyGods: o.legacyGods === true });
       }
     }
   }
@@ -129,17 +133,17 @@ const sidesOf = (job: { a: string; b: string; signatures?: boolean }) => (job.si
 export function runJob(catalog: ContentCatalog, job: Job): JobResult {
   switch (job.suite) {
     case 'skirmish':
-      return { job, skirmish: playSkirmish(catalog, { west: job.west, east: job.east, seed: job.seed, mapSeed: 5000 + job.seed, firstMover: job.firstMover, maxDay: job.maxDay, temperaments: job.temperaments }) };
+      return { job, skirmish: playSkirmish(catalog, { west: job.west, east: job.east, seed: job.seed, mapSeed: 5000 + job.seed, firstMover: job.firstMover, maxDay: job.maxDay, temperaments: job.temperaments, legacyGods: job.legacyGods }) };
     case 'armies':
       return { job, score: symmetricScore(rosterArmy(catalog, job.a, job.form, job.weeks), rosterArmy(catalog, job.b, job.form, job.weeks), job.seeds, sidesOf(job)) };
     case 'starts':
       return { job, score: symmetricScore(startingArmy(catalog, job.a), startingArmy(catalog, job.b), job.seeds, sidesOf(job)) };
     case 'random':
-      return { job, random: playRandom(catalog, { pantheon: job.pantheon, empires: job.empires, seed: job.seed, maxDay: job.maxDay, temperaments: job.temperaments }) };
+      return { job, random: playRandom(catalog, { pantheon: job.pantheon, empires: job.empires, seed: job.seed, maxDay: job.maxDay, temperaments: job.temperaments, legacyGods: job.legacyGods }) };
     case 'random1v1':
-      return { job, duel1v1: playRandom(catalog, { pantheon: job.a, empires: 2, seatPantheons: [job.a, job.b], mapType: job.mapType, size: job.size, seed: job.seed, maxDay: job.maxDay, temperaments: job.temperaments }) };
+      return { job, duel1v1: playRandom(catalog, { pantheon: job.a, empires: 2, seatPantheons: [job.a, job.b], mapType: job.mapType, size: job.size, seed: job.seed, maxDay: job.maxDay, temperaments: job.temperaments, legacyGods: job.legacyGods }) };
     case 'maps':
-      return { job, map: playMap(catalog, { mapId: job.mapId, seatPantheons: job.seats, seed: job.seed, maxDay: job.maxDay }) };
+      return { job, map: playMap(catalog, { mapId: job.mapId, seatPantheons: job.seats, seed: job.seed, maxDay: job.maxDay, legacyGods: job.legacyGods }) };
     case 'tiers': {
       const a = tierArmy(catalog, job.a, job.tier, job.form);
       const b = tierArmy(catalog, job.b, job.tier, job.form);

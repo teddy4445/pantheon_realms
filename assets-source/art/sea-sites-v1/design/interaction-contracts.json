@@ -1,0 +1,65 @@
+{
+  "status": "Proposed contracts, not implemented",
+  "watchtower": {
+    "kind": "coastal_watchtower",
+    "placement": "coastal land",
+    "visitMode": "land",
+    "radius": 6,
+    "capturable": true,
+    "liveOwnerVision": true,
+    "exactEnemyArmyDisclosure": false,
+    "legacyWatchtowerUnchanged": true
+  },
+  "pickup": {
+    "placement": "water",
+    "visitMode": "ship",
+    "interaction": "on_enter",
+    "logicalDrift": false,
+    "onceOnly": true,
+    "rewards": {
+      "wood": [
+        3,
+        6
+      ],
+      "stone": [
+        3,
+        6
+      ],
+      "gold": [
+        250,
+        500
+      ]
+    },
+    "rewardRoll": "at_generation_persisted"
+  },
+  "wreck": {
+    "placement": "water",
+    "visitMode": "ship",
+    "interaction": "adjacent_confirm",
+    "exploreMovementCost": 100,
+    "guardedBattle": "boarding_two_ships_v1",
+    "context": "wreck_site_not_hostile_ship",
+    "outcomes": [
+      {
+        "weight": 50,
+        "type": "unguarded",
+        "gold": 500,
+        "wood": 4
+      },
+      {
+        "weight": 40,
+        "type": "guarded",
+        "gold": 1000,
+        "wood": 8
+      },
+      {
+        "weight": 10,
+        "type": "guarded_artifact",
+        "gold": 750,
+        "artifactRarity": "minor"
+      }
+    ],
+    "oneTime": true,
+    "inventoryFull": "persist_pending_artifact_no_duplicate_resources"
+  }
+}

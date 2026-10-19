@@ -18,6 +18,8 @@ interface ActiveTween {
 
 export class TweenPlayer {
   private tweens: ActiveTween[] = [];
+  /** Tick milliseconds still held by `freeze` (no tween advances meanwhile). */
+  private frozenMs = 0;
   /** Multiplier on nominal durations; 0 = instant. */
   speed = 1;
 
@@ -36,7 +38,31 @@ export class TweenPlayer {
     return this.tween(ms, () => undefined, linear);
   }
 
+  /**
+   * Hold the whole playback for a beat (a hit-stop): for the next `ms × speed` milliseconds of
+   * ticks no tween advances — those already running and those started meanwhile. Cosmetic only;
+   * a no-op at speed 0 (instant playback). Overlapping freezes take the longer, never add up;
+   * `flush` clears it; `busy` stays true while it lasts.
+   */
+  freeze(ms: number): void {
+    const hold = ms * this.speed;
+    if (!(hold > 0)) return;
+    this.frozenMs = Math.max(this.frozenMs, hold);
+  }
+
+  /** Whether a `freeze` is holding the tweens now. */
+  get frozen(): boolean {
+    return this.frozenMs > 0;
+  }
+
   tick(dt: number): void {
+    if (this.frozenMs > 0) {
+      // The held time is spent first; what is left of this tick moves the tweens on.
+      const held = Math.min(this.frozenMs, dt);
+      this.frozenMs -= held;
+      dt -= held;
+      if (dt <= 0) return;
+    }
     if (this.tweens.length === 0) return;
     const done: ActiveTween[] = [];
     for (const t of this.tweens) {
@@ -53,6 +79,7 @@ export class TweenPlayer {
 
   /** Finish everything immediately (skip / scene exit). */
   flush(): void {
+    this.frozenMs = 0;
     const all = this.tweens;
     this.tweens = [];
     for (const t of all) {
@@ -62,6 +89,6 @@ export class TweenPlayer {
   }
 
   get busy(): boolean {
-    return this.tweens.length > 0;
+    return this.tweens.length > 0 || this.frozenMs > 0;
   }
 }

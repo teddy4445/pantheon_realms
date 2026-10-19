@@ -1,0 +1,559 @@
+{
+  "id": "boarding_two_ships_v1",
+  "cols": 15,
+  "rows": 11,
+  "coordinates": "odd-r",
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 11,
+      "row": 0,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 12,
+      "row": 0,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 13,
+      "row": 0,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 14,
+      "row": 0,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 11,
+      "row": 1,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 12,
+      "row": 1,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 13,
+      "row": 1,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 14,
+      "row": 1,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 11,
+      "row": 2,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 12,
+      "row": 2,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 13,
+      "row": 2,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 14,
+      "row": 2,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 0,
+      "row": 3,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 3,
+      "row": 3,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 11,
+      "row": 3,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 12,
+      "row": 3,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 13,
+      "row": 3,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 14,
+      "row": 3,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 0,
+      "row": 4,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 1,
+      "row": 4,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 2,
+      "row": 4,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 3,
+      "row": 4,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 4,
+      "row": 4,
+      "zone": "bridge"
+    },
+    {
+      "col": 5,
+      "row": 4,
+      "zone": "bridge"
+    },
+    {
+      "col": 6,
+      "row": 4,
+      "zone": "bridge"
+    },
+    {
+      "col": 7,
+      "row": 4,
+      "zone": "bridge"
+    },
+    {
+      "col": 8,
+      "row": 4,
+      "zone": "bridge"
+    },
+    {
+      "col": 9,
+      "row": 4,
+      "zone": "bridge"
+    },
+    {
+      "col": 10,
+      "row": 4,
+      "zone": "bridge"
+    },
+    {
+      "col": 11,
+      "row": 4,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 12,
+      "row": 4,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 13,
+      "row": 4,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 14,
+      "row": 4,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 0,
+      "row": 5,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 1,
+      "row": 5,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 2,
+      "row": 5,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 3,
+      "row": 5,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 4,
+      "row": 5,
+      "zone": "bridge"
+    },
+    {
+      "col": 5,
+      "row": 5,
+      "zone": "bridge"
+    },
+    {
+      "col": 6,
+      "row": 5,
+      "zone": "bridge"
+    },
+    {
+      "col": 7,
+      "row": 5,
+      "zone": "bridge"
+    },
+    {
+      "col": 8,
+      "row": 5,
+      "zone": "bridge"
+    },
+    {
+      "col": 9,
+      "row": 5,
+      "zone": "bridge"
+    },
+    {
+      "col": 10,
+      "row": 5,
+      "zone": "bridge"
+    },
+    {
+      "col": 11,
+      "row": 5,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 12,
+      "row": 5,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 13,
+      "row": 5,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 14,
+      "row": 5,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 0,
+      "row": 6,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 1,
+      "row": 6,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 2,
+      "row": 6,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 3,
+      "row": 6,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 11,
+      "row": 6,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 12,
+      "row": 6,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 13,
+      "row": 6,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 14,
+      "row": 6,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 0,
+      "row": 7,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 1,
+      "row": 7,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 2,
+      "row": 7,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 3,
+      "row": 7,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 11,
+      "row": 7,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 12,
+      "row": 7,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 13,
+      "row": 7,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 14,
+      "row": 7,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 0,
+      "row": 8,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 1,
+      "row": 8,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 2,
+      "row": 8,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 3,
+      "row": 8,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 11,
+      "row": 8,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 12,
+      "row": 8,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 13,
+      "row": 8,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 14,
+      "row": 8,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 0,
+      "row": 9,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 1,
+      "row": 9,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 2,
+      "row": 9,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 3,
+      "row": 9,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 11,
+      "row": 9,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 12,
+      "row": 9,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 13,
+      "row": 9,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 14,
+      "row": 9,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 0,
+      "row": 10,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 1,
+      "row": 10,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 2,
+      "row": 10,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 3,
+      "row": 10,
+      "zone": "attacker_deck"
+    },
+    {
+      "col": 11,
+      "row": 10,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 12,
+      "row": 10,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 13,
+      "row": 10,
+      "zone": "defender_deck"
+    },
+    {
+      "col": 14,
+      "row": 10,
+      "zone": "defender_deck"
+    }
+  ],
+  "projection": {
+    "x0": 0.17,
+    "dx": 0.045,
+    "oddRowOffset": 0.0225,
+    "y0": 0.22,
+    "dy": 0.048,
+    "hexWidth": 0.043,
+    "hexHeight": 0.045
+  },
+  "bridgeRows": [
+    4,
+    5
+  ],
+  "bridgeCols": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "attackerDeploymentCols": [
+    0,
+    1,
+    2
+  ],
+  "defenderDeploymentCols": [
+    12,
+    13,
+    14
+  ],
+  "art": "assets/boarding-battle.png",
+  "twoHexFootprint": "anchor plus horizontal cell behind facing; both cells must be valid",
+  "waterRule": "Cannot end on water, including flyers. Flyers may traverse water only to legal unoccupied deck/bridge landing footprints.",
+  "notes": [
+    "Gameplay water mask is independent of generic obstacle flight bypass.",
+    "No random obstacles on bridge/decks.",
+    "Keep drawn troop feet/hexes inside wood. Hit-testing must use same projection and topology.",
+    "Same map shared across all six factions; live flags show players."
+  ]
+}

@@ -50,8 +50,17 @@ export function artifactSetStatus(
 }
 
 /** Effects of equipped artifacts plus every met artifact-set bonus. */
-export function artifactEffects(catalog: ContentCatalog, hero: Pick<HeroState, 'equipment'>): EffectDefinition[] {
-  const pieces = Object.values(hero.equipment).flatMap((inst) => (inst ? getArtifact(catalog, inst.artifactId).effects : []));
+export function artifactEffects(catalog: ContentCatalog, hero: Pick<HeroState, 'equipment'>, state?: Pick<MatchState, 'scenario'>): EffectDefinition[] {
+  const seen = new Set<string>();
+  const pieces = Object.values(hero.equipment).flatMap((inst) => {
+    if (!inst) return [];
+    const def = getArtifact(catalog, inst.artifactId);
+    if (def.scope === 'mythic_library_v2') {
+      if (!state?.scenario.features?.mythicLibraryV2 || seen.has(def.id)) return [];
+      seen.add(def.id);
+    }
+    return def.effects;
+  });
   const sets: EffectDefinition[] = [];
   for (const st of artifactSetStatus(catalog, hero)) {
     const set = catalog.artifactSets[st.setId]!;
@@ -105,7 +114,7 @@ export function perkEffects(catalog: ContentCatalog, hero: Pick<HeroState, 'perk
 
 /** Everything the hero itself carries: artifacts, set bonuses, skill effects, the gods' gifts and (with `state`) its specialty. */
 export function heroEffects(catalog: ContentCatalog, hero: HeroState, state?: Pick<MatchState, 'scenario'>): EffectDefinition[] {
-  return [...artifactEffects(catalog, hero), ...skillEffects(catalog, hero), ...perkEffects(catalog, hero), ...(state ? specialtyEffects(catalog, state, hero) : [])];
+  return [...artifactEffects(catalog, hero, state), ...skillEffects(catalog, hero), ...perkEffects(catalog, hero), ...(state ? specialtyEffects(catalog, state, hero) : [])];
 }
 
 /** Player-wide effects reaching this hero: committed gods and the pantheon signature. */
@@ -114,7 +123,7 @@ export function divineEffects(catalog: ContentCatalog, state: MatchState, hero: 
 }
 
 export function effectiveAttributes(catalog: ContentCatalog, state: MatchState, hero: HeroState): EffectiveAttributes {
-  const art = artifactEffects(catalog, hero);
+  const art = artifactEffects(catalog, hero, state);
   // The gods' gifts count with the divine part.
   const div = [...divineEffects(catalog, state, hero), ...perkEffects(catalog, hero)];
   const sk = skillEffects(catalog, hero);

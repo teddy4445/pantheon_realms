@@ -1,0 +1,94 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "frontend.random.shattered_crown",
+      "passed": true
+    },
+    {
+      "name": "frontend.random.serpent_straits",
+      "passed": true
+    },
+    {
+      "name": "random.shattered_crown.loading",
+      "passed": true
+    },
+    {
+      "name": "random.serpent_straits.loading",
+      "passed": true
+    },
+    {
+      "name": "game source unchanged: C:\\Users\\lazeb\\Desktop\\pantheon_realms\\packages\\mapgen\\src\\skirmish.ts",
+      "passed": true
+    },
+    {
+      "name": "game source unchanged: C:\\Users\\lazeb\\Desktop\\pantheon_realms\\packages\\campaign\\src\\randomSkirmish.ts",
+      "passed": true
+    },
+    {
+      "name": "game source unchanged: C:\\Users\\lazeb\\Desktop\\pantheon_realms\\packages\\ui\\src\\screens\\RandomSetup.tsx",
+      "passed": true
+    },
+    {
+      "name": "game source unchanged: C:\\Users\\lazeb\\Desktop\\pantheon_realms\\packages\\ui\\src\\screens\\MapEditor.tsx",
+      "passed": true
+    },
+    {
+      "name": "game source unchanged: C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\random-map-types.json",
+      "passed": true
+    },
+    {
+      "name": "design/topology-validation.json",
+      "passed": true
+    },
+    {
+      "name": "design/browser-validation.json",
+      "passed": true
+    },
+    {
+      "name": "preview reference CLAUDE_HANDOFF.html",
+      "passed": true
+    },
+    {
+      "name": "preview reference CLAUDE_HANDOFF.txt",
+      "passed": true
+    },
+    {
+      "name": "preview reference asset-manifest.json",
+      "passed": true
+    },
+    {
+      "name": "preview reference assets/shattered-crown-card.png",
+      "passed": true
+    },
+    {
+      "name": "preview reference assets/shattered-crown-loading.png",
+      "passed": true
+    },
+    {
+      "name": "preview reference design/shattered_crown.layout.svg",
+      "passed": true
+    },
+    {
+      "name": "preview reference design/shattered_crown.topology.json",
+      "passed": true
+    },
+    {
+      "name": "preview reference assets/serpent-straits-card.png",
+      "passed": true
+    },
+    {
+      "name": "preview reference assets/serpent-straits-loading.png",
+      "passed": true
+    },
+    {
+      "name": "preview reference design/serpent_straits.layout.svg",
+      "passed": true
+    },
+    {
+      "name": "preview reference design/serpent_straits.topology.json",
+      "passed": true
+    }
+  ],
+  "limitations": "Two fixed reference terrain graphs and visual package checked; game generator and gameplay remain unimplemented. Native art is 1672x941, below requested1920x1080."
+}

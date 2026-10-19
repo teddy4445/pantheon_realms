@@ -171,6 +171,31 @@ export interface SkillDefinition {
 }
 
 export type SpellEffect =
+  | { readonly type: 'adventure_decoy'; readonly range: number; readonly days: number }
+  | { readonly type: 'adventure_courier' }
+  | { readonly type: 'adventure_travel_buff'; readonly discount: import('./logic').AdventureStepDiscount; readonly toTown?: boolean }
+  | { readonly type: 'adventure_report'; readonly kind: 'omen' | 'sounding' | 'resources' | 'leylines'; readonly range: number; readonly days: number }
+  | { readonly type: 'battle_field'; readonly kind: 'frost' | 'sanctuary' | 'eclipse' | 'glass' | 'wind_line'; readonly cells: number; readonly durationRounds: number; readonly base?: number; readonly perPower?: number; readonly percent?: number }
+  | { readonly type: 'temporary_restore'; readonly base: number; readonly perPower: number; readonly durationRounds: number }
+  | { readonly type: 'illusion_copy'; readonly durationRounds: number }
+  | { readonly type: 'banish_summon'; readonly base: number; readonly perPower: number }
+  | { readonly type: 'spatial_move'; readonly mode: 'teleport' | 'swap' | 'push'; readonly range: number }
+  | { readonly type: 'adventure_camp'; readonly mana: number }
+  | { readonly type: 'adventure_anchor'; readonly markCost: number; readonly returnCost: number; readonly range: number; readonly days: number }
+  | { readonly type: 'adventure_boatcall'; readonly steps: number }
+  | { readonly type: 'adventure_compact'; readonly percent: number; readonly cap: number }
+  | { readonly type: 'projectile_spell_ward'; readonly percent: number; readonly cap: number; readonly durationRounds: number }
+  | { readonly type: 'one_hit_thorns'; readonly base: number; readonly perPower: number; readonly durationRounds: number }
+  | { readonly type: 'tactical_status'; readonly status: 'spell_lock' | 'ranged_lock' | 'retaliation_weaken' | 'debuff_ward' | 'buff_suppression' | 'temporary_flight'; readonly duration: 'next_activation' | number; readonly amount: number; readonly charges?: number; readonly mind?: boolean }
+  | { readonly type: 'group_mind_cleanse' }
+  /** Remove a selected temporary spell status, never an innate trait or non-spell source. */
+  | { readonly type: 'dispel_status'; readonly polarity: 'positive' | 'negative' }
+  /** Restore finite ammunition once per original army stack per battle. */
+  | { readonly type: 'restore_shots'; readonly amount: number }
+  /** Restore spent retaliation, never add capacity or grant an activation. */
+  | { readonly type: 'retaliation_restore'; readonly amount: number }
+  /** Once per side per battle; destroys enemy mana and never transfers it. */
+  | { readonly type: 'enemy_mana_drain'; readonly base: number; readonly powerDivisor: number; readonly cap: number }
   | { readonly type: 'direct_damage'; readonly base: number; readonly perPower: number }
   | { readonly type: 'max_damage_roll'; readonly durationRounds: number }
   | { readonly type: 'defense_bonus'; readonly amount: number; readonly durationRounds: number }
@@ -202,7 +227,11 @@ export type SpellEffect =
   /** Damage to every enemy stack. */
   | { readonly type: 'mass_damage'; readonly base: number; readonly perPower: number };
 
+export type SpellElement = 'fire' | 'water' | 'cold' | 'wind' | 'nature' | 'arcane' | 'lightning' | 'solar' | 'shadow';
 export interface SpellDefinition {
+  /** Authored semantics, independent of a particle's appearance. */
+  readonly element?: SpellElement;
+  readonly delivery?: 'projectile' | 'direct' | 'area';
   readonly id: SpellId;
   readonly name: string;
   readonly tier: number;
@@ -212,7 +241,7 @@ export interface SpellDefinition {
    * 'friendly_army' / 'enemy_army' affect every stack of that side (any stack of it is the
    * nominal target); 'self' is the casting hero.
    */
-  readonly target: 'enemy_stack' | 'ally_stack' | 'known_tile' | 'friendly_army' | 'enemy_army' | 'self';
+  readonly target: 'enemy_stack' | 'ally_stack' | 'known_tile' | 'friendly_army' | 'enemy_army' | 'self' | 'battle_cells';
   readonly effect: SpellEffect;
   readonly summary: string;
   /** Library access: 'sanctum' spells are learnable up to the town library tier; 'god' spells need eligibility. */

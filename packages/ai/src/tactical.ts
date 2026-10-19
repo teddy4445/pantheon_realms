@@ -7,6 +7,16 @@
  */
 import {
   aliveCount,
+  canRetaliate,
+  activeRelics,
+  quoteActiveRelic,
+  relicDispelChoices,
+  spatialSpellOptions,
+  fieldSpellProblem,
+  fieldCells,
+  fieldVictims,
+  illusionDestinations,
+  dispellableStatuses,
   castingPower,
   cellDistance,
   cellKey,
@@ -25,7 +35,15 @@ import {
   shootingRange,
   SIEGE_GATE_ROW,
   catapultTarget,
+  catapultStatus,
+  catapultTargets,
+  previewEngineStrike,
+  turretTarget,
+  turretTargetValue,
   adjacentEnemies,
+  cellLegalFor,
+  movementClassOf,
+  previewHarpoon,
   interventionsFor,
   interventionUsedThisWeek,
   quoteIntervention,
@@ -75,6 +93,16 @@ function mainOptions(catalog: ContentCatalog, battle: BattleState, stack: Battle
     options.push({ score: killValue(catalog, t, dmg, avg(p.killsMin, p.killsMax)) + 50, key: `shoot:${tid}`, payload: { kind: 'BattleShoot', stackId: stack.id, targetId: tid } });
   }
 
+  // 2b. Deck Harpoon (single-ship sea encounter): a weak throw at an enemy in the water, never answered.
+  // Below a real shot (+50) and below a profitable melee blow; above standing idle while the sea fires.
+  for (const tid of actions.harpoon?.targets ?? []) {
+    const t = battle.stacks[tid]!;
+    const p = previewHarpoon(catalog, { battle }, stack.id, tid);
+    if (!p) continue;
+    const dmg = avg(p.min, p.max);
+    options.push({ score: killValue(catalog, t, dmg, avg(p.killsMin, p.killsMax)) + 20, key: `harpoon:${tid}`, payload: { kind: 'BattleHarpoon', stackId: stack.id, targetId: tid } });
+  }
+
   // 3. Melee (with retaliation estimate).
   for (const m of actions.melee) {
     const t = battle.stacks[m.targetId]!;
@@ -117,7 +145,79 @@ function mainOptions(catalog: ContentCatalog, battle: BattleState, stack: Battle
     options.push({ score: 120, key: `structure:${target}`, payload: { kind: 'BattleAttackStructure', stackId: stack.id, structureId: target } });
   }
 
+  // 6. The enemy siege engine (targetableCatapultV1): a legitimate target in plain sight on the board,
+  // worth the structure damage it can still do (no hidden information: its HP is shown to both sides).
+  const engine = actions.engine ? battle.siege?.engine : null;
+  if (actions.engine && engine && engine.hp > 0) {
+    const worth = engineWorth(battle);
+    const value = (p: { min: number; max: number }) => {
+      const dmg = avg(p.min, p.max);
+      return worth * Math.min(1, dmg / engine.hp) + (p.min >= engine.hp ? ENGINE_KILL_BONUS : 0);
+    };
+    if (actions.engine.canShoot) {
+      const p = previewEngineStrike(catalog, battle, stack, engine, { mode: 'shot', chargeHexes: 0 });
+      options.push({ score: value(p) + 50, key: `engine-shot:${engine.id}`, payload: { kind: 'BattleAttackEngine', stackId: stack.id, engineId: engine.id, mode: 'shot' } });
+    }
+    const shooterPenalty = actions.shootTargets.length > 0 || actions.engine.canShoot ? 200 : 0;
+    for (const opt of actions.engine.melee) {
+      const p = previewEngineStrike(catalog, battle, stack, engine, { mode: 'melee', chargeHexes: opt.distance, reach: !!opt.reach });
+      options.push({ score: value(p) - shooterPenalty, key: `engine-melee:${engine.id}:${cellKey(opt.from)}`, payload: { kind: 'BattleAttackEngine', stackId: stack.id, engineId: engine.id, mode: 'melee', from: opt.from } });
+    }
+  }
+
   return options;
+}
+
+/** Gold-equivalent worth of the enemy siege engine: the structure HP it can still remove (capped), plus a base. */
+const ENGINE_BASE_WORTH = 100;
+const ENGINE_WORTH_PER_STRUCTURE_HP = 50;
+const ENGINE_WORTH_CAP_HP = 8;
+/** Destroying the engine outright (the weakest possible blow suffices) is worth this much more. */
+const ENGINE_KILL_BONUS = 200;
+
+export function engineWorth(battle: BattleState): number {
+  const hp = catapultTargets(battle).reduce((n, s) => n + s.hp, 0);
+  return ENGINE_BASE_WORTH + ENGINE_WORTH_PER_STRUCTURE_HP * Math.min(ENGINE_WORTH_CAP_HP, hp);
+}
+
+/**
+ * Where the attacker's targetable catapult fires (targetableCatapultV1): only intact structures.
+ * 1. A route-opening gate: ground troops that must get in, and no breach yet.
+ * 2. The most threatening tower or keep: the one whose shot would hurt this army most now (the
+ *    turrets' own targeting value), then the weakest, then the lowest ID.
+ * 3. Otherwise the gate, else the wall section nearest the gate row (another way in), else any.
+ * Deterministic; never a creature, never a destroyed structure.
+ */
+export function engineAimFor(catalog: ContentCatalog, battle: BattleState): string | null {
+  const siege = battle.siege;
+  if (!siege || siege.level === 0) return null;
+  const intact = catapultTargets(battle);
+  if (intact.length === 0) return null;
+  const attackers = sideStacks(battle, 'attacker');
+  const groundMelee = attackers.some((a) => !hasFlight(catalog, a.creatureId) && !(isShooter(catalog, a.creatureId) && a.shotsRemaining > 0));
+  const breached = siege.structures.some((s) => (s.kind === 'wall' || s.kind === 'gate') && s.hp <= 0);
+  const gate = intact.find((s) => s.kind === 'gate');
+  if (groundMelee && !breached && gate) return gate.id;
+  const cfg = catalog.rulesProfile.combat.siege;
+  const turrets = intact
+    .filter((s) => s.kind === 'keep' || s.kind === 'tower')
+    .map((t) => {
+      const damage = t.kind === 'keep' ? cfg.keepDamage : cfg.towerDamage;
+      const victim = turretTarget(catalog, battle, t, damage);
+      return { t, threat: victim ? Math.round(turretTargetValue(catalog, victim, damage) * 1000) : 0 };
+    })
+    .sort((a, b) => b.threat - a.threat || a.t.hp - b.t.hp || (a.t.id < b.t.id ? -1 : 1));
+  if (turrets[0]) return turrets[0].t.id;
+  if (gate) return gate.id;
+  return preferredStructure(battle, intact.map((s) => s.id));
+}
+
+/** The attacker's engine phase: fire at the chosen structure, or skip when nothing can be aimed at. */
+function enginePhaseAction(catalog: ContentCatalog, battle: BattleState): CommandPayload | null {
+  const status = catapultStatus(battle);
+  if (!status || !status.phaseActive) return null;
+  const target = engineAimFor(catalog, battle);
+  return target ? { kind: 'BattleFireCatapult', structureId: target, expectedRound: battle.round } : { kind: 'BattleSkipCatapult', expectedRound: battle.round };
 }
 
 /**
@@ -152,6 +252,7 @@ function topScore(options: readonly Scored[]): number {
 export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): CommandPayload | null {
   const battle = state.battle;
   if (!battle || battle.status !== 'active') return null;
+  if (battle.shadowChoice) return { kind: 'BattleResolveShadow', to: battle.shadowChoice.options[0]! };
   // Pre-battle phases: automatic choices keep the default formation.
   if (battle.phase === 'selection' && battle.selection) {
     // Combine identical stacks first (2026-10-07), then keep the most valuable seven.
@@ -160,14 +261,16 @@ export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): 
     return { kind: 'BattleSelectDefenders', picks: autoDefenderPicks(catalog, battle.selection) };
   }
   if (battle.phase === 'deployment') return { kind: 'BattleConfirmDeployment' };
+  if (battle.phase === 'engine') return enginePhaseAction(catalog, battle);
   if (!battle.activeStackId) return null;
   const actions = legalActions(catalog, state);
   if (!actions) return null;
   const stack = battle.stacks[battle.activeStackId]!;
   const enemies = sideStacks(battle, opposing(stack.side));
   if (enemies.length === 0) return { kind: 'BattleDefend', stackId: stack.id };
-  // Siege attacker: aim the Catapult where it helps this army most (a free choice).
-  if (stack.side === 'attacker') {
+  // Siege attacker (legacy automatic Catapult): aim it where it helps this army most (a free choice).
+  // A targetable catapult is aimed by its own Fire order in the engine phase.
+  if (stack.side === 'attacker' && !battle.siege?.engine) {
     const aim = catapultAimFor(catalog, battle);
     if (aim && aim !== catapultTarget(battle)?.id) return { kind: 'BattleAimCatapult', structureId: aim };
   }
@@ -175,6 +278,17 @@ export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): 
   // 0. AI empires may call a battle intervention (Favor, once a week) in a fight that matters.
   const miracle = interventionChoice(catalog, state, battle, stack);
   if (miracle) return miracle;
+  const relicChoices: Scored[] = [];
+  for (const { item, action } of activeRelics(catalog, state, stack.side)) {
+    for (const target of Object.values(battle.stacks)) {
+      if (!quoteActiveRelic(catalog, state, item.id, target.id).legal) continue;
+      if (action === 'bind' && (isShooter(catalog, target.creatureId) || adjacentEnemies(catalog, battle, target).length > 0)) continue;
+      const status = relicDispelChoices(target, action)[0];
+      relicChoices.push({ score: aliveCount(catalog, target) * stackValue(catalog, target.creatureId) * 0.15, key: `relic:${item.id}:${target.id}`, payload: { kind: 'BattleActivateArtifact', artifactId: item.id, targetId: target.id, ...(status ? { statusSourceId: status.sourceId } : {}) } });
+    }
+  }
+  const relic = best(relicChoices.filter((x) => x.score >= 300));
+  if (relic) return relic;
 
   // 1. Commander spell at the start of the activation (does not consume the action).
   if (actions.castAvailable) {
@@ -191,7 +305,58 @@ export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): 
         const hp = catalog.creatures[t.creatureId]!.stats!.hp;
         return killValue(catalog, t, dmg, Math.min(aliveCount(catalog, t), Math.floor(dmg / hp)));
       };
-      if (e.type === 'direct_damage' || e.type === 'area_damage') {
+      if (e.type === 'battle_field') {
+        for (const t of Object.values(battle.stacks).filter((s) => s.totalHp > 0)) {
+          const shapes = e.kind === 'glass' ? cellNeighbors(t.anchor,battle.cols,battle.rows).flatMap((n)=>cellNeighbors(n,battle.cols,battle.rows).map((end)=>[n,end])) : e.kind === 'frost' ? cellNeighbors(t.anchor,battle.cols,battle.rows).map((n)=>[n]) : e.kind === 'wind_line' ? cellNeighbors(t.anchor, battle.cols, battle.rows).flatMap((n) => cellNeighbors(n, battle.cols, battle.rows).map((end) => [t.anchor, n, end])) : [[t.anchor]];
+          for (const cells of shapes) {
+            if (fieldSpellProblem(catalog, battle, e, cells)) continue;
+            const victims = fieldVictims(catalog, battle, fieldCells(battle, e, cells));
+            let score = 0;
+            if ((e.kind === 'glass' || e.kind === 'frost') && t.side !== stack.side && movementClassOf(catalog,t.creatureId)==='ground' && !battle.spellFields?.some((f)=>f.spellId===sp.spellId&&f.side===stack.side)) {
+              const friends=Object.values(battle.stacks).filter((s)=>s.side===stack.side&&s.totalHp>0);
+              const threatened=friends.filter((s)=>isShooter(catalog,s.creatureId)||s.totalHp<catalog.creatures[s.creatureId]!.stats!.hp*3);
+              const goal=(e.kind==='glass'?threatened:friends).sort((a,b)=>cellDistance(a.anchor,t.anchor)-cellDistance(b.anchor,t.anchor))[0];
+              if(goal&&cells.every((c)=>cellDistance(c,goal.anchor)<cellDistance(t.anchor,goal.anchor))&&cells.every((c)=>cellDistance(c,t.anchor)<=2)) score=e.kind==='frost'?strikeValue(t,(e.base??0)+(e.perPower??0)*power)*.6:stackValue(catalog,goal.creatureId)*aliveCount(catalog,goal)*.04;
+            }
+            for (const v of victims) {
+              const own = v.side === stack.side, value = stackValue(catalog, v.creatureId) * aliveCount(catalog, v);
+              if (e.kind === 'wind_line') score += strikeValue(v, (e.base ?? 0) + (e.perPower ?? 0) * power) * (own ? -1.5 : 1);
+              if (e.kind === 'sanctuary' && own && !battle.spellFields?.some((f) => f.kind === 'sanctuary' && f.side === stack.side)) score += value * 0.06;
+              if (e.kind === 'eclipse' && isShooter(catalog, v.creatureId)) score += value * (own ? -0.1 : 0.1);
+            }
+            if (score > 0) spellChoices.push({ score, key: `spell:${sp.spellId}:${cells.map(cellKey).join(';')}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: stack.id, cells } });
+          }
+        }
+      } else if (e.type === 'illusion_copy') {
+        for (const tid of sp.targets) {
+          const t = battle.stacks[tid]!, destination = illusionDestinations(catalog, battle, t)[0];
+          if (destination) spellChoices.push({ score: stackValue(catalog, t.creatureId) * aliveCount(catalog, t) * 0.08, key: `spell:${sp.spellId}:${tid}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: tid, destination } });
+        }
+      } else if (e.type === 'temporary_restore') {
+        for (const tid of sp.targets) {
+          const t = battle.stacks[tid]!, hp = catalog.creatures[t.creatureId]!.stats!.hp;
+          const amount = Math.min(e.base + e.perPower * power, t.startingCount * hp - t.totalHp);
+          if (amount > 0) spellChoices.push({ score: amount / hp * stackValue(catalog, t.creatureId) * 0.5, key: `spell:${sp.spellId}:${tid}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: tid } });
+        }
+      } else if (e.type === 'banish_summon') {
+        for (const tid of sp.targets) {
+          const t = battle.stacks[tid]!;
+          spellChoices.push({ score: stackValue(catalog, t.creatureId) * (t.summoned?.sourceCount ?? aliveCount(catalog, t)) * 0.25, key: `spell:${sp.spellId}:${tid}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: tid } });
+        }
+      } else if (e.type === 'spatial_move') {
+        for (const tid of sp.targets) {
+          const t = battle.stacks[tid]!;
+          const opponents = sideStacks(battle, opposing(t.side));
+          const distance = (c: BattleCell) => Math.min(...opponents.map((x) => cellDistance(c, x.anchor)));
+          const desired = isShooter(catalog, t.creatureId) ? 1 : -1;
+          for (const option of spatialSpellOptions(catalog, battle, t, e)) {
+            const change = (distance(option.destination) - distance(t.anchor)) * desired * (t.side === stack.side ? 1 : -1);
+            if (change <= 0) continue;
+            const score = stackValue(catalog, t.creatureId) * aliveCount(catalog, t) * Math.min(0.15, change * 0.04);
+            spellChoices.push({ score, key: `spell:${sp.spellId}:${tid}:${cellKey(option.destination)}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: tid, ...option } });
+          }
+        }
+      } else if (e.type === 'direct_damage' || e.type === 'area_damage') {
         const dmg = Math.floor(((e.base + e.perPower * power) * (100 + pct)) / 100);
         for (const tid of sp.targets) {
           const t = battle.stacks[tid]!;
@@ -220,6 +385,38 @@ export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): 
           const v = group.reduce((n, a) => n + stackValue(catalog, a.creatureId) * aliveCount(catalog, a), 0) * 0.08;
           spellChoices.push({ score: v, key: `spell:${sp.spellId}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: group[0]!.id } });
         }
+      } else if (e.type === 'tactical_status' || e.type === 'group_mind_cleanse') {
+        for (const tid of sp.targets) {
+          const t = battle.stacks[tid]!;
+          if (!fresh(t)) continue;
+          if (e.type === 'tactical_status' && e.status === 'temporary_flight') continue; // Save mana until a route needs it.
+          const weight = e.type === 'group_mind_cleanse' ? 0.16 : e.status === 'ranged_lock' ? 0.22 : 0.08;
+          const score = stackValue(catalog, t.creatureId) * aliveCount(catalog, t) * weight;
+          spellChoices.push({ score, key: `spell:${sp.spellId}:${tid}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: tid } });
+        }
+      } else if (e.type === 'dispel_status') {
+        for (const tid of sp.targets) {
+          const target = battle.stacks[tid]!;
+          for (const status of dispellableStatuses(target, e.polarity)) {
+            const score = stackValue(catalog, target.creatureId) * aliveCount(catalog, target) * Math.min(0.25, 0.05 + Math.abs(status.amount) * 0.02);
+            spellChoices.push({ score, key: `spell:${sp.spellId}:${tid}:${status.sourceId}`,
+              payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: tid, statusSourceId: status.sourceId } });
+          }
+        }
+      } else if (e.type === 'restore_shots' || e.type === 'retaliation_restore') {
+        for (const tid of sp.targets) {
+          const t = battle.stacks[tid]!;
+          // Save ammunition recovery for a nearly empty quiver; retaliation matters only in contact.
+          const relevant = e.type === 'restore_shots' ? t.shotsRemaining <= 1 : adjacentEnemies(catalog, battle, t).length > 0;
+          if (!relevant) continue;
+          const score = stackValue(catalog, t.creatureId) * aliveCount(catalog, t) * (e.type === 'restore_shots' ? 0.2 : 0.08);
+          spellChoices.push({ score, key: `spell:${sp.spellId}:${tid}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: tid } });
+        }
+      } else if (e.type === 'enemy_mana_drain') {
+        // Legal options already guarantee a living enemy hero and unused side quota.
+        const tid = sp.targets[0];
+        if (tid) spellChoices.push({ score: Math.min(e.cap, e.base + Math.floor(power / e.powerDivisor)) * 20,
+          key: `spell:${sp.spellId}:${tid}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: tid } });
       } else if (def.target === 'enemy_stack') {
         // Debuffs (negative Attack, Defense or Speed) on the most valuable fresh enemy.
         for (const tid of sp.targets) {
@@ -263,9 +460,12 @@ export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): 
   // 5. Advance toward the nearest enemy (shooters hold position if they could shoot later).
   if (actions.moves.length > 0 && !(actions.shootTargets.length > 0)) {
     const moveChoices: Scored[] = [];
-    // In a siege, measure ground distance around intact walls (flyers go straight over).
-    let field = battle.siege && battle.siege.level > 0 && !hasFlight(catalog, stack.creatureId) ? groundDistanceField(catalog, battle, stack, enemies) : null;
-    if (field && !stackCells(catalog, stack).some((c) => field!.has(cellKey(c)))) {
+    // In a siege, measure ground distance around intact walls; on a masked board (boarding) around the
+    // water, over the bridge (flyers go straight over).
+    // Swimmers measure straight across the open water (their zone has no walls); walkers around them.
+    const cls = movementClassOf(catalog, stack.creatureId);
+    let field = ((battle.siege && battle.siege.level > 0) || battle.board) && cls === 'ground' ? groundDistanceField(catalog, battle, stack, enemies) : null;
+    if (field && battle.siege && !stackCells(catalog, stack).some((c) => field!.has(cellKey(c)))) {
       // No road in yet: wait by the gate (outside the moat) for the Catapult to open a breach.
       field = gateApproachField(battle);
     }
@@ -302,10 +502,13 @@ export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): 
     const mv = best(moveChoices);
     // Hold only while no enemy shooter can hit this stack where it stands.
     const underFire = enemies.some((e) => isShooter(catalog, e.creatureId) && e.shotsRemaining > 0 && inShootingRange(catalog, e, stack, battle));
-    if (mv && range > 0 && moveChoices[0]!.score < IN_RANGE_MOVE - 50 && melee.length > 0 && !field && !underFire) return { kind: 'BattleDefend', stackId: stack.id };
+    // (Never at sea: the deck's walkers cannot come into the water, so a sea shooter always closes the range.)
+    if (mv && range > 0 && moveChoices[0]!.score < IN_RANGE_MOVE - 50 && melee.length > 0 && !field && !underFire && !battle.board?.sea) return { kind: 'BattleDefend', stackId: stack.id };
     if (mv) return mv;
   }
   if (attack) return attack;
+  // A sea shooter boxed in with no target in range waits for the way to clear (it acts again later this round).
+  if (battle.board?.sea && actions.canWait && isShooter(catalog, stack.creatureId) && stack.shotsRemaining > 0 && actions.shootTargets.length === 0 && actions.moves.length === 0) return { kind: 'BattleWait', stackId: stack.id };
   return { kind: 'BattleDefend', stackId: stack.id };
 }
 
@@ -330,6 +533,8 @@ function gateApproachField(battle: BattleState): Map<string, number> {
 
 /** BFS hex distance from enemy-adjacent cells over cells not blocked by intact structures (units ignored). */
 function groundDistanceField(catalog: ContentCatalog, battle: BattleState, stack: BattleStackState, enemies: readonly BattleStackState[]): Map<string, number> {
+  // The board's zones for this mover (a sea encounter's deck for walkers).
+  const cls = movementClassOf(catalog, stack.creatureId);
   const blocked = new Set<string>();
   for (const s of battle.siege?.structures ?? []) {
     if (s.hp <= 0 || (s.kind === 'gate' && stack.side === 'defender')) continue;
@@ -352,7 +557,7 @@ function groundDistanceField(catalog: ContentCatalog, battle: BattleState, stack
     for (const cur of frontier) {
       for (const n of cellNeighbors(cur, battle.cols, battle.rows)) {
         const k = cellKey(n);
-        if (dist.has(k) || blocked.has(k)) continue;
+        if (dist.has(k) || blocked.has(k) || !cellLegalFor(battle, n, cls)) continue;
         dist.set(k, d);
         next.push(n);
       }
@@ -400,6 +605,20 @@ function interventionChoice(catalog: ContentCatalog, state: MatchState, battle: 
     } else if (e.type === 'battle_status') {
       const v = mine * 0.02 * e.amount * e.durationRounds;
       if (mine >= 5000 && v >= 500 && quoteIntervention(catalog, state, playerId, d.id).legal) options.push({ score: v, key: `miracle:${d.id}`, payload: { kind: 'BattleInvokeIntervention', interventionId: d.id } });
+    } else if (e.type === 'library_battle_status') {
+      for (const t of sideStacks(battle, stack.side)) {
+        if (!quoteIntervention(catalog, state, playerId, d.id, { stackId: t.id }).legal) continue;
+        if (e.status === 'retaliation_bonus' && !canRetaliate(catalog, t)) continue;
+        const value = stackValue(catalog, t.creatureId) * aliveCount(catalog, t);
+        const score = value * (e.status === 'last_creature_guard' ? 0.18 : 0.12);
+        if (score >= 500) options.push({ score, key: `miracle:${d.id}:${t.id}`, payload: { kind: 'BattleInvokeIntervention', interventionId: d.id, targetId: t.id } });
+      }
+    } else if (e.type === 'library_engine_repair') {
+      const engine = battle.siege?.engine;
+      if (engine && engine.hp < engine.maxHp && quoteIntervention(catalog, state, playerId, d.id).legal) options.push({ score: 700, key: `miracle:${d.id}`, payload: { kind: 'BattleInvokeIntervention', interventionId: d.id } });
+    } else if (e.type === 'library_spell_credit') {
+      const hero = side.commander?.heroId ? state.heroes[side.commander.heroId] : undefined;
+      if (hero && hero.mana < 10 && side.commander?.knownSpellIds.length && quoteIntervention(catalog, state, playerId, d.id).legal) options.push({ score: 550, key: `miracle:${d.id}`, payload: { kind: 'BattleInvokeIntervention', interventionId: d.id } });
     }
   }
   return best(options);

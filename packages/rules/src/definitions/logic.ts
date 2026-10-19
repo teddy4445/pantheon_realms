@@ -47,7 +47,51 @@ export type RequirementDefinition =
  * Effects are passive modifiers or grants attached to a source definition.
  * Economic effects apply at the documented dawn step; access effects apply immediately.
  */
-export type EffectDefinition =
+export type LibraryPassiveEffect =
+  | { readonly type: 'library_army_barrier'; readonly base: number; readonly perLevel: number; readonly cap: number }
+  | { readonly type: 'library_first_flight_move'; readonly amount: number }
+  | { readonly type: 'library_undead_mark'; readonly percent: number }
+  | { readonly type: 'library_living_recovery'; readonly percent: number }
+  | { readonly type: 'library_cleanse_speed'; readonly amount: number }
+  | { readonly type: 'library_received_heal'; readonly element: import('./pantheons').SpellElement; readonly percent: number; readonly cap: number }
+  | { readonly type: 'library_active'; readonly action: 'bind' | 'cleanse_defense' | 'dispel' }
+  | { readonly type: 'library_first_mind_guard' }
+  | { readonly type: 'library_first_morale_guard' }
+  | { readonly type: 'library_first_ranged_resist'; readonly percent: number }
+  | { readonly type: 'library_elemental_resist'; readonly element: import('./pantheons').SpellElement; readonly percent: number }
+  | { readonly type: 'library_first_spell_resist'; readonly percent: number; readonly cap: number }
+  | { readonly type: 'library_direct_element_amplify'; readonly element: import('./pantheons').SpellElement; readonly percent: number; readonly cap: number }
+  | { readonly type: 'library_displacement_guard' }
+  | { readonly type: 'library_spell_discount'; readonly amount: number; readonly casts: number }
+  | { readonly type: 'library_mana_refund'; readonly trigger: 'spent' | 'low'; readonly threshold: number; readonly amount: number }
+  | { readonly type: 'library_first_shot_range' }
+  | { readonly type: 'library_large_target_damage'; readonly percent: number }
+  | { readonly type: 'library_first_retaliation'; readonly percent: number }
+  | { readonly type: 'library_wounded_defense'; readonly belowPercent: number; readonly defense: number }
+  | { readonly type: 'library_front_heal'; readonly amount: number; readonly rounds: number }
+  | { readonly type: 'library_heal_amplification'; readonly percent: number; readonly cap: number };
+
+/** Bounded discounts use logical terrain tags and hero-owned daily ledgers. */
+export interface AdventureStepDiscount {
+  readonly key: string;
+  readonly terrain: 'rough' | 'desert' | 'marsh_desert' | 'forest_marsh' | 'forest' | 'road' | 'sea';
+  readonly mode: 'surcharge' | 'percent';
+  readonly percent: number;
+  readonly steps?: number;
+  readonly cap?: number;
+  readonly trigger?: 'landing' | 'town_exit';
+}
+export type EffectDefinition = LibraryPassiveEffect
+  | { readonly type: 'adventure_site_survey'; readonly radius: number }
+  | { readonly type: 'adventure_coast_survey'; readonly radius: number }
+  | { readonly type: 'adventure_seed_growth'; readonly amount: number }
+  | ({ readonly type: 'adventure_step_discount' } & AdventureStepDiscount)
+  | { readonly type: 'adventure_embark_discount' }
+  | { readonly type: 'adventure_sailing_discount'; readonly percent: number }
+  | { readonly type: 'adventure_rested_mana'; readonly amount: number }
+  | { readonly type: 'adventure_cast_discount'; readonly amount: number; readonly casts: number }
+  | { readonly type: 'adventure_learning_mana'; readonly amount: number }
+  | { readonly type: 'adventure_recruit_discount'; readonly percent: number; readonly cap: number; readonly maxTier: number }
   /** Daily income paid at dawn step 2. Only the highest level of a location chain applies. */
   | { readonly type: 'daily_income'; readonly resource: ResourceKey; readonly amount: number }
   /** Weekly growth multiplier for the town (fortification chain), as a rational. */
@@ -142,4 +186,4 @@ export interface RewardDefinition {
  * weekly events) appears only in scenarios that enable it, so authored scenarios
  * such as The Three Beacons keep their documented content.
  */
-export type ContentScope = 'core' | 'expanded';
+export type ContentScope = 'core' | 'expanded' | 'mythic_library_v2';

@@ -1,0 +1,2451 @@
+{
+  "schema": "pantheon-city-dedication-design-1",
+  "sourceVersion": "1.4.0",
+  "status": "Implementation-ready design proposal; numbers unplaytested",
+  "profiles": [
+    {
+      "godId": "zeus",
+      "name": "Zeus",
+      "pantheonId": "greek",
+      "role": "patron",
+      "choiceGroup": "patron",
+      "domain": "Lightning & Power",
+      "weeklyResource": {
+        "crystal": 1
+      },
+      "favoredFamilyId": "cyclops",
+      "familyName": "Cyclopes",
+      "tier": 7,
+      "baseCreatureId": "cyclops",
+      "upgradedCreatureId": "stormforged_cyclops",
+      "weeklyGrowthQuarters": 1,
+      "growthLabel": "+1 every 4 eligible weeks",
+      "serviceId": "fortify",
+      "service": {
+        "name": "Fortification construction",
+        "kind": "construction_gold_discount",
+        "percent": 10,
+        "targetRole": "fortifications",
+        "summary": "10% less Gold to build or upgrade this city’s Fort, Citadel and Castle; material costs and one build per day stay unchanged."
+      },
+      "portraitAssetId": "god.greek.zeus.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.greek.zeus.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.greek.tier7.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.greek.tier7.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "legacyBenefits": []
+    },
+    {
+      "godId": "athena",
+      "name": "Athena",
+      "pantheonId": "greek",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Knowledge & Strategy",
+      "weeklyResource": {
+        "stone": 3
+      },
+      "favoredFamilyId": "hoplite",
+      "familyName": "Hoplites",
+      "tier": 1,
+      "baseCreatureId": "hoplite",
+      "upgradedCreatureId": "veteran_hoplite",
+      "weeklyGrowthQuarters": 8,
+      "growthLabel": "+2 each week",
+      "serviceId": "training",
+      "service": {
+        "name": "Hero training",
+        "kind": "gold_discount",
+        "percent": 20,
+        "requiredRole": "training_academy",
+        "summary": "20% less Gold for weekly hero training; XP and the once-per-hero-per-week limit stay unchanged."
+      },
+      "portraitAssetId": "god.greek.athena.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.greek.athena.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.greek.tier1.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.greek.tier1.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.stone.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "defense",
+          "amount": 1
+        },
+        {
+          "type": "spell_eligibility",
+          "spellId": "ward"
+        }
+      ]
+    },
+    {
+      "godId": "ares",
+      "name": "Ares",
+      "pantheonId": "greek",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "War & Conquest",
+      "weeklyResource": {
+        "gold": 300
+      },
+      "favoredFamilyId": "peltast",
+      "familyName": "Peltasts",
+      "tier": 2,
+      "baseCreatureId": "peltast",
+      "upgradedCreatureId": "veteran_peltast",
+      "weeklyGrowthQuarters": 8,
+      "growthLabel": "+2 each week",
+      "serviceId": "upgrade",
+      "service": {
+        "name": "Favored troop training",
+        "kind": "family_upgrade_gold_discount",
+        "percent": 15,
+        "requiredRole": "favored_upgraded_dwelling",
+        "summary": "15% less Gold on the normal per-unit upgrade price difference for the favored family in this city. No extra stock is consumed."
+      },
+      "portraitAssetId": "god.greek.ares.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.greek.ares.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.greek.tier2.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.greek.tier2.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.gold.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "attack",
+          "amount": 1
+        },
+        {
+          "type": "spell_eligibility",
+          "spellId": "warcry"
+        }
+      ]
+    },
+    {
+      "godId": "apollo",
+      "name": "Apollo",
+      "pantheonId": "greek",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Sun & Inspiration",
+      "weeklyResource": {
+        "crystal": 1
+      },
+      "favoredFamilyId": "temple_adept",
+      "familyName": "Temple Adepts",
+      "tier": 5,
+      "baseCreatureId": "temple_adept",
+      "upgradedCreatureId": "temple_seer",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "spellbook",
+      "service": {
+        "name": "Spellbook purchase",
+        "kind": "gold_discount",
+        "percent": 25,
+        "requiredRole": "mage_guild",
+        "requiredEffect": "enables_spellbook_purchase",
+        "summary": "25% less Gold for a visiting hero’s spellbook. Learning eligible spells remains free, as in the current game."
+      },
+      "portraitAssetId": "god.greek.apollo.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.greek.apollo.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.greek.tier5.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.greek.tier5.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "power",
+          "amount": 1
+        },
+        {
+          "type": "morale",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "godId": "artemis",
+      "name": "Artemis",
+      "pantheonId": "greek",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Hunt & Wilderness",
+      "weeklyResource": {
+        "wood": 3
+      },
+      "favoredFamilyId": "griffin",
+      "familyName": "Griffins",
+      "tier": 3,
+      "baseCreatureId": "griffin",
+      "upgradedCreatureId": "windcrest_griffin",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "watch",
+      "service": {
+        "name": "Watchtower vision",
+        "kind": "town_vision_bonus",
+        "amount": 2,
+        "requiredRole": "watchtower",
+        "summary": "+2 hexes to this city’s existing vision radius while its Watchtower is built; no hero vision bonus and no fog-map reveal on dedication."
+      },
+      "portraitAssetId": "god.greek.artemis.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.greek.artemis.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.greek.tier3.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.greek.tier3.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.wood.png",
+      "legacyBenefits": [
+        {
+          "type": "creature_stat",
+          "stat": "attack",
+          "amount": 2,
+          "ability": "shooter"
+        },
+        {
+          "type": "vision_radius",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "godId": "hermes",
+      "name": "Hermes",
+      "pantheonId": "greek",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Trade & Movement",
+      "weeklyResource": {
+        "gold": 600
+      },
+      "favoredFamilyId": "cavalry",
+      "familyName": "Cavalry",
+      "tier": 4,
+      "baseCreatureId": "cavalry",
+      "upgradedCreatureId": "companion_cavalry",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "trade",
+      "service": {
+        "name": "Market purchases",
+        "kind": "market_buy_discount",
+        "percent": 10,
+        "requiredRole": "marketplace",
+        "summary": "10% less Gold when buying Wood, Stone or Crystal at this city; selling prices stay unchanged."
+      },
+      "portraitAssetId": "god.greek.hermes.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.greek.hermes.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.greek.tier4.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.greek.tier4.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.gold.png",
+      "legacyBenefits": [
+        {
+          "type": "movement_percent",
+          "percent": 15
+        },
+        {
+          "type": "daily_income",
+          "resource": "gold",
+          "amount": 250
+        }
+      ]
+    },
+    {
+      "godId": "demeter",
+      "name": "Demeter",
+      "pantheonId": "greek",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Harvest & Abundance",
+      "weeklyResource": {
+        "wood": 4
+      },
+      "favoredFamilyId": "hoplite",
+      "familyName": "Hoplites",
+      "tier": 1,
+      "baseCreatureId": "hoplite",
+      "upgradedCreatureId": "veteran_hoplite",
+      "weeklyGrowthQuarters": 8,
+      "growthLabel": "+2 each week",
+      "serviceId": "recruit",
+      "service": {
+        "name": "Favored recruitment",
+        "kind": "family_recruit_gold_discount",
+        "percent": 5,
+        "requiredRole": "favored_dwelling",
+        "summary": "5% less Gold per recruited member of the favored family, both unlocked forms. Other resources, population and access checks stay unchanged."
+      },
+      "portraitAssetId": "god.greek.demeter.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.greek.demeter.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.greek.tier1.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.greek.tier1.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.wood.png",
+      "legacyBenefits": [
+        {
+          "type": "weekly_growth_bonus",
+          "amount": 2,
+          "maxTier": 3
+        }
+      ]
+    },
+    {
+      "godId": "hades",
+      "name": "Hades",
+      "pantheonId": "greek",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Underworld & Control",
+      "weeklyResource": {
+        "stone": 3
+      },
+      "favoredFamilyId": "minotaur",
+      "familyName": "Minotaurs",
+      "tier": 6,
+      "baseCreatureId": "minotaur",
+      "upgradedCreatureId": "labyrinth_warden",
+      "weeklyGrowthQuarters": 2,
+      "growthLabel": "+1 every 2 eligible weeks",
+      "serviceId": "upgrade",
+      "service": {
+        "name": "Favored troop training",
+        "kind": "family_upgrade_gold_discount",
+        "percent": 15,
+        "requiredRole": "favored_upgraded_dwelling",
+        "summary": "15% less Gold on the normal per-unit upgrade price difference for the favored family in this city. No extra stock is consumed."
+      },
+      "portraitAssetId": "god.greek.hades.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.greek.hades.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.greek.tier6.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.greek.tier6.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.stone.png",
+      "legacyBenefits": [
+        {
+          "type": "casualty_recovery",
+          "percent": 15
+        }
+      ]
+    },
+    {
+      "godId": "poseidon",
+      "name": "Poseidon",
+      "pantheonId": "greek",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Sea & Dominion",
+      "weeklyResource": {
+        "wood": 3
+      },
+      "favoredFamilyId": "cavalry",
+      "familyName": "Cavalry",
+      "tier": 4,
+      "baseCreatureId": "cavalry",
+      "upgradedCreatureId": "companion_cavalry",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "dwelling",
+      "service": {
+        "name": "Favored dwelling construction",
+        "kind": "family_dwelling_gold_discount",
+        "percent": 10,
+        "targetRole": "favored_dwelling",
+        "summary": "10% less Gold to build or upgrade the favored family’s dwelling in this city. No new creature access or covenant is granted."
+      },
+      "portraitAssetId": "god.greek.poseidon.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.greek.poseidon.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.greek.tier4.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.greek.tier4.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.wood.png",
+      "legacyBenefits": [
+        {
+          "type": "movement_percent",
+          "percent": 10
+        },
+        {
+          "type": "creature_stat",
+          "stat": "attack",
+          "amount": 1,
+          "minTier": 4
+        }
+      ]
+    },
+    {
+      "godId": "hera",
+      "name": "Hera",
+      "pantheonId": "greek",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Authority & Family",
+      "weeklyResource": {
+        "gold": 400
+      },
+      "favoredFamilyId": "griffin",
+      "familyName": "Griffins",
+      "tier": 3,
+      "baseCreatureId": "griffin",
+      "upgradedCreatureId": "windcrest_griffin",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "civic",
+      "service": {
+        "name": "Civic construction",
+        "kind": "construction_gold_discount",
+        "percent": 10,
+        "targetRole": "civic_hall",
+        "summary": "10% less Gold on this city’s civic-hall upgrades; level prerequisites and construction limits stay unchanged."
+      },
+      "portraitAssetId": "god.greek.hera.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.greek.hera.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.greek.tier3.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.greek.tier3.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.gold.png",
+      "legacyBenefits": [
+        {
+          "type": "weekly_growth_bonus",
+          "amount": 1,
+          "maxTier": 4
+        },
+        {
+          "type": "morale",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "godId": "norse_odin",
+      "name": "Odin",
+      "pantheonId": "norse",
+      "role": "patron",
+      "choiceGroup": "patron",
+      "domain": "Wisdom & Knowledge",
+      "weeklyResource": {
+        "crystal": 1
+      },
+      "favoredFamilyId": "norse_lindworm",
+      "familyName": "Lindworms",
+      "tier": 5,
+      "baseCreatureId": "norse_lindworm",
+      "upgradedCreatureId": "norse_storm_lindworm",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "spellbook",
+      "service": {
+        "name": "Spellbook purchase",
+        "kind": "gold_discount",
+        "percent": 25,
+        "requiredRole": "mage_guild",
+        "requiredEffect": "enables_spellbook_purchase",
+        "summary": "25% less Gold for a visiting hero’s spellbook. Learning eligible spells remains free, as in the current game."
+      },
+      "portraitAssetId": "god.norse.odin.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.norse.odin.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.norse.tier5.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.norse.tier5.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "legacyBenefits": []
+    },
+    {
+      "godId": "norse_thor",
+      "name": "Thor",
+      "pantheonId": "norse",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Strength & Storms",
+      "weeklyResource": {
+        "stone": 3
+      },
+      "favoredFamilyId": "norse_jotunn",
+      "familyName": "Jotnar",
+      "tier": 6,
+      "baseCreatureId": "norse_jotunn",
+      "upgradedCreatureId": "norse_runic_jotunn",
+      "weeklyGrowthQuarters": 2,
+      "growthLabel": "+1 every 2 eligible weeks",
+      "serviceId": "fortify",
+      "service": {
+        "name": "Fortification construction",
+        "kind": "construction_gold_discount",
+        "percent": 10,
+        "targetRole": "fortifications",
+        "summary": "10% less Gold to build or upgrade this city’s Fort, Citadel and Castle; material costs and one build per day stay unchanged."
+      },
+      "portraitAssetId": "god.norse.thor.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.norse.thor.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.norse.tier6.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.norse.tier6.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.stone.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "attack",
+          "amount": 1
+        },
+        {
+          "type": "spell_eligibility",
+          "spellId": "warcry"
+        }
+      ]
+    },
+    {
+      "godId": "norse_tyr",
+      "name": "Tyr",
+      "pantheonId": "norse",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Law & Honor",
+      "weeklyResource": {
+        "stone": 3
+      },
+      "favoredFamilyId": "norse_draugr",
+      "familyName": "Draugar",
+      "tier": 1,
+      "baseCreatureId": "norse_draugr",
+      "upgradedCreatureId": "norse_deathless_draugr",
+      "weeklyGrowthQuarters": 8,
+      "growthLabel": "+2 each week",
+      "serviceId": "training",
+      "service": {
+        "name": "Hero training",
+        "kind": "gold_discount",
+        "percent": 20,
+        "requiredRole": "training_academy",
+        "summary": "20% less Gold for weekly hero training; XP and the once-per-hero-per-week limit stay unchanged."
+      },
+      "portraitAssetId": "god.norse.tyr.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.norse.tyr.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.norse.tier1.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.norse.tier1.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.stone.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "defense",
+          "amount": 1
+        },
+        {
+          "type": "spell_eligibility",
+          "spellId": "ward"
+        }
+      ]
+    },
+    {
+      "godId": "norse_frigg",
+      "name": "Frigg",
+      "pantheonId": "norse",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Foresight & Protection",
+      "weeklyResource": {
+        "crystal": 1
+      },
+      "favoredFamilyId": "norse_valkyrie",
+      "familyName": "Valkyries",
+      "tier": 4,
+      "baseCreatureId": "norse_valkyrie",
+      "upgradedCreatureId": "norse_battle_valkyrie",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "watch",
+      "service": {
+        "name": "Watchtower vision",
+        "kind": "town_vision_bonus",
+        "amount": 2,
+        "requiredRole": "watchtower",
+        "summary": "+2 hexes to this city’s existing vision radius while its Watchtower is built; no hero vision bonus and no fog-map reveal on dedication."
+      },
+      "portraitAssetId": "god.norse.frigg.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.norse.frigg.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.norse.tier4.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.norse.tier4.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "knowledge",
+          "amount": 1
+        },
+        {
+          "type": "vision_radius",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "godId": "norse_baldr",
+      "name": "Baldr",
+      "pantheonId": "norse",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Light & Purity",
+      "weeklyResource": {
+        "gold": 300
+      },
+      "favoredFamilyId": "norse_valkyrie",
+      "familyName": "Valkyries",
+      "tier": 4,
+      "baseCreatureId": "norse_valkyrie",
+      "upgradedCreatureId": "norse_battle_valkyrie",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "library",
+      "service": {
+        "name": "Library construction",
+        "kind": "construction_gold_discount",
+        "percent": 10,
+        "targetRole": "mage_guild",
+        "summary": "10% less Gold to build or upgrade this city’s spell library; material costs and spell prerequisites stay unchanged."
+      },
+      "portraitAssetId": "god.norse.baldr.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.norse.baldr.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.norse.tier4.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.norse.tier4.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.gold.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "power",
+          "amount": 1
+        },
+        {
+          "type": "mana_regen",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "godId": "norse_freyja",
+      "name": "Freyja",
+      "pantheonId": "norse",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Love & Fertility",
+      "weeklyResource": {
+        "wood": 4
+      },
+      "favoredFamilyId": "norse_valkyrie",
+      "familyName": "Valkyries",
+      "tier": 4,
+      "baseCreatureId": "norse_valkyrie",
+      "upgradedCreatureId": "norse_battle_valkyrie",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "recruit",
+      "service": {
+        "name": "Favored recruitment",
+        "kind": "family_recruit_gold_discount",
+        "percent": 5,
+        "requiredRole": "favored_dwelling",
+        "summary": "5% less Gold per recruited member of the favored family, both unlocked forms. Other resources, population and access checks stay unchanged."
+      },
+      "portraitAssetId": "god.norse.freyja.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.norse.freyja.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.norse.tier4.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.norse.tier4.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.wood.png",
+      "legacyBenefits": [
+        {
+          "type": "weekly_growth_bonus",
+          "amount": 1,
+          "maxTier": 5
+        }
+      ]
+    },
+    {
+      "godId": "norse_heimdall",
+      "name": "Heimdall",
+      "pantheonId": "norse",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Vigilance & Alertness",
+      "weeklyResource": {
+        "stone": 3
+      },
+      "favoredFamilyId": "norse_draugr",
+      "familyName": "Draugar",
+      "tier": 1,
+      "baseCreatureId": "norse_draugr",
+      "upgradedCreatureId": "norse_deathless_draugr",
+      "weeklyGrowthQuarters": 8,
+      "growthLabel": "+2 each week",
+      "serviceId": "watch",
+      "service": {
+        "name": "Watchtower vision",
+        "kind": "town_vision_bonus",
+        "amount": 2,
+        "requiredRole": "watchtower",
+        "summary": "+2 hexes to this city’s existing vision radius while its Watchtower is built; no hero vision bonus and no fog-map reveal on dedication."
+      },
+      "portraitAssetId": "god.norse.heimdall.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.norse.heimdall.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.norse.tier1.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.norse.tier1.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.stone.png",
+      "legacyBenefits": [
+        {
+          "type": "vision_radius",
+          "amount": 2
+        },
+        {
+          "type": "creature_stat",
+          "stat": "defense",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "godId": "norse_hel",
+      "name": "Hel",
+      "pantheonId": "norse",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Death & Transition",
+      "weeklyResource": {
+        "crystal": 1
+      },
+      "favoredFamilyId": "norse_draugr",
+      "familyName": "Draugar",
+      "tier": 1,
+      "baseCreatureId": "norse_draugr",
+      "upgradedCreatureId": "norse_deathless_draugr",
+      "weeklyGrowthQuarters": 8,
+      "growthLabel": "+2 each week",
+      "serviceId": "upgrade",
+      "service": {
+        "name": "Favored troop training",
+        "kind": "family_upgrade_gold_discount",
+        "percent": 15,
+        "requiredRole": "favored_upgraded_dwelling",
+        "summary": "15% less Gold on the normal per-unit upgrade price difference for the favored family in this city. No extra stock is consumed."
+      },
+      "portraitAssetId": "god.norse.hel.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.norse.hel.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.norse.tier1.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.norse.tier1.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "legacyBenefits": [
+        {
+          "type": "casualty_recovery",
+          "percent": 15
+        }
+      ]
+    },
+    {
+      "godId": "norse_loki",
+      "name": "Loki",
+      "pantheonId": "norse",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Trickery & Change",
+      "weeklyResource": {
+        "gold": 400
+      },
+      "favoredFamilyId": "norse_lindworm",
+      "familyName": "Lindworms",
+      "tier": 5,
+      "baseCreatureId": "norse_lindworm",
+      "upgradedCreatureId": "norse_storm_lindworm",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "equipment",
+      "service": {
+        "name": "Artifact purchases",
+        "kind": "shop_gold_discount",
+        "percent": 10,
+        "requiredRolesAny": [
+          "artifact_merchant",
+          "workshop"
+        ],
+        "summary": "10% less Gold for purchases from this city’s Artifact Merchant or Workshop. Stocks, rarities and other resource costs stay unchanged."
+      },
+      "portraitAssetId": "god.norse.loki.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.norse.loki.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.norse.tier5.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.norse.tier5.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.gold.png",
+      "legacyBenefits": [
+        {
+          "type": "luck",
+          "amount": 2
+        },
+        {
+          "type": "movement_percent",
+          "percent": 10
+        }
+      ]
+    },
+    {
+      "godId": "norse_njord",
+      "name": "Njord",
+      "pantheonId": "norse",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Sea & Prosperity",
+      "weeklyResource": {
+        "wood": 4
+      },
+      "favoredFamilyId": "norse_frost_troll",
+      "familyName": "Frost Trolls",
+      "tier": 3,
+      "baseCreatureId": "norse_frost_troll",
+      "upgradedCreatureId": "norse_ancient_frost_troll",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "trade",
+      "service": {
+        "name": "Market purchases",
+        "kind": "market_buy_discount",
+        "percent": 10,
+        "requiredRole": "marketplace",
+        "summary": "10% less Gold when buying Wood, Stone or Crystal at this city; selling prices stay unchanged."
+      },
+      "portraitAssetId": "god.norse.njord.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.norse.njord.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.norse.tier3.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.norse.tier3.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.wood.png",
+      "legacyBenefits": [
+        {
+          "type": "daily_income",
+          "resource": "gold",
+          "amount": 200
+        },
+        {
+          "type": "daily_income",
+          "resource": "crystal",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "godId": "egyptian_ra",
+      "name": "Ra",
+      "pantheonId": "egyptian",
+      "role": "patron",
+      "choiceGroup": "patron",
+      "domain": "Sun & Vitality",
+      "weeklyResource": {
+        "gold": 400
+      },
+      "favoredFamilyId": "egyptian_sacred_scarab",
+      "familyName": "Sacred Scarabs",
+      "tier": 1,
+      "baseCreatureId": "egyptian_sacred_scarab",
+      "upgradedCreatureId": "egyptian_solar_scarab",
+      "weeklyGrowthQuarters": 8,
+      "growthLabel": "+2 each week",
+      "serviceId": "civic",
+      "service": {
+        "name": "Civic construction",
+        "kind": "construction_gold_discount",
+        "percent": 10,
+        "targetRole": "civic_hall",
+        "summary": "10% less Gold on this city’s civic-hall upgrades; level prerequisites and construction limits stay unchanged."
+      },
+      "portraitAssetId": "god.egyptian.ra.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.egyptian.ra.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier1.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier1.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.gold.png",
+      "legacyBenefits": []
+    },
+    {
+      "godId": "egyptian_set",
+      "name": "Set",
+      "pantheonId": "egyptian",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Chaos & Strength",
+      "weeklyResource": {
+        "stone": 3
+      },
+      "favoredFamilyId": "egyptian_desert_colossus",
+      "familyName": "Desert Colossi",
+      "tier": 7,
+      "baseCreatureId": "egyptian_desert_colossus",
+      "upgradedCreatureId": "egyptian_divine_colossus",
+      "weeklyGrowthQuarters": 1,
+      "growthLabel": "+1 every 4 eligible weeks",
+      "serviceId": "fortify",
+      "service": {
+        "name": "Fortification construction",
+        "kind": "construction_gold_discount",
+        "percent": 10,
+        "targetRole": "fortifications",
+        "summary": "10% less Gold to build or upgrade this city’s Fort, Citadel and Castle; material costs and one build per day stay unchanged."
+      },
+      "portraitAssetId": "god.egyptian.set.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.egyptian.set.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier7.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier7.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.stone.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "attack",
+          "amount": 1
+        },
+        {
+          "type": "spell_eligibility",
+          "spellId": "warcry"
+        }
+      ]
+    },
+    {
+      "godId": "egyptian_isis",
+      "name": "Isis",
+      "pantheonId": "egyptian",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Magic & Healing",
+      "weeklyResource": {
+        "crystal": 1
+      },
+      "favoredFamilyId": "egyptian_bennu",
+      "familyName": "Bennu",
+      "tier": 6,
+      "baseCreatureId": "egyptian_bennu",
+      "upgradedCreatureId": "egyptian_radiant_bennu",
+      "weeklyGrowthQuarters": 2,
+      "growthLabel": "+1 every 2 eligible weeks",
+      "serviceId": "library",
+      "service": {
+        "name": "Library construction",
+        "kind": "construction_gold_discount",
+        "percent": 10,
+        "targetRole": "mage_guild",
+        "summary": "10% less Gold to build or upgrade this city’s spell library; material costs and spell prerequisites stay unchanged."
+      },
+      "portraitAssetId": "god.egyptian.isis.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.egyptian.isis.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier6.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier6.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "defense",
+          "amount": 1
+        },
+        {
+          "type": "spell_eligibility",
+          "spellId": "ward"
+        }
+      ]
+    },
+    {
+      "godId": "egyptian_anubis",
+      "name": "Anubis",
+      "pantheonId": "egyptian",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Funerary Protection",
+      "weeklyResource": {
+        "crystal": 1
+      },
+      "favoredFamilyId": "egyptian_jackal_guardian",
+      "familyName": "Jackal Guardians",
+      "tier": 2,
+      "baseCreatureId": "egyptian_jackal_guardian",
+      "upgradedCreatureId": "egyptian_anubian_warden",
+      "weeklyGrowthQuarters": 8,
+      "growthLabel": "+2 each week",
+      "serviceId": "upgrade",
+      "service": {
+        "name": "Favored troop training",
+        "kind": "family_upgrade_gold_discount",
+        "percent": 15,
+        "requiredRole": "favored_upgraded_dwelling",
+        "summary": "15% less Gold on the normal per-unit upgrade price difference for the favored family in this city. No extra stock is consumed."
+      },
+      "portraitAssetId": "god.egyptian.anubis.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.egyptian.anubis.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier2.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier2.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "knowledge",
+          "amount": 1
+        },
+        {
+          "type": "casualty_recovery",
+          "percent": 10
+        }
+      ]
+    },
+    {
+      "godId": "egyptian_bastet",
+      "name": "Bastet",
+      "pantheonId": "egyptian",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Grace & Protection",
+      "weeklyResource": {
+        "gold": 300
+      },
+      "favoredFamilyId": "egyptian_sphinx",
+      "familyName": "Sphinxes",
+      "tier": 4,
+      "baseCreatureId": "egyptian_sphinx",
+      "upgradedCreatureId": "egyptian_great_sphinx",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "watch",
+      "service": {
+        "name": "Watchtower vision",
+        "kind": "town_vision_bonus",
+        "amount": 2,
+        "requiredRole": "watchtower",
+        "summary": "+2 hexes to this city’s existing vision radius while its Watchtower is built; no hero vision bonus and no fog-map reveal on dedication."
+      },
+      "portraitAssetId": "god.egyptian.bastet.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.egyptian.bastet.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier4.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier4.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.gold.png",
+      "legacyBenefits": [
+        {
+          "type": "luck",
+          "amount": 1
+        },
+        {
+          "type": "creature_stat",
+          "stat": "defense",
+          "amount": 1,
+          "maxTier": 3
+        }
+      ]
+    },
+    {
+      "godId": "egyptian_osiris",
+      "name": "Osiris",
+      "pantheonId": "egyptian",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Rebirth & Eternity",
+      "weeklyResource": {
+        "stone": 3
+      },
+      "favoredFamilyId": "egyptian_ushabti",
+      "familyName": "Ushabti",
+      "tier": 3,
+      "baseCreatureId": "egyptian_ushabti",
+      "upgradedCreatureId": "egyptian_royal_ushabti",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "recruit",
+      "service": {
+        "name": "Favored recruitment",
+        "kind": "family_recruit_gold_discount",
+        "percent": 5,
+        "requiredRole": "favored_dwelling",
+        "summary": "5% less Gold per recruited member of the favored family, both unlocked forms. Other resources, population and access checks stay unchanged."
+      },
+      "portraitAssetId": "god.egyptian.osiris.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.egyptian.osiris.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier3.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier3.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.stone.png",
+      "legacyBenefits": [
+        {
+          "type": "casualty_recovery",
+          "percent": 15
+        }
+      ]
+    },
+    {
+      "godId": "egyptian_thoth",
+      "name": "Thoth",
+      "pantheonId": "egyptian",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Knowledge & Wisdom",
+      "weeklyResource": {
+        "crystal": 2
+      },
+      "favoredFamilyId": "egyptian_sphinx",
+      "familyName": "Sphinxes",
+      "tier": 4,
+      "baseCreatureId": "egyptian_sphinx",
+      "upgradedCreatureId": "egyptian_great_sphinx",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "spellbook",
+      "service": {
+        "name": "Spellbook purchase",
+        "kind": "gold_discount",
+        "percent": 25,
+        "requiredRole": "mage_guild",
+        "requiredEffect": "enables_spellbook_purchase",
+        "summary": "25% less Gold for a visiting hero’s spellbook. Learning eligible spells remains free, as in the current game."
+      },
+      "portraitAssetId": "god.egyptian.thoth.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.egyptian.thoth.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier4.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier4.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "power",
+          "amount": 1
+        },
+        {
+          "type": "commander_attribute",
+          "attribute": "knowledge",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "godId": "egyptian_horus",
+      "name": "Horus",
+      "pantheonId": "egyptian",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Kingship & Dominion",
+      "weeklyResource": {
+        "wood": 3
+      },
+      "favoredFamilyId": "egyptian_bennu",
+      "familyName": "Bennu",
+      "tier": 6,
+      "baseCreatureId": "egyptian_bennu",
+      "upgradedCreatureId": "egyptian_radiant_bennu",
+      "weeklyGrowthQuarters": 2,
+      "growthLabel": "+1 every 2 eligible weeks",
+      "serviceId": "training",
+      "service": {
+        "name": "Hero training",
+        "kind": "gold_discount",
+        "percent": 20,
+        "requiredRole": "training_academy",
+        "summary": "20% less Gold for weekly hero training; XP and the once-per-hero-per-week limit stay unchanged."
+      },
+      "portraitAssetId": "god.egyptian.horus.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.egyptian.horus.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier6.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier6.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.wood.png",
+      "legacyBenefits": [
+        {
+          "type": "creature_stat",
+          "stat": "attack",
+          "amount": 1,
+          "ability": "flight"
+        },
+        {
+          "type": "creature_stat",
+          "stat": "speed",
+          "amount": 1,
+          "ability": "flight"
+        }
+      ]
+    },
+    {
+      "godId": "egyptian_hathor",
+      "name": "Hathor",
+      "pantheonId": "egyptian",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Joy & Prosperity",
+      "weeklyResource": {
+        "gold": 600
+      },
+      "favoredFamilyId": "egyptian_sacred_scarab",
+      "familyName": "Sacred Scarabs",
+      "tier": 1,
+      "baseCreatureId": "egyptian_sacred_scarab",
+      "upgradedCreatureId": "egyptian_solar_scarab",
+      "weeklyGrowthQuarters": 8,
+      "growthLabel": "+2 each week",
+      "serviceId": "trade",
+      "service": {
+        "name": "Market purchases",
+        "kind": "market_buy_discount",
+        "percent": 10,
+        "requiredRole": "marketplace",
+        "summary": "10% less Gold when buying Wood, Stone or Crystal at this city; selling prices stay unchanged."
+      },
+      "portraitAssetId": "god.egyptian.hathor.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.egyptian.hathor.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier1.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier1.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.gold.png",
+      "legacyBenefits": [
+        {
+          "type": "daily_income",
+          "resource": "gold",
+          "amount": 250
+        },
+        {
+          "type": "morale",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "godId": "egyptian_sobek",
+      "name": "Sobek",
+      "pantheonId": "egyptian",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "River Power & Fertility",
+      "weeklyResource": {
+        "stone": 3
+      },
+      "favoredFamilyId": "egyptian_crocodile_beast",
+      "familyName": "Crocodile Beasts",
+      "tier": 5,
+      "baseCreatureId": "egyptian_crocodile_beast",
+      "upgradedCreatureId": "egyptian_sobek_warbeast",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "dwelling",
+      "service": {
+        "name": "Favored dwelling construction",
+        "kind": "family_dwelling_gold_discount",
+        "percent": 10,
+        "targetRole": "favored_dwelling",
+        "summary": "10% less Gold to build or upgrade the favored family’s dwelling in this city. No new creature access or covenant is granted."
+      },
+      "portraitAssetId": "god.egyptian.sobek.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.egyptian.sobek.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier5.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.egyptian.tier5.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.stone.png",
+      "legacyBenefits": [
+        {
+          "type": "weekly_growth_bonus",
+          "amount": 2,
+          "maxTier": 3
+        },
+        {
+          "type": "daily_income",
+          "resource": "stone",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "godId": "japanese_amaterasu",
+      "name": "Amaterasu",
+      "pantheonId": "japanese",
+      "role": "patron",
+      "choiceGroup": "patron",
+      "domain": "Light & Prosperity",
+      "weeklyResource": {
+        "gold": 400
+      },
+      "favoredFamilyId": "japanese_kitsune",
+      "familyName": "Kitsune",
+      "tier": 1,
+      "baseCreatureId": "japanese_kitsune",
+      "upgradedCreatureId": "japanese_nine_tailed_kitsune",
+      "weeklyGrowthQuarters": 8,
+      "growthLabel": "+2 each week",
+      "serviceId": "civic",
+      "service": {
+        "name": "Civic construction",
+        "kind": "construction_gold_discount",
+        "percent": 10,
+        "targetRole": "civic_hall",
+        "summary": "10% less Gold on this city’s civic-hall upgrades; level prerequisites and construction limits stay unchanged."
+      },
+      "portraitAssetId": "god.japanese.amaterasu.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.japanese.amaterasu.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.japanese.tier1.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.japanese.tier1.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.gold.png",
+      "legacyBenefits": []
+    },
+    {
+      "godId": "japanese_hachiman",
+      "name": "Hachiman",
+      "pantheonId": "japanese",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "War & Guardianship",
+      "weeklyResource": {
+        "stone": 3
+      },
+      "favoredFamilyId": "japanese_oni",
+      "familyName": "Oni",
+      "tier": 4,
+      "baseCreatureId": "japanese_oni",
+      "upgradedCreatureId": "japanese_oni_warlord",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "training",
+      "service": {
+        "name": "Hero training",
+        "kind": "gold_discount",
+        "percent": 20,
+        "requiredRole": "training_academy",
+        "summary": "20% less Gold for weekly hero training; XP and the once-per-hero-per-week limit stay unchanged."
+      },
+      "portraitAssetId": "god.japanese.hachiman.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.japanese.hachiman.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.japanese.tier4.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.japanese.tier4.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.stone.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "attack",
+          "amount": 1
+        },
+        {
+          "type": "spell_eligibility",
+          "spellId": "warcry"
+        }
+      ]
+    },
+    {
+      "godId": "japanese_susanoo",
+      "name": "Susanoo",
+      "pantheonId": "japanese",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Storms & Protection",
+      "weeklyResource": {
+        "wood": 3
+      },
+      "favoredFamilyId": "japanese_orochi",
+      "familyName": "Orochi",
+      "tier": 7,
+      "baseCreatureId": "japanese_orochi",
+      "upgradedCreatureId": "japanese_imperial_orochi",
+      "weeklyGrowthQuarters": 1,
+      "growthLabel": "+1 every 4 eligible weeks",
+      "serviceId": "fortify",
+      "service": {
+        "name": "Fortification construction",
+        "kind": "construction_gold_discount",
+        "percent": 10,
+        "targetRole": "fortifications",
+        "summary": "10% less Gold to build or upgrade this city’s Fort, Citadel and Castle; material costs and one build per day stay unchanged."
+      },
+      "portraitAssetId": "god.japanese.susanoo.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.japanese.susanoo.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.japanese.tier7.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.japanese.tier7.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.wood.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "defense",
+          "amount": 1
+        },
+        {
+          "type": "spell_eligibility",
+          "spellId": "ward"
+        }
+      ]
+    },
+    {
+      "godId": "japanese_tsukuyomi",
+      "name": "Tsukuyomi",
+      "pantheonId": "japanese",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Night & Insight",
+      "weeklyResource": {
+        "crystal": 1
+      },
+      "favoredFamilyId": "japanese_jorogumo",
+      "familyName": "Jorogumo",
+      "tier": 5,
+      "baseCreatureId": "japanese_jorogumo",
+      "upgradedCreatureId": "japanese_queen_jorogumo",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "watch",
+      "service": {
+        "name": "Watchtower vision",
+        "kind": "town_vision_bonus",
+        "amount": 2,
+        "requiredRole": "watchtower",
+        "summary": "+2 hexes to this city’s existing vision radius while its Watchtower is built; no hero vision bonus and no fog-map reveal on dedication."
+      },
+      "portraitAssetId": "god.japanese.tsukuyomi.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.japanese.tsukuyomi.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.japanese.tier5.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.japanese.tier5.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "power",
+          "amount": 1
+        },
+        {
+          "type": "vision_radius",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "godId": "japanese_benzaiten",
+      "name": "Benzaiten",
+      "pantheonId": "japanese",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Arts & Inspiration",
+      "weeklyResource": {
+        "crystal": 1
+      },
+      "favoredFamilyId": "japanese_kirin",
+      "familyName": "Kirin",
+      "tier": 6,
+      "baseCreatureId": "japanese_kirin",
+      "upgradedCreatureId": "japanese_celestial_kirin",
+      "weeklyGrowthQuarters": 2,
+      "growthLabel": "+1 every 2 eligible weeks",
+      "serviceId": "spellbook",
+      "service": {
+        "name": "Spellbook purchase",
+        "kind": "gold_discount",
+        "percent": 25,
+        "requiredRole": "mage_guild",
+        "requiredEffect": "enables_spellbook_purchase",
+        "summary": "25% less Gold for a visiting hero’s spellbook. Learning eligible spells remains free, as in the current game."
+      },
+      "portraitAssetId": "god.japanese.benzaiten.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.japanese.benzaiten.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.japanese.tier6.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.japanese.tier6.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "knowledge",
+          "amount": 1
+        },
+        {
+          "type": "mana_regen",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "godId": "japanese_inari",
+      "name": "Inari",
+      "pantheonId": "japanese",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Prosperity & Bounty",
+      "weeklyResource": {
+        "gold": 600
+      },
+      "favoredFamilyId": "japanese_kitsune",
+      "familyName": "Kitsune",
+      "tier": 1,
+      "baseCreatureId": "japanese_kitsune",
+      "upgradedCreatureId": "japanese_nine_tailed_kitsune",
+      "weeklyGrowthQuarters": 8,
+      "growthLabel": "+2 each week",
+      "serviceId": "recruit",
+      "service": {
+        "name": "Favored recruitment",
+        "kind": "family_recruit_gold_discount",
+        "percent": 5,
+        "requiredRole": "favored_dwelling",
+        "summary": "5% less Gold per recruited member of the favored family, both unlocked forms. Other resources, population and access checks stay unchanged."
+      },
+      "portraitAssetId": "god.japanese.inari.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.japanese.inari.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.japanese.tier1.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.japanese.tier1.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.gold.png",
+      "legacyBenefits": [
+        {
+          "type": "daily_income",
+          "resource": "gold",
+          "amount": 300
+        },
+        {
+          "type": "daily_income",
+          "resource": "wood",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "godId": "japanese_fujin",
+      "name": "Fujin",
+      "pantheonId": "japanese",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Wind & Movement",
+      "weeklyResource": {
+        "wood": 3
+      },
+      "favoredFamilyId": "japanese_tengu",
+      "familyName": "Tengu",
+      "tier": 3,
+      "baseCreatureId": "japanese_tengu",
+      "upgradedCreatureId": "japanese_great_tengu",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "dwelling",
+      "service": {
+        "name": "Favored dwelling construction",
+        "kind": "family_dwelling_gold_discount",
+        "percent": 10,
+        "targetRole": "favored_dwelling",
+        "summary": "10% less Gold to build or upgrade the favored family’s dwelling in this city. No new creature access or covenant is granted."
+      },
+      "portraitAssetId": "god.japanese.fujin.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.japanese.fujin.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.japanese.tier3.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.japanese.tier3.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.wood.png",
+      "legacyBenefits": [
+        {
+          "type": "movement_percent",
+          "percent": 20
+        }
+      ]
+    },
+    {
+      "godId": "japanese_raijin",
+      "name": "Raijin",
+      "pantheonId": "japanese",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Thunder & Power",
+      "weeklyResource": {
+        "crystal": 2
+      },
+      "favoredFamilyId": "japanese_kirin",
+      "familyName": "Kirin",
+      "tier": 6,
+      "baseCreatureId": "japanese_kirin",
+      "upgradedCreatureId": "japanese_celestial_kirin",
+      "weeklyGrowthQuarters": 2,
+      "growthLabel": "+1 every 2 eligible weeks",
+      "serviceId": "upgrade",
+      "service": {
+        "name": "Favored troop training",
+        "kind": "family_upgrade_gold_discount",
+        "percent": 15,
+        "requiredRole": "favored_upgraded_dwelling",
+        "summary": "15% less Gold on the normal per-unit upgrade price difference for the favored family in this city. No extra stock is consumed."
+      },
+      "portraitAssetId": "god.japanese.raijin.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.japanese.raijin.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.japanese.tier6.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.japanese.tier6.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "power",
+          "amount": 1
+        },
+        {
+          "type": "creature_stat",
+          "stat": "attack",
+          "amount": 2,
+          "ability": "shooter"
+        }
+      ]
+    },
+    {
+      "godId": "japanese_izanagi",
+      "name": "Izanagi",
+      "pantheonId": "japanese",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Creation & Renewal",
+      "weeklyResource": {
+        "stone": 4
+      },
+      "favoredFamilyId": "japanese_kappa",
+      "familyName": "Kappa",
+      "tier": 2,
+      "baseCreatureId": "japanese_kappa",
+      "upgradedCreatureId": "japanese_river_elder_kappa",
+      "weeklyGrowthQuarters": 8,
+      "growthLabel": "+2 each week",
+      "serviceId": "library",
+      "service": {
+        "name": "Library construction",
+        "kind": "construction_gold_discount",
+        "percent": 10,
+        "targetRole": "mage_guild",
+        "summary": "10% less Gold to build or upgrade this city’s spell library; material costs and spell prerequisites stay unchanged."
+      },
+      "portraitAssetId": "god.japanese.izanagi.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.japanese.izanagi.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.japanese.tier2.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.japanese.tier2.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.stone.png",
+      "legacyBenefits": [
+        {
+          "type": "weekly_growth_bonus",
+          "amount": 1,
+          "maxTier": 4
+        },
+        {
+          "type": "mana_regen",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "godId": "japanese_izanami",
+      "name": "Izanami",
+      "pantheonId": "japanese",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Death & Rebirth",
+      "weeklyResource": {
+        "crystal": 1
+      },
+      "favoredFamilyId": "japanese_jorogumo",
+      "familyName": "Jorogumo",
+      "tier": 5,
+      "baseCreatureId": "japanese_jorogumo",
+      "upgradedCreatureId": "japanese_queen_jorogumo",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "equipment",
+      "service": {
+        "name": "Artifact purchases",
+        "kind": "shop_gold_discount",
+        "percent": 10,
+        "requiredRolesAny": [
+          "artifact_merchant",
+          "workshop"
+        ],
+        "summary": "10% less Gold for purchases from this city’s Artifact Merchant or Workshop. Stocks, rarities and other resource costs stay unchanged."
+      },
+      "portraitAssetId": "god.japanese.izanami.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.japanese.izanami.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.japanese.tier5.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.japanese.tier5.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "legacyBenefits": [
+        {
+          "type": "casualty_recovery",
+          "percent": 20
+        }
+      ]
+    },
+    {
+      "godId": "celtic_dagda",
+      "name": "Dagda",
+      "pantheonId": "celtic",
+      "role": "patron",
+      "choiceGroup": "patron",
+      "domain": "Abundance & Prosperity",
+      "weeklyResource": {
+        "wood": 4
+      },
+      "favoredFamilyId": "celtic_pooka",
+      "familyName": "Pooka",
+      "tier": 1,
+      "baseCreatureId": "celtic_pooka",
+      "upgradedCreatureId": "celtic_elder_pooka",
+      "weeklyGrowthQuarters": 8,
+      "growthLabel": "+2 each week",
+      "serviceId": "civic",
+      "service": {
+        "name": "Civic construction",
+        "kind": "construction_gold_discount",
+        "percent": 10,
+        "targetRole": "civic_hall",
+        "summary": "10% less Gold on this city’s civic-hall upgrades; level prerequisites and construction limits stay unchanged."
+      },
+      "portraitAssetId": "god.celtic.dagda.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.celtic.dagda.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.celtic.tier1.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.celtic.tier1.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.wood.png",
+      "legacyBenefits": []
+    },
+    {
+      "godId": "celtic_morrigan",
+      "name": "Morrigan",
+      "pantheonId": "celtic",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "War & Prophecy",
+      "weeklyResource": {
+        "crystal": 1
+      },
+      "favoredFamilyId": "celtic_banshee",
+      "familyName": "Banshees",
+      "tier": 4,
+      "baseCreatureId": "celtic_banshee",
+      "upgradedCreatureId": "celtic_battle_banshee",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "upgrade",
+      "service": {
+        "name": "Favored troop training",
+        "kind": "family_upgrade_gold_discount",
+        "percent": 15,
+        "requiredRole": "favored_upgraded_dwelling",
+        "summary": "15% less Gold on the normal per-unit upgrade price difference for the favored family in this city. No extra stock is consumed."
+      },
+      "portraitAssetId": "god.celtic.morrigan.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.celtic.morrigan.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.celtic.tier4.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.celtic.tier4.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "attack",
+          "amount": 1
+        },
+        {
+          "type": "spell_eligibility",
+          "spellId": "warcry"
+        }
+      ]
+    },
+    {
+      "godId": "celtic_brigid",
+      "name": "Brigid",
+      "pantheonId": "celtic",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Hearth & Healing",
+      "weeklyResource": {
+        "stone": 3
+      },
+      "favoredFamilyId": "celtic_cu_sith",
+      "familyName": "Cu Sith",
+      "tier": 2,
+      "baseCreatureId": "celtic_cu_sith",
+      "upgradedCreatureId": "celtic_great_cu_sith",
+      "weeklyGrowthQuarters": 8,
+      "growthLabel": "+2 each week",
+      "serviceId": "fortify",
+      "service": {
+        "name": "Fortification construction",
+        "kind": "construction_gold_discount",
+        "percent": 10,
+        "targetRole": "fortifications",
+        "summary": "10% less Gold to build or upgrade this city’s Fort, Citadel and Castle; material costs and one build per day stay unchanged."
+      },
+      "portraitAssetId": "god.celtic.brigid.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.celtic.brigid.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.celtic.tier2.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.celtic.tier2.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.stone.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "defense",
+          "amount": 1
+        },
+        {
+          "type": "spell_eligibility",
+          "spellId": "ward"
+        }
+      ]
+    },
+    {
+      "godId": "celtic_nuada",
+      "name": "Nuada",
+      "pantheonId": "celtic",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Kingship & Justice",
+      "weeklyResource": {
+        "gold": 300
+      },
+      "favoredFamilyId": "celtic_fomorian_giant",
+      "familyName": "Fomorian Giants",
+      "tier": 7,
+      "baseCreatureId": "celtic_fomorian_giant",
+      "upgradedCreatureId": "celtic_ancient_fomorian",
+      "weeklyGrowthQuarters": 1,
+      "growthLabel": "+1 every 4 eligible weeks",
+      "serviceId": "training",
+      "service": {
+        "name": "Hero training",
+        "kind": "gold_discount",
+        "percent": 20,
+        "requiredRole": "training_academy",
+        "summary": "20% less Gold for weekly hero training; XP and the once-per-hero-per-week limit stay unchanged."
+      },
+      "portraitAssetId": "god.celtic.nuada.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.celtic.nuada.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.celtic.tier7.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.celtic.tier7.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.gold.png",
+      "legacyBenefits": [
+        {
+          "type": "morale",
+          "amount": 1
+        },
+        {
+          "type": "creature_stat",
+          "stat": "defense",
+          "amount": 1,
+          "minTier": 4
+        }
+      ]
+    },
+    {
+      "godId": "celtic_danu",
+      "name": "Danu",
+      "pantheonId": "celtic",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Ancestry & the Land",
+      "weeklyResource": {
+        "wood": 3
+      },
+      "favoredFamilyId": "celtic_horned_stag_spirit",
+      "familyName": "Horned Stag Spirits",
+      "tier": 6,
+      "baseCreatureId": "celtic_horned_stag_spirit",
+      "upgradedCreatureId": "celtic_great_stag_spirit",
+      "weeklyGrowthQuarters": 2,
+      "growthLabel": "+1 every 2 eligible weeks",
+      "serviceId": "library",
+      "service": {
+        "name": "Library construction",
+        "kind": "construction_gold_discount",
+        "percent": 10,
+        "targetRole": "mage_guild",
+        "summary": "10% less Gold to build or upgrade this city’s spell library; material costs and spell prerequisites stay unchanged."
+      },
+      "portraitAssetId": "god.celtic.danu.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.celtic.danu.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.celtic.tier6.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.celtic.tier6.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.wood.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "power",
+          "amount": 1
+        },
+        {
+          "type": "weekly_growth_bonus",
+          "amount": 1,
+          "maxTier": 2
+        }
+      ]
+    },
+    {
+      "godId": "celtic_cernunnos",
+      "name": "Cernunnos",
+      "pantheonId": "celtic",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Wilds & Transformation",
+      "weeklyResource": {
+        "wood": 4
+      },
+      "favoredFamilyId": "celtic_cu_sith",
+      "familyName": "Cu Sith",
+      "tier": 2,
+      "baseCreatureId": "celtic_cu_sith",
+      "upgradedCreatureId": "celtic_great_cu_sith",
+      "weeklyGrowthQuarters": 8,
+      "growthLabel": "+2 each week",
+      "serviceId": "recruit",
+      "service": {
+        "name": "Favored recruitment",
+        "kind": "family_recruit_gold_discount",
+        "percent": 5,
+        "requiredRole": "favored_dwelling",
+        "summary": "5% less Gold per recruited member of the favored family, both unlocked forms. Other resources, population and access checks stay unchanged."
+      },
+      "portraitAssetId": "god.celtic.cernunnos.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.celtic.cernunnos.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.celtic.tier2.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.celtic.tier2.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.wood.png",
+      "legacyBenefits": [
+        {
+          "type": "creature_stat",
+          "stat": "attack",
+          "amount": 1,
+          "maxTier": 3
+        },
+        {
+          "type": "creature_stat",
+          "stat": "defense",
+          "amount": 1,
+          "maxTier": 3
+        }
+      ]
+    },
+    {
+      "godId": "celtic_epona",
+      "name": "Epona",
+      "pantheonId": "celtic",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Horses & Journeys",
+      "weeklyResource": {
+        "gold": 400
+      },
+      "favoredFamilyId": "celtic_kelpie",
+      "familyName": "Kelpies",
+      "tier": 3,
+      "baseCreatureId": "celtic_kelpie",
+      "upgradedCreatureId": "celtic_dread_kelpie",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "dwelling",
+      "service": {
+        "name": "Favored dwelling construction",
+        "kind": "family_dwelling_gold_discount",
+        "percent": 10,
+        "targetRole": "favored_dwelling",
+        "summary": "10% less Gold to build or upgrade the favored family’s dwelling in this city. No new creature access or covenant is granted."
+      },
+      "portraitAssetId": "god.celtic.epona.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.celtic.epona.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.celtic.tier3.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.celtic.tier3.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.gold.png",
+      "legacyBenefits": [
+        {
+          "type": "movement_percent",
+          "percent": 20
+        }
+      ]
+    },
+    {
+      "godId": "celtic_lugh",
+      "name": "Lugh",
+      "pantheonId": "celtic",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Light & Skill",
+      "weeklyResource": {
+        "crystal": 1
+      },
+      "favoredFamilyId": "celtic_horned_stag_spirit",
+      "familyName": "Horned Stag Spirits",
+      "tier": 6,
+      "baseCreatureId": "celtic_horned_stag_spirit",
+      "upgradedCreatureId": "celtic_great_stag_spirit",
+      "weeklyGrowthQuarters": 2,
+      "growthLabel": "+1 every 2 eligible weeks",
+      "serviceId": "equipment",
+      "service": {
+        "name": "Artifact purchases",
+        "kind": "shop_gold_discount",
+        "percent": 10,
+        "requiredRolesAny": [
+          "artifact_merchant",
+          "workshop"
+        ],
+        "summary": "10% less Gold for purchases from this city’s Artifact Merchant or Workshop. Stocks, rarities and other resource costs stay unchanged."
+      },
+      "portraitAssetId": "god.celtic.lugh.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.celtic.lugh.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.celtic.tier6.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.celtic.tier6.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "legacyBenefits": [
+        {
+          "type": "luck",
+          "amount": 1
+        },
+        {
+          "type": "morale",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "godId": "celtic_arawn",
+      "name": "Arawn",
+      "pantheonId": "celtic",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Underworld & the Otherworld",
+      "weeklyResource": {
+        "crystal": 1
+      },
+      "favoredFamilyId": "celtic_cu_sith",
+      "familyName": "Cu Sith",
+      "tier": 2,
+      "baseCreatureId": "celtic_cu_sith",
+      "upgradedCreatureId": "celtic_great_cu_sith",
+      "weeklyGrowthQuarters": 8,
+      "growthLabel": "+2 each week",
+      "serviceId": "spellbook",
+      "service": {
+        "name": "Spellbook purchase",
+        "kind": "gold_discount",
+        "percent": 25,
+        "requiredRole": "mage_guild",
+        "requiredEffect": "enables_spellbook_purchase",
+        "summary": "25% less Gold for a visiting hero’s spellbook. Learning eligible spells remains free, as in the current game."
+      },
+      "portraitAssetId": "god.celtic.arawn.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.celtic.arawn.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.celtic.tier2.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.celtic.tier2.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "legacyBenefits": [
+        {
+          "type": "casualty_recovery",
+          "percent": 15
+        },
+        {
+          "type": "luck",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "godId": "celtic_manannan",
+      "name": "Manannan",
+      "pantheonId": "celtic",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Seas & Mists",
+      "weeklyResource": {
+        "wood": 4
+      },
+      "favoredFamilyId": "celtic_selkie",
+      "familyName": "Selkies",
+      "tier": 5,
+      "baseCreatureId": "celtic_selkie",
+      "upgradedCreatureId": "celtic_storm_selkie",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "trade",
+      "service": {
+        "name": "Market purchases",
+        "kind": "market_buy_discount",
+        "percent": 10,
+        "requiredRole": "marketplace",
+        "summary": "10% less Gold when buying Wood, Stone or Crystal at this city; selling prices stay unchanged."
+      },
+      "portraitAssetId": "god.celtic.manannan.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.celtic.manannan.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.celtic.tier5.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.celtic.tier5.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.wood.png",
+      "legacyBenefits": [
+        {
+          "type": "vision_radius",
+          "amount": 2
+        },
+        {
+          "type": "movement_percent",
+          "percent": 15
+        }
+      ]
+    },
+    {
+      "godId": "mesoamerican_quetzalcoatl",
+      "name": "Quetzalcoatl",
+      "pantheonId": "mesoamerican",
+      "role": "patron",
+      "choiceGroup": "patron",
+      "domain": "Wind & Wisdom",
+      "weeklyResource": {
+        "crystal": 1
+      },
+      "favoredFamilyId": "mesoamerican_feathered_serpent",
+      "familyName": "Feathered Serpents",
+      "tier": 1,
+      "baseCreatureId": "mesoamerican_feathered_serpent",
+      "upgradedCreatureId": "mesoamerican_celestial_feathered_serpent",
+      "weeklyGrowthQuarters": 8,
+      "growthLabel": "+2 each week",
+      "serviceId": "library",
+      "service": {
+        "name": "Library construction",
+        "kind": "construction_gold_discount",
+        "percent": 10,
+        "targetRole": "mage_guild",
+        "summary": "10% less Gold to build or upgrade this city’s spell library; material costs and spell prerequisites stay unchanged."
+      },
+      "portraitAssetId": "god.mesoamerican.quetzalcoatl.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.mesoamerican.quetzalcoatl.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier1.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier1.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "legacyBenefits": []
+    },
+    {
+      "godId": "mesoamerican_huitzilopochtli",
+      "name": "Huitzilopochtli",
+      "pantheonId": "mesoamerican",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "War & Power",
+      "weeklyResource": {
+        "gold": 300
+      },
+      "favoredFamilyId": "mesoamerican_eagle_warrior_spirit",
+      "familyName": "Eagle Warrior Spirits",
+      "tier": 3,
+      "baseCreatureId": "mesoamerican_eagle_warrior_spirit",
+      "upgradedCreatureId": "mesoamerican_solar_eagle_warrior",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "training",
+      "service": {
+        "name": "Hero training",
+        "kind": "gold_discount",
+        "percent": 20,
+        "requiredRole": "training_academy",
+        "summary": "20% less Gold for weekly hero training; XP and the once-per-hero-per-week limit stay unchanged."
+      },
+      "portraitAssetId": "god.mesoamerican.huitzilopochtli.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.mesoamerican.huitzilopochtli.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier3.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier3.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.gold.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "attack",
+          "amount": 1
+        },
+        {
+          "type": "spell_eligibility",
+          "spellId": "warcry"
+        }
+      ]
+    },
+    {
+      "godId": "mesoamerican_coatlicue",
+      "name": "Coatlicue",
+      "pantheonId": "mesoamerican",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Earth & Creation",
+      "weeklyResource": {
+        "stone": 3
+      },
+      "favoredFamilyId": "mesoamerican_stone_colossus",
+      "familyName": "Stone Colossi",
+      "tier": 7,
+      "baseCreatureId": "mesoamerican_stone_colossus",
+      "upgradedCreatureId": "mesoamerican_sun_colossus",
+      "weeklyGrowthQuarters": 1,
+      "growthLabel": "+1 every 4 eligible weeks",
+      "serviceId": "fortify",
+      "service": {
+        "name": "Fortification construction",
+        "kind": "construction_gold_discount",
+        "percent": 10,
+        "targetRole": "fortifications",
+        "summary": "10% less Gold to build or upgrade this city’s Fort, Citadel and Castle; material costs and one build per day stay unchanged."
+      },
+      "portraitAssetId": "god.mesoamerican.coatlicue.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.mesoamerican.coatlicue.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier7.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier7.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.stone.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "defense",
+          "amount": 1
+        },
+        {
+          "type": "spell_eligibility",
+          "spellId": "ward"
+        }
+      ]
+    },
+    {
+      "godId": "mesoamerican_mixcoatl",
+      "name": "Mixcoatl",
+      "pantheonId": "mesoamerican",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Hunt & Survival",
+      "weeklyResource": {
+        "wood": 3
+      },
+      "favoredFamilyId": "mesoamerican_eagle_warrior_spirit",
+      "familyName": "Eagle Warrior Spirits",
+      "tier": 3,
+      "baseCreatureId": "mesoamerican_eagle_warrior_spirit",
+      "upgradedCreatureId": "mesoamerican_solar_eagle_warrior",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "watch",
+      "service": {
+        "name": "Watchtower vision",
+        "kind": "town_vision_bonus",
+        "amount": 2,
+        "requiredRole": "watchtower",
+        "summary": "+2 hexes to this city’s existing vision radius while its Watchtower is built; no hero vision bonus and no fog-map reveal on dedication."
+      },
+      "portraitAssetId": "god.mesoamerican.mixcoatl.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.mesoamerican.mixcoatl.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier3.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier3.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.wood.png",
+      "legacyBenefits": [
+        {
+          "type": "creature_stat",
+          "stat": "attack",
+          "amount": 2,
+          "ability": "shooter"
+        },
+        {
+          "type": "vision_radius",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "godId": "mesoamerican_xolotl",
+      "name": "Xolotl",
+      "pantheonId": "mesoamerican",
+      "role": "minor",
+      "choiceGroup": "first_minor",
+      "domain": "Journey & Underworld Guidance",
+      "weeklyResource": {
+        "gold": 400
+      },
+      "favoredFamilyId": "mesoamerican_jaguar_spirit",
+      "familyName": "Jaguar Spirits",
+      "tier": 2,
+      "baseCreatureId": "mesoamerican_jaguar_spirit",
+      "upgradedCreatureId": "mesoamerican_sun_jaguar",
+      "weeklyGrowthQuarters": 8,
+      "growthLabel": "+2 each week",
+      "serviceId": "upgrade",
+      "service": {
+        "name": "Favored troop training",
+        "kind": "family_upgrade_gold_discount",
+        "percent": 15,
+        "requiredRole": "favored_upgraded_dwelling",
+        "summary": "15% less Gold on the normal per-unit upgrade price difference for the favored family in this city. No extra stock is consumed."
+      },
+      "portraitAssetId": "god.mesoamerican.xolotl.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.mesoamerican.xolotl.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier2.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier2.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.gold.png",
+      "legacyBenefits": [
+        {
+          "type": "commander_attribute",
+          "attribute": "knowledge",
+          "amount": 1
+        },
+        {
+          "type": "movement_percent",
+          "percent": 10
+        }
+      ]
+    },
+    {
+      "godId": "mesoamerican_tlaloc",
+      "name": "Tlaloc",
+      "pantheonId": "mesoamerican",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Rain & Fertility",
+      "weeklyResource": {
+        "wood": 4
+      },
+      "favoredFamilyId": "mesoamerican_cenote_crocodile",
+      "familyName": "Cenote Crocodiles",
+      "tier": 4,
+      "baseCreatureId": "mesoamerican_cenote_crocodile",
+      "upgradedCreatureId": "mesoamerican_temple_crocodile",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "dwelling",
+      "service": {
+        "name": "Favored dwelling construction",
+        "kind": "family_dwelling_gold_discount",
+        "percent": 10,
+        "targetRole": "favored_dwelling",
+        "summary": "10% less Gold to build or upgrade the favored family’s dwelling in this city. No new creature access or covenant is granted."
+      },
+      "portraitAssetId": "god.mesoamerican.tlaloc.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.mesoamerican.tlaloc.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier4.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier4.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.wood.png",
+      "legacyBenefits": [
+        {
+          "type": "weekly_growth_bonus",
+          "amount": 2,
+          "maxTier": 3
+        }
+      ]
+    },
+    {
+      "godId": "mesoamerican_tezcatlipoca",
+      "name": "Tezcatlipoca",
+      "pantheonId": "mesoamerican",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Shadow & Fate",
+      "weeklyResource": {
+        "crystal": 1
+      },
+      "favoredFamilyId": "mesoamerican_camazotz",
+      "familyName": "Camazotz",
+      "tier": 5,
+      "baseCreatureId": "mesoamerican_camazotz",
+      "upgradedCreatureId": "mesoamerican_blood_moon_camazotz",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "equipment",
+      "service": {
+        "name": "Artifact purchases",
+        "kind": "shop_gold_discount",
+        "percent": 10,
+        "requiredRolesAny": [
+          "artifact_merchant",
+          "workshop"
+        ],
+        "summary": "10% less Gold for purchases from this city’s Artifact Merchant or Workshop. Stocks, rarities and other resource costs stay unchanged."
+      },
+      "portraitAssetId": "god.mesoamerican.tezcatlipoca.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.mesoamerican.tezcatlipoca.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier5.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier5.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "legacyBenefits": [
+        {
+          "type": "luck",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "godId": "mesoamerican_xiuhtecuhtli",
+      "name": "Xiuhtecuhtli",
+      "pantheonId": "mesoamerican",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Fire & Renewal",
+      "weeklyResource": {
+        "stone": 3
+      },
+      "favoredFamilyId": "mesoamerican_xiuhcoatl",
+      "familyName": "Xiuhcoatl",
+      "tier": 6,
+      "baseCreatureId": "mesoamerican_xiuhcoatl",
+      "upgradedCreatureId": "mesoamerican_divine_xiuhcoatl",
+      "weeklyGrowthQuarters": 2,
+      "growthLabel": "+1 every 2 eligible weeks",
+      "serviceId": "equipment",
+      "service": {
+        "name": "Artifact purchases",
+        "kind": "shop_gold_discount",
+        "percent": 10,
+        "requiredRolesAny": [
+          "artifact_merchant",
+          "workshop"
+        ],
+        "summary": "10% less Gold for purchases from this city’s Artifact Merchant or Workshop. Stocks, rarities and other resource costs stay unchanged."
+      },
+      "portraitAssetId": "god.mesoamerican.xiuhtecuhtli.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.mesoamerican.xiuhtecuhtli.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier6.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier6.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.stone.png",
+      "legacyBenefits": [
+        {
+          "type": "offering",
+          "goldPerFavor": 100,
+          "maxFavorPerWeek": 15
+        }
+      ]
+    },
+    {
+      "godId": "mesoamerican_chalchiuhtlicue",
+      "name": "Chalchiuhtlicue",
+      "pantheonId": "mesoamerican",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Waters & Healing",
+      "weeklyResource": {
+        "wood": 4
+      },
+      "favoredFamilyId": "mesoamerican_cenote_crocodile",
+      "familyName": "Cenote Crocodiles",
+      "tier": 4,
+      "baseCreatureId": "mesoamerican_cenote_crocodile",
+      "upgradedCreatureId": "mesoamerican_temple_crocodile",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "recruit",
+      "service": {
+        "name": "Favored recruitment",
+        "kind": "family_recruit_gold_discount",
+        "percent": 5,
+        "requiredRole": "favored_dwelling",
+        "summary": "5% less Gold per recruited member of the favored family, both unlocked forms. Other resources, population and access checks stay unchanged."
+      },
+      "portraitAssetId": "god.mesoamerican.chalchiuhtlicue.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.mesoamerican.chalchiuhtlicue.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier4.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier4.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.wood.png",
+      "legacyBenefits": [
+        {
+          "type": "casualty_recovery",
+          "percent": 10
+        },
+        {
+          "type": "weekly_growth_bonus",
+          "amount": 1,
+          "maxTier": 4
+        }
+      ]
+    },
+    {
+      "godId": "mesoamerican_mictlantecuhtli",
+      "name": "Mictlantecuhtli",
+      "pantheonId": "mesoamerican",
+      "role": "minor",
+      "choiceGroup": "second_minor",
+      "domain": "Death & Transformation",
+      "weeklyResource": {
+        "crystal": 1
+      },
+      "favoredFamilyId": "mesoamerican_camazotz",
+      "familyName": "Camazotz",
+      "tier": 5,
+      "baseCreatureId": "mesoamerican_camazotz",
+      "upgradedCreatureId": "mesoamerican_blood_moon_camazotz",
+      "weeklyGrowthQuarters": 4,
+      "growthLabel": "+1 each week",
+      "serviceId": "upgrade",
+      "service": {
+        "name": "Favored troop training",
+        "kind": "family_upgrade_gold_discount",
+        "percent": 15,
+        "requiredRole": "favored_upgraded_dwelling",
+        "summary": "15% less Gold on the normal per-unit upgrade price difference for the favored family in this city. No extra stock is consumed."
+      },
+      "portraitAssetId": "god.mesoamerican.mictlantecuhtli.portrait",
+      "portraitFile": "reuse/ui/icons/final/god.mesoamerican.mictlantecuhtli.portrait.webp",
+      "basePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier5.base.portrait.webp",
+      "upgradePortraitFile": "reuse/ui/icons/final/creature.mesoamerican.tier5.upgraded.portrait.webp",
+      "resourceIconFile": "reuse/ui/icons/final/icon.res.crystal.png",
+      "legacyBenefits": [
+        {
+          "type": "wounded_fury",
+          "attack": 2,
+          "numerator": 1,
+          "denominator": 2
+        },
+        {
+          "type": "luck",
+          "amount": 1
+        }
+      ]
+    }
+  ]
+}

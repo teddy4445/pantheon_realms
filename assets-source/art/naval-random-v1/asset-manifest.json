@@ -1,0 +1,52 @@
+{
+  "assets": [
+    {
+      "id": "frontend.random.shattered_crown",
+      "file": "assets/shattered-crown-card.png",
+      "role": "map type selection and briefing thumbnail",
+      "width": 1672,
+      "height": 941,
+      "sha256": "0099eba19a68730f4e94322a3b9a9dea8fa572c8d4b694e2f862401605dee13a",
+      "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-6c77935f-ef5a-423b-83c8-f8ae9b6aefc8.png",
+      "runtimeDestination": "assets-runtime/naval-random-v1/shattered-crown-card.png",
+      "fit": "cover; center; add text in UI, never bake it into art",
+      "nativeResolutionNote": "Native output retained; no resize, upscale or code retouching."
+    },
+    {
+      "id": "frontend.random.serpent_straits",
+      "file": "assets/serpent-straits-card.png",
+      "role": "map type selection and briefing thumbnail",
+      "width": 1672,
+      "height": 941,
+      "sha256": "68bb243989e21a8912c01b17d6310d3f304d142a74cb20f695fd22cc788ae408",
+      "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-73ca9d24-913a-415e-8b9e-520fda860878.png",
+      "runtimeDestination": "assets-runtime/naval-random-v1/serpent-straits-card.png",
+      "fit": "cover; center; add text in UI, never bake it into art",
+      "nativeResolutionNote": "Native output retained; no resize, upscale or code retouching."
+    },
+    {
+      "id": "random.shattered_crown.loading",
+      "file": "assets/shattered-crown-loading.png",
+      "role": "loading and full-screen briefing",
+      "width": 1672,
+      "height": 941,
+      "sha256": "bb1c948978306bbfe9c8760609b4e407d25c71357a8dbad69b599bddb51336aa",
+      "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-eeb64760-4ba2-4520-b409-963d6dc3370a.png",
+      "runtimeDestination": "assets-runtime/naval-random-v1/shattered-crown-loading.png",
+      "fit": "cover; center; add text in UI, never bake it into art",
+      "nativeResolutionNote": "Native output retained; no resize, upscale or code retouching."
+    },
+    {
+      "id": "random.serpent_straits.loading",
+      "file": "assets/serpent-straits-loading.png",
+      "role": "loading and full-screen briefing",
+      "width": 1672,
+      "height": 941,
+      "sha256": "3da69280bf57a7c6548a95e80ee51389c6aa3b079af168907c7dfae36c10a990",
+      "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-ce5b3368-59ef-49d2-93c0-2bfe1d49bbeb.png",
+      "runtimeDestination": "assets-runtime/naval-random-v1/serpent-straits-loading.png",
+      "fit": "cover; center; add text in UI, never bake it into art",
+      "nativeResolutionNote": "Native output retained; no resize, upscale or code retouching."
+    }
+  ]
+}

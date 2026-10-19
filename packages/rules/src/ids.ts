@@ -42,3 +42,5 @@ export type EventId = Id<'EventId'>;
 export type LoreId = Id<'LoreId'>;
 export type AssetId = Id<'AssetId'>;
 export type DecisionId = Id<'DecisionId'>;
+/** A hero ship on the adventure map (scenario feature `navalMovementV1`). */
+export type ShipId = Id<'ShipId'>;

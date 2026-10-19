@@ -23,6 +23,10 @@ function stackName(catalog: ContentCatalog, battle: BattleState, id: string, cou
 
 function describe(catalog: ContentCatalog, battle: BattleState, e: GameEvent, detail: string): string | null {
   switch (e.kind) {
+    case 'BattleArtifactActivated':
+      return `${catalog.artifacts[e.artifactId]?.name ?? 'Relic'} awakens over ${stackName(catalog, battle, e.targetId)}.`;
+    case 'BattleBarrierAbsorbed':
+      return `The army barrier absorbs ${e.amount} damage for ${stackName(catalog, battle, e.targetId)}; ${e.remaining} barrier HP remain.`;
     case 'BattleRoundStarted':
       return `— Round ${e.round} —`;
     case 'BattleStackMoved':
@@ -30,10 +34,11 @@ function describe(catalog: ContentCatalog, battle: BattleState, e: GameEvent, de
       if (e.forced) return null;
       return detail === 'compact' ? null : `${stackName(catalog, battle, e.stackId)} ${e.flying ? 'fly' : 'move'} ${e.path.length} hex${e.path.length === 1 ? '' : 'es'}.`;
     case 'BattleAttack': {
-      const verb = e.mode === 'shot' ? 'shoot' : e.mode === 'retaliation' ? 'retaliate against' : 'attack';
+      const verb = e.mode === 'shot' ? 'shoot' : e.mode === 'harpoon' ? 'harpoon' : e.mode === 'retaliation' ? 'retaliate against' : 'attack';
       return `${stackName(catalog, battle, e.attackerId)} ${verb} ${stackName(catalog, battle, e.targetId)}: ${e.damage} damage, ${e.killed} slain${e.luck ? ' (lucky strike)' : ''}.`;
     }
     case 'BattleSpellCast':
+      if (e.targetEngineId) return `${catalog.spells[e.spellId]?.name ?? e.spellId} on the catapult${e.damage ? ` (and ${e.damage} damage to the stacks beside it)` : ''}.`;
       return `${catalog.spells[e.spellId]?.name ?? e.spellId} on ${stackName(catalog, battle, e.targetId)}${e.damage ? `: ${e.damage} damage` : ''}${e.healed ? `: ${e.healed} healed` : ''}.`;
     case 'BattleAbilityUsed': {
       // Who used which ability on whom, and what it did (from the ability's rule).
@@ -77,6 +82,20 @@ function describe(catalog: ContentCatalog, battle: BattleState, e: GameEvent, de
       return `${stackName(catalog, battle, e.stackId)} wade into the moat: ${e.damage} damage, ${e.killed} slain.`;
     case 'SiegeCatapultAimed':
       return `The Catapult takes aim at the ${structureLabel(e.structureId).toLowerCase()}.`;
+    // The targetable catapult (targetableCatapultV1).
+    case 'CatapultPhaseStarted':
+      return `Catapult phase${e.aimedStructureId ? `: aimed at the ${structureLabel(e.aimedStructureId).toLowerCase()}` : ': choose a target'}.`;
+    case 'CatapultFired':
+      return `The catapult fires at the ${structureLabel(e.structureId).toLowerCase()}.`;
+    case 'CatapultSkipped':
+      return e.reason === 'no_targets' ? 'The catapult has no structure left to aim at: no shot.' : 'The catapult holds its fire this round.';
+    case 'EngineDamaged': {
+      const by = e.source === 'spell' ? (catalog.spells[e.spellId ?? '']?.name ?? 'A spell') : stackName(catalog, battle, e.attackerId ?? '');
+      const verb = e.source === 'shot' ? 'shoot' : e.source === 'melee' ? 'strike' : 'hits';
+      return `${by} ${verb} the catapult: ${e.damage} damage (${e.hp}/${e.maxHp} HP left)${e.luck ? ' (lucky strike)' : ''}.`;
+    }
+    case 'EngineDestroyed':
+      return 'The catapult is destroyed: no more shots this siege.';
     case 'BattleDefendersMerged':
       return `${e.stacks} stacks of ${catalog.creatures[e.creatureId]?.pluralName ?? e.creatureId} combine into one of ${e.count}.`;
     default:

@@ -28,7 +28,9 @@ assets-source/sprites/sheets/_preview/
 /desktop-map.png
 
 # Local deliverables (installers are built by `npm run desktop:dist`; not source)
-installer/
+installer/*
+!installer/build-installer.cmd
+!installer/build-installer.ps1
 *.exe
 *.exe.part*
 Claude outputs/

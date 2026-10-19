@@ -73,6 +73,8 @@ interface Playlist {
 }
 
 const RECENT = 16;
+/** A one-shot cut short (`play` with `maxMs`) fades out over this long, ending at `maxMs`: no click. */
+export const CUT_FADE_MS = 70;
 
 function defaultContext(): AudioContext | null {
   const w = globalThis as { AudioContext?: typeof AudioContext; webkitAudioContext?: typeof AudioContext };
@@ -233,8 +235,11 @@ export class AudioDirector {
   /**
    * Play a one-shot effect or stinger. Returns false when it was skipped (unknown,
    * voice limit, cooldown, not decoded yet — it is then loaded for next time).
+   * `maxMs`: play at most this long — the voice fades out over its last `CUT_FADE_MS`
+   * (a linear ramp to silence ending at `maxMs`) and stops there; a sound shorter than
+   * that plays whole. Used for long magic sounds that go with a short missile.
    */
-  play(id: string, opts: { gain?: number } = {}): boolean {
+  play(id: string, opts: { gain?: number; maxMs?: number } = {}): boolean {
     const ctx = this.ctx;
     const def = this.defs.get(id);
     if (!ctx || !def || isLooping(def)) return false;
@@ -254,7 +259,8 @@ export class AudioDirector {
     src.buffer = buf;
     if (def.pitchJitterCents) src.detune.value = (Math.random() * 2 - 1) * def.pitchJitterCents;
     const g = ctx.createGain();
-    g.gain.value = def.gain * intensityGain(def, this.levels.reduced) * (opts.gain ?? 1);
+    const level = def.gain * intensityGain(def, this.levels.reduced) * (opts.gain ?? 1);
+    g.gain.value = level;
     src.connect(g).connect(this.buses[def.bus]);
     set.add(src);
     this.live.set(id, set);
@@ -263,8 +269,18 @@ export class AudioDirector {
       g.disconnect();
     };
     src.start();
+    let seconds = buf.duration;
+    const cap = opts.maxMs !== undefined && opts.maxMs > 0 ? opts.maxMs / 1000 : null;
+    if (cap !== null && cap < buf.duration) {
+      // Cut short without a click: hold the level, ramp to silence over the last moments, stop at the end.
+      const end = ctx.currentTime + cap;
+      g.gain.setValueAtTime(level, end - Math.min(CUT_FADE_MS / 1000, cap));
+      g.gain.linearRampToValueAtTime(0, end);
+      src.stop(end);
+      seconds = cap;
+    }
     this.note(id);
-    if (def.role === 'stinger') this.duckMusic(buf.duration);
+    if (def.role === 'stinger') this.duckMusic(seconds);
     return true;
   }
 

@@ -4,6 +4,10 @@
  * Owns: lookups with descriptive failures. Does not own: authoring (see @pr/content)
  * or validation rules (see @pr/content validation).
  */
+import type { CityDedicationPolicy, CityDedicationProfile, CityServiceId, CityServiceRule } from './cityDedications';
+import type { ScoutingIntelPolicy } from './scoutingIntel';
+import type { CaravanPolicy } from './caravans';
+import type { SeaSitePolicy } from './seaSites';
 import type {
   AbilityId,
   ArtifactId,
@@ -80,6 +84,22 @@ export interface ContentCatalog {
   /** How each pantheon's AI rival plays (scenario feature `aiTemperaments`; proposed 2026-10-04). */
   readonly aiTemperaments?: Readonly<Record<string, AITemperamentDefinition>>;
   readonly weeklyEvents: Readonly<Record<string, WeeklyEventDefinition>>;
+  /** City dedications (app 1.5.0): one authored profile per god (60), the eleven service rules and the feature's terms. Absent in older catalogs. */
+  readonly cityDedicationProfiles?: Readonly<Record<GodId, CityDedicationProfile>>;
+  readonly cityServiceRules?: Readonly<Record<CityServiceId, CityServiceRule>>;
+  readonly cityDedicationPolicy?: CityDedicationPolicy;
+  /**
+   * God cards with city dedications on: the `benefitSummary` lines of each god whose direct
+   * `daily_income` / `weekly_growth_bonus` benefits the profiles replace (the remaining lines,
+   * explicit data — never parsed from the legacy sentences). See `godBenefitsForMode`.
+   */
+  readonly cityModeGodSummaries?: Readonly<Record<GodId, readonly string[]>>;
+  /** Scouting intel terms (expedition kit, `scoutingIntelV1`): stages, ranges, strength bands. Absent in older catalogs (then the legacy rule applies). */
+  readonly scoutingIntelPolicy?: ScoutingIntelPolicy;
+  /** Recruitment caravan terms (expedition kit, `recruitmentCaravansV1`): transport fee, daily movement, stack limit, wagon vision. Absent in older catalogs (then no caravans). */
+  readonly caravanPolicy?: CaravanPolicy;
+  /** Coastal sites and sea salvage terms (sea-sites kit): tower sight, explore cost, salvage and wreck tables. Absent: the proposed ones. */
+  readonly seaSitePolicy?: SeaSitePolicy;
   /** Per-pantheon skirmish starting kits (random maps). */
   readonly skirmishKits: Readonly<Record<PantheonId, SkirmishKitDefinition>>;
   /** Map events the random-map generator may place. */

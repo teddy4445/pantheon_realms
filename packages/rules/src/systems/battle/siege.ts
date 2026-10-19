@@ -24,11 +24,12 @@
 import type { BattleStackId, TownId } from '../../ids';
 import { cellKey, footprintDistance, type BattleCell } from '../../core/hex';
 import type { ContentCatalog } from '../../definitions/catalog';
-import type { BattleStackState, BattleState, SiegeState, SiegeStructureState, TownState } from '../../state/match';
+import type { BattleStackState, BattleState, SiegeEngineState, SiegeState, SiegeStructureState, TownState } from '../../state/match';
 import { reject, type Tx } from '../../engine/tx';
 import { townEffects } from '../../resolvers/town';
-import { aliveCount, applyDamage, isShooter, requireBattle, sideStacks, stackCells, statsOf } from './common';
+import { aliveCount, resolveStackDamage, isShooter, requireBattle, sideStacks, stackCells, statsOf } from './common';
 import { requireControl } from './actions';
+import { advanceActivation } from './flow';
 
 export type FortificationLevel = 0 | 1 | 2 | 3;
 
@@ -164,12 +165,16 @@ export function turretTarget(catalog: ContentCatalog, battle: BattleState, turre
   return best;
 }
 
-/** Round-start siege effects: Catapult shot, then keep and towers (stable ID order). */
+/**
+ * Round-start siege effects: Catapult shot, then keep and towers (stable ID order). A siege with a
+ * targetable catapult (`targetableCatapultV1`, `siege.engine`) has no automatic shot: its engine fires
+ * in its own phase at the end of the round (engine.ts).
+ */
 export function siegeRoundStart(tx: Tx, battle: BattleState): void {
   const siege = battle.siege;
   if (!siege || siege.level === 0) return;
   const cfg = tx.profile.combat.siege;
-  if (sideStacks(battle, 'attacker').length > 0) {
+  if (!siege.engine && sideStacks(battle, 'attacker').length > 0) {
     const target = catapultTarget(battle);
     if (target) damageStructure(tx, target, cfg.catapultDamage, 'catapult', null);
   }
@@ -177,10 +182,10 @@ export function siegeRoundStart(tx: Tx, battle: BattleState): void {
     .filter((s) => s.kind === 'keep' || s.kind === 'tower')
     .sort(byId);
   for (const turret of turrets) {
-    const damage = turret.kind === 'keep' ? cfg.keepDamage : cfg.towerDamage;
-    const best = turretTarget(tx.catalog, battle, turret, damage);
+    const raw = turret.kind === 'keep' ? cfg.keepDamage : cfg.towerDamage;
+    const best = turretTarget(tx.catalog, battle, turret, raw);
     if (!best) return;
-    const killed = applyDamage(tx, battle, best, damage);
+    const { damage, killed } = resolveStackDamage(tx, battle, best, raw, true);
     tx.emit({ kind: 'SiegeTurretShot', structureId: turret.id, targetId: best.id, damage, killed, targetRemaining: aliveCount(tx.catalog, best) });
   }
 }
@@ -189,8 +194,7 @@ export function siegeRoundStart(tx: Tx, battle: BattleState): void {
 export function applyMoatEntry(tx: Tx, battle: BattleState, stack: BattleStackState, before: readonly BattleCell[]): void {
   if (!battle.siege) return;
   if (!touchesMoat(battle, stackCells(tx.catalog, stack)) || touchesMoat(battle, before)) return;
-  const damage = tx.profile.combat.siege.moatDamage;
-  const killed = applyDamage(tx, battle, stack, damage);
+  const { damage, killed } = resolveStackDamage(tx, battle, stack, tx.profile.combat.siege.moatDamage);
   tx.emit({ kind: 'SiegeMoatDamage', stackId: stack.id, damage, killed, targetRemaining: aliveCount(tx.catalog, stack) });
 }
 
@@ -210,17 +214,75 @@ export function structureLabel(id: string): string {
   }
 }
 
-/** The siege attacker aims the Catapult (on one of its own activations; free, no action spent). */
+/**
+ * The siege attacker aims the Catapult (free, no action spent). Legacy sieges: on one of its own
+ * activations, for the next round starts. With a targetable catapult: in its engine phase or on one
+ * of the attacker's activations, while the engine stands; Fire then needs no further choice.
+ */
 export function commitBattleAimCatapult(tx: Tx, structureId: string): void {
   const battle = requireBattle(tx.state);
   const siege = battle.siege;
   if (!siege || siege.level === 0) reject('illegal_action', 'There are no walls to aim at');
+  const engine = siege.engine;
   const active = battle.activeStackId ? battle.stacks[battle.activeStackId] : undefined;
-  if (!active || active.side !== 'attacker') reject('illegal_action', 'Aim the Catapult on one of your own turns');
-  requireControl(tx, battle, 'attacker');
+  if (engine) {
+    if (engine.hp <= 0) reject('illegal_action', 'The catapult is destroyed');
+    if (battle.phase !== 'engine' && (!active || active.side !== engine.side)) reject('illegal_action', 'Aim the catapult in its phase or on one of your own turns');
+    requireControl(tx, battle, engine.side);
+  } else {
+    if (!active || active.side !== 'attacker') reject('illegal_action', 'Aim the Catapult on one of your own turns');
+    requireControl(tx, battle, 'attacker');
+  }
   const target = siege.structures.find((s) => s.id === structureId);
   if (!target) reject('illegal_target', 'Unknown structure');
   if (target.hp <= 0) reject('illegal_target', `${structureLabel(structureId)} is already destroyed`);
-  siege.catapultTargetId = structureId;
+  if (engine) engine.aimedStructureId = structureId;
+  else siege.catapultTargetId = structureId;
   tx.emit({ kind: 'SiegeCatapultAimed', structureId });
+}
+
+/** Common checks of the engine phase commands: the engine, its owner and the round they were issued for. */
+function requireEnginePhase(tx: Tx, expectedRound: number): { battle: BattleState; engine: SiegeEngineState } {
+  const battle = requireBattle(tx.state);
+  const engine = battle.siege?.engine;
+  if (!engine) reject('illegal_action', 'This siege has no targetable catapult');
+  requireControl(tx, battle, engine.side);
+  if (!Number.isInteger(expectedRound) || expectedRound !== battle.round) reject('already_done', `The catapult phase of round ${expectedRound} is over`);
+  if (engine.hp <= 0) reject('illegal_action', 'The catapult is destroyed');
+  if (engine.firedRound >= battle.round) reject('already_done', 'The catapult already fired this round');
+  if (battle.phase !== 'engine' || engine.phaseRound >= battle.round) reject('illegal_action', 'The catapult acts in its own phase, after every creature has acted this round');
+  return { battle, engine };
+}
+
+/** Close the engine phase and continue with the next round. */
+function endEnginePhase(tx: Tx, battle: BattleState, engine: SiegeEngineState): void {
+  engine.phaseRound = battle.round;
+  battle.phase = 'waiting';
+  battle.waitQueue = [];
+  battle.activeStackId = null;
+  advanceActivation(tx, battle);
+}
+
+/**
+ * `BattleFireCatapult`: the engine fires once in its phase at an intact structure — a guaranteed hit
+ * for `catapultDamage` structure HP. The engine's HP is checked right before the shot. A destroyed
+ * target is never replaced by another one: the command names the target explicitly.
+ */
+export function commitBattleFireCatapult(tx: Tx, structureId: string, expectedRound: number): void {
+  const { battle, engine } = requireEnginePhase(tx, expectedRound);
+  const target = battle.siege!.structures.find((s) => s.id === structureId);
+  if (!target) reject('illegal_target', 'Unknown structure');
+  if (target.hp <= 0) reject('illegal_target', `${structureLabel(structureId)} is already destroyed: choose another target`);
+  engine.aimedStructureId = structureId;
+  engine.firedRound = battle.round;
+  tx.emit({ kind: 'CatapultFired', engineId: engine.id, structureId, round: battle.round });
+  damageStructure(tx, target, tx.profile.combat.siege.catapultDamage, 'catapult', null);
+  endEnginePhase(tx, battle, engine);
+}
+
+/** `BattleSkipCatapult`: the engine phase ends without a shot. */
+export function commitBattleSkipCatapult(tx: Tx, expectedRound: number): void {
+  const { battle, engine } = requireEnginePhase(tx, expectedRound);
+  tx.emit({ kind: 'CatapultSkipped', engineId: engine.id, round: battle.round, reason: 'skipped' });
+  endEnginePhase(tx, battle, engine);
 }

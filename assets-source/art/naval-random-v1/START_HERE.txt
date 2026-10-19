@@ -1,0 +1,1 @@
+Open index.html to view both maps and their art. Give Claude this entire folder and CLAUDE_HANDOFF.txt. The target game is a separate project: C:/Users/lazeb/Desktop/pantheon_realms. This package depends on the previously delivered naval-scouting-caravan-siege kit. No game files have been changed. The JSON topology files are design references, not importable .prmap files.

@@ -53,23 +53,23 @@ function orders(campaignId: string): string[][] {
 }
 
 describe('campaign content v2 runs', () => {
-  it('all seven campaigns have a chapter graph; new runs play it from its single opening chapter', () => {
+  it('all nine campaigns have a chapter graph; new runs play it from its single opening chapter', () => {
     expect(v2Campaigns.map((c) => c.id).sort()).toEqual(
-      ['lantern_road', 'new_fire', 'silent_oracle', 'silver_branch', 'three_beacons', 'twelfth_hour', 'winter_oath'],
+      ['ashes_accord', 'lantern_road', 'new_fire', 'silent_oracle', 'silver_branch', 'three_beacons', 'twelfth_hour', 'winter_oath', 'worlds_met'],
     );
-    expect(v2Campaigns.reduce((n, c) => n + c.chapters!.length, 0)).toBe(37);
+    expect(v2Campaigns.reduce((n, c) => n + c.chapters!.length, 0)).toBe(51);
     // The campaign screen's summary for a new run names its chapters, not the legacy missions.
     const words = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven'];
     for (const camp of v2Campaigns) expect(camp.summaryV2, camp.id).toContain(`${words[camp.chapters!.length]} chapters`);
     for (const camp of v2Campaigns) {
       const { campaign, start } = startCampaign(catalog, camp.id, { runId: `${camp.id}-v2`, startingGodId: null });
       expect(contentVersionOf(campaign)).toBe(2);
-      expect(campaign.currentMissionId).toBe(`${camp.id}_v2_m01`);
-      expect(start.match.mission.missionId).toBe(`${camp.id}_v2_m01`);
+      expect(campaign.currentMissionId).toBe(camp.chapters![0]!.missionId);
+      expect(start.match.mission.missionId).toBe(camp.chapters![0]!.missionId);
       expect(campaign.facts).toEqual([]);
       // One map at a time: nothing else is available until this chapter is won.
       expect(availableChapters(catalog, campaign)).toEqual([]);
-      expect(chapterState(catalog, campaign, `${camp.id}_v2_m01`)).toBe('current');
+      expect(chapterState(catalog, campaign, camp.chapters![0]!.missionId)).toBe('current');
     }
   });
 
@@ -125,7 +125,7 @@ describe('campaign content v2 runs', () => {
 
   it('facts are kept apart from completion and reach later chapters as fact: flags', () => {
     for (const camp of v2Campaigns) {
-      const first = catalog.missions[`${camp.id}_v2_m01`]!;
+      const first = catalog.missions[camp.chapters![0]!.missionId]!;
       const carried = first.carriedFlags ?? [];
       expect(carried.length, `${camp.id}: chapter 1 carries facts`).toBeGreaterThan(0);
       const fact = carried[0]!;

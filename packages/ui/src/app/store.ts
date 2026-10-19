@@ -8,6 +8,10 @@
  */
 import { DEFAULT_CAMPAIGN_DIFFICULTY, KEY_COLOR_LABEL, matchScore, scenarioMission, type ContentCatalog, type DialogueLine, type GameEvent, type CommandPayload, type HexCoord, type KeyColor, type MatchState, type Rejection } from '@pr/rules';
 import { approachNotes, heroesInView, rivalNotes, summarizeRivalNotes, type RivalNote, type RivalSummaryLine } from './rivalSummary';
+import { cityBlessingsFromEvents, isBlessingEvent, type CityBlessingsSummary } from './dedication';
+import { caravanSummaryLines } from './caravans';
+import { announceNavalEvents } from './naval';
+import { announceSeaSiteEvents } from './seaSites';
 import { clearBattleLogs, recordBattleEvents } from './battleLog';
 import { GameSession, campaignScore, type RandomSkirmish, type SaveSnapshot } from '@pr/session';
 import type { PlatformServices } from '@pr/platform';
@@ -93,7 +97,7 @@ export interface SpellCaster {
 /** A spellbook opened to cast: each known spell's state where it was opened, and what picking one does. */
 export interface SpellCastRequest {
   readonly context: 'battle' | 'adventure';
-  readonly options: Readonly<Record<string, { readonly castable: boolean; readonly reason?: string | null }>>;
+  readonly options: Readonly<Record<string, { readonly castable: boolean; readonly reason?: string | null; readonly manaCost?: number }>>;
   readonly onCast: (spellId: string) => void;
   readonly note?: string;
 }
@@ -138,7 +142,25 @@ export type Overlay =
   /** Keyboard shortcuts reference. */
   | { kind: 'shortcuts' }
   /** The committed outcome of one completed reward action (a receipt; Continue only dismisses it). */
-  | { kind: 'reward'; receipt: RewardReceipt };
+  | { kind: 'reward'; receipt: RewardReceipt }
+  /** Recruitment caravans: send recruits of an owned town to another (CaravanDispatch). */
+  | { kind: 'caravan-dispatch'; townId: string; creatureId?: string }
+  /** A caravan's cargo, status, ETA, route and reroute (CaravanTracker; held: CaravanBlocked with `message`). */
+  | { kind: 'caravan-tracker'; caravanId: string; message?: string }
+  /** The already-applied arrival receipt (View garrison / Continue; applies nothing). */
+  | { kind: 'caravan-arrival'; receipt: CaravanReceipt }
+  /** A tile holding the viewer's hero and caravan: which one the click meant. */
+  | { kind: 'actor-picker'; coord: HexCoord; plan?: (() => void) | null };
+
+/** A delivered caravan as its CaravanDelivered event committed it (the arrival receipt). */
+export interface CaravanReceipt {
+  readonly caravanId: string;
+  readonly townId: string;
+  readonly sourceTownId: string;
+  readonly cargo: readonly { readonly creatureId: string; readonly count: number }[];
+  readonly dispatchedDay: number;
+  readonly day: number;
+}
 
 /** One story scene (or the campaign epilogue) waiting in the dialogue window. */
 export interface StoryEntry {
@@ -256,6 +278,16 @@ export class AppStore {
   rivalSummary: { viewerId: string; day: number; lines: RivalSummaryLine[] } | null = null;
   /** Per human seat: notes gathered since that seat ended its turn, and the enemy heroes it saw then. */
   private rivalLog = new Map<string, { notes: RivalNote[]; seen: string[] }>();
+  /**
+   * City dedications (app 1.5.0): the human seat's city blessings of the new week (gifts, new stock, rare-growth
+   * progress, activated or delayed switches), one grouped section shown with the rivals' summary. Built from the
+   * events the dawn committed, so showing it never pays anything; gathered like the rivals' notes.
+   */
+  cityBlessings: { viewerId: string; day: number; summary: CityBlessingsSummary } | null = null;
+  private blessingLog = new Map<string, GameEvent[]>();
+  /** Recruitment caravans: the human seat's shipment lines of the night (moved, held, delivered, lost), shown with the rivals' summary. */
+  caravanNotes: { viewerId: string; day: number; lines: string[] } | null = null;
+  private caravanLog = new Map<string, GameEvent[]>();
   private prevState: MatchState | null = null;
   /** Result of the last high-score recording (summary screen). */
   lastRecord: { table: 'campaign' | 'skirmish'; rank: number | null; score: number } | null = null;
@@ -411,12 +443,20 @@ export class AppStore {
     clearBattleLogs();
     this.rivalSummary = null;
     this.rivalLog.clear();
+    this.cityBlessings = null;
+    this.blessingLog.clear();
+    this.caravanNotes = null;
+    this.caravanLog.clear();
     this.prevState = session.state;
     this.unsubSession = session.subscribe((u) => {
       if (u.events.length > 0) recordBattleEvents(this.catalog, u.state, u.events, this.prefs.combatLogDetail);
       if (u.source === 'start' || u.source === 'load') {
         this.rivalSummary = null;
         this.rivalLog.clear();
+        this.cityBlessings = null;
+        this.blessingLog.clear();
+        this.caravanNotes = null;
+        this.caravanLog.clear();
       } else if (u.events.length > 0) this.noteRivalTurns(session, this.prevState ?? u.state, u.state, u.events);
       this.prevState = u.state;
       if (u.events.length > 0) this.prepare(u.events);
@@ -743,7 +783,7 @@ export class AppStore {
 
   private checkHandoff(): void {
     const session = this.session;
-    if (!session || session.humanSeats.length < 2) return;
+    if (!session || session.state.coalition || session.humanSeats.length < 2) return;
     const st = session.state;
     if (st.battle || st.outcome.status !== 'running') return;
     const active = st.players[st.activePlayerId];
@@ -885,7 +925,11 @@ export class AppStore {
         const started = events.findIndex((e) => e.kind === 'TurnStarted' && e.playerId === viewer);
         if (ended >= 0) {
           if (this.rivalSummary?.viewerId === viewer) this.rivalSummary = null;
+          if (this.cityBlessings?.viewerId === viewer) this.cityBlessings = null;
           this.rivalLog.set(viewer, { notes: [], seen: heroesInView(this.catalog, before, viewer) });
+          this.blessingLog.set(viewer, []);
+          if (this.caravanNotes?.viewerId === viewer) this.caravanNotes = null;
+          this.caravanLog.set(viewer, []);
         }
         const log = this.rivalLog.get(viewer);
         if (!log) continue;
@@ -893,20 +937,34 @@ export class AppStore {
         const to = started > from ? started : events.length;
         const slice = events.slice(from, to);
         if (slice.length > 0) log.notes.push(...rivalNotes(this.catalog, before, after, slice, viewer));
+        if (slice.length > 0) this.blessingLog.get(viewer)?.push(...slice.filter(isBlessingEvent));
+        if (slice.length > 0) this.caravanLog.get(viewer)?.push(...slice.filter((e) => e.kind.startsWith('Caravan')));
         if (started >= 0 && started >= from) {
           const lines = summarizeRivalNotes(after, [...approachNotes(this.catalog, after, viewer, log.seen), ...log.notes]);
           this.rivalLog.delete(viewer);
           this.rivalSummary = lines.length > 0 ? { viewerId: viewer, day: after.day, lines } : null;
+          const blessed = this.blessingLog.get(viewer) ?? [];
+          this.blessingLog.delete(viewer);
+          const summary = blessed.length > 0 ? cityBlessingsFromEvents(this.catalog, after, blessed, viewer) : null;
+          this.cityBlessings = summary ? { viewerId: viewer, day: after.day, summary } : null;
+          const shipped = this.caravanLog.get(viewer) ?? [];
+          this.caravanLog.delete(viewer);
+          const caravanLines = shipped.length > 0 ? caravanSummaryLines(this.catalog, after, shipped, viewer) : [];
+          this.caravanNotes = caravanLines.length > 0 ? { viewerId: viewer, day: after.day, lines: caravanLines } : null;
         }
       }
     } catch {
       // A summary is a convenience: never let it break the game loop.
       this.rivalLog.clear();
+      this.blessingLog.clear();
+      this.caravanLog.clear();
     }
   }
 
   dismissRivalSummary(): void {
     this.rivalSummary = null;
+    this.cityBlessings = null;
+    this.caravanNotes = null;
     this.notify();
   }
 
@@ -929,6 +987,11 @@ export class AppStore {
     if (!s) return;
     const session = this.session;
     this.announceSiteEvents(events);
+    this.announceCaravanEvents(events);
+    // Hero ships: launch, boarding and wreck notices; a boarding's aftermath kept for the map (app/naval.ts).
+    announceNavalEvents(this, events);
+    // Coastal watchtowers and sea salvage: "Enemy ship sighted near <tower>" and the salvage toast (app/seaSites.ts).
+    announceSeaSiteEvents(this, events);
     // A quick battle starts and ends in one batch: straight to the result.
     if (events.some((e) => e.kind === 'BattleStarted') && !events.some((e) => e.kind === 'BattleEnded')) {
       const humanInvolved = !!s.battle && Object.values(s.battle.sides).some((side) => side.controller === 'human');
@@ -963,6 +1026,39 @@ export class AppStore {
       return;
     }
     this.routeMissionOutcome(events);
+  }
+
+  /**
+   * Recruitment caravans of the viewer (expedition kit §06): the arrival receipt (already applied —
+   * View garrison / Continue) and the held notice with its reroute (a lost destination or no known
+   * route) open once the batch's playback has finished, under a hot-seat hand-over if one waits;
+   * a passing hold, a fought-off attack or a loss is a notice. Read from the committed events only.
+   */
+  private announceCaravanEvents(events: readonly GameEvent[]): void {
+    const session = this.session;
+    if (!session || !events.some((e) => e.kind.startsWith('Caravan'))) return;
+    const me = session.humanPlayerId;
+    if (session.state.players[me]?.controller !== 'human') return;
+    const open: Overlay[] = [];
+    for (const e of events) {
+      if (!('playerId' in e) || e.playerId !== me) continue;
+      if (e.kind === 'CaravanDelivered') open.push({ kind: 'caravan-arrival', receipt: { caravanId: e.caravanId, townId: e.townId, sourceTownId: e.sourceTownId, cargo: e.cargo, dispatchedDay: e.dispatchedDay, day: e.day } });
+      else if (e.kind === 'CaravanBlocked') {
+        if (e.reason === 'destination_lost' || e.reason === 'no_route') open.push({ kind: 'caravan-tracker', caravanId: e.caravanId, message: e.message });
+        else this.toast(`Caravan: ${e.message}`, 'info');
+      } else if (e.kind === 'CaravanDestroyed') {
+        const to = session.state.towns[session.state.caravans?.[e.caravanId]?.destinationTownId ?? '']?.name ?? 'its destination';
+        this.toast(`Your caravan to ${to} was destroyed: nothing it carried survived.`, 'error');
+      } else if (e.kind === 'CaravanInterceptionResolved' && e.survived) this.toast('Your caravan fought off the attack; the survivors roll on.', 'success');
+    }
+    if (open.length === 0) return;
+    void this.whenIdle().then(() => {
+      if (this.session !== session || session.state.battle) return;
+      // Under a waiting hand-over (hot-seat privacy): shown once the seat is taken.
+      const at = this.overlays.findIndex((o) => o.kind === 'handoff');
+      this.overlays = at >= 0 ? [...this.overlays.slice(0, at), ...open.reverse(), ...this.overlays.slice(at)] : [...this.overlays, ...open.reverse()];
+      this.notify();
+    });
   }
 
   /**

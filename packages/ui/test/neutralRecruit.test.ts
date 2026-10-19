@@ -300,6 +300,59 @@ describe('neutral upgrades at a hiring site (Root-Runner Grove)', () => {
     expect(t.train.legal).toBe(true);
   });
 
+  it('the training action names what is left of the week’s shared allowance, and its quantity stops there', () => {
+    const { d, hero } = grove();
+    hero.army.slots[1] = { stackId: 'st-rr', creatureId: 'root_runner', count: 12 };
+    (d.player.wallet as Record<string, number>).gold = 10_000;
+    let t = neutralRecruitView(d.catalog, d.state, PLAYER, hero.id, 'wo2_root_runners', 1, { train: 12 })!.training!;
+    expect(t).toMatchObject({ weeklyAllowance: 8, leftThisWeek: 8, allowanceText: '8 of 8 left this week', stackCount: 12, max: 8, quantity: 8, reason: null });
+    // Eight of twelve: a part, into a free slot.
+    expect(t.train).toMatchObject({ quantity: 8, legal: true });
+    expect(t.destinationText).toBe('Slot 4 — a free slot: a new stack of 8 Crownroot Runners. 4 Root-Runners stay in slot 2.');
+    d.do({ kind: 'TrainAtCamp', heroId: hero.id, siteId: 'wo2_root_runners', fromCreatureId: 'root_runner', quantity: 5, slot: 1 });
+    t = neutralRecruitView(d.catalog, d.state, PLAYER, hero.id, 'wo2_root_runners', 1, { train: 7 })!.training!;
+    expect(t).toMatchObject({ leftThisWeek: 3, allowanceText: '3 of 8 left this week', stackCount: 7, max: 3, quantity: 3 });
+    expect(t.train.legal).toBe(true);
+    // Another empire trains the last three this week: nothing left, the reason is the disabled state.
+    const st = d.state.world.sites['wo2_root_runners']!;
+    st.trainedThisWeek = 8;
+    t = neutralRecruitView(d.catalog, d.state, PLAYER, hero.id, 'wo2_root_runners', 1, { train: 3 })!.training!;
+    expect(t).toMatchObject({ leftThisWeek: 0, allowanceText: '0 of 8 left this week', max: 0, min: 0, quantity: 0 });
+    expect(t.reason).toBe('Its trainers can take no more this week (8 a week). More can train when the next week begins.');
+    expect(t.train).toMatchObject({ quantity: 0, legal: false, reason: t.reason });
+    // Hiring is not limited by it (the stock is the site's own).
+    expect(view(d, hero.id, 'wo2_root_runners').recruit.legal).toBe(true);
+    // A new week: the whole allowance again.
+    d.state.day = 8;
+    t = view(d, hero.id, 'wo2_root_runners').training!;
+    expect(t).toMatchObject({ leftThisWeek: 8, allowanceText: '8 of 8 left this week', max: 7, reason: null });
+  });
+
+  it('a full army and more in the stack than the week allows: the allowance and the slot rule both say why', () => {
+    const { d, hero } = grove();
+    hero.army.slots = [{ stackId: 'st-rr', creatureId: 'root_runner', count: 10 }, ...Array.from({ length: 6 }, (_, i) => ({ stackId: `f${i}`, creatureId: 'norse_draugr', count: 1 + i }))];
+    (d.player.wallet as Record<string, number>).gold = 10_000;
+    const t = view(d, hero.id, 'wo2_root_runners').training!;
+    expect(t.max).toBe(0);
+    expect(t.reason).toBe('Its trainers can take 8 more this week (8 a week): not all 10. A partial training needs a free slot or an existing stack of Crownroot Runners.');
+    // Short of Gold as well: both reasons.
+    (d.player.wallet as Record<string, number>).gold = 300;
+    expect(view(d, hero.id, 'wo2_root_runners').training!.reason).toBe(
+      'Its trainers can take 8 more this week (8 a week): not all 10. Training all 10 costs 350 Gold: short 50 Gold. A partial training needs a free slot or an existing stack of Crownroot Runners.',
+    );
+  });
+
+  it('a site whose content trains nobody (weeklyTraining 0) shows no training action', () => {
+    const { d, hero } = grove();
+    hero.army.slots[1] = { stackId: 'st-rr', creatureId: 'root_runner', count: 4 };
+    const m = d.catalog.missions['winter_oath_v2_m02']!;
+    d.state.customMission = { ...m, sites: m.sites.map((s) => (s.id === 'wo2_root_runners' && s.kind.type === 'creature_camp' ? { ...s, kind: { ...s.kind, weeklyTraining: 0 } } : s)) } as MissionDefinition;
+    expect(view(d, hero.id, 'wo2_root_runners').training).toBeNull();
+    // weeklyTraining 2: the strip counts two a week.
+    d.state.customMission = { ...m, sites: m.sites.map((s) => (s.id === 'wo2_root_runners' && s.kind.type === 'creature_camp' ? { ...s, kind: { ...s.kind, weeklyTraining: 2 } } : s)) } as MissionDefinition;
+    expect(view(d, hero.id, 'wo2_root_runners').training).toMatchObject({ weeklyAllowance: 2, allowanceText: '2 of 2 left this week', max: 2 });
+  });
+
   it('training waits for the pact like hiring', () => {
     const d = GameDriver.mission('silent_oracle_v2_m02', { matchId: 'test-nr-pact-train' });
     const site = missionSite(d.catalog, d.state, 'so2_pegasus')!;

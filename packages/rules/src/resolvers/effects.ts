@@ -9,6 +9,7 @@ import type { PlayerId } from '../ids';
 import { getGod, type ContentCatalog } from '../definitions/catalog';
 import type { EffectDefinition } from '../definitions/logic';
 import type { BattleSideEffects, MatchState } from '../state/match';
+import { cityDedicationsEnabled, retainedGodBenefits } from '../systems/dedication';
 
 export function signatureEffects(catalog: ContentCatalog, state: MatchState, playerId: PlayerId | null): EffectDefinition[] {
   if (!playerId || !state.scenario.signatureMechanics) return [];
@@ -17,11 +18,18 @@ export function signatureEffects(catalog: ContentCatalog, state: MatchState, pla
   return [...(catalog.pantheons[player.pantheonId]?.signature?.effects ?? [])];
 }
 
+/**
+ * Every committed god's direct benefits. With city dedications on (`cityDedicationsV1`,
+ * app 1.5.0) the direct `daily_income` and `weekly_growth_bonus` entries are left out here,
+ * at their source — the city profiles replace them; signatures, weekly events, buildings,
+ * hero perks and every other god benefit are untouched, and the catalog is never changed.
+ */
 export function godEffects(catalog: ContentCatalog, state: MatchState, playerId: PlayerId | null): EffectDefinition[] {
   const player = playerId ? state.players[playerId] : undefined;
   if (!player) return [];
   const gods = [player.pantheon.patronGodId, ...player.pantheon.minorGodIds].filter((g): g is string => !!g);
-  return gods.flatMap((g) => getGod(catalog, g).benefits);
+  const cityMode = cityDedicationsEnabled(state);
+  return gods.flatMap((g) => (cityMode ? retainedGodBenefits(catalog, getGod(catalog, g).benefits) : getGod(catalog, g).benefits));
 }
 
 /** Effects of the current weekly event, which reach every empire (not scripted forces or monsters). */
@@ -79,6 +87,7 @@ export function battleSideEffects(
     if (!fury || e.attack > fury.attack) fury = { attack: e.attack, numerator: e.numerator, denominator: e.denominator };
   }
   return {
+    ...(state.scenario.features?.mythicLibraryV2 ? { library: fx.filter((e): e is import('../definitions/logic').LibraryPassiveEffect => e.type.startsWith('library_')) } : {}),
     recoveryPercent: Math.min(100, sumEffect(fx, 'casualty_recovery', (e) => e.percent)),
     xpPercent: sumEffect(fx, 'battle_xp_percent', (e) => e.percent),
     fury,

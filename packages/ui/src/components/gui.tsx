@@ -4,7 +4,7 @@
  * book folio and the tooltip layer. Presentational only: no rules, no state
  * mutation (callers dispatch their own commands).
  */
-import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
 import type { AppStore } from '../app/store';
 import { NEUTRAL_THEME, artReady, artState, guiArt, guiThemeFor, themeEmblemId, type ArtState, type FrameTheme, type GuiArt, type GuiTheme } from '../assets/guiArt';
 import { resolveAsset } from '../assets/manifest';
@@ -528,9 +528,24 @@ export function TooltipLayer({ delayMs = 320 }: { delayMs?: number }) {
       window.removeEventListener('keydown', hide, true);
     };
   }, [delayMs]);
+  // A wide tooltip near a window edge is moved inside it (its centre follows the element otherwise).
+  const tipRef = useRef<HTMLDivElement | null>(null);
+  const [nudge, setNudge] = useState(0);
+  useLayoutEffect(() => {
+    const el = tipRef.current;
+    if (!el) {
+      if (nudge) setNudge(0);
+      return;
+    }
+    const r = el.getBoundingClientRect();
+    const left = r.left - nudge;
+    const right = r.right - nudge;
+    const shift = left < 4 ? 4 - left : right > window.innerWidth - 4 ? window.innerWidth - 4 - right : 0;
+    if (Math.abs(shift - nudge) > 0.5) setNudge(shift);
+  }, [tip, nudge]);
   if (!tip) return null;
   return (
-    <div className="gui-tip" role="tooltip" style={{ left: tip.x, top: tip.y, transform: `translate(-50%, ${tip.below ? '0' : '-100%'})` }}>
+    <div ref={tipRef} className="gui-tip" role="tooltip" style={{ left: tip.x + nudge, top: tip.y, transform: `translate(-50%, ${tip.below ? '0' : '-100%'})` }}>
       {tip.text}
     </div>
   );

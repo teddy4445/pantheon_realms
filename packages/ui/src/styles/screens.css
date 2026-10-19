@@ -343,6 +343,8 @@ button.god-card { cursor: var(--cur-pointer, pointer); }
   color: var(--text-strong); font-size: 0.82rem; white-space: nowrap;
 }
 .town-hud__row { display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
+/* Sized to its content (an anchored bar would otherwise shrink to the half-width left of its anchor and wrap its numbers). */
+.town-hud { width: max-content; max-width: calc(100% - 1.2rem); }
 .town-hud--left { left: 0.6rem; }
 .town-hud--right { right: 0.6rem; }
 .town-hud--center { left: 50%; transform: translateX(-50%); }
@@ -443,6 +445,12 @@ button.god-card { cursor: var(--cur-pointer, pointer); }
 .pantheon-gods { grid-column: 2; grid-row: 1 / span 2; min-height: 0; display: flex; flex-direction: column; }
 .pantheon-miracles { grid-column: 3; grid-row: 1 / span 2; min-height: 0; display: flex; flex-direction: column; }
 .pantheon-gods .panel__body { flex: 1; min-height: 0; }
+/* City dedications: the patron's card is taller (empire blessing, city dedication, cities): it scrolls inside itself. */
+.pantheon-layout--city { grid-template-rows: minmax(0, 1fr) auto; }
+.pantheon-layout--city .pantheon-patron { min-height: 0; display: flex; flex-direction: column; }
+.pantheon-layout--city .pantheon-patron > .panel__body { flex: 1; min-height: 0; overflow-y: auto; }
+.pantheon-layout--city .pantheon-covenants { max-height: 13rem; }
+.pantheon-layout--city .pantheon-patron .signature { margin-top: 0.55rem; }
 .patron { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.3rem; }
 .patron .bullets { text-align: left; }
 .patron__name { font-family: var(--font-display); font-size: 1.5rem; color: var(--gold-200); }
@@ -1214,3 +1222,6 @@ button.siege-status__item:hover, button.siege-status__item:focus-visible { backg
 .deadline-mini__label { flex: 1; min-width: 0; color: var(--gold-200); }
 .deadline-mini__days { flex: none; font-weight: 600; color: var(--warning); }
 .deadline-mini__item.is-urgent .deadline-mini__days { color: var(--danger); }
+
+/* Tactical spell selection stays within the measured command HUD. */
+.battle-mode-hint { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .6rem; padding: .65rem 1rem; background: #101e2beF; border: 1px solid #b7924b; color: #f1dfb1; }

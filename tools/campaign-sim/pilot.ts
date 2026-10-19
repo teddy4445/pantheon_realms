@@ -553,7 +553,7 @@ export function pilotCandidates(catalog: ContentCatalog, state: MatchState, play
 }
 
 /** Commands that spend resources (held back while an objective waits for them). */
-const SPENDING = new Set(['BuildStructure', 'RecruitUnits', 'UpgradeStack', 'BuyArtifact', 'TrainHero', 'HireHero', 'BuySpellbook', 'RecruitFromCamp', 'InvokeIntervention', 'ReceiveDivineGift', 'TradeResources', 'CompleteQuestHut']);
+const SPENDING = new Set(['BuildStructure', 'RecruitUnits', 'UpgradeStack', 'BuyArtifact', 'TrainHero', 'HireHero', 'BuySpellbook', 'RecruitFromCamp', 'TrainAtCamp', 'InvokeIntervention', 'ReceiveDivineGift', 'TradeResources', 'CompleteQuestHut', 'ScheduleTownRededication']);
 
 function winsQuickly(catalog: ContentCatalog, state: MatchState, playerId: PlayerId, payload: CommandPayload): boolean {
   const run = runQuickBattle(catalog, state, playerId, payload, undefined, { playerSimulation: true });

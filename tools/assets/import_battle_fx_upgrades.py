@@ -24,7 +24,8 @@ animation atlases (6 states x 4 poses) and the Dawncrest Pegasus flight atlas.
        - `projectiles`: 24 travel stills `battlefx.<unit>` (first travel pose);
        - `projectileProfiles`: per shooter creature ID (22) plus `siege_turret` and
          `catapult`: travel frames (regions), the impact effect ID, path, duration
-         range, frame rates, playback, size, release point.
+         range, frame rates, playback, size, release point, and `sounds` (release and
+         impact sound IDs by missile family, the `SOUNDS` table below).
      The UI asset loader merges it into the sprite manifest (it never replaces it).
 
 Usage: python3 tools/assets/import_battle_fx_upgrades.py [--kit DIR] [--dry-run]
@@ -66,6 +67,49 @@ CALIBRATION = {
     # Small physical impacts (javelin, dart, sling, tower arrow) were hard to see at 0.5 hex.
     'impactSizeHex': {u: 0.7 for u in ('peltast', 'veteran_peltast', 'egyptian_jackal_guardian', 'egyptian_anubian_warden', 'mesoamerican_eagle_warrior_spirit', 'mesoamerican_solar_eagle_warrior', 'hill_slinger', 'sling_master', 'siege_turret')},
 }
+
+
+# What each missile sounds like (2026-10-16; presentation only): the release sound goes with the
+# launch, the impact sound with the impact (BattleCue `sound`). Sound IDs of
+# assets-runtime/audio/manifest.json only (no new audio); `maxMs` cuts a long sound with a ~70 ms
+# fade (the magic recordings run 2-3.5 s; the missiles fly 220-650 ms). Keyed by the delivery's
+# `family`; the two siege actors by unit, keeping the sounds they had (combat.turret /
+# combat.catapult at launch). Durations and loudness envelopes were measured on the files
+# (ffprobe, 50 ms RMS); proposed, tune in play.
+SOUNDS = {
+    # Thrown javelins and darts: an arm's whoosh, a pointed head striking.
+    'greek-javelin': {'release': {'id': 'combat.swing', 'maxMs': 600}, 'impact': {'id': 'combat.arrow_hit'}},
+    'egyptian-javelin': {'release': {'id': 'combat.swing', 'maxMs': 600}, 'impact': {'id': 'combat.arrow_hit'}},
+    'atlatl-dart': {'release': {'id': 'combat.swing', 'maxMs': 600}, 'impact': {'id': 'combat.arrow_hit'}},
+    # A sling stone: the whoosh and a blunt thud (combat.hit is mostly sword slices).
+    'sling-ammunition': {'release': {'id': 'combat.swing', 'maxMs': 600}, 'impact': {'id': 'combat.hit_heavy'}},
+    # Heavy lobs: the Catapult's own big whoosh (peaks mid-flight), stone debris on arrival.
+    'cyclops-boulder': {'release': {'id': 'combat.catapult', 'maxMs': 750}, 'impact': {'id': 'combat.stone_hit'}},
+    'granite-block': {'release': {'id': 'combat.catapult', 'maxMs': 750}, 'impact': {'id': 'combat.stone_hit'}},
+    # Magic and breath (long recordings, cut): full level within 50-150 ms of the start.
+    'arcane-bolt': {'release': {'id': 'magic.cast', 'maxMs': 600}, 'impact': {'id': 'magic.strike', 'maxMs': 700}},
+    # A hissing spray, then breaking ice (magic.wind swells for 1.3 s: cut short it is almost silent).
+    'frost-breath': {'release': {'id': 'magic.water', 'maxMs': 600}, 'impact': {'id': 'magic.frost', 'maxMs': 900}},
+    # Fire leaves the mouth; the holy choir (Kirin) or an elemental strike (Xiuhcoatl) where it lands.
+    'holy-fire': {'release': {'id': 'magic.fire'}, 'impact': {'id': 'magic.holy', 'maxMs': 800}},
+    'serpent-fire': {'release': {'id': 'magic.fire'}, 'impact': {'id': 'magic.strike', 'maxMs': 700}},
+    # A low rising whoosh, then the dark drone.
+    'spectral-wail': {'release': {'id': 'magic.shadow', 'maxMs': 700}, 'impact': {'id': 'magic.curse', 'maxMs': 700}},
+    # The siege actors (by unit): the sounds of before.
+    'siege_turret': {'release': {'id': 'combat.turret'}, 'impact': {'id': 'combat.arrow_hit'}},
+    'catapult': {'release': {'id': 'combat.catapult'}, 'impact': {'id': 'combat.stone_hit'}},
+}
+
+
+def sounds_for(unit: str, family: str, known: set[str]) -> dict:
+    entry = SOUNDS.get(unit) if family == 'siege' else SOUNDS.get(family)
+    if not entry:
+        raise SystemExit(f'{unit}: no sounds for missile family {family!r} (add it to SOUNDS)')
+    for part in ('release', 'impact'):
+        sid = entry[part]['id']
+        if sid not in known:
+            raise SystemExit(f'{unit}: {part} sound {sid!r} is not in assets-runtime/audio/manifest.json')
+    return {part: dict(entry[part]) for part in ('release', 'impact')}
 
 
 def calibrate(merge: dict, profiles: dict) -> None:
@@ -138,6 +182,7 @@ def main() -> int:
     upgrades = json.loads((meta_root / 'design' / 'neutral-upgrades.json').read_text(encoding='utf-8'))['upgrades']
     by_file = {a['deliveryFile']: a for a in assets}
     calibrate(merge, profiles)
+    known_sounds = {x['id'] for x in json.loads((ROOT / 'assets-runtime' / 'audio' / 'manifest.json').read_text(encoding='utf-8'))['sounds']}
 
     def check_file(entry: object) -> None:
         for f in json.dumps(entry).split('"file": "')[1:]:
@@ -176,6 +221,7 @@ def main() -> int:
             'sizeHex': p['sizeHex'],
             'impactSizeHex': p['impactSizeHex'],
             'blend': p['blend'],
+            'sounds': sounds_for(unit, p['family'], known_sounds),
         }
         if f'battlefx.{unit}.hit' not in merge['effects'] or f'battlefx.{unit}' not in merge['projectiles']:
             raise SystemExit(f'{unit}: the merge fragment lacks its effect or projectile')

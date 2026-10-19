@@ -1,0 +1,112 @@
+{
+  "status": "Proposed command shapes; adapt names to current typed command dispatcher",
+  "readOnly": [
+    "InspectBattleEntity",
+    "ProjectArmyIntel",
+    "QuoteCaravan",
+    "PreviewNavalPath",
+    "PreviewEmbark",
+    "PreviewCatapultTarget"
+  ],
+  "commands": [
+    {
+      "kind": "DispatchCaravan",
+      "fields": [
+        "sourceTownId",
+        "destinationTownId",
+        "items[{creatureId,count}]",
+        "expectedQuoteHash"
+      ],
+      "validation": "Authenticated actor owns source/destination, stock/price/route rechecked atomically"
+    },
+    {
+      "kind": "RerouteCaravan",
+      "fields": [
+        "caravanId",
+        "destinationTownId"
+      ],
+      "validation": "Owner, legal nonbattle shipment, reachable owned destination; no second recruitment charge"
+    },
+    {
+      "kind": "LaunchShip",
+      "fields": [
+        "townId",
+        "waterCoord"
+      ],
+      "validation": "Owned coastal town, vacant adjacent water, funds, enabled scenario"
+    },
+    {
+      "kind": "EmbarkHero",
+      "fields": [
+        "heroId",
+        "shipId"
+      ],
+      "validation": "Adjacent legal coast, empty claimable ship, movement>=100, one mode only"
+    },
+    {
+      "kind": "DisembarkHero",
+      "fields": [
+        "heroId",
+        "landCoord"
+      ],
+      "validation": "Adjacent legal vacant shore, movement>=100, preserve empty hull"
+    },
+    {
+      "kind": "AttackCaravan",
+      "fields": [
+        "heroId",
+        "caravanId"
+      ],
+      "validation": "Enemy shipment reachable; lock both actors and create manual encounter"
+    },
+    {
+      "kind": "AttackShip",
+      "fields": [
+        "heroId",
+        "targetShipId"
+      ],
+      "validation": "Both occupied hostile ships, adjacent water, eligible movement; create naval_boarding encounter"
+    },
+    {
+      "kind": "BattleAimCatapult",
+      "existing": true,
+      "fields": [
+        "structureId"
+      ],
+      "validation": "Adapt current validator for own live engine phase; no creature activation required in new mode"
+    },
+    {
+      "kind": "BattleFireCatapult",
+      "fields": [
+        "structureId",
+        "expectedRound"
+      ],
+      "validation": "Own engine alive, valid target, not already fired this round; atomic damage and shot event"
+    },
+    {
+      "kind": "BattleSkipCatapult",
+      "fields": [
+        "expectedRound"
+      ],
+      "validation": "Own current live engine phase; end phase without firing"
+    }
+  ],
+  "newEncounterKinds": [
+    "naval_boarding",
+    "caravan_intercept"
+  ],
+  "newEvents": [
+    "ShipLaunched",
+    "HeroEmbarked",
+    "HeroDisembarked",
+    "ShipMoved",
+    "CaravanDispatched",
+    "CaravanMoved",
+    "CaravanBlocked",
+    "CaravanDelivered",
+    "EngineDamaged",
+    "EngineDestroyed",
+    "CatapultFired"
+  ],
+  "presentationRule": "No animation callback dispatches resource, movement, delivery or damage mutations"
+}

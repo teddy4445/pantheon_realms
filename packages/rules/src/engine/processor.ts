@@ -13,6 +13,10 @@ import { BATTLE_COMMAND_KINDS, type GameCommand } from '../commands/commands';
 import type { GameEvent } from '../events/events';
 import type { MatchState } from '../state/match';
 import { RejectionError, Tx, type Rejection, type RulesContext } from './tx';
+import { commitClaimCourierParcel } from '../systems/libraryCourier';
+import { commitSelectSeedTown } from '../systems/libraryEconomy';
+import { commitResolveShadow } from '../systems/battle/libraryShadow';
+import { settleCoalition, commitSelectCoalitionSeat } from '../systems/coalition';
 import { commitEndTurn } from '../systems/turn';
 import {
   commitConstruction,
@@ -31,14 +35,18 @@ import { commitCampRecruitment, commitCampTraining, commitResolveMapEvent } from
 import { commitCompleteQuestHut, commitOpenChest } from '../systems/sites';
 import { commitBattleIntervention, commitIntervention } from '../systems/interventions';
 import { evaluateStory } from '../systems/story';
+import { refreshIntelSnapshots } from '../systems/intel';
 import { commitOperateSluice, evaluateTimers, withdrawPatrols } from '../systems/pressure';
 import { commitAssignCovenant, commitSelectGod } from '../systems/divine';
+import { commitDedicateTown, commitScheduleTownRededication } from '../systems/dedicationSystem';
 import { commitClaimObjective, evaluateMissionOutcome, evaluateObjectives } from '../systems/quests';
 import {
   NEUTRAL_PLAYER_ID,
   commitBattleAbility,
+  commitBattleAttackEngine,
   commitBattleAttackStructure,
   commitBattleCast,
+  commitBattleCastAtEngine,
   commitBattleDefend,
   commitBattleMelee,
   commitBattleMove,
@@ -48,8 +56,14 @@ import {
   commitBattleWait,
 } from '../systems/battle/actions';
 import { commitBattleConfirmDeployment, commitBattleDeploy, commitBattleMergeDefenders, commitBattleSelectDefenders } from '../systems/battle/deployment';
-import { commitBattleAimCatapult } from '../systems/battle/siege';
+import { commitBattleAimCatapult, commitBattleFireCatapult, commitBattleSkipCatapult } from '../systems/battle/siege';
 import { MANUAL_BATTLE_MESSAGE, automationForbidden } from '../systems/battle/policy';
+import { commitBattleHarpoon } from '../systems/battle/seaBoard';
+import { commitAttackCaravan, commitDispatchCaravan, commitRerouteCaravan } from '../systems/caravans';
+import { commitAttackShip, commitDisembarkHero, commitEmbarkHero, commitLaunchShip, reconcileShips } from '../systems/naval';
+import { commitClaimWreckArtifact, commitExploreWreck, refreshSeaWatch } from '../systems/seaSites';
+import { processLibraryAdventureEvents } from '../systems/libraryAdventure';
+import { commitActivateArtifact } from '../systems/battle/activeRelics';
 
 export type CommandResult =
   | { readonly ok: true; readonly state: MatchState; readonly events: readonly GameEvent[] }
@@ -73,6 +87,7 @@ export function processCommand(ctx: RulesContext, state: MatchState, command: Ga
   const isBattle = BATTLE_COMMAND_KINDS.has(command.kind);
   if (isBattle) {
     if (!state.battle) return fail('no_battle', 'No battle in progress');
+    if (state.battle.shadowChoice && command.kind !== 'BattleResolveShadow') return fail('decision_pending', 'Resolve Xolotl’s shadow step first');
     // Campaign battles are fought by hand: automation never orders a human side (handoff 2026-10-15).
     if (command.automated && automationForbidden(state)) return fail('manual_battle_required', MANUAL_BATTLE_MESSAGE);
   } else {
@@ -88,7 +103,13 @@ export function processCommand(ctx: RulesContext, state: MatchState, command: Ga
   const draft = deepClone(state);
   const tx = new Tx(ctx, draft, command.actorPlayerId);
   try {
+    // Scouting intel: a match's first command also records what every player saw at the start.
+    if (draft.intel === undefined && !draft.battle) refreshIntelSnapshots(tx.catalog, draft);
     dispatch(tx, command);
+    // Hero ships (navalMovementV1): no hull keeps a hero who left it (a cheap consistency guard).
+    reconcileShips(tx);
+    // Coastal watchtowers (sea-sites kit): "Enemy ship sighted" alerts, once the map is settled.
+    if (!tx.state.battle) refreshSeaWatch(tx);
     updateGates(tx);
     // Campaign v2 pressure: patrols whose home camp fell withdraw; announced deadlines advance.
     withdrawPatrols(tx);
@@ -99,6 +120,11 @@ export function processCommand(ctx: RulesContext, state: MatchState, command: Ga
     updateGates(tx);
     evaluateMissionOutcome(tx);
     evaluateStory(tx);
+    processLibraryAdventureEvents(tx);
+    settleCoalition(state, draft);
+    // Scouting intel (`scoutingIntelV1`): every player's snapshots follow what it sees now,
+    // once the map is settled (not while a battle runs; its end brings the update).
+    if (!tx.state.battle) refreshIntelSnapshots(tx.catalog, tx.state, tx.events);
     tx.finalize();
   } catch (err) {
     if (err instanceof RejectionError) return { ok: false, rejection: err.rejection };
@@ -119,6 +145,7 @@ export function processCommand(ctx: RulesContext, state: MatchState, command: Ga
 
 function dispatch(tx: Tx, c: GameCommand): void {
   switch (c.kind) {
+    case 'SelectCoalitionSeat': return commitSelectCoalitionSeat(tx, c.playerId);
     case 'EndTurn':
       return commitEndTurn(tx);
     case 'MoveHero':
@@ -148,11 +175,29 @@ function dispatch(tx: Tx, c: GameCommand): void {
     case 'CompleteQuestHut':
       return commitCompleteQuestHut(tx, c.heroId, c.siteId);
     case 'InvokeIntervention':
-      return commitIntervention(tx, c.interventionId, c.townId ?? null);
+      return commitIntervention(tx, c.interventionId, c.townId ?? null, c.heroId, c.siteId);
     case 'ReceiveDivineGift':
       return commitDivineGift(tx, c.townId, c.giftId, c.heroId ?? null);
+    case 'DispatchCaravan':
+      return commitDispatchCaravan(tx, c.sourceTownId, c.destinationTownId, c.items, c.expectedQuoteHash);
+    case 'RerouteCaravan':
+      return commitRerouteCaravan(tx, c.caravanId, c.destinationTownId);
+    case 'AttackCaravan':
+      return commitAttackCaravan(tx, c.heroId, c.caravanId);
+    case 'LaunchShip':
+      return commitLaunchShip(tx, c.townId, c.waterCoord);
+    case 'EmbarkHero':
+      return commitEmbarkHero(tx, c.heroId, c.shipId);
+    case 'DisembarkHero':
+      return commitDisembarkHero(tx, c.heroId, c.landCoord);
+    case 'AttackShip':
+      return commitAttackShip(tx, c.heroId, c.targetShipId);
+    case 'ExploreWreck':
+      return commitExploreWreck(tx, c.heroId, c.siteId);
+    case 'ClaimWreckArtifact':
+      return commitClaimWreckArtifact(tx, c.heroId, c.siteId, c.leaveInstanceId ?? null);
     case 'BattleInvokeIntervention':
-      return commitBattleIntervention(tx, c.interventionId, c.targetId ?? null);
+      return commitBattleIntervention(tx, c.interventionId, c.targetId ?? null, c.secondTargetId);
     case 'RecruitUnits':
       return commitRecruitment(tx, c.townId, c.creatureId, c.quantity, c.destination);
     case 'RecruitBatch':
@@ -161,10 +206,18 @@ function dispatch(tx: Tx, c: GameCommand): void {
       return commitUpgrade(tx, c.townId, c.army, c.slot, c.quantity);
     case 'TransferStack':
       return commitTransfer(tx, c.from, c.fromSlot, c.to, c.toSlot, c.quantity);
+    case 'ClaimCourierParcel':
+      return commitClaimCourierParcel(tx, c.heroId);
+    case 'SelectSeedTown':
+      return commitSelectSeedTown(tx, c.heroId, c.townId);
     case 'SelectGod':
       return commitSelectGod(tx, c.godId);
     case 'AssignCovenant':
       return commitAssignCovenant(tx, c.townId, c.entitlementId);
+    case 'DedicateTown':
+      return commitDedicateTown(tx, c.townId, c.godId);
+    case 'ScheduleTownRededication':
+      return commitScheduleTownRededication(tx, c.townId, c.godId);
     case 'ClaimObjective':
       return commitClaimObjective(tx, c.objectiveId);
     case 'HireHero':
@@ -181,18 +234,24 @@ function dispatch(tx: Tx, c: GameCommand): void {
       return commitUnequip(tx, c.heroId, c.slot);
     case 'ChooseLevelUp':
       return commitLevelUpChoice(tx, c.decisionId, c.offerIndex, c.perkIndex ?? null);
+    case 'BattleResolveShadow':
+      return commitResolveShadow(tx, c.to);
     case 'BattleMove':
       return commitBattleMove(tx, c.stackId, c.to);
     case 'BattleMelee':
       return commitBattleMelee(tx, c.stackId, c.targetId, c.from);
     case 'BattleShoot':
       return commitBattleShoot(tx, c.stackId, c.targetId);
+    case 'BattleHarpoon':
+      return commitBattleHarpoon(tx, c.stackId, c.targetId);
     case 'BattleDefend':
       return commitBattleDefend(tx, c.stackId);
     case 'BattleWait':
       return commitBattleWait(tx, c.stackId);
     case 'BattleCastSpell':
-      return commitBattleCast(tx, c.spellId, c.targetId);
+      return commitBattleCast(tx, c.spellId, c.targetId, c.statusSourceId, c.destination, c.secondTargetId, c.cells);
+    case 'BattleActivateArtifact':
+      return commitActivateArtifact(tx, c.artifactId, c.targetId, c.statusSourceId);
     case 'BattleUseAbility':
       return commitBattleAbility(tx, c.stackId, c.abilityId, c.targetId);
     case 'BattleAttackStructure':
@@ -203,12 +262,20 @@ function dispatch(tx: Tx, c: GameCommand): void {
       return commitBattleMergeDefenders(tx);
     case 'BattleAimCatapult':
       return commitBattleAimCatapult(tx, c.structureId);
+    case 'BattleFireCatapult':
+      return commitBattleFireCatapult(tx, c.structureId, c.expectedRound);
+    case 'BattleSkipCatapult':
+      return commitBattleSkipCatapult(tx, c.expectedRound);
+    case 'BattleAttackEngine':
+      return commitBattleAttackEngine(tx, c.stackId, c.engineId, c.mode, c.from ?? null);
+    case 'BattleCastAtEngine':
+      return commitBattleCastAtEngine(tx, c.spellId, c.engineId);
     case 'BattleDeploy':
       return commitBattleDeploy(tx, c.stackId, c.to);
     case 'BattleConfirmDeployment':
       return commitBattleConfirmDeployment(tx);
     case 'CastAdventureSpell':
-      return commitCastAdventureSpell(tx, c.heroId, c.spellId, c.target);
+      return commitCastAdventureSpell(tx, c.heroId, c.spellId, c.target, { recipientHeroId: c.recipientHeroId, artifactInstanceId: c.artifactInstanceId });
     case 'BattleRetreat':
       return commitBattleRetreat(tx);
     case 'BattleSurrender':

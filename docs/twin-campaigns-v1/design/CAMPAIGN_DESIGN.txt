@@ -1,0 +1,692 @@
+ONE WORLD, TWICE BROKEN
+Two seven-chapter campaigns around the six existing pantheon stories
+Design proposal for discussion. No game files, campaign saves or artwork changed. Names of new places and campaign mechanics below are proposals.
+
+Suggested story order: new prologue → optional Three Beacons training interlude → six existing main pantheon stories → new epilogue.
+
+THE SHARED WORLD: THE CONFLUENCE
+Proposed authoring envelope: 192 × 144 hexes. Performance and travel density must be prototyped before committing to a runtime size; the regional topology is the design requirement.
+Target roughly 35–40% navigable water, with a large central sea, connected rivers, outer coastal lanes and an eastern archipelago.
+The Accord Isle is surrounded by navigable water and has two landing beaches. No permanent land bridge makes shipping optional in either finale.
+
+Norse / Broken Fjord / Frostwatch
+Northern mountains and fjords; western road toward First Harbor, eastern ridge toward Hazel Ford, central sea lane.
+
+Greek / The Drowned Bell Coast / First Harbor
+Cliff-and-valley land loop; northern pass, southwestern river road, inner sea port.
+
+Egyptian / Three-Mouth Delta / Sunbank
+Three navigable river arms; inland ridge road and productive floodplain; southern ocean separates it from Ember Quay.
+
+Mesoamerican / The Obsidian Horseshoe / Ember Quay
+Volcanic rim, lake, jungle approaches and an offshore observation isle; naval connections west and north.
+
+Japanese / Lantern Strait / Lantern Haven
+Three principal islands and two channels; ship-only links with Ember Quay and the northeastern coast.
+
+Celtic / The Living Arch / Hazel Ford
+Woodland circuits, ridge route west, river crossings and an island sanctuary facing the strait.
+
+
+WHEN THE WORLDS MET
+Year 0 · the weeks after the collision
+Strangers discover a shared world and save its first routes together.
+
+P1 — The Ship in the Olive Grove
+Alexios / Greek / Investigation and rescue
+
+Opening interaction:
+A Norse longship lies upright in an olive grove, far above yesterday's shoreline. Its crew insists they sailed here. The harbor bell rings from beneath the new cliffs.
+
+What the hero discovers:
+Alexios follows the stranded crew's account instead of treating them as raiders. A familiar coast ends at a cold-water channel that was not there the night before. The first discovery is geographical: the old maps are accurate, but no longer connect.
+
+Required objectives:
+- Reach the longship and rescue its survivors; their evidence is recorded permanently.
+- Investigate any two of three witnesses: drowned harbor, foreign cairn, or displaced creature meadow.
+- Secure First Harbor and establish a coastal signal visible from the northern fjord.
+
+Map and alternative routes:
+A figure-eight around the olive heights: a short guarded cliff road, a longer productive farm valley, and a boat detour through the drowned harbor. The principal objective has two land approaches; the optional wreck requires sailing.
+
+Water and ships:
+Teach embark/disembark with a supplied vessel and recoverable shipyard. The wreck expedition introduces water exploration without forcing a difficult sea battle in the first chapter.
+
+Player decision:
+Salvage the stranded longship into a palisade (+one bounded defense reserve later), or preserve it as a refuge (+one bounded recruitment reserve). Either choice rescues the crew and advances the story.
+
+Permanent map mark:
+The cliff cut and drowned bell remain. The longship becomes either a timber memorial within the palisade or an inhabited refuge. First Harbor and its signal persist into P7.
+
+Later consequence:
+In E1, Alexios finds the same ship ribs beneath a military checkpoint. The refuge version shelters evacuees; the palisade version offers a defensible side entrance.
+
+Closing scene:
+Hervor's chapter opens with Alexios's foreign signal visible across the fjord. Alexios: 'They have not crossed our border. Our border has crossed them.'
+
+Town state:
+First Harbor, a new Greek frontier settlement using the existing Greek town kit.
+
+Pacing target:
+45–60 minutes; 3 required battles; beginner forces.
+
+P2 — A Warm Tide beneath the Ice
+Hervor / Norse / Evacuation and route opening
+
+Opening interaction:
+Warm water pours under the fjord ice. A Greek signal burns beyond the mountains, and a rescued sailor carries news of a ship Hervor knows should be hundreds of miles away.
+
+What the hero discovers:
+Hervor initially suspects an enemy rite. Exploring inland reveals that snowfields now end in another people's summer woodland. She secures an evacuation corridor and learns that several worlds have suffered the same wound.
+
+Required objectives:
+- Scout the broken fjord from either the high cairn or outer headland.
+- Establish Frostwatch and secure both ends of an evacuation route; progress follows secured sites, not fragile civilian escort units.
+- Clear a navigable approach toward the central sea and deliver a reply to First Harbor.
+
+Map and alternative routes:
+A ring around the fjord: mountain switchbacks, two landings and a central frozen causeway. A warmed inlet becomes a permanent shortcut after a player-triggered event. No occupied tile disappears beneath a unit.
+
+Water and ships:
+A ship is required to reach the far evacuation landing. The route can favor a guarded inner channel or longer outer water with salvage. One introductory single-ship creature battle uses a small ranged sea force.
+
+Player decision:
+Open the western ice channel for safer shipping, or reinforce the eastern mountain road for land supply. Both remain viable in P7; the unimproved alternative stays slower, never impossible.
+
+Permanent map mark:
+The Broken Fjord contains visible floes and a marked shipping channel or reinforced pass. A rescued community establishes Frostwatch's refuge quarter.
+
+Later consequence:
+E2 returns to the same broken ice channel, now watched by foreign blockade towers. The earlier improvement offers a real alternative approach.
+
+Closing scene:
+Hervor sends a rune-marked sounding weight south with a survey vessel. Seshet will find its report at an impossible river mouth.
+
+Town state:
+Frostwatch, a Norse frontier hold distinct from the existing Winter Oath towns.
+
+Pacing target:
+50–65 minutes; 3–4 required battles; first mandatory sailing.
+
+P3 — The River That Forgot the Sea
+Seshet / Egyptian / Survey and hydraulic logistics
+
+Opening interaction:
+The river flows inland at high tide. A northern survey vessel is trapped beside a desert obelisk, and its sounding weight carries Hervor's runes.
+
+What the hero discovers:
+Seshet compares stars, current and old canal records. The river has acquired a new outlet into the shared basin. Saving the district requires deciding how to distribute water, not finding a villain to kill.
+
+Required objectives:
+- Read two river gauges in either order and recover the old canal plan.
+- Secure Sunbank and both sluice controls.
+- Choose an announced permanent water arrangement, then clear the reopened route to the central sea.
+
+Map and alternative routes:
+A delta with three arms, island granaries, an inland caravan loop and a ridge road. A sluice choice alters two crossings while maintaining one all-weather land circuit and at least one navigable channel.
+
+Water and ships:
+Ships carry the expedition to an island gauge and the basin outlet. The canal change previews affected cells and refuses activation while any stack would become stranded.
+
+Player decision:
+Deepen the merchant canal for faster naval access, or restore the floodplain for a bounded food/recruitment benefit. Both options preserve a usable port and complete the mission.
+
+Permanent map mark:
+The Three-Mouth Delta gains a visibly deep canal or green reclaimed fields. Sluice position, shoreline and bridge foundations are permanent ledger entries.
+
+Later consequence:
+In E3, the same gates have become weapons used to control other pantheons' food routes. The original canal choice changes which farms or shipping lane can be restored first.
+
+Closing scene:
+A carved Japanese lantern floats through the open channel. Seshet marks its course on the first map that includes another world's coast.
+
+Town state:
+Sunbank, an Egyptian river settlement using existing town art.
+
+Pacing target:
+55–75 minutes; 3–4 required battles; no unexplained countdown.
+
+P4 — Lanterns on a Foreign Shore
+Akane / Japanese / Naval investigation and island recovery
+
+Opening interaction:
+Festival lanterns return against the current carrying desert reeds. One bears a charcoal map from Seshet. The drowned are following a coastline Akane has never seen.
+
+What the hero discovers:
+Akane discovers that the paths of the dead are also displaced. She uses coastal landmarks to restore a safe local route, without solving the later Lantern Road campaign's separate crisis.
+
+Required objectives:
+- Establish Lantern Haven and recover the local shrine registers.
+- Visit any two of three islands to distinguish a safe channel from a false reflection.
+- Restore the paired shore lights and secure the island landing that joins the emerging shared chart.
+
+Map and alternative routes:
+A triangular island network with a protected inner sea, dangerous outer channel and one neutral island port. Islands can be investigated in either order; lighthouse sight lines reveal useful navigation rather than a corridor of quest gates.
+
+Water and ships:
+Ships are mandatory. One ship-versus-sea-creature battle uses the supplied deck/water layout. Any optional hostile ship encounter uses the separate two-ship boarding layout.
+
+Player decision:
+Restore the nearer lighthouse for safe short crossings, or the outer lighthouse for a longer route that bypasses a hostile harbor. The unchosen route remains available with a disclosed extra cost or guard.
+
+Permanent map mark:
+Lantern Strait gains a permanent navigational light, repaired landing and memorial shore. The sea route is visible in P7 and on the later war map.
+
+Later consequence:
+E5 begins where these same lights are being shuttered to intercept fleeing ships. A lighthouse originally built for lost souls now decides which living people escape.
+
+Closing scene:
+Akane sends the combined chart toward a grove whose trees have begun dropping salt-stained leaves.
+
+Town state:
+Lantern Haven, a frontier port, not a replacement for Kagaribi.
+
+Pacing target:
+60–75 minutes; 4 required battles; guaranteed replacement ship access.
+
+P5 — Roots beneath Foreign Stones
+Orla / Celtic / Creature migration and land negotiation
+
+Opening interaction:
+An ancient oak lifts a stone bearing a foreign calendar. Animals flee toward the coast; one root has grown around a Japanese lantern that arrived with the chart.
+
+What the hero discovers:
+Orla sees that the collision moved habitats as well as people. Local commanders are capturing displaced neutral creatures to build armies. She creates a migration corridor and learns that the most powerful commanders are gathering near the central island.
+
+Required objectives:
+- Locate two threatened habitats and secure Hazel Ford.
+- Open a viable migration corridor by controlling its endpoints and removing the trapping camp.
+- Recover the commanders' route orders and add the northeastern passes to the shared chart.
+
+Map and alternative routes:
+Interlocking woodland and ridge circuits, two river crossings and a sheltered coastal bypass. Clearing a short root tunnel opens a useful back route. Neutral hiring sites are optional; they never supply a unique mandatory key.
+
+Water and ships:
+A sea bypass can avoid the fortified ford at the cost of a ship encounter. An island grove provides optional recruits. Root-Runners, Baku and Afanc keep their existing movement traits; a wet habitat does not make them water-tile battle units.
+
+Player decision:
+Make the recovered corridor a protected sanctuary for a later neutral reserve, or a public road for a later supply shortcut. Creatures survive in either outcome; this is a land-use decision, not a hidden moral trap.
+
+Permanent map mark:
+A conspicuous Living Arch connects the slopes. The protected route becomes a grove; the public route becomes a road with stone boundary markers. Captured pens remain as abandoned landmarks.
+
+Later consequence:
+E4 returns to the same arch, now burned on one side and used as a frontier checkpoint. The earlier sanctuary/road changes the evacuation route.
+
+Closing scene:
+The recovered orders describe six commanders buying wild armies. Orla sends the evidence to Itzel's newly discovered southern observatory.
+
+Town state:
+Hazel Ford, a new Celtic frontier fort.
+
+Pacing target:
+55–75 minutes; 4 required battles; meaningful diplomacy alongside combat.
+
+P6 — The Night with Six Horizons
+Itzel / Mesoamerican / Observatory expedition and coalition preparation
+
+Opening interaction:
+The observatory records six incompatible star paths above one horizon. A northern tree root has split an old calendar stone, and Orla's orders describe armies gathering where the skies overlap.
+
+What the hero discovers:
+Itzel proves that the foreign lands coexist now: this is not a dream, a temporary portal or an invading pantheon. The six commanders intend to control the crossings and drive the peoples apart using the creatures displaced by the collision.
+
+Required objectives:
+- Secure Ember Quay and observe two survey stations in either order.
+- Sail to the offshore observation isle and recover the complete horizon record.
+- Open the southern route to the central island and call the six heroes to a joint expedition.
+
+Map and alternative routes:
+A volcanic horseshoe with two upland routes, a sheltered lake connected to the sea, an offshore station and two potential landing beaches. The volcanic rim is a fixed landmark; optional channel work creates a shortcut without deleting the longer approach.
+
+Water and ships:
+Mandatory ocean crossing to the observation isle. A substantial but bounded Cetus or Isonade encounter tests sea combat. Do not require recruiting an aquatic unit to win.
+
+Player decision:
+Restore the inland observatory for information about commander reserves, or the southern harbor stores for a bounded reinforcement package. Both reveal the proof and open the finale.
+
+Permanent map mark:
+The Six-Sky Observatory is repaired or its lower harbor becomes the expedition depot. A visible obsidian breach opens the southern channel. An empty six-seat council platform is built.
+
+Later consequence:
+E6 returns to the same observatory to compare the original sky record with current fractures. The old depot or records change preparation, not access to the truth.
+
+Closing scene:
+The heroes meet for the first time. They agree to save travel and settlements, not to settle divine sovereignty. Itzel: 'Six skies. One shadow. Whatever happened, it happened to us together.'
+
+Town state:
+Ember Quay, a Mesoamerican frontier port.
+
+Pacing target:
+65–85 minutes; 4–5 required battles; reveal before finale.
+
+P7 — The First Accord
+All six heroes / Coalition / Six-hero campaign climax; sequential neutral warlords
+
+Opening interaction:
+The shared chart is finally complete. Six commanders seize the crossings with enormous neutral armies, claiming that only their own people should control access to the new world.
+
+What the hero discovers:
+The heroes' first alliance is practical: defeat the commanders, restore the routes and protect the frontier towns. They do not discover who caused the collision. The gods' arguments began during the first days; a renewed divine council after the heroes' victory still fails to agree on ownership. Mortal cooperation gives way to the six main campaigns.
+
+Required objectives:
+- Play all six protagonists and their six developed frontier towns on the unified master map.
+- Defeat six named commanders in three announced acts, with either order permitted within each pair.
+- Secure the central council island and ratify safe passage after the last commander falls.
+
+Map and alternative routes:
+Act I: western/northern crossings; Act II: delta/eastern straits; Act III: northeastern/southern approaches to the island. Each act offers land and naval preparation routes. Previously opened routes stay open; inactive commanders defend fixed strongholds and do not receive hidden invulnerability.
+
+Water and ships:
+At least two objective landings are ship-only; navy links distant armies faster than the outer land arc. Land armies fight commander battles after landing. Separate sea-monster encounters use only legal aquatic/flying rosters.
+
+Player decision:
+Use the sanctuary reserves, defenses, canals, lights and intelligence inherited from P1–P6. Before each act, choose one front to receive the coalition's limited reserve. Both fronts remain winnable without it.
+
+Permanent map mark:
+The six roads and sea lanes become one recognized chart. The council island gains the Accord Stone and six vacant flag sockets. Defeated commanders are captured or accept surrender, not canonically killed before their main-campaign appearances.
+
+Later consequence:
+The council ruins are the final objective in E7. Every surviving mark from P1–P6 helps the player recognize why this place mattered.
+
+Closing scene:
+The heroes sign a safe-passage pact. The gods will not sign a common claim. Final line: 'They had found one world. They had not agreed how to share it.'
+
+Town state:
+All six existing frontier towns retain their snapshot development. No seventh full faction town is introduced.
+
+Pacing target:
+120–180 minutes across three saved acts; 6 commander battles plus at most 2 necessary sea encounters.
+
+
+THE ASHES OF THE ACCORD
+Year 18 · after the six regional campaigns and years of war
+The same heroes confront the human cost of the claims they helped establish.
+
+E1 — The Harbor We Once Saved
+Alexios / Greek / Reconstruction and contested siege
+
+Opening interaction:
+Eighteen years after the First Accord, Alexios returns to First Harbor. Soldiers burn the last pieces of the longship to heat a checkpoint; his own old signature is still on the safe-passage stone.
+
+What the hero discovers:
+Years of retaliatory wars have destroyed the frontier capitals. Alexios is ordered to reclaim the harbor from a Norse occupation. His victory is real, but it cuts the northern settlements off from imported grain.
+
+Required objectives:
+- Reclaim First Harbor's inhabited civic quarter and restart its first dwelling and shipyard.
+- Break the occupation through a ridge siege or naval supply interception followed by assault.
+- Capture the customs archive and decide how the harbor will treat enemy civilians.
+
+Map and alternative routes:
+The P1 figure-eight survives as a ruined cliff road, quarry tracks and a partially flooded market. The preserved refuge/palisade provides a different flank. Two usable landing beaches prevent a single-port trap.
+
+Water and ships:
+Interdict an occupation convoy or land behind the fort. At least one crossing is required to reach the archive island; keep a recoverable shipyard and a finite relief force.
+
+Player decision:
+Requisition the grain for immediate military support, or release a protected civilian shipment. E2 still occurs; the choice changes famine pressure, a reserve and Hervor's dialogue, not whether her people deserve survival.
+
+Permanent map mark:
+Greek banners return to the harbor. A burned customs gate becomes either a military depot or civilian passage. The grain decision is written into the war ledger.
+
+Later consequence:
+E2 starts with the convoy's arrival or its confiscation notice. E7 can use this harbor for either emergency supply or evacuation, based on its restoration.
+
+Closing scene:
+Alexios reads the old pact: 'No traveler shall pay for the quarrels of kings.' He orders the gates closed anyway—or opens one narrow exception.
+
+Town state:
+Level-1 civic quarter inside the recognizable ruined First Harbor; higher tiers are nonfunctional ruins.
+
+Pacing target:
+65–85 minutes; 4–5 required battles.
+
+E2 — Bread across the Broken Fjord
+Hervor / Norse / Counteroffensive and naval logistics
+
+Opening interaction:
+The convoy from First Harbor arrives under foreign conditions—or does not arrive. Hervor must feed Frostwatch while its inhabitants blame the allies she once trusted.
+
+What the hero discovers:
+Hervor attacks the supply system supporting the new blockade. She is neither secretly evil nor mistaken about the suffering. The chapter lets the player understand why the previous victory creates another war.
+
+Required objectives:
+- Restore Frostwatch's granary and recruit a viable relief army.
+- Take two of three supply assets: grain island, bridge depot or captured transport anchorage.
+- Break the blockade command and secure a self-sustaining route before beginning the final assault.
+
+Map and alternative routes:
+The P2 fjord ring persists, with wrecks, damaged piers and occupied watchtowers. Mountain supply is safer but slower; shipping is necessary to take the grain island. The earlier pass/channel improvement creates the alternate front.
+
+Water and ships:
+Required sailing and one boarding battle against a supply ship, using two-ship combat. A monster-controlled outer route offers a different tactical risk.
+
+Player decision:
+Return captured food under an armed exchange, or retain it and dismantle the enemy depot. One improves later trust; the other provides bounded defenses. Neither eliminates the grievances or skips E3.
+
+Permanent map mark:
+A liberated grain quay, dismantled depot and named memorial make the counteroffensive visible. No unexplained destruction of the entire region.
+
+Later consequence:
+E5 can find Hervor's marked relief vessel among refugees. E7 inherits the fjord route and one modest reserve, not an unlimited stockpile.
+
+Closing scene:
+Hervor discovers that several armies now divert tribute toward the old council island. She assumes this is another pantheon's scheme.
+
+Town state:
+Frostwatch starts from its surviving hall and refugee huts; old high-tier buildings remain damaged scenery.
+
+Pacing target:
+65–85 minutes; 4–5 required battles; visible logistics thresholds rather than a hidden starvation timer.
+
+E3 — The Price of the River
+Seshet / Egyptian / Water war and evidence gathering
+
+Opening interaction:
+The gauges Seshet installed years ago now bear casualty tallies. Every opening of a sluice saves one settlement and deprives another army of its road.
+
+What the hero discovers:
+Seshet retakes the delta to prevent its deliberate destruction. Her commanders demand that she withhold water from foreign districts. Records reveal that conquest rites—not ordinary fighting alone—are stressing the world's old seams.
+
+Required objectives:
+- Recover Sunbank and the original sluice ledger.
+- Take the two water-control strongpoints in either order, using an inland flank or island landing.
+- Defeat the army attempting to breach the embankment and preserve the two primary civilian water routes.
+
+Map and alternative routes:
+The same three river arms remain, now crossed by siege roads and drowned fields. The P3 choice determines the initially sound canal or floodplain. A permanent ridge road prevents water changes from stranding the scenario.
+
+Water and ships:
+Required island landings and a river-mouth sea encounter. Sluice previews show affected routes, and changing water requires all affected stacks to occupy legal fallback cells.
+
+Player decision:
+Restore civilian irrigation first for refugee support, or the navigable canal first for a naval reserve. Both are ultimately restored enough to sustain life; there is no forced 'drown the innocent' choice.
+
+Permanent map mark:
+The delta regains water and fields, but abandoned siege works remain. A public water charter or military navigation marker records the player's priority.
+
+Later consequence:
+E4 receives displaced families arriving through the reopened delta and must protect them across the old migration route. E7 benefits from the canal or civilian supply network.
+
+Closing scene:
+Seshet records: 'The river is not choosing sides. We are.' She sends copies of the evidence rather than trusting one god or ruler with it.
+
+Town state:
+Sunbank's inhabited high ground is level 1; the former river palaces are flooded ruins.
+
+Pacing target:
+70–90 minutes; 4–5 required battles.
+
+E4 — The Ashes of the Living Arch
+Orla / Celtic / Defense, counterattack and recovery
+
+Opening interaction:
+Boats from Seshet's reopened delta arrive beneath the Living Arch carrying displaced families and weapons from both sides. A foreign army has turned Orla's old migration route into a gate for tribute caravans.
+
+What the hero discovers:
+Orla fights to recover Hazel Ford and protect the groves, then finds evidence that her own side burned mixed settlements to deny them to enemies. She must stop a retaliatory expedition without pretending her opponents' earlier attacks never happened.
+
+Required objectives:
+- Secure the surviving Hazel Ford quarter and one evacuation route.
+- Recover the Living Arch by a woodland flank or coastal landing.
+- Defeat the expedition preparing to burn the remaining mixed sanctuary, then preserve its witnesses and records.
+
+Map and alternative routes:
+The old forest loops remain legible through burned woods, regrowth and trenches. The sanctuary/road choice from P5 changes the safest approach, but both versions retain a land loop and a sea flank.
+
+Water and ships:
+Ships offer an essential route to the sanctuary island and a useful rear landing. Optional Afanc hiring remains on legal land battle terrain; amphibious visuals do not grant new movement rules.
+
+Player decision:
+Expose your own commanders' responsibility immediately for later civic trust, or secure their military stores before the hearing for a reserve at the cost of a colder council reception. The truth is preserved in both cases, not erased by the choice.
+
+Permanent map mark:
+One half of the arch is green, one half charred. A witness stone and reopened sanctuary become persistent markers. The player sees both repair and the cost of earlier war.
+
+Later consequence:
+E6's records include Orla's evidence. E7 can draw on sanctuary volunteers or the recovered stores, with neither required for victory.
+
+Closing scene:
+Orla: 'We remember every tree they burned. We have forgotten the houses we burned beneath them.'
+
+Town state:
+Hazel Ford survives as a hall and scattered shelters inside the old fort footprint.
+
+Pacing target:
+65–90 minutes; 4–5 required battles; triggered defense rather than unbounded waves.
+
+E5 — The Fleet of Unlit Lanterns
+Akane / Japanese / Naval war and protected passage
+
+Opening interaction:
+The paired lights Akane restored have gone dark by military order. Refugee ships carry lanterns hidden beneath their decks because visible light draws attacks.
+
+What the hero discovers:
+Akane is ordered to capture the strait from a rival pantheon. Winning control reveals that every flag has used the passage to trap civilians and seize tribute. She opens a protected corridor while still fighting a genuine military opponent.
+
+Required objectives:
+- Restore Lantern Haven's shipyard and secure a replacement-vessel source.
+- Seize both sides of the strait through island assaults and defeat its finite blockade fleet.
+- Protect the declared departure of three registered civilian vessels; secure-route counters represent their progress rather than new bespoke escort mechanics.
+
+Map and alternative routes:
+The P4 triangle is now a network of forts, wreck fields and a guarded inner channel. The chosen old lighthouse creates the safer opening. Outer water offers a monster encounter instead of a boarding battle, not a free bypass.
+
+Water and ships:
+The most naval chapter: at least one boarding battle and one single-ship/sea-creature battle. Sea creatures remain in water or fly; ships carrying normal troops use the correct deck layout.
+
+Player decision:
+Relight the inner light for protected evacuation or the outer light for fleet maneuver first. Both are eventually restored. The order changes one convoy's dialogue and a bounded reserve, not an unseen mass-casualty penalty.
+
+Permanent map mark:
+Both lights shine again; a wreck lane becomes a marked protected passage. Flags from multiple peoples hang at the landing, alongside the scars of the blockade.
+
+Later consequence:
+E7 uses this passage for the joint landing and an evacuation alternative. P2/E2 relief-vessel flags provide a small recognizable callback.
+
+Closing scene:
+Akane intercepts six separate orders demanding the same conquest rite at the council island. They were issued independently, not by a single secret mastermind.
+
+Town state:
+Lantern Haven begins with its intact small shrine and rebuilt docks; military compounds remain ruined.
+
+Pacing target:
+75–100 minutes; 5 required battles; no endless sea-monster respawns.
+
+E6 — The Calendar of Scars
+Itzel / Mesoamerican / Final offensive and proof of the cost
+
+Opening interaction:
+Itzel overlays the original six-sky record with the present heavens. Each major territorial consecration aligns with a new fracture. Her own victories are among them.
+
+What the hero discovers:
+The collision's cause remains unknown. What can now be proved is that competing claims imposed upon its seams are destabilizing the merged world. This does not absolve anyone of choosing war. Itzel must fight her way to the records while her own leadership prepares another consecration.
+
+Required objectives:
+- Recover Ember Quay and the offshore observatory archive.
+- Defeat a rival occupation army and stop your own announced consecration convoy by capturing its staging stronghold.
+- Compare the six records and deliver copies to the protagonists, securing a limited emergency truce.
+
+Map and alternative routes:
+The P6 volcanic horseshoe still defines the region. Wrecked bridges, ash fields and fortified quays change local movement. Two approaches reach the archive; its final island leg requires a ship. The old depot/observatory choice changes preparation benefits.
+
+Water and ships:
+Required crossing to the archive and protection of the message route. A capped Hafgufa encounter can be avoided via a longer defended channel; neither route demands new creatures or artifacts.
+
+Player decision:
+Commit the recovered tribute to emergency repairs or to the joint expedition's finite reserve. Both provide the proof and the truce; effects are shown before choosing.
+
+Permanent map mark:
+A visible fracture crosses the restored observatory courtyard. The old council platform is repaired for the six heroes; military banners are lowered only within the agreed neutral corridor.
+
+Later consequence:
+E7 begins with these six signatures. The restored frontier towns are preserved, rather than being reset for the finale.
+
+Closing scene:
+Itzel: 'The sky did not learn to hate us. It learned the shape of our promises.' The agreement suspends conquest rites locally; it does not end every war.
+
+Town state:
+Ember Quay starts from a surviving terrace settlement beneath the ruined older center.
+
+Pacing target:
+75–100 minutes; 5 required battles; no last-minute surprise loss timer.
+
+E7 — The World We Leave Behind
+All six heroes / Coalition / Multi-front heroic finale and lasting settlement
+
+Opening interaction:
+All six heroes return to the island where they once promised safe passage. Their armies now occupy opposite approaches, and military councils refuse to abandon the territorial claims purchased with years of blood.
+
+What the hero discovers:
+The protagonists must defeat the forces sustaining incompatible conquest rites, hold open the shared routes and replace exclusive claims with a limited joint custodianship. These enemies defend political power, not mind control. The gods cannot fight directly; mortal heroes must carry the decision.
+
+Required objectives:
+- Control all six protagonists and their six rebuilt frontier towns; secure three regional anchors in any order.
+- Defeat the Crown Host at the council stronghold in a major siege after preparing its approaches.
+- Begin a clearly announced three-day stabilization: hold the council and two of three supply approaches against three finite, telegraphed counterattacks.
+- Ratify the world's local settlement only after the fighting and stabilization are complete.
+
+Map and alternative routes:
+Three simultaneous fronts: the western road/river system, the eastern naval passage, and the northern ridge. Each anchor can be secured by a different hero, but no timed simultaneous six-hero tile puzzle is required. The final island needs ships; previously earned shortcuts reduce travel and create flanking choices.
+
+Water and ships:
+The joint island landing and one supply approach are mandatory naval operations. A boarding battle and a separate sea-creature encounter provide distinct tactics. No surprise storm removes every ship or invalidates an embarked army.
+
+Player decision:
+Choose Shared Custody (six maintained stations; future politics emphasize disputed cooperation) or the Open Passage Charter (a demilitarized island and dispersed stations; future politics emphasize local autonomy). Both stop the current rupture and prohibit exclusive rites here. Neither erases pantheons or makes one ruler owner of the world.
+
+Permanent map mark:
+The Accord Stone is repaired across its cracks. Six roads and the protected sea lane remain. The settlement creates either six small guardian stations or a public harbor and dispersed markers, all using existing architectural kits.
+
+Later consequence:
+The campaign resolves the immediate war over this basin and keeps the saved towns alive. Outside its treaty boundaries, rivalries and unfinished obligations remain available for later campaigns.
+
+Closing scene:
+A final survey reveals a distant coastline absent from both the old and new charts. Its shore bears the same fracture pattern recorded on the first night. The original collision is still unexplained. Last line: 'At last, they had agreed where their world ended. Then the horizon moved.'
+
+Town state:
+All six E1–E6 restored towns persist. The central stronghold is an objective location, not a new playable faction.
+
+Pacing target:
+150–210 minutes across saved acts; 7–9 consequential battles total, including optional-route substitutions rather than additional cleanup.
+
+FIRST FINALE: SIX COMMANDERS
+Three acts, either order within each pair. Early victories are credited if the player reaches a later commander; no invisible invulnerability.
+
+Act I · west — Doros (greek_doros)
+The confiscated western pass
+Serpopards and Crested Serpopards form a long-reach line; boars/ogres screen it.
+Recover the nearby trapping stores to reduce one finite reserve, or assault via the longer ridge.
+Defeat and capture; no pre-main-campaign death.
+
+Act I · north — Ulfhild (norse_ulfhild)
+The fjord timber road
+Root-Runners/Crownroot Runners disrupt retaliation; ogres supply weight.
+Use the P2 improved pass/channel to flank the reserve depot.
+Accept surrender after tactical victory.
+
+Act II · southwest — Paser (egyptian_paser)
+The delta granaries
+Serpopards, existing golems and a limited Pegasus wing protect the crossing.
+Open the alternate sluice approach to separate a supporting guard from the main army.
+Capture and release under the safe-passage settlement.
+
+Act II · east — Kurogane (japanese_kurogane)
+The strait's fortified island
+Baku/Dreamtusk Baku remove debuffs while ogres hold the landing.
+Choose the lighthouse route that bypasses one outer guard; land before fighting this ground army.
+Defeat and disarm; no canonical death.
+
+Act III · northeast — Fiachra (celtic_fiachra)
+The migration-road fortress
+Afanc/Ridgeback Afanc anchor the line; Root-Runners and wyverns threaten flanks.
+Sanctuary volunteers or the public supply road offer different bounded preparation.
+Defeat and capture; preserve later campaign continuity.
+
+Act III · center/south — Tecuani (mesoamerican_tecuani)
+The council island approach
+Ahuitzotl/Crownfin Ahuitzotl manipulate position; Dawncrest Pegasi and ogres support them.
+Use the southern observatory intelligence or depot reserve before the final island landing.
+Last commander falls in a large land battle; no new giant boss model.
+
+EPILOGUE OPPONENT CAST
+Use existing living hireable commanders as the war's military faces, provisionally Ragnar for the northern occupation, Achilles for the western counterforce, Medb for the delta claimant, Moctezuma Ilhuicamina for the forest expedition, Ramses for the strait fleet, and Yamato Takeru for the observatory occupation. These are proposed game-fiction roles using existing assets, not assertions about their historical/mythological lives. Confirm IDs and existing campaign appearances before binding. These opposing forces are defeated or withdraw under explicit rules; do not resurrect killed main-campaign villains. The E7 Crown Host can be an elite multi-pantheon fortress garrison without a new named boss or portrait. Its councils were foreshadowed through requisition orders in E1–E6.
+
+FINAL CHAPTER PHASES
+
+E7 preparation / Three anchors in any order
+Western delta/road, eastern strait, northern ridge. Each capture disables one specific reserve supporting the central siege and opens a supply route. No simultaneously parked hero requirement.
+
+E7 major battle / The Crown Host
+Assault the fortified council location from one of two landings. Its mixed existing faction roster tests army composition and spell timing. Use normal finite siege rules and the existing targetable catapult design if integrated; no god unit, unbounded spawns or inflated new monster.
+
+E7 climax / Three-day stabilization
+Player starts this only after a clear briefing and save opportunity. Hold the council and at least two of three supply approaches through three announced enemy counterattacks: one land, one naval, one final council defense. Defend them with any of the six armies. Counterattacks arrive at named sites; visible deadlines and regrouping time replace arbitrary teleportation.
+
+E7 resolution / A limited lasting settlement
+Complete either custody arrangement after survival. Repaired landmarks remain, the immediate rupture closes, and the named towns survive. No ending invalidates a player's primary victory.
+
+E7 open door / The horizon moves
+A newly charted distant coastline has the original collision's signature. It may be an unmapped part of the first event, another arriving fragment, or evidence of something larger. Do not select one explanation yet or announce an unbuilt seventh pantheon.
+
+CONTINUITY, PROGRESSION AND PRODUCTION RULES
+
+CHRONOLOGY AND EXISTING CAMPAIGNS
+Keep the existing six regional stories and their ending flags intact. The new prologue precedes their political conflicts; it does not prematurely solve the Silent Oracle, Winter Oath, Twelfth Hour, Lantern Road, Silver Branch or New Fire mysteries. The Three Beacons remains the existing optional training interlude before the six main stories; mechanical tutorial lessons can also be available outside the chronological menu. The new prologue must teach its own essential ship and multi-town controls. Do not renumber or delete existing campaign IDs. The inspected content-v2 roster has 37 chapters; adding these 14 would make 51, if that roster is retained.
+
+WHY THE SAME HEROES ARE STILL HERE
+Year 18 is a proposed gap measured from the collision, with the regional stories occurring before the later wars. Eighteen years allows the existing human heroes to remain credible participants without immortality, descendants or new portraits. Their voices and responsibilities mature; graying portrait variants are optional later art, not a dependency. This is a proposed chronology, not a date established by the current game.
+
+ONE WORLD, NOT FOURTEEN DISCONNECTED RECTANGLES
+Author one coast, elevation skeleton, river network and landmark ID set. Each mission uses an active region mask over that master map, plus its persistent state layer. Earlier regions remain visible as dated chronicle/chart views where known, but are not controlled during another hero's chapter. Mark expedition boundaries explicitly. Fog alone is never an impassable wall. Regional scenarios load only their active playable territory; P7 and E7 join the whole graph.
+
+NONLINEAR MOVEMENT WITHIN AUTHORED CHAPTERS
+Every regional chapter needs a land or island circuit, two approaches to its main target, and at least one useful shortcut or costly alternative. Do not build six left-to-right corridors and hide the joins under mountains. Required island goals make ships matter; elective sea routes must have a real travel/guard trade-off. New information should alter a plan, not merely unlock the next gate.
+
+WHAT PERSISTS BETWEEN PERSPECTIVE CHANGES
+Completed events are recorded in a world ledger: opened roads/channels, shore lights, settlement condition, monuments, choices and finite reserves. Snapshot each protagonist, army, town construction, resources and explored cells when their chapter ends. Inactive regional snapshots do not simulate days, grow recruits or lose towns while another chapter is played. Their dates are narrative chapter transitions, not a hidden concurrent economy. Future chapters only change a saved region through a named, visible ledger event.
+
+ASSEMBLING THE SIX-PLAYER-SIDE FINALE
+P7 restores the six snapshots as one controlled coalition with six heroes and towns. Provide a one-time disclosed minimum garrison/army package to prevent an attrition softlock, and apply an explicit ceiling only to transferred surplus resources/reserve stocks, not secretly delete earned troops. Calibrate caps after prototype playtests and show them before committing to chapter completion. All six heroes begin useful; no compulsory army mixing. Native faction stacks can stay with their own heroes, preserving existing morale rules. Shared treasury and cross-pantheon town recruitment require explicit UI and rules support.
+
+EPILOGUE TOWN RESET WITH AN EXPLANATION
+The frontier towns were burned, occupied and depopulated during the intervening wars. E1–E6 start with one inhabited level-1 civic core and small rebuilding forces inside the SAME recognizable ruin footprints. Ruined advanced structures are nonfunctional, labelled as such, and cannot be captured for instant tier-4 production. Construction restores their normal prerequisites and costs. The world has not universally forgotten how to build; these six damaged frontier towns are the playable reconstruction sites. Each restored town persists into E7, with no second reset.
+
+HERO PROGRESSION ACROSS CAMPAIGNS
+Do not import six arbitrarily overpowered armies into a new campaign or force veterans to pretend they have never fought. E1–E6 use disclosed veteran starting profiles with meaningful skills and a small force; story/choice imports are separate from numerical balance. Main-campaign endings influence dialogue and bounded assistance, never mandatory keys or moral verdicts. Offer a standalone 'established chronicle' preset and let a returning player choose completed runs to import. Prologue choices default to explicitly shown authored outcomes when no save exists.
+
+FAILURE, RECOVERY AND MANUAL BATTLES
+All player-involved campaign battles are manual, including garrisons, sea monsters, boarding and scripted fights. No quick resolve, exact auto-casualty preview or full-battle autoplay bypass. Enemy tactical AI and animation speed controls remain. Protagonist defeat is a stated scenario loss; defeated required opponents use explicitly staged surrender/capture when later continuity requires survival. Losing an ordinary town is recoverable until the disclosed elimination condition. Failed optional objectives alter bounded benefits rather than lock a later chapter.
+
+KEEP LOGISTICS FAIR
+Every mandatory sailing chapter has a recoverable ship source and at least two sensible landing opportunities. A destroyed boat must not delete a unique quest record. Knowledge is recorded on discovery and survives inventory changes. Preserve destination paths across End Day and save/load; revalidate only changed route segments and pause before hostile encounters. No terrain flip may strand a stack, erase an occupied island or strand the campaign's only hero.
+
+SEA COMBAT USES THE NEW RULES
+Single ship versus sea monsters: left half deck, right half water, supplied sea-battle layout; normal ground units stay on deck, swimmers stay in water, flyers may hover/cross. All sea enemies must fly or have sustainable ranged damage, and the deck army needs the documented harpoon/cross-rail alternatives. Ship versus ship uses the separate two-deck/bridge encounter. Existing Afanc, Ahuitzotl and other wetland-themed land neutrals do NOT automatically become swimmers. Coastal creature dwellings must validate army travel legality.
+
+GODS REMAIN POWERFUL BUT INDIRECT
+Divine disagreement is presented through existing portraits, shrines, visions and competing instructions. No god enters combat as a target. The gods' inability to fight directly without unraveling the world remains true. The later danger comes from mutually exclusive territorial consecrations acting on old seams, not a claim that every ordinary sword strike cracks reality. The collision's original cause stays unresolved.
+
+ENEMY SCALE AND PACING
+'Huge neutral armies' means frightening compositions, upgraded silhouettes and strategic preparation—not multiplying HP or forcing twenty cleanup fights. P7 has six commander battles in three acts, with finite disclosed stock and no infinite growth. Initial tuning target: a commander is stronger than an unprepared single regional army but beatable after normal recruitment and one optional preparation benefit. Exact stack quantities require combat simulations and manual playtests. Mandatory battle budgets and durations on cards are targets, not tested promises.
+
+STORY DELIVERY
+Every chapter opens with a 20–40 second strange or emotionally charged interaction using existing portraits and scenery. Follow with two short on-map revelations and one decision scene; keep most dialogue to 2–5 lines, skippable and replayable. Changes occur visibly on the actual map, with before/after silhouettes, a short sound and a ledger entry. Ending chapters show the next hero encountering a consequence. Avoid a mandatory lore wall or a new narrated cinematic for every clue.
+
+A WAR WITH ACCOUNTABLE PEOPLE
+The six protagonists can authorize harmful policies and later recognize their costs. Their nations are not uniformly cruel, and a single secret villain does not retroactively cause every decision. E1–E6 are genuine military conflicts before the temporary truce. The finale settles this basin's immediate crisis while preserving religious differences, losses, obligations and political disputes elsewhere.
+
+ENGINEERING AND ART STATUS
+This is a design review, not an importable mission schema or a claim these systems already work. Shared-map layers, six-protagonist persistence, multi-pantheon player ownership, phased commander objectives, conditional terrain, route-based civilian counters, archive evidence and legacy-choice import need an engineering audit. Existing heroes, creature art, town tiers, ruins, ships and sea battle backgrounds are the intended visual base. Any missing destroyed/repaired landmark overlays or chapter covers should be scoped after design approval, not silently generated now.
+
+SOURCE AUDIT — READ ONLY
+C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/v2/index.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/silentOracle.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/winterOath.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/twelfthHour.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/lanternRoad.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/silverBranch.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/newFire.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/neutralsV2.ts
+C:/Users/lazeb/Desktop/pantheon_realms/docs/campaign-v2/design/campaign-proposal.json
+C:/Users/lazeb/Desktop/pantheon_realms/docs/hero-portraits-complete/catalog-heroes.json

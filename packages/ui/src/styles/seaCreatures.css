@@ -1,0 +1,34 @@
+/* Sea creatures (2026-10-17): encounter card, encyclopedia family panel, animated preview. */
+.seacard { display: flex; gap: 0.7rem; align-items: flex-start; }
+.seacard__body { min-width: 0; flex: 1; }
+.seacard__name { font-family: var(--font-display, serif); font-weight: 600; font-size: 1.05rem; }
+.seacard__tier { font-family: var(--font-ui); font-size: 0.78rem; font-weight: 600; color: var(--gui-ink-faint, #6b5539); margin-left: 0.3rem; }
+.seacard__origin { font-size: 0.88rem; font-style: italic; margin: 0.1rem 0 0.3rem; }
+.seacard__facts { margin: 0; display: flex; flex-direction: column; gap: 0.18rem; font-size: 0.9rem; line-height: 1.28; }
+.seacard__facts > div { display: grid; grid-template-columns: 7.6rem minmax(0, 1fr); gap: 0.4rem; }
+.seacard__facts dt { font-family: var(--font-ui); font-weight: 700; font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--gui-ink-faint, #6b5539); padding-top: 0.12rem; }
+.seacard__facts dd { margin: 0; }
+.seacard--compact .seacard__facts { font-size: 0.82rem; }
+.seacard--compact .seacard__facts > div { grid-template-columns: 6.4rem minmax(0, 1fr); }
+.seacard--compact .seacard__origin { display: none; }
+.tile-info__sea { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.4rem; }
+
+.seafamily { display: flex; flex-direction: column; gap: 0.6rem; }
+.seafamily__forms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem; }
+.seafamily__form { display: flex; flex-direction: column; gap: 0.4rem; min-width: 0; }
+.seafamily__actions { flex-wrap: wrap; margin-top: auto; }
+.seafamily__compare { border-collapse: collapse; font-size: 0.9rem; width: 100%; max-width: 30rem; }
+.seafamily__compare caption { text-align: left; font-weight: 600; padding-bottom: 0.2rem; }
+.seafamily__compare th, .seafamily__compare td { padding: 0.12rem 0.5rem; text-align: left; border-bottom: 1px solid rgba(107, 85, 57, 0.22); }
+.seafamily__delta--up { font-weight: 700; }
+.seafamily__arrow { font-size: 0.7rem; margin-left: 0.25rem; }
+@media (max-width: 900px) { .seafamily__forms { grid-template-columns: minmax(0, 1fr); } }
+
+.seapreview { display: flex; flex-direction: column; gap: 0.3rem; }
+.seapreview__canvas { width: 100%; max-width: 20rem; height: 13rem; background: radial-gradient(ellipse at 50% 85%, rgba(40, 92, 120, 0.35), rgba(20, 40, 60, 0.12) 70%); border-radius: 6px; }
+.seapreview__controls { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+.seapreview__anim { font: inherit; font-size: 0.78rem; padding: 0.12rem 0.45rem; border-radius: 4px; border: 1px solid rgba(107, 85, 57, 0.45); background: rgba(255, 248, 230, 0.6); cursor: pointer; }
+.seapreview__anim.is-on, .seapreview__anim[aria-pressed='true'] { background: #5b3d1c; color: #fff4dc; }
+.seapreview__note { font-size: 0.78rem; font-style: italic; }
+/* The sea board's legend: what stands where, at the bottom-left of the field (beside the Log button's row). */
+.battle-sea-legend { position: absolute; left: 0.8rem; bottom: calc(var(--bottombar-h) + 2.4rem); z-index: 3; padding: 0.2rem 0.6rem; border-radius: 0.4rem; background: rgba(8, 16, 29, 0.78); border: 1px solid rgba(194, 154, 82, 0.45); color: var(--text-strong, #f2e6c9); pointer-events: none; }

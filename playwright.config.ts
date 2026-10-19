@@ -15,7 +15,7 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:4173/',
     viewport: { width: 1600, height: 900 },
-    launchOptions: { args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] },
+    launchOptions: { args: process.env.PR_E2E_HARDWARE === '1' ? ['--ignore-gpu-blocklist'] : ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] },
     screenshot: 'only-on-failure',
     trace: 'off',
   },

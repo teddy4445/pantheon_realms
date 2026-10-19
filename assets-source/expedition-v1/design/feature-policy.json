@@ -1,0 +1,14 @@
+{
+  "newFeatures": [
+    "inspectionPanelV1",
+    "scoutingIntelV1",
+    "recruitmentCaravansV1",
+    "navalMovementV1",
+    "targetableCatapultV1"
+  ],
+  "defaults": "New games enabled. Old saves default stateful features off until explicit migration; inspection can be presentation-only.",
+  "campaign": "Preserve manual-only battle requirement and mission allowlists. No new automatic combat path.",
+  "noStoryRewrite": true,
+  "priorWork": "Preserve city-dedication design if present, existing projectile work and six siege gate/wall variants. Do not replace their manifests.",
+  "scope": "Delivery contains art, presentation examples and design contracts; game implementation is deferred to Claude."
+}

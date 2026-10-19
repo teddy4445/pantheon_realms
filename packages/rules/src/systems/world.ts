@@ -1,3 +1,4 @@
+import { allied } from './coalition';
 /**
  * WorldFeatures (proposed this build): weekly events, neutral creature camps,
  * one-time map events and relic shrines.
@@ -19,7 +20,9 @@ import { scenarioMission } from '../resolvers/scenario';
 import { reject, type RejectionCode, type Tx } from '../engine/tx';
 import { clampMovement, spend } from './economy';
 import { grantReward } from './quests';
+import { worldWeek } from './services';
 import { bumpTotal } from './stats';
+import { discountedRecruitTotal, maxDiscountedRecruit } from '../resolvers/libraryRecruitment';
 
 // ---------------------------------------------------------------------------
 // Weekly events
@@ -150,11 +153,12 @@ export function quoteCampRecruitment(catalog: ContentCatalog, state: MatchState,
   const creature = typeof chosen === 'string' && forms.includes(chosen) ? catalog.creatures[chosen] : undefined;
   const unitCost = resources(creature?.cost ?? {});
   const qty = Number.isInteger(quantity) ? quantity : 0;
-  const totalCost = scaleResources(unitCost, Math.max(0, qty));
-  const available = campStock(catalog, state, siteId);
+  const compact = state.scenario.features?.mythicLibraryV2 && hero?.libraryAdventure?.compact?.day === state.day && hero.libraryAdventure.compact.siteId === siteId ? hero.libraryAdventure.compact : undefined;
+  const totalCost = discountedRecruitTotal(unitCost, Math.max(0, qty), compact);
+  const available = availableCampStock(catalog, state, siteId, heroId);
   const wallet = player?.wallet ?? resources();
   const slot = hero && creature ? placementSlot(hero.army, creature.id) : null;
-  const maxQuantity = slot === null ? 0 : Math.max(0, Math.min(available, maxAffordable(wallet, unitCost)));
+  const maxQuantity = slot === null ? 0 : maxDiscountedRecruit(wallet, unitCost, available, compact);
   const base = { creatureId: creature?.id ?? null, forms, unitCost, totalCost, available, maxQuantity, slot };
   const fail = (code: RejectionCode, reason: string): CampQuote => ({ legal: false, code, reason, ...base });
   if (!def || !st || !forms.length) return fail('not_found', 'Unknown creature camp');
@@ -178,10 +182,15 @@ export function commitCampRecruitment(tx: Tx, heroId: HeroId, siteId: SiteId, qu
   if (!q.legal || q.slot === null || !q.creatureId) reject(q.code ?? 'illegal_action', q.reason ?? 'Cannot recruit');
   const hero = tx.state.heroes[heroId]!;
   const creature = tx.catalog.creatures[q.creatureId]!;
+  if (hero.libraryAdventure?.compact?.siteId === siteId) delete hero.libraryAdventure.compact;
   spend(tx, tx.actorId, q.totalCost, `Recruited ${quantity} ${creature.pluralName}`);
   const st = tx.state.world.sites[siteId]!;
   // One stock per site, whichever form is hired.
-  st.stock = q.available - quantity;
+  st.stock = campStock(tx.catalog, tx.state, siteId) - quantity;
+  if (st.reservation?.heroId === heroId) {
+    st.reservation.quantity = Math.max(0, st.reservation.quantity - quantity);
+    if (!st.reservation.quantity) delete st.reservation;
+  }
   const slot = hero.army.slots[q.slot];
   if (slot) slot.count += quantity;
   else hero.army.slots[q.slot] = { stackId: tx.nextId('stack'), creatureId: creature.id, count: quantity };
@@ -193,6 +202,51 @@ export function commitCampRecruitment(tx: Tx, heroId: HeroId, siteId: SiteId, qu
 // ---------------------------------------------------------------------------
 // Training at a neutral hiring site (battle FX & neutral upgrades, 2026-10-15)
 // ---------------------------------------------------------------------------
+
+/** The site's training pairs: each base form it hires whose one upgrade it hires too. */
+function trainingPairs(catalog: ContentCatalog, forms: readonly CreatureId[]): CreatureDefinition[] {
+  return forms.flatMap((id) => {
+    const c = catalog.creatures[id];
+    return c?.form === 'base' && c.upgradeId && forms.includes(c.upgradeId) ? [c] : [];
+  });
+}
+
+/**
+ * The weekly training allowance of a site (owner decision 2026-10-16): how many
+ * creatures it upgrades per week, shared by every empire and renewed each new
+ * week (the week its stock refills). The content's `weeklyTraining` when set,
+ * else the site's weekly hiring stock (`weeklyGrowth`): a site upgrades at most as
+ * many as it hires. 0 for a site that trains nothing (it does not hire both forms
+ * of a family) or whose content sets 0.
+ */
+export function campTrainingAllowance(catalog: ContentCatalog, def: Pick<SiteDefinition, 'kind'>): number {
+  if (def.kind.type !== 'creature_camp' || trainingPairs(catalog, campSiteForms(catalog, def)).length === 0) return 0;
+  const n = def.kind.weeklyTraining ?? def.kind.weeklyGrowth;
+  return Number.isInteger(n) && n > 0 ? n : 0;
+}
+
+/**
+ * Creatures trained at `siteId` in the current world week, by every empire
+ * together. A count kept from an earlier week is none (the allowance renews each
+ * week); a save from before the allowance has no count (none this week).
+ */
+export function campTrainedThisWeek(catalog: ContentCatalog, state: MatchState, siteId: SiteId): number {
+  const st = state.world.sites[siteId];
+  if (!st || st.trainedWeek !== worldWeek(state, catalog.rulesProfile.daysPerWeek)) return 0;
+  const n = st.trainedThisWeek ?? 0;
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
+}
+
+/** How many more creatures `siteId` can train this week (its allowance less what every empire trained there this week). */
+export function campTrainingLeft(catalog: ContentCatalog, state: MatchState, siteId: SiteId): number {
+  const def = campDef(catalog, state, siteId);
+  return def ? Math.max(0, campTrainingAllowance(catalog, def) - campTrainedThisWeek(catalog, state, siteId)) : 0;
+}
+
+/** "Its trainers can take 2 more this week (4 a week)" — the refusal when a training asks for more than is left. */
+export function campTrainingLimitText(left: number, allowance: number): string {
+  return `Its trainers can take ${left > 0 ? `${left} more` : 'no more'} this week (${allowance} a week)`;
+}
 
 export interface CampTrainingQuote {
   readonly legal: boolean;
@@ -210,8 +264,12 @@ export interface CampTrainingQuote {
   /** The price difference per creature (upgraded cost − base cost). */
   readonly unitCost: ResourceBundle;
   readonly totalCost: ResourceBundle;
-  /** The most of that stack the hero can train now (wallet and space), 0 when none. */
+  /** The most of that stack the hero can train now (wallet, space and the week's allowance), 0 when none. */
   readonly maxQuantity: number;
+  /** The site's weekly training allowance, shared by every empire (`campTrainingAllowance`; 0 where it trains nothing). */
+  readonly weeklyAllowance: number;
+  /** How many of it are left this week (`campTrainingLeft`). */
+  readonly leftThisWeek: number;
 }
 
 /** Where `quantity` of the stack in `slot` would go when they become `toId` (the town training's rule). */
@@ -233,6 +291,12 @@ function trainingTarget(slots: readonly ({ readonly creatureId: CreatureId; read
  * never destroyed; base and upgraded never share a stack). `slot` picks the stack;
  * omitted, the hero's first stack of that creature. The same ownership, presence,
  * guard, pact and pending-decision checks as hiring.
+ *
+ * Weekly allowance (owner decision 2026-10-16): the site trains at most
+ * `campTrainingAllowance` creatures a week, all empires together; asking for more
+ * than is left this week is refused (`campTrainingLimitText`), and `maxQuantity`
+ * never exceeds what is left. The allowance is not the hiring stock: training
+ * still uses none of it.
  */
 export function quoteCampTraining(
   catalog: ContentCatalog,
@@ -264,22 +328,23 @@ export function quoteCampTraining(
   }
   const stack = index !== null ? (slots[index] ?? null) : null;
   const stackCount = stack?.count ?? 0;
+  const weeklyAllowance = def ? campTrainingAllowance(catalog, def) : 0;
+  const leftThisWeek = def ? campTrainingLeft(catalog, state, siteId) : 0;
   let maxQuantity = 0;
   if (stack && up && index !== null) {
-    const affordable = Math.min(stack.count, maxAffordable(wallet, unitCost));
-    maxQuantity = affordable >= stack.count ? stack.count : affordable > 0 && trainingTarget(slots, index, up.id, affordable, stack.count) !== null ? affordable : 0;
+    // Wallet and the week's allowance; less than the whole stack needs somewhere to go.
+    const limit = Math.min(stack.count, maxAffordable(wallet, unitCost), leftThisWeek);
+    maxQuantity = limit >= stack.count ? stack.count : limit > 0 && trainingTarget(slots, index, up.id, limit, stack.count) !== null ? limit : 0;
   }
-  const base = { fromId: up ? (from?.id ?? null) : null, toId: up?.id ?? null, slot: index, stackCount, unitCost, totalCost, maxQuantity };
+  const base = { fromId: up ? (from?.id ?? null) : null, toId: up?.id ?? null, slot: index, stackCount, unitCost, totalCost, maxQuantity, weeklyAllowance, leftThisWeek };
   const fail = (code: RejectionCode, reason: string, targetSlot: number | null = null): CampTrainingQuote => ({ legal: false, code, reason, targetSlot, ...base });
   if (!def || !st || !forms.length) return fail('not_found', 'Unknown creature camp');
   if (!from) return fail('invalid_command', 'Unknown creature');
   if (!up) {
-    const pairs = forms.flatMap((id) => {
-      const c = catalog.creatures[id];
-      return c?.form === 'base' && c.upgradeId && forms.includes(c.upgradeId) ? [`${c.pluralName} into ${catalog.creatures[c.upgradeId]?.pluralName ?? c.upgradeId}`] : [];
-    });
+    const pairs = trainingPairs(catalog, forms).map((c) => `${c.pluralName} into ${catalog.creatures[c.upgradeId!]?.pluralName ?? c.upgradeId}`);
     return fail('not_recruitable', pairs.length ? `${def.name} trains only ${pairs.join(', ')}` : `${def.name} trains no creatures`);
   }
+  if (weeklyAllowance < 1) return fail('not_recruitable', `${def.name} trains no creatures`);
   if (!hero || hero.ownerId !== playerId || hero.status !== 'active') return fail('not_owner', 'Not your hero');
   if (!hexEquals(hero.position, def.coord)) return fail('not_present', `${hero.name} must stand at ${def.name}`);
   if (def.guard && !st.cleared) return fail('missing_requirement', 'Its guards still hold the camp');
@@ -288,6 +353,8 @@ export function quoteCampTraining(
   if (state.pendingDecisions.some((d) => d.heroId === heroId)) return fail('decision_pending', 'Resolve the pending level-up first');
   if (!stack || index === null) return fail('not_found', slot === undefined || slot === null ? `${hero.name} has no ${from.pluralName} to train` : `No ${from.pluralName} in that slot`);
   if (qty < 1 || qty > stack.count) return fail('invalid_quantity', `Choose 1-${stack.count} ${from.pluralName} to train`);
+  // The site's weekly allowance, shared by every empire (training uses no hiring stock).
+  if (qty > leftThisWeek) return fail('no_population', campTrainingLimitText(leftThisWeek, weeklyAllowance));
   const targetSlot = trainingTarget(slots, index, up.id, qty, stack.count);
   if (targetSlot === null) return fail('no_capacity', `A partial training needs a free slot or an existing stack of ${up.pluralName}`);
   if (!canAfford(wallet, totalCost)) return fail('insufficient_resources', 'Not enough resources', targetSlot);
@@ -295,7 +362,7 @@ export function quoteCampTraining(
 }
 
 export function commitCampTraining(tx: Tx, heroId: HeroId, siteId: SiteId, fromCreatureId: CreatureId, quantity: number, slot?: number | null): void {
-  // Requoted against the committed state: wallet, the stack and its count, space, presence, pact and guards.
+  // Requoted against the committed state: wallet, the stack and its count, space, presence, pact, guards and the week's allowance.
   const q = quoteCampTraining(tx.catalog, tx.state, tx.actorId, heroId, siteId, fromCreatureId, quantity, slot);
   if (!q.legal || q.slot === null || q.targetSlot === null || !q.fromId || !q.toId) reject(q.code ?? 'illegal_action', q.reason ?? 'Cannot train');
   const army = tx.state.heroes[heroId]!.army;
@@ -311,7 +378,11 @@ export function commitCampTraining(tx: Tx, heroId: HeroId, siteId: SiteId, fromC
     if (target) target.count += quantity;
     else army.slots[q.targetSlot] = { stackId: tx.nextId('stack'), creatureId: q.toId, count: quantity };
   }
-  // The site's stock is untouched: training recruits nobody.
+  // The site's stock is untouched: training recruits nobody. The week's allowance is used
+  // (shared by every empire; a count from an earlier week starts again from none).
+  const site = tx.state.world.sites[siteId]!;
+  site.trainedThisWeek = campTrainedThisWeek(tx.catalog, tx.state, siteId) + quantity;
+  site.trainedWeek = worldWeek(tx.state, tx.profile.daysPerWeek);
   const key = `trained:${q.fromId}`;
   tx.state.mission.counters[key] = (tx.state.mission.counters[key] ?? 0) + quantity;
   tx.emit({ kind: 'CampTrained', siteId, heroId, fromId: q.fromId, toId: q.toId, quantity });
@@ -346,8 +417,10 @@ export function quoteMapEvent(catalog: ContentCatalog, state: MatchState, player
   if (option.requiresFlags?.some((f) => !state.mission.flags[f])) return fail('missing_requirement', 'You do not yet have what this choice needs');
   const wallet = state.players[playerId]?.wallet ?? resources();
   if (option.cost && !canAfford(wallet, resources(option.cost))) return fail('insufficient_resources', 'Not enough resources');
+  const recipient = option.rewardHeroId ? state.heroes[option.rewardHeroId] : hero;
+  if (!recipient || recipient.status !== 'active' || !allied(state, recipient.ownerId, playerId)) return fail('not_owner', 'The reserve recipient must be an active allied hero');
   for (const c of option.reward.creatures ?? []) {
-    if (placementSlot(hero.army, c.creatureId) === null) return fail('no_capacity', `${hero.name} has no free slot for ${catalog.creatures[c.creatureId]?.pluralName ?? c.creatureId}`);
+    if (placementSlot(recipient.army, c.creatureId) === null) return fail('no_capacity', `${hero.name} has no free slot for ${catalog.creatures[c.creatureId]?.pluralName ?? c.creatureId}`);
   }
   return { legal: true, code: null, reason: null, option };
 }
@@ -360,7 +433,7 @@ export function commitResolveMapEvent(tx: Tx, heroId: HeroId, siteId: SiteId, op
   tx.state.world.sites[siteId]!.claimed = true;
   tx.state.world.sites[siteId]!.chosenOption = optionIndex;
   tx.emit({ kind: 'MapEventResolved', siteId, heroId, optionIndex, label: q.option.label });
-  grantReward(tx, tx.actorId, heroId, q.option.reward, `event:${siteId}`, def.name);
+  grantReward(tx, tx.actorId, q.option.rewardHeroId ?? heroId, q.option.reward, `event:${siteId}`, def.name);
   // An authored resolution (campaign v2): named guards stand down — no battle, no simulation.
   for (const id of q.option.clearsSiteIds ?? []) {
     const st = tx.state.world.sites[id];
@@ -389,4 +462,16 @@ export function advanceRelics(tx: Tx): void {
     const needed = cond?.type === 'hold_site' && cond.siteId === def.id ? cond.days : 0;
     tx.emit({ kind: 'RelicHeld', siteId: def.id, playerId: st.owner, days: st.heldDays, needed });
   }
+}
+
+
+export function liveCampReservation(state: MatchState, siteId: SiteId) {
+  const site = state.world.sites[siteId], r = site?.reservation;
+  const h = r ? state.heroes[r.heroId] : undefined;
+  return state.scenario.features?.mythicLibraryV2 && r && r.untilDay > state.day && r.quantity > 0 && site?.owner === null && h?.status === 'active' && h.ownerId === r.ownerId ? r : null;
+}
+/** Reservation is a hold on existing stock, never newly created population. */
+export function availableCampStock(catalog: ContentCatalog, state: MatchState, siteId: SiteId, heroId: HeroId): number {
+  const total = campStock(catalog, state, siteId), r = liveCampReservation(state, siteId);
+  return Math.max(0, total - (r && r.heroId !== heroId ? r.quantity : 0));
 }

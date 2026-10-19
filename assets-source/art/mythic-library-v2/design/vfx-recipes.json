@@ -1,0 +1,1397 @@
+[
+  {
+    "id": "spell2_daedalus_passage",
+    "trigger": "committed rules event: temporary_flight",
+    "kind": "flight",
+    "materials": [
+      "fx_greek_seal",
+      "fx_gold_motes"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 700,
+    "maxParticles": 12,
+    "notes": "At target feet, rise with the Daedalus icon; keep a small wing status badge until its next activation ends.",
+    "persistentBadge": "spell2_daedalus_passage",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_siren_refrain",
+    "trigger": "committed rules event: ranged_lock",
+    "kind": "debuff",
+    "materials": [
+      "fx_greek_trail",
+      "fx_shadow_echo"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 650,
+    "maxParticles": 12,
+    "notes": "Curl once around target head; show ranged-lock badge, no screen tint.",
+    "persistentBadge": "spell2_siren_refrain",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_oathbound_spear",
+    "trigger": "committed rules event: retaliation_weaken",
+    "kind": "debuff",
+    "materials": [
+      "fx_greek_seal",
+      "fx_ward_break"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 550,
+    "maxParticles": 12,
+    "notes": "Flash target's retaliation badge with crossed-spear icon; no damage number.",
+    "persistentBadge": "spell2_oathbound_spear",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_crossroads_omen",
+    "trigger": "committed rules event: guard_intel",
+    "kind": "map_scout",
+    "materials": [
+      "fx_greek_seal"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 650,
+    "maxParticles": 12,
+    "notes": "Pulse only the already known guard and its scouting report icon.",
+    "persistentBadge": "spell2_crossroads_omen",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_aeolian_tack",
+    "trigger": "committed rules event: sea_step_discount",
+    "kind": "map_travel",
+    "materials": [
+      "fx_greek_trail",
+      "fx_water_ring"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 700,
+    "maxParticles": 12,
+    "notes": "Brief wake behind current ship; persistent small duration badge only.",
+    "persistentBadge": "spell2_aeolian_tack",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_frost_threshold",
+    "trigger": "committed rules event: rune_traps",
+    "kind": "zone",
+    "materials": [
+      "fx_frost_patch",
+      "fx_norse_burst"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 750,
+    "maxParticles": 12,
+    "notes": "One low-opacity patch per selected hex; burst on first valid entry; remove each consumed trap.",
+    "persistentBadge": "spell2_frost_threshold",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_ravens_exchange",
+    "trigger": "committed rules event: ally_swap",
+    "kind": "swap",
+    "materials": [
+      "fx_portal",
+      "fx_norse_seal"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 650,
+    "maxParticles": 12,
+    "notes": "Paired rings at validated source and destination, fade units out then in; snap rules position independently.",
+    "persistentBadge": "spell2_ravens_exchange",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_runes_refusal",
+    "trigger": "committed rules event: single_debuff_ward",
+    "kind": "ward",
+    "materials": [
+      "fx_norse_ward"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 700,
+    "maxParticles": 12,
+    "notes": "Dome pulse on target, then a small rune badge; break flash only when it blocks a debuff.",
+    "persistentBadge": "spell2_runes_refusal",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_njords_sounding",
+    "trigger": "committed rules event: nautical_intel",
+    "kind": "map_scout",
+    "materials": [
+      "fx_water_ring",
+      "fx_norse_seal"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 650,
+    "maxParticles": 12,
+    "notes": "Subtle pulses on known valid maritime features only, no global fog reveal.",
+    "persistentBadge": "spell2_njords_sounding",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_skalds_camp",
+    "trigger": "committed rules event: rest_mana_contract",
+    "kind": "map_camp",
+    "materials": [
+      "fx_norse_seal",
+      "fx_gold_motes"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 650,
+    "maxParticles": 12,
+    "notes": "Seal under stationary hero plus rest icon; dawn recovery uses normal mana notification.",
+    "persistentBadge": "spell2_skalds_camp",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_feathers_verdict",
+    "trigger": "committed rules event: bounded_buff_suppression",
+    "kind": "debuff",
+    "materials": [
+      "fx_egyptian_seal"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 550,
+    "maxParticles": 12,
+    "notes": "Scale icon above target, small no-luck badge; do not display damage.",
+    "persistentBadge": "spell2_feathers_verdict",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_door_duat",
+    "trigger": "committed rules event: temporary_return",
+    "kind": "temporary_return",
+    "materials": [
+      "fx_portal",
+      "fx_shadow_echo",
+      "fx_egyptian_burst"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 900,
+    "maxParticles": 12,
+    "notes": "Portal at restored footprint; reuse source creature art with gold spectral tint; label temporary count distinctly.",
+    "persistentBadge": "spell2_door_duat",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_sand_silence",
+    "trigger": "committed rules event: creature_spell_lock",
+    "kind": "silence",
+    "materials": [
+      "fx_sand_hush"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 650,
+    "maxParticles": 12,
+    "notes": "Small sand spiral around caster mouth/head; silence icon persists.",
+    "persistentBadge": "spell2_sand_silence",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_scribes_survey",
+    "trigger": "committed rules event: resource_site_intel",
+    "kind": "map_scout",
+    "materials": [
+      "fx_gold_motes",
+      "fx_egyptian_seal"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 650,
+    "maxParticles": 12,
+    "notes": "Pulse only known resource markers; show surveyed expiry in tooltip.",
+    "persistentBadge": "spell2_scribes_survey",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_silt_to_stone",
+    "trigger": "committed rules event: rough_step_discount",
+    "kind": "map_travel",
+    "materials": [
+      "fx_egyptian_seal",
+      "fx_gold_motes"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 550,
+    "maxParticles": 12,
+    "notes": "Brief low-opacity footprints under moving hero; never replace the ground art.",
+    "persistentBadge": "spell2_silt_to_stone",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_tide_pearl_turn",
+    "trigger": "committed rules event: legal_push",
+    "kind": "push",
+    "materials": [
+      "fx_water_ring",
+      "fx_japanese_trail"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 700,
+    "maxParticles": 12,
+    "notes": "Wave travels in chosen push direction then target slides one validated hex.",
+    "persistentBadge": "spell2_tide_pearl_turn",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_paper_crane_ward",
+    "trigger": "committed rules event: projectile_spell_guard",
+    "kind": "ward",
+    "materials": [
+      "fx_japanese_ward",
+      "fx_cleanse"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 700,
+    "maxParticles": 12,
+    "notes": "White paper-crane icon above target; dome reacts on spell-projectile absorption only.",
+    "persistentBadge": "spell2_paper_crane_ward",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_uzumes_dawn",
+    "trigger": "committed rules event: group_mind_cleanse",
+    "kind": "cleanse",
+    "materials": [
+      "fx_cleanse",
+      "fx_japanese_burst"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 750,
+    "maxParticles": 12,
+    "notes": "One soft rising cleanse on each affected allied stack, stagger 40 ms; no full-screen flash.",
+    "persistentBadge": "spell2_uzumes_dawn",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_lantern_pilgrimage",
+    "trigger": "committed rules event: homebound_road_discount",
+    "kind": "map_travel",
+    "materials": [
+      "fx_delivery_seal",
+      "fx_japanese_seal"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 650,
+    "maxParticles": 12,
+    "notes": "Lantern icon over hero and subtle selected-road shimmer on known route only.",
+    "persistentBadge": "spell2_lantern_pilgrimage",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_foxfire_diversion",
+    "trigger": "committed rules event: strategic_decoy",
+    "kind": "map_decoy",
+    "materials": [
+      "fx_shadow_echo",
+      "fx_japanese_seal"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 700,
+    "maxParticles": 12,
+    "notes": "Place small foxfire sprite on selected hex; label 'decoy' after enemy identification, no unit hitbox.",
+    "persistentBadge": "spell2_foxfire_diversion",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_rowan_sanctuary",
+    "trigger": "committed rules event: protective_zone",
+    "kind": "zone",
+    "materials": [
+      "fx_thorn_bind",
+      "fx_celtic_seal"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 650,
+    "maxParticles": 12,
+    "notes": "Low-profile ring per zone hex; keep units and selection above it; no opaque wall.",
+    "persistentBadge": "spell2_rowan_sanctuary",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_hazels_recall",
+    "trigger": "committed rules event: restore_shots",
+    "kind": "resupply",
+    "materials": [
+      "fx_gold_motes",
+      "fx_celtic_burst"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 550,
+    "maxParticles": 12,
+    "notes": "Two small arrow icons rise by target's ammunition counter; existing ammo value updates from event.",
+    "persistentBadge": "spell2_hazels_recall",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_briar_debt",
+    "trigger": "committed rules event: one_hit_thorns",
+    "kind": "reactive",
+    "materials": [
+      "fx_thorn_bind",
+      "fx_celtic_trail"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 650,
+    "maxParticles": 12,
+    "notes": "Briar badge on ally; brief trail toward attacker only when a valid melee hit triggers it.",
+    "persistentBadge": "spell2_briar_debt",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_hares_borrowed_path",
+    "trigger": "committed rules event: forest_step_discount",
+    "kind": "map_travel",
+    "materials": [
+      "fx_celtic_trail"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 550,
+    "maxParticles": 12,
+    "notes": "Small leaf trail behind hero on eligible forest steps, bounded to one hex.",
+    "persistentBadge": "spell2_hares_borrowed_path",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_well_remembering",
+    "trigger": "committed rules event: short_return_anchor",
+    "kind": "map_anchor",
+    "materials": [
+      "fx_portal",
+      "fx_water_ring"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 750,
+    "maxParticles": 12,
+    "notes": "Emerald-tinted portal marks anchor; paired dissolve on legal return. Show expiry and route constraint.",
+    "persistentBadge": "spell2_well_remembering",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_obsidian_eclipse",
+    "trigger": "committed rules event: symmetric_ranged_zone",
+    "kind": "zone",
+    "materials": [
+      "fx_shadow_echo",
+      "fx_mesoamerican_seal"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 700,
+    "maxParticles": 12,
+    "notes": "Low-opacity dark shimmer in radius1 zone, explicit debuff outline; do not conceal units or UI.",
+    "persistentBadge": "spell2_obsidian_eclipse",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_serpents_breath",
+    "trigger": "committed rules event: line_damage",
+    "kind": "line",
+    "materials": [
+      "fx_mesoamerican_trail",
+      "fx_mesoamerican_burst"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 700,
+    "maxParticles": 12,
+    "notes": "Rotate right-facing trail to line direction; one burst per hit stack, including allies. Multihex target once.",
+    "persistentBadge": "spell2_serpents_breath",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_xolotls_twin",
+    "trigger": "committed rules event: fragile_illusion",
+    "kind": "illusion",
+    "materials": [
+      "fx_shadow_echo",
+      "fx_mesoamerican_burst"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 850,
+    "maxParticles": 12,
+    "notes": "Use source creature sprite tinted cyan at 55% alpha; explicit ILLUSION badge; dissolve on one hit.",
+    "persistentBadge": "spell2_xolotls_twin",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_ehecatls_boatcall",
+    "trigger": "committed rules event: summon_existing_boat",
+    "kind": "map_ship",
+    "materials": [
+      "fx_water_ring",
+      "fx_mesoamerican_trail"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 900,
+    "maxParticles": 12,
+    "notes": "Animate existing empty ship on validated known-water path; fast-forward allowed; no new ship silhouette.",
+    "persistentBadge": "spell2_ehecatls_boatcall",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_maizebound_compact",
+    "trigger": "committed rules event: neutral_purchase_discount",
+    "kind": "map_trade",
+    "materials": [
+      "fx_gold_motes",
+      "fx_mesoamerican_seal"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 600,
+    "maxParticles": 12,
+    "notes": "Compact seal above chosen dwelling with purchase-expiry badge; no resource popup until transaction.",
+    "persistentBadge": "spell2_maizebound_compact",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_aether_step",
+    "trigger": "committed rules event: short_battle_teleport",
+    "kind": "teleport",
+    "materials": [
+      "fx_portal"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 650,
+    "maxParticles": 12,
+    "notes": "Paired source/destination rings; units fade, no implied traversed path across invalid cells.",
+    "persistentBadge": "spell2_aether_step",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_unweave",
+    "trigger": "committed rules event: targeted_positive_dispel",
+    "kind": "dispel",
+    "materials": [
+      "fx_ward_break"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 550,
+    "maxParticles": 12,
+    "notes": "Shatter only the selected buff badge, then remove that effect's persistent visual.",
+    "persistentBadge": "spell2_unweave",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_clear_mind",
+    "trigger": "committed rules event: targeted_negative_dispel",
+    "kind": "cleanse",
+    "materials": [
+      "fx_cleanse"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 550,
+    "maxParticles": 12,
+    "notes": "Rising white particles; remove exactly selected debuff badge.",
+    "persistentBadge": "spell2_clear_mind",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_cinder_siphon",
+    "trigger": "committed rules event: bounded_enemy_mana_drain",
+    "kind": "mana_drain",
+    "materials": [
+      "fx_shadow_echo",
+      "fx_gold_motes"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 650,
+    "maxParticles": 12,
+    "notes": "Embers dissipate above enemy commander mana meter. Never animate transfer to caster.",
+    "persistentBadge": "spell2_cinder_siphon",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_glass_bulwark",
+    "trigger": "committed rules event: temporary_obstacle",
+    "kind": "barrier",
+    "materials": [
+      "fx_crystal_barrier"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 750,
+    "maxParticles": 12,
+    "notes": "One crystal sprite per selected blocking hex, anchored on floor and occluding by normal depth order.",
+    "persistentBadge": "spell2_glass_bulwark",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_spellground",
+    "trigger": "committed rules event: summon_banish",
+    "kind": "banish",
+    "materials": [
+      "fx_ward_break",
+      "fx_shadow_echo"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 650,
+    "maxParticles": 12,
+    "notes": "Fracture targeted summon/illusion and fade according to actual damage or dismissal event.",
+    "persistentBadge": "spell2_spellground",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_second_guard",
+    "trigger": "committed rules event: retaliation_restore",
+    "kind": "retaliation",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 550,
+    "maxParticles": 12,
+    "notes": "Rotating small shield-arrow icon at allied stack; update retaliation indicator, no free attack animation.",
+    "persistentBadge": "spell2_second_guard",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_leyline_chart",
+    "trigger": "committed rules event: spell_site_intel",
+    "kind": "map_scout",
+    "materials": [
+      "fx_portal",
+      "fx_gold_motes"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 650,
+    "maxParticles": 12,
+    "notes": "Tiny pulse on already known eligible teaching sites; no fog changes.",
+    "persistentBadge": "spell2_leyline_chart",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_road_mending",
+    "trigger": "committed rules event: road_step_discount",
+    "kind": "map_travel",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 550,
+    "maxParticles": 12,
+    "notes": "Brief gold stitching along next known road tile; no new road sprite or terrain mutation.",
+    "persistentBadge": "spell2_road_mending",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "spell2_courier_sigil",
+    "trigger": "committed rules event: delayed_artifact_delivery",
+    "kind": "map_delivery",
+    "materials": [
+      "fx_delivery_seal"
+    ],
+    "direction": "trail materials face right; rotate toward validated destination",
+    "durationMs": 700,
+    "maxParticles": 12,
+    "notes": "Seal leaves sender inventory, then delivery badge. On dawn delivery, seal arrives at recipient; no item duplication.",
+    "persistentBadge": "spell2_courier_sigil",
+    "cleanup": "Remove transient sprites at duration end; remove status/zone visuals only on authoritative expiry, dispel, consumption, battle end or scene teardown.",
+    "blend": "normal-alpha; optional restrained additive core only",
+    "reducedMotion": "Static associated icon and outline for 200ms; persistent statuses remain readable."
+  },
+  {
+    "id": "blessing2_athenas_order",
+    "trigger": "committed blessing event: formation_swap",
+    "kind": "blessing",
+    "materials": [
+      "fx_greek_seal",
+      "fx_greek_ward",
+      "fx_gold_motes"
+    ],
+    "durationMs": 800,
+    "maxParticles": 10,
+    "notes": "Pulse faction seal and ward at validated target(s); float this blessing's icon once. For formation swap show both footprints; catapult repair uses machine location; travel/reservation uses hero/dwelling marker. No damage/heal numbers unless actual rule event provides them.",
+    "persistentBadge": "blessing2_athenas_order",
+    "cleanup": "Status duration follows rules; no persistent full-size dome.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Static blessing icon 200ms."
+  },
+  {
+    "id": "blessing2_poseidons_mooring",
+    "trigger": "committed blessing event: naval_anchor_ward",
+    "kind": "map_blessing",
+    "materials": [
+      "fx_greek_seal",
+      "fx_greek_ward",
+      "fx_gold_motes"
+    ],
+    "durationMs": 800,
+    "maxParticles": 10,
+    "notes": "Pulse faction seal and ward at validated target(s); float this blessing's icon once. For formation swap show both footprints; catapult repair uses machine location; travel/reservation uses hero/dwelling marker. No damage/heal numbers unless actual rule event provides them.",
+    "persistentBadge": "blessing2_poseidons_mooring",
+    "cleanup": "Status duration follows rules; no persistent full-size dome.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Static blessing icon 200ms."
+  },
+  {
+    "id": "blessing2_tyrs_equal_ground",
+    "trigger": "committed blessing event: temporary_defense_pierce",
+    "kind": "blessing",
+    "materials": [
+      "fx_norse_seal",
+      "fx_norse_ward",
+      "fx_gold_motes"
+    ],
+    "durationMs": 800,
+    "maxParticles": 10,
+    "notes": "Pulse faction seal and ward at validated target(s); float this blessing's icon once. For formation swap show both footprints; catapult repair uses machine location; travel/reservation uses hero/dwelling marker. No damage/heal numbers unless actual rule event provides them.",
+    "persistentBadge": "blessing2_tyrs_equal_ground",
+    "cleanup": "Status duration follows rules; no persistent full-size dome.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Static blessing icon 200ms."
+  },
+  {
+    "id": "blessing2_friggs_watched_return",
+    "trigger": "committed blessing event: last_creature_guard",
+    "kind": "blessing",
+    "materials": [
+      "fx_norse_seal",
+      "fx_norse_ward",
+      "fx_gold_motes"
+    ],
+    "durationMs": 800,
+    "maxParticles": 10,
+    "notes": "Pulse faction seal and ward at validated target(s); float this blessing's icon once. For formation swap show both footprints; catapult repair uses machine location; travel/reservation uses hero/dwelling marker. No damage/heal numbers unless actual rule event provides them.",
+    "persistentBadge": "blessing2_friggs_watched_return",
+    "cleanup": "Status duration follows rules; no persistent full-size dome.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Static blessing icon 200ms."
+  },
+  {
+    "id": "blessing2_thoths_reckoning",
+    "trigger": "committed blessing event: prepared_spell_discount",
+    "kind": "blessing",
+    "materials": [
+      "fx_egyptian_seal",
+      "fx_egyptian_ward",
+      "fx_gold_motes"
+    ],
+    "durationMs": 800,
+    "maxParticles": 10,
+    "notes": "Pulse faction seal and ward at validated target(s); float this blessing's icon once. For formation swap show both footprints; catapult repair uses machine location; travel/reservation uses hero/dwelling marker. No damage/heal numbers unless actual rule event provides them.",
+    "persistentBadge": "blessing2_thoths_reckoning",
+    "cleanup": "Status duration follows rules; no persistent full-size dome.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Static blessing icon 200ms."
+  },
+  {
+    "id": "blessing2_sobeks_river_oath",
+    "trigger": "committed blessing event: wetland_retaliation",
+    "kind": "blessing",
+    "materials": [
+      "fx_egyptian_seal",
+      "fx_egyptian_ward",
+      "fx_gold_motes"
+    ],
+    "durationMs": 800,
+    "maxParticles": 10,
+    "notes": "Pulse faction seal and ward at validated target(s); float this blessing's icon once. For formation swap show both footprints; catapult repair uses machine location; travel/reservation uses hero/dwelling marker. No damage/heal numbers unless actual rule event provides them.",
+    "persistentBadge": "blessing2_sobeks_river_oath",
+    "cleanup": "Status duration follows rules; no persistent full-size dome.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Static blessing icon 200ms."
+  },
+  {
+    "id": "blessing2_amaterasus_true_dawn",
+    "trigger": "committed blessing event: dawn_clarity",
+    "kind": "blessing",
+    "materials": [
+      "fx_japanese_seal",
+      "fx_japanese_ward",
+      "fx_gold_motes"
+    ],
+    "durationMs": 800,
+    "maxParticles": 10,
+    "notes": "Pulse faction seal and ward at validated target(s); float this blessing's icon once. For formation swap show both footprints; catapult repair uses machine location; travel/reservation uses hero/dwelling marker. No damage/heal numbers unless actual rule event provides them.",
+    "persistentBadge": "blessing2_amaterasus_true_dawn",
+    "cleanup": "Status duration follows rules; no persistent full-size dome.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Static blessing icon 200ms."
+  },
+  {
+    "id": "blessing2_inari_guest_right",
+    "trigger": "committed blessing event: dwelling_reservation",
+    "kind": "map_blessing",
+    "materials": [
+      "fx_japanese_seal",
+      "fx_japanese_ward",
+      "fx_gold_motes"
+    ],
+    "durationMs": 800,
+    "maxParticles": 10,
+    "notes": "Pulse faction seal and ward at validated target(s); float this blessing's icon once. For formation swap show both footprints; catapult repair uses machine location; travel/reservation uses hero/dwelling marker. No damage/heal numbers unless actual rule event provides them.",
+    "persistentBadge": "blessing2_inari_guest_right",
+    "cleanup": "Status duration follows rules; no persistent full-size dome.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Static blessing icon 200ms."
+  },
+  {
+    "id": "blessing2_brigids_unbroken_work",
+    "trigger": "committed blessing event: catapult_repair",
+    "kind": "blessing",
+    "materials": [
+      "fx_celtic_seal",
+      "fx_celtic_ward",
+      "fx_gold_motes"
+    ],
+    "durationMs": 800,
+    "maxParticles": 10,
+    "notes": "Pulse faction seal and ward at validated target(s); float this blessing's icon once. For formation swap show both footprints; catapult repair uses machine location; travel/reservation uses hero/dwelling marker. No damage/heal numbers unless actual rule event provides them.",
+    "persistentBadge": "blessing2_brigids_unbroken_work",
+    "cleanup": "Status duration follows rules; no persistent full-size dome.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Static blessing icon 200ms."
+  },
+  {
+    "id": "blessing2_manannans_safe_landing",
+    "trigger": "committed blessing event: landing_reserve",
+    "kind": "map_blessing",
+    "materials": [
+      "fx_celtic_seal",
+      "fx_celtic_ward",
+      "fx_gold_motes"
+    ],
+    "durationMs": 800,
+    "maxParticles": 10,
+    "notes": "Pulse faction seal and ward at validated target(s); float this blessing's icon once. For formation swap show both footprints; catapult repair uses machine location; travel/reservation uses hero/dwelling marker. No damage/heal numbers unless actual rule event provides them.",
+    "persistentBadge": "blessing2_manannans_safe_landing",
+    "cleanup": "Status duration follows rules; no persistent full-size dome.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Static blessing icon 200ms."
+  },
+  {
+    "id": "blessing2_xolotls_faithful_shadow",
+    "trigger": "committed blessing event: guided_displacement",
+    "kind": "blessing",
+    "materials": [
+      "fx_mesoamerican_seal",
+      "fx_mesoamerican_ward",
+      "fx_gold_motes"
+    ],
+    "durationMs": 800,
+    "maxParticles": 10,
+    "notes": "Pulse faction seal and ward at validated target(s); float this blessing's icon once. For formation swap show both footprints; catapult repair uses machine location; travel/reservation uses hero/dwelling marker. No damage/heal numbers unless actual rule event provides them.",
+    "persistentBadge": "blessing2_xolotls_faithful_shadow",
+    "cleanup": "Status duration follows rules; no persistent full-size dome.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Static blessing icon 200ms."
+  },
+  {
+    "id": "blessing2_chalchiuhtlicues_mercy",
+    "trigger": "committed blessing event: river_quench",
+    "kind": "blessing",
+    "materials": [
+      "fx_mesoamerican_seal",
+      "fx_mesoamerican_ward",
+      "fx_gold_motes"
+    ],
+    "durationMs": 800,
+    "maxParticles": 10,
+    "notes": "Pulse faction seal and ward at validated target(s); float this blessing's icon once. For formation swap show both footprints; catapult repair uses machine location; travel/reservation uses hero/dwelling marker. No damage/heal numbers unless actual rule event provides them.",
+    "persistentBadge": "blessing2_chalchiuhtlicues_mercy",
+    "cleanup": "Status duration follows rules; no persistent full-size dome.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Static blessing icon 200ms."
+  },
+  {
+    "id": "relic2_ariadne_spool",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_aeolus_windbag",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_orpheus_lyre",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_golden_fleece_mantle",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_hestia_hearthclasp",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_talos_bronze_seal",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_gleipnir_ribbon",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_norse_seal",
+      "fx_thorn_bind"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_svalinn_shield",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_mimir_cup",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_skidbladnir_keel",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_idunn_apple_clasp",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_skadi_huntbow",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_isis_tyet",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_wepwawet_sandals",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_thoth_inkwell",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_hathor_sistrum",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_anubis_canopic_seal",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_nut_starweave",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_hoori_tide_pearl",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_uzume_bells",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_inari_rice_key",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_hidesato_centipede_arrow",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_yomi_return_cord",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_takemikazuchi_guard",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_nuada_silver_bracer",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_cleanse",
+      "fx_celtic_ward"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_brans_voyage_brooch",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_dian_cecht_needle",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_rhiannon_bridle",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_salmon_wisdom_pin",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_morrigan_crowcloak",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_ehecatl_conch",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_xiuhcoatl_firebrand",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_xolotl_guide_mask",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_chalchiuhtlicue_hem",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_quetzal_seed_ring",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_mictlan_guide_lantern",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_surveyors_astrolabe",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_runebreaker_gauntlet",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_ward_break"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_pilgrim_mileboots",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  },
+  {
+    "id": "relic2_hourglass_reserve",
+    "trigger": "only on a discrete successful artifact proc, not every frame or every passive recalculation",
+    "kind": "artifact_proc",
+    "materials": [
+      "fx_gold_motes"
+    ],
+    "durationMs": 450,
+    "maxParticles": 4,
+    "notes": "Display item icon next to affected unit or hero resource meter. Continuous passives need tooltip/summary only; no repeated particle spam. Gleipnir binding uses silver-tinted thorn loop; its gameplay is root, not damage.",
+    "blend": "normal-alpha",
+    "reducedMotion": "Small icon only."
+  }
+]

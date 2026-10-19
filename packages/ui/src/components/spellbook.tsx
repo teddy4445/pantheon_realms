@@ -78,6 +78,7 @@ export function SpellBook({
   };
   const theme = guiThemeFor(pantheonId);
   const sectionTitle = use === 'battle' ? 'Battle spells' : use === 'adventure' ? 'Adventure spells' : 'All spells';
+  const costOf = (sp: SpellDefinition) => cast?.options[sp.id]?.manaCost ?? sp.manaCost;
   const left = (
     <div className="ak-book__left">
       <h3 className="ak-book__title">{sectionTitle}</h3>
@@ -108,7 +109,7 @@ export function SpellBook({
           shown.map((sp) => {
             const reason = reasonOf(sp);
             const usable = !cast || reason === null;
-            const short = hero.mana < sp.manaCost;
+            const short = hero.mana < costOf(sp);
             const body = (
               <>
                 <span className="ak-spell__art">
@@ -116,7 +117,7 @@ export function SpellBook({
                 </span>
                 <span className="ak-spell__name">{sp.name}</span>
                 <span className={`ak-spell__mana ${short ? 'is-short' : ''}`}>
-                  {ROMAN[sp.tier] ?? sp.tier} · {sp.manaCost} Mana
+                  {ROMAN[sp.tier] ?? sp.tier} · {costOf(sp)} Mana
                 </span>
               </>
             );
@@ -163,7 +164,7 @@ export function SpellBook({
       </div>
       <p className="ak-book__summary">{detail.summary}</p>
       {detail.lore ? <p className="ak-book__lore">{detail.lore}</p> : null}
-      <p className={`ak-book__cost ${hero.mana < detail.manaCost ? 'is-short' : ''}`}>Cost: {detail.manaCost} Mana</p>
+      <p className={`ak-book__cost ${hero.mana < costOf(detail) ? 'is-short' : ''}`}>Cost: {costOf(detail)} Mana</p>
       {cast ? (
         <>
           {reasonOf(detail) ? <p className="tome-spell__reason">{reasonOf(detail)}</p> : null}

@@ -1,0 +1,26 @@
+{
+  "gameVersion": "1.4.0",
+  "files": [
+    {
+      "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\packages\\mapgen\\src\\skirmish.ts",
+      "sha256": "da0f36f3b2b43f29ccdedbcc2d61cbc212e6becb4595e08758c091c79ebe0c3e"
+    },
+    {
+      "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\packages\\campaign\\src\\randomSkirmish.ts",
+      "sha256": "8e348756ec6810a52d775b1b59e7433a11caee4bb10fe63cc7b7c40daa84e3a0"
+    },
+    {
+      "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\packages\\ui\\src\\screens\\RandomSetup.tsx",
+      "sha256": "71c74dd60c8c6d1b21c50964b58522be33d19f1ef26a97065787770c17179547"
+    },
+    {
+      "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\packages\\ui\\src\\screens\\MapEditor.tsx",
+      "sha256": "674dd89d25d1276dd180884b1a446a4acd2a1a2ef57ffa6fc0f5919c4148f2c1"
+    },
+    {
+      "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\random-map-types.json",
+      "sha256": "43d3e5021cf80734fc0563f207a2eb71cee279ef88a6b2637ff96f6da84f8dc5"
+    }
+  ],
+  "changes": "No game files modified"
+}

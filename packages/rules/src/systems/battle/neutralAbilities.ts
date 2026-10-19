@@ -16,7 +16,11 @@ import type { ContentCatalog } from '../../definitions/catalog';
 import type { AbilityRule } from '../../definitions/creatures';
 import type { BattleStackState, BattleState, BattleStatusState } from '../../state/match';
 import { reject, type Tx } from '../../engine/tx';
-import { findAbility, isAlive, occupancy, opposing, sideStacks, stackCells, statsOf } from './common';
+import { findAbility, isAlive, movementClassOf, occupancy, opposing, sideStacks, stackCells, statsOf } from './common';
+import { footprintZoneProblem } from './board';
+import { requestFaithfulShadow } from './libraryShadow';
+import { applyFrostEntry } from './libraryFields';
+import { consumeDisplacementGuard } from './libraryRelics';
 
 type Rule<T extends AbilityRule['type']> = Extract<AbilityRule, { type: T }>;
 
@@ -110,11 +114,15 @@ export function cleansableStatus(stack: BattleStackState): BattleStatusState | n
 
 /** A reach strike from `stack` standing at `anchor` against `target`: the straight two-hex line is clear. */
 export function reachLine(catalog: ContentCatalog, battle: BattleState, stack: BattleStackState, anchor: BattleCell, target: BattleStackState): boolean {
+  return reachLineToCells(catalog, battle, stack, anchor, stackCells(catalog, target));
+}
+
+/** Long Reach toward any occupied cells (a stack's, or the siege engine's). */
+export function reachLineToCells(catalog: ContentCatalog, battle: BattleState, stack: BattleStackState, anchor: BattleCell, theirs: readonly BattleCell[]): boolean {
   const rule = findAbility(catalog, stack.creatureId, 'long_reach');
   if (!rule) return false;
   const occ = occupancy(catalog, battle, stack.id);
   const mine = stackCells(catalog, stack, anchor);
-  const theirs = stackCells(catalog, target);
   // Adjacent: an ordinary melee strike, not a reach.
   if (mine.some((a) => theirs.some((b) => cellDistance(a, b) <= 1))) return false;
   for (const a of mine) {
@@ -197,7 +205,7 @@ export function neutralAbilityOptions(catalog: ContentCatalog, battle: BattleSta
         for (const e of enemies) {
           const why = snareProblem(catalog, battle, stack, e, rule);
           if (why === null) targets.push(e.id);
-          else if (why.startsWith('Protected')) blocked = why;
+          else if (why.startsWith('Protected') || why === 'The pull would end in the water' || why === 'The pull would drag it out of the water') blocked = why;
         }
         push(targets, reason, blocked ?? 'No one-hex enemy exactly two hexes away in a clear straight line');
         break;
@@ -215,8 +223,18 @@ function snareProblem(catalog: ContentCatalog, battle: BattleState, stack: Battl
   if (statsOf(catalog, target.creatureId).footprint !== 1) return 'Only a one-hex stack can be pulled';
   const from = stackCells(catalog, stack);
   const dest = pullDestination(catalog, battle, from, target, rule.distance);
-  if (!dest) return 'Not exactly two hexes away in a clear straight line';
+  if (!dest) {
+    // Exactly two away in a straight line, but the target may not stand on the hex between (water on a boarding
+    // board; the deck for a swimmer or the water for a walker at sea): the pull fails, nobody is drowned.
+    const cls = movementClassOf(catalog, target.creatureId);
+    const zone = from
+      .map((a) => straightMiddle(a, target.anchor, battle.cols, battle.rows))
+      .map((m) => (m ? footprintZoneProblem(battle, [m], cls) : null))
+      .find((x) => !!x);
+    return zone ? (cls === 'swim' ? 'The pull would drag it out of the water' : 'The pull would end in the water') : 'Not exactly two hexes away in a clear straight line';
+  }
   if (target.statuses.some((s) => s.kind === 'pull_immunity')) return 'Protected from pulls (Reed Guard)';
+  if (target.statuses.some((s) => s.kind === 'rooted')) return 'Rooted creatures cannot be displaced';
   return null;
 }
 
@@ -229,6 +247,9 @@ function pullDestination(catalog: ContentCatalog, battle: BattleState, from: rea
     const m = straightMiddle(a, target.anchor, battle.cols, battle.rows);
     if (!m) continue;
     if (!inBattleBounds(m, battle.cols, battle.rows)) continue;
+    // A forced move onto a hex the target may not stand on (the board's zones for its movement class) fails:
+    // nobody is ever drowned or beached (the shared occupancy validator, board.ts).
+    if (footprintZoneProblem(battle, [m], movementClassOf(catalog, target.creatureId))) continue;
     const k = cellKey(m);
     if (occ.has(k) || moat.has(k)) continue;
     return m;
@@ -253,7 +274,7 @@ export function commitNeutralAbility(tx: Tx, battle: BattleState, stack: BattleS
       if (!target || !isAlive(target) || target.side !== stack.side || target.id === stack.id) reject('illegal_target', 'Choose another friendly stack');
       if (!adjacent(catalog, stack, target)) reject('illegal_target', 'The ally must stand next to this stack');
       spendUse(stack, abilityId);
-      putStatus(battle, target, { sourceId: `ability:${rule.type}`, label, kind: 'damage_ward', amount: rule.reductionPercent, numerator: 1, denominator: 1, expiresAtRound: Number.MAX_SAFE_INTEGER, expiresOnActivationOf: stack.id });
+      putStatus(battle, target, { sourceId: `ability:${rule.type}`, label, kind: 'damage_ward', amount: rule.reductionPercent, numerator: 1, denominator: 1, expiresAtRound: Number.MAX_SAFE_INTEGER, expiresOnActivationOf: stack.id, sourceStackId: stack.id, sourceSide: stack.side });
       tx.emit({ kind: 'BattleAbilityUsed', stackId: stack.id, abilityId, targetId });
       return true;
     }
@@ -262,7 +283,7 @@ export function commitNeutralAbility(tx: Tx, battle: BattleState, stack: BattleS
       if (!target || !isAlive(target) || target.side === stack.side) reject('illegal_target', 'Choose a living enemy stack');
       if (!inClearReach(catalog, battle, stack, target, rule.range)) reject('illegal_target', `The enemy must be within ${rule.range} hexes in a clear line`);
       spendUse(stack, abilityId);
-      putStatus(battle, target, { sourceId: `ability:${rule.type}`, label, kind: 'retaliation_suppressed', amount: 1, numerator: 1, denominator: 1, expiresAtRound: Number.MAX_SAFE_INTEGER, expiresOnActivationOf: stack.id, hostile: true });
+      putStatus(battle, target, { sourceId: `ability:${rule.type}`, label, kind: 'retaliation_suppressed', amount: 1, numerator: 1, denominator: 1, expiresAtRound: Number.MAX_SAFE_INTEGER, expiresOnActivationOf: stack.id, sourceStackId: stack.id, sourceSide: stack.side, hostile: true });
       tx.emit({ kind: 'BattleAbilityUsed', stackId: stack.id, abilityId, targetId });
       return true;
     }
@@ -285,8 +306,8 @@ export function commitNeutralAbility(tx: Tx, battle: BattleState, stack: BattleS
       stack.defending = true;
       tx.emit({ kind: 'BattleStackDefended', stackId: stack.id });
       const source = `ability:${rule.type}`;
-      putStatus(battle, target, { sourceId: source, label, kind: 'defense_bonus', amount: rule.defenseBonus, numerator: 1, denominator: 1, expiresAtRound: Number.MAX_SAFE_INTEGER, expiresOnActivationOf: stack.id, hostile: false });
-      putStatus(battle, target, { sourceId: source, label, kind: 'pull_immunity', amount: 1, numerator: 1, denominator: 1, expiresAtRound: Number.MAX_SAFE_INTEGER, expiresOnActivationOf: stack.id, hostile: false });
+      putStatus(battle, target, { sourceId: source, label, kind: 'defense_bonus', amount: rule.defenseBonus, numerator: 1, denominator: 1, expiresAtRound: Number.MAX_SAFE_INTEGER, expiresOnActivationOf: stack.id, sourceStackId: stack.id, sourceSide: stack.side, hostile: false });
+      putStatus(battle, target, { sourceId: source, label, kind: 'pull_immunity', amount: 1, numerator: 1, denominator: 1, expiresAtRound: Number.MAX_SAFE_INTEGER, expiresOnActivationOf: stack.id, sourceStackId: stack.id, sourceSide: stack.side, hostile: false });
       tx.emit({ kind: 'BattleAbilityUsed', stackId: stack.id, abilityId, targetId });
       return true;
     }
@@ -297,10 +318,15 @@ export function commitNeutralAbility(tx: Tx, battle: BattleState, stack: BattleS
       if (why) reject('illegal_target', why);
       const dest = pullDestination(catalog, battle, stackCells(catalog, stack), target, rule.distance)!;
       spendUse(stack, abilityId);
+      if (consumeDisplacementGuard(battle, target) || requestFaithfulShadow(tx, battle, target)) {
+        tx.emit({ kind: 'BattleAbilityUsed', stackId: stack.id, abilityId, targetId });
+        return true;
+      }
       const from = target.anchor;
       target.anchor = dest;
       tx.emit({ kind: 'BattleAbilityUsed', stackId: stack.id, abilityId, targetId });
       tx.emit({ kind: 'BattleStackMoved', stackId: target.id, path: [from, dest], flying: false, forced: 'pull', byStackId: stack.id });
+      applyFrostEntry(tx, battle, target, from, dest);
       return true;
     }
     default:

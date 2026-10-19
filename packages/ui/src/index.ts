@@ -27,7 +27,12 @@ import './styles/adventure.css';
 import './styles/neutral.css';
 import './styles/chronicle.css';
 import './styles/battlev2.css';
+import './styles/inspection.css';
+import './styles/catapult.css';
 import './styles/editorv2.css';
+import './styles/caravans.css';
+import './styles/naval.css';
+import './styles/seaSites.css';
 import { NEUTRAL_THEME, installGuiStyles } from './assets/guiArt';
 
 import { createElement } from 'react';
@@ -127,6 +132,15 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
     (g as { __prGround?: () => unknown }).__prGround = () => inspectors.adventure?.ground() ?? null;
     // Read-only: how the planned route is drawn (painted markers, counts, destination cue, day parchment).
     (g as { __prRoute?: () => unknown }).__prRoute = () => inspectors.adventure?.route?.() ?? null;
+    // Scouting intel: the last-known markers the map draws (stale reports only; read-only).
+    (g as { __prLastKnown?: () => unknown }).__prLastKnown = () => inspectors.adventure?.lastKnown?.() ?? null;
+    // Recruitment caravans: the wagons the map draws (heading, mirror, picture state, position; read-only).
+    (g as { __prCaravans?: () => unknown }).__prCaravans = () => inspectors.adventure?.caravans?.() ?? null;
+    // Hero ships: the hulls the map draws (heading, mirror, flag, motion, position) and the boarding board's projection (read-only).
+    (g as { __prShips?: () => unknown }).__prShips = () => inspectors.adventure?.ships?.() ?? null;
+    (g as { __prBoard?: () => unknown }).__prBoard = () => inspectors.battle?.board?.() ?? null;
+    // Coastal sites and sea salvage: the lookouts, salvage and wrecks the map draws (picture, size, flag, fade; read-only).
+    (g as { __prSeaSites?: () => unknown }).__prSeaSites = () => inspectors.adventure?.seaSites?.() ?? null;
     // Read-only: the map's nature scenery (counts per role, IDs, water bodies) and the battle's obstacle stills.
     (g as { __prScenery?: () => unknown }).__prScenery = () => ({ map: inspectors.adventure?.scenery() ?? null, battle: inspectors.battle?.obstacles?.() ?? null });
     // Read-only: the renderer's frame timing (frame rate, slow frames since the view opened).

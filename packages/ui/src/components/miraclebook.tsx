@@ -118,7 +118,7 @@ export function MiracleBook({
                           </span>
                         ) : null}
                       </span>
-                      <span className="tome-spell__use">{d.context === 'battle' ? 'Battle' : 'Map'}{d.target === 'enemy_stack' ? ' · an enemy stack' : d.target === 'own_town' ? ' · one of your towns' : ''}</span>
+                      <span className="tome-spell__use">{d.context === 'battle' ? 'Battle' : 'Map'}{d.target === 'enemy_stack' ? ' · an enemy stack' : d.target === 'own_town' ? ' · one of your towns' : d.target === 'ally_stack' ? ' · an allied stack' : d.target === 'own_hero' ? ' · one of your heroes' : ''}</span>
                       <span className="tome-spell__summary">{d.summary}</span>
                       {reason ? <span className="tome-spell__reason">{reason}</span> : null}
                     </span>

@@ -6,13 +6,15 @@
  */
 import {
   heroInTown,
+  spatialSpellOptions,
   cellEquals,
   hasFlight,
   hexEquals,
   previewShot,
   quoteAdventureSpell,
-  quoteMovement,
+  quoteTravel,
   routeDays,
+  voyageDays,
   siegeTownAt,
   siteAt,
   stackCells,
@@ -63,9 +65,10 @@ export function adventureCursor(
   if (hexEquals(selected.position, hover)) return { id: ownTown?.ownerId === viewerId ? 'cursor.map.town' : 'cursor.map.hero' };
   // The town itself while the hero stands at its gate: a click opens the town.
   if (ownTown && heroInTown(catalog, state, selected, ownTown.id)) return { id: ownTown.ownerId === viewerId ? 'cursor.map.town' : 'cursor.map.hero' };
-  const q = quoteMovement(catalog, state, selected.id, hover);
+  // The quote MoveHero commits: a destination over the water is a voyage (its day count includes the mode changes).
+  const q = quoteTravel(catalog, state, selected.id, hover);
   if (!q.reachable) return { id: 'cursor.blocked' };
-  const later = q.reachesDestinationToday ? null : routeDays(catalog, state, selected.id, q);
+  const later = q.voyage ? voyageDays(catalog, state, selected.id, q.voyage) : q.reachesDestinationToday ? null : routeDays(catalog, state, selected.id, q);
   const days = later && later > 1 ? { days: later } : {};
   if (q.endsInEncounter) return { id: site && siegeTownAt(catalog, state, site, viewerId) ? 'cursor.map.siege' : 'cursor.map.attack', ...days };
   if (ownTown?.ownerId === viewerId) return { id: 'cursor.map.town', ...days };
@@ -79,10 +82,15 @@ export function adventureCursor(
 export type BattleMode =
   | { kind: 'normal' }
   | { kind: 'spell'; spellId: string }
+  | { kind: 'formation'; interventionId: string; targetId: string }
+  | { kind: 'field'; spellId: string; cells: BattleCell[] }
+  | { kind: 'spatial'; spellId: string; targetId: string }
   | { kind: 'ability'; abilityId: string }
   | { kind: 'structure' }
   | { kind: 'miracles' }
-  | { kind: 'intervention'; interventionId: string };
+  | { kind: 'intervention'; interventionId: string }
+  /** Deck Harpoon (sea encounter): an enemy in the water as the target. */
+  | { kind: 'harpoon' };
 
 /** On-screen direction of a cell (x right, y down), the battle board's own layout (pointy-top, odd rows shifted). */
 function cellScreen(c: BattleCell): { x: number; y: number } {
@@ -97,21 +105,52 @@ export function battleCursor(
   mode: BattleMode,
   hover: BattleCell | null,
   attackFrom: BattleCell | null,
-  ctx: { battleActive: boolean; deploying: boolean; /** The board is drawn mirrored (the arrow turns with it). */ mirrored?: boolean },
+  ctx: {
+    battleActive: boolean;
+    deploying: boolean;
+    /** The board is drawn mirrored (the arrow turns with it). */ mirrored?: boolean;
+    /** The human commands the siege catapult's phase (targetableCatapultV1): structures are its targets. */
+    aimingCatapult?: boolean;
+  },
 ): CursorChoice {
   const battle = state.battle;
   if (!battle || !ctx.battleActive) return { id: 'cursor.ui.default' };
   if (ctx.deploying) return { id: 'cursor.ui.pointer' };
+  if (ctx.aimingCatapult) {
+    if (!hover) return { id: 'cursor.ui.default' };
+    const st = battle.siege?.structures.find((x) => x.cells.some((c) => cellEquals(c, hover)));
+    return { id: st && st.hp > 0 ? 'cursor.battle.structure' : 'cursor.blocked' };
+  }
   if (!la) return { id: 'cursor.ui.busy' };
   if (!hover) return { id: 'cursor.ui.default' };
+  if (mode.kind === 'formation') return { id: 'cursor.spell' };
+  if (mode.kind === 'field') return { id: 'cursor.spell' };
+  if (mode.kind === 'spatial') {
+    const t = battle.stacks[mode.targetId], e = catalog.spells[mode.spellId]?.effect;
+    return { id: t && e && spatialSpellOptions(catalog, battle, t, e).some((o) => cellEquals(o.destination, hover)) ? 'cursor.spell' : 'cursor.blocked' };
+  }
   const occ = Object.values(battle.stacks).find((s) => s.totalHp > 0 && stackCells(catalog, s).some((c) => cellEquals(c, hover)));
+  // The enemy siege engine (targetableCatapultV1): shot, struck or a damage spell's target like a stack.
+  const engine = battle.siege?.engine;
+  if (!occ && engine && engine.hp > 0 && engine.cells.some((c) => cellEquals(c, hover))) {
+    if (mode.kind === 'spell') return { id: la.spells.find((x) => x.spellId === mode.spellId)?.engineTarget ? 'cursor.spell' : 'cursor.blocked' };
+    if (mode.kind !== 'normal' || !la.engine) return { id: mode.kind === 'normal' ? 'cursor.battle.info' : 'cursor.blocked' };
+    if (la.engine.canShoot) return { id: 'cursor.battle.shoot' };
+    if (attackFrom) {
+      const from = cellScreen(attackFrom);
+      const to = cellScreen(hover);
+      const dx = to.x - from.x;
+      return { id: 'cursor.battle.melee', angle: meleeAngle(ctx.mirrored ? -dx : dx, to.y - from.y) };
+    }
+    return { id: 'cursor.blocked' };
+  }
   if (mode.kind === 'structure') {
     const st = battle.siege?.structures.find((x) => x.cells.some((c) => cellEquals(c, hover)));
     return { id: st && la.structureTargets.includes(st.id) ? 'cursor.battle.structure' : 'cursor.blocked' };
   }
   if (mode.kind === 'spell') {
     const sp = la.spells.find((x) => x.spellId === mode.spellId);
-    return { id: occ && sp?.targets.includes(occ.id) ? 'cursor.spell' : 'cursor.blocked' };
+    return { id: sp?.targets.some((id) => stackCells(catalog, battle.stacks[id]!).some((c) => cellEquals(c, hover))) ? 'cursor.spell' : 'cursor.blocked' };
   }
   if (mode.kind === 'intervention') return { id: occ && occ.side !== la.side ? 'cursor.spell' : 'cursor.blocked' };
   if (mode.kind === 'ability') {
@@ -119,6 +158,7 @@ export function battleCursor(
     return { id: occ && ab?.targets.includes(occ.id) ? 'cursor.battle.ability' : 'cursor.blocked' };
   }
   if (mode.kind === 'miracles') return { id: 'cursor.ui.default' };
+  if (mode.kind === 'harpoon') return { id: occ && la.harpoon?.targets.includes(occ.id) ? 'cursor.battle.shoot' : 'cursor.blocked' };
   if (occ && occ.side !== la.side) {
     if (la.shootTargets.includes(occ.id)) {
       const p = previewShot(catalog, state, la.stackId, occ.id);

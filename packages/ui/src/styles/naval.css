@@ -1,0 +1,181 @@
+/*
+ * Hero ships (expedition kit §11, `navalMovementV1`): the ship inspector over the map, the command
+ * sidebar's ship list, the tile panel's ship line, the owner flag swatch and the town's coastal launch
+ * dialog. Shared kit tokens only; the owner's colour appears on the flag swatch alone (never a dialog
+ * theme, never by pantheon).
+ */
+
+.ship-inspect {
+  pointer-events: auto;
+}
+.ship-inspect__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.ship-inspect__title svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  color: var(--gold-400);
+}
+.ship-inspect__head {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.ship-inspect__portrait {
+  flex: none;
+  display: inline-flex;
+  border: 1px solid var(--rim);
+  border-radius: var(--radius-s, 3px);
+  box-shadow: var(--rim-double);
+  overflow: hidden;
+}
+.ship-inspect__portrait--empty {
+  width: 3.4rem;
+  height: 3.4rem;
+  align-items: center;
+  justify-content: center;
+  background: var(--plate-sunken);
+  color: var(--gold-400);
+}
+.ship-inspect__portrait--empty svg {
+  width: 1.9rem;
+  height: 1.9rem;
+}
+.ship-inspect__facts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+.ship-inspect__owner {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-display);
+  color: var(--gold-200);
+  font-weight: 600;
+}
+.ship-inspect__actions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.ship-inspect__actions li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+}
+.ship-inspect__reason {
+  line-height: 1.3;
+}
+.ship-inspect__landing {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: flex-start;
+}
+
+/* The owner's square flag (or the neutral pennant) */
+.owner-flag {
+  display: inline-flex;
+  flex: none;
+}
+.owner-flag svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Command sidebar */
+.adv-command__ships {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.ship-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.45rem;
+  background: var(--plate-raised);
+  border: 1px solid rgba(194, 154, 82, 0.4);
+  border-radius: var(--radius-s, 3px);
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.7);
+  cursor: var(--cur-pointer, pointer);
+  color: var(--gold-200);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-align: left;
+}
+.ship-tab:hover {
+  border-color: var(--gold-400);
+}
+.ship-tab:focus-visible {
+  outline: 2px solid var(--gold-300);
+  outline-offset: 2px;
+}
+.ship-tab svg {
+  width: 1.3rem;
+  height: 1.3rem;
+  color: var(--gold-400);
+  flex: none;
+}
+.ship-tab__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.adv-command__aboard {
+  margin-top: 0.25rem;
+}
+
+/* Tile panel */
+.ship-tile {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+}
+
+/* Coastal launch */
+.launch__price {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+.launch__cells {
+  border: 1px solid var(--rim);
+  border-radius: var(--radius-s, 3px);
+  padding: 0.35rem 0.6rem 0.5rem;
+  margin: 0.4rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.launch__cell {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: var(--cur-pointer, pointer);
+  padding: 0.15rem 0.25rem;
+  border-radius: var(--radius-s, 3px);
+}
+.launch__cell.is-on {
+  background: var(--plate-raised);
+  color: var(--gold-200);
+}
+.launch__cell input:focus-visible {
+  outline: 2px solid var(--gold-300);
+  outline-offset: 2px;
+}

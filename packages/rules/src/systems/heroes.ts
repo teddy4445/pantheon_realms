@@ -6,7 +6,7 @@
  */
 import type { ArtifactId, ArtifactInstanceId, DecisionId, HeroId, SkillId, TownId } from '../ids';
 import { type HexCoord } from '../core/hex';
-import { resources } from '../core/resources';
+import { resources, type ResourceBundle } from '../core/resources';
 import { getArtifact, getHeroClass, type ContentCatalog } from '../definitions/catalog';
 import { levelForXp } from '../definitions/rulesProfile';
 import { EQUIP_SLOT_KIND, equipSlotsFor, freeEquipSlot, type EquipSlot } from '../definitions/pantheons';
@@ -18,7 +18,10 @@ import { reject, type RejectionCode, type Tx } from '../engine/tx';
 import { spend } from './economy';
 import { scenarioMission, scopeAllowed } from '../resolvers/scenario';
 import { imprisonedHeroIds, heroInTown, townVisitor, townGate } from '../resolvers/world';
+import { enemyCaravanAt } from '../resolvers/caravans';
 import { weekOf } from './turn';
+import type { DedicationSaving } from './dedication';
+import { dedicatedUnitCost, dedicationSaving } from './dedicationServices';
 
 // ---------------------------------------------------------------------------
 // Experience
@@ -198,18 +201,32 @@ export function commitLevelUpChoice(tx: Tx, decisionId: DecisionId, offerIndex: 
 // Spellbooks and spell learning
 // ---------------------------------------------------------------------------
 
-export function quoteSpellbook(catalog: ContentCatalog, state: MatchState, heroId: HeroId, townId: TownId) {
+/** Buying a spellbook for a visiting hero (learning the town's spells afterwards stays free). */
+export interface SpellbookQuote {
+  readonly legal: boolean;
+  readonly reason: string | null;
+  readonly cost: ResourceBundle;
+  /** The town's spellbook discount: normal, final, saved Gold. */
+  readonly dedication?: DedicationSaving;
+}
+
+export function quoteSpellbook(catalog: ContentCatalog, state: MatchState, heroId: HeroId, townId: TownId): SpellbookQuote {
   const hero = state.heroes[heroId];
   const town = state.towns[townId];
-  const cost = resources({ gold: catalog.rulesProfile.spellbookCost });
-  if (!hero || !town) return { legal: false, reason: 'Unknown hero or town', cost };
-  if (hero.spellbook) return { legal: false, reason: `${hero.name} already carries a spellbook`, cost };
-  if (town.ownerId !== hero.ownerId) return { legal: false, reason: 'Not your town', cost };
-  if (!heroInTown(catalog, state, hero, town.id)) return { legal: false, reason: `${hero.name} must be in ${town.name}`, cost };
-  if (!townHasEffect(catalog, town, 'enables_spellbook_purchase')) return { legal: false, reason: 'Requires a Sanctum', cost };
+  // The ordinary price, then the town's dedication discount for its owner's visiting hero.
+  const normal = { gold: catalog.rulesProfile.spellbookCost };
+  const priced = hero ? dedicatedUnitCost(catalog, state, hero.ownerId, townId, { kind: 'town_service', effect: 'enables_spellbook_purchase' }, normal) : null;
+  const cost = priced?.unit ?? resources(normal);
+  const dedication = priced ? dedicationSaving(priced.discount, priced.normal.gold, cost.gold) : undefined;
+  const out = (legal: boolean, reason: string | null): SpellbookQuote => ({ legal, reason, cost, ...(dedication ? { dedication } : {}) });
+  if (!hero || !town) return out(false, 'Unknown hero or town');
+  if (hero.spellbook) return out(false, `${hero.name} already carries a spellbook`);
+  if (town.ownerId !== hero.ownerId) return out(false, 'Not your town');
+  if (!heroInTown(catalog, state, hero, town.id)) return out(false, `${hero.name} must be in ${town.name}`);
+  if (!townHasEffect(catalog, town, 'enables_spellbook_purchase')) return out(false, 'Requires a Sanctum');
   const wallet = state.players[hero.ownerId]?.wallet;
-  if (!wallet || wallet.gold < cost.gold) return { legal: false, reason: 'Not enough Gold', cost };
-  return { legal: true, reason: null, cost };
+  if (!wallet || wallet.gold < cost.gold) return out(false, 'Not enough Gold');
+  return out(true, null);
 }
 
 export function commitBuySpellbook(tx: Tx, heroId: HeroId, townId: TownId): void {
@@ -226,7 +243,7 @@ export function commitBuySpellbook(tx: Tx, heroId: HeroId, townId: TownId): void
 /** One-time known-spell update on an eligible Sanctum visit (free with a spellbook). */
 export function learnSpellsAtTown(tx: Tx, hero: HeroState, town: TownState): void {
   if (!hero.spellbook || town.ownerId !== hero.ownerId) return;
-  const libraryTier = townSpellLibraryTier(tx.catalog, town);
+  const libraryTier = townSpellLibraryTier(tx.catalog, town, tx.state);
   if (libraryTier <= 0) return;
   const maxTier = Math.min(libraryTier, maxSpellTierLearnable(tx.catalog, hero));
   const eligibility = new Set(
@@ -385,6 +402,10 @@ export function quoteHireHero(catalog: ContentCatalog, state: MatchState, player
   if (heroHiredThisWeek(catalog, state, playerId)) return fail('already_done', 'One hero per week');
   if (townVisitor(catalog, state, town.id)) {
     return fail('not_present', 'The visitor position is occupied — move that hero out first');
+  }
+  // An enemy shipment still waiting at the gate (recruitmentCaravansV1) holds the hex a new hero would take.
+  if (enemyCaravanAt(state, townGate(catalog, state, town.id), playerId)) {
+    return fail('not_present', 'An enemy caravan stands at the gate; it moves on at its owner’s next turn');
   }
   if (player.wallet.gold < cost.gold) return fail('insufficient_resources', 'Not enough Gold');
   return { legal: true, reason: null, code: null, cost };

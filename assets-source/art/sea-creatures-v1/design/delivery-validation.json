@@ -1,0 +1,18 @@
+{
+  "artFiles": 37,
+  "nativeBytesMatchSources": true,
+  "relativeHtmlLinksChecked": 35,
+  "brokenLinks": [],
+  "deckCells": 88,
+  "waterCells": 88,
+  "maxDeckDistanceFromNearestWaterEdge": 8,
+  "maxBoardDistance": 20,
+  "browserReport": {
+    "states": 84,
+    "frames": 335,
+    "jsErrors": [],
+    "brokenImages": [],
+    "mobileOverflow": false,
+    "passed": true
+  }
+}

@@ -36,6 +36,7 @@ import type {
   TownId,
   AssetId,
   CampaignId,
+  ShipId,
 } from '../ids';
 import type { BattleCell, Facing, HexCoord } from '../core/hex';
 import type { ResourceBundle } from '../core/resources';
@@ -45,6 +46,8 @@ import type { HeroAttribute } from '../definitions/logic';
 import type { EquipSlot } from '../definitions/pantheons';
 import type { BattlefieldArchetype, StackSpec, WorldMapDefinition } from '../definitions/world';
 import type { MissionDefinition, ScenarioFeatures } from '../definitions/campaign';
+import type { SeaWatchState, WreckSiteState } from '../definitions/seaSites';
+import type { BoardOccupancyPolicy, SeaEncounterBoardRules } from '../definitions/seaEncounter';
 
 // ---------------------------------------------------------------------------
 // Armies
@@ -81,7 +84,18 @@ export interface EntitlementState {
   assignedTownId: TownId | null;
 }
 
+export interface CourierParcel {
+  artifact: ArtifactInstanceState;
+  senderId: HeroId;
+  recipientId: HeroId;
+  destinationTownId: TownId;
+  sentDay: number;
+  arrivesDay: number;
+  status: 'in_transit' | 'stash';
+  stashTownId?: TownId;
+}
 export interface PlayerState {
+  libraryEconomy?: { recruitPurchaseDay?: number; seedTown?: { townId: TownId; heroId: HeroId }; seedPaidWeek?: number; parcel?: CourierParcel; courierHistory?: { day: number; artifactId: ArtifactId; message: string }[] };
   id: PlayerId;
   name: string;
   controller: 'human' | 'ai';
@@ -111,6 +125,8 @@ export interface PlayerState {
 // ---------------------------------------------------------------------------
 
 export interface ArtifactInstanceState {
+  /** Quest-bound instances cannot be mailed, sold or transferred through courier escrow. */
+  questBound?: boolean;
   instanceId: ArtifactInstanceId;
   artifactId: ArtifactId;
 }
@@ -121,6 +137,7 @@ export interface HeroSkillState {
 }
 
 export interface HeroAiState {
+  assaultSiteIds?: SiteId[];
   profile: 'patrol' | 'strategic';
   waypoints: HexCoord[];
   waypointIndex: number;
@@ -152,6 +169,22 @@ export interface HeroState {
   knownSpellIds: SpellId[];
   mana: number;
   movementPoints: number;
+  /** Mythic Library counters belong to the hero, never to a transferable item. */
+  libraryAdventure?: {
+    movementLedger?: { day: number; uses: Record<string, number>; saved: Record<string, number>; triggers: Record<string, boolean> };
+    travelBuffs?: { spellId: SpellId; day: number; discount: import('../definitions/logic').AdventureStepDiscount; townId?: TownId }[];
+    townVisitWeeks?: Record<TownId, number>;
+    lastMovedDay?: number;
+    lastBattleDay?: number;
+    casts?: { day: number; count: number };
+    learnedManaDay?: number;
+    camp?: { day: number; mana: number; battleSinceCast: boolean };
+    usedDays?: Record<string, number>;
+    anchor?: { coord: HexCoord; untilDay: number };
+    compact?: { siteId: SiteId; day: number; percent: number; cap: number };
+    reports?: { spellId: SpellId; day: number; untilDay: number; entries: { coord: HexCoord; label: string; detail: string }[] }[];
+    safeLanding?: { untilDay: number; percent: number; ownerId: PlayerId };
+  };
   position: HexCoord;
   army: ArmyState;
   equipment: Partial<Record<EquipSlot, ArtifactInstanceState>>;
@@ -173,6 +206,8 @@ export interface HeroState {
 // ---------------------------------------------------------------------------
 
 export interface TownState {
+  /** Cosmetic aftermath art; repairs follow normal hall construction. */
+  warDamaged?: boolean;
   id: TownId;
   name: string;
   ownerId: PlayerId | null;
@@ -196,6 +231,27 @@ export interface TownState {
   merchant: { week: number; stock: (ArtifactId | null)[] } | null;
   /** Workshop stock for `week` (same shape; absent in saves from before 2026-10-04). */
   workshop?: { week: number; stock: (ArtifactId | null)[] } | null;
+  /** City dedication (app 1.5.0, scenario feature `cityDedicationsV1`; absent until first used). */
+  dedication?: TownDedicationState;
+}
+
+/**
+ * A town's city dedication. The owner-specific contents (active god, pending switch,
+ * growth credits) are cleared on every ownership change; `lastProcessedWeek` — the
+ * world week whose boundary this town's dedication last processed (paid or not) — is
+ * kept forever, so no week is ever processed twice (capture, recapture, save/load).
+ */
+export interface TownDedicationState {
+  /** The honored god (null: none, or cleared by a capture). */
+  activeGodId: GodId | null;
+  /** The player the active dedication belongs to. */
+  ownerId: PlayerId | null;
+  /** A paid switch, activated at the boundary of `activationWeek` (or a later one while invalid) — only for `requestedBy`. */
+  pending?: { godId: GodId; requestedBy: PlayerId; activationWeek: number };
+  /** Quarter-creature remainders per favored family (0–3), kept per town. */
+  growthCredits: Record<CreatureFamilyId, number>;
+  /** World week of the last processed weekly boundary (0 = never). Never reset. */
+  lastProcessedWeek: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -213,6 +269,8 @@ export interface SiteState {
   activated: boolean;
   /** Visited at least once by the active player's hero (watchtower etc.). */
   visitedBy: PlayerId[];
+  visitedHeroIds?: HeroId[];
+  reservation?: { heroId: HeroId; ownerId: PlayerId; quantity: number; untilDay: number };
   /** Gate open state (derived from flags but stored so presentation and saves agree). */
   open: boolean;
   /** Remaining guard army after partial outcomes (guards are reset on retreat, so usually full). */
@@ -229,13 +287,53 @@ export interface SiteState {
   clearedBy?: PlayerId;
   /** One-time map event: the option index chosen (absent before it is decided, and in saves from before 2026-10-15). */
   chosenOption?: number;
+  /**
+   * Neutral hiring site (owner decision 2026-10-16): creatures trained into the upgrade
+   * here in world week `trainedWeek`, by every empire together. A count from an earlier
+   * week counts as none (the allowance renews each week); both are absent before the
+   * first training and in saves from before the training allowance.
+   */
+  trainedThisWeek?: number;
+  trainedWeek?: number;
+  /** A shipwreck's expedition state (sea-sites kit; absent until first touched = untouched). */
+  wreck?: WreckSiteState;
 }
 
 export interface WorldState {
+  /** Non-blocking magical signals. They never grant vision or become armies. */
+  signals?: { id: string; ownerId: PlayerId; coord: HexCoord; untilDay: number; identifiedBy: PlayerId[] }[];
   map: WorldMapDefinition;
   sites: Record<SiteId, SiteState>;
   /** The current weekly event (weekly-event scenarios); null on a quiet week or before the first. */
   weeklyEventId?: string | null;
+  /** Hero ships by ID (scenario feature `navalMovementV1`; absent in older saves and with the feature off = no ships). */
+  ships?: Record<ShipId, ShipState>;
+}
+
+/**
+ * A ship's state. `wrecked` is never stored by the v1 rules: a hull lost in a boarding battle is
+ * removed at once (the `ShipWrecked` event drives the sinking playback).
+ */
+export type ShipStatus = 'empty' | 'occupied' | 'in_battle' | 'wrecked';
+
+/**
+ * A hero ship (expedition kit §07, design/naval-policy.json `saveFields`): one hull carries one
+ * hero and the hero's normal army. A hero is either on land or aboard exactly one ship; aboard,
+ * the hero's `position` is the ship's `coord` (a water tile). Changed only by the rules
+ * (systems/naval.ts).
+ */
+export interface ShipState {
+  mooring?: { untilDay: number; heroId: HeroId; ownerId: PlayerId };
+  shipId: ShipId;
+  /** Owner (null: neutral; claimed by the first hero who embarks). An empty hull keeps its owner. */
+  ownerId: PlayerId | null;
+  coord: HexCoord;
+  heroId: HeroId | null;
+  state: ShipStatus;
+  /** Heading: index into AXIAL_DIRECTIONS (0 east, 1 north-east, 2 north-west, 3 west, 4 south-west, 5 south-east). */
+  facing: number;
+  /** World day of the ship's last launch, boarding, sailing or battle (0 = never). */
+  lastActionTurn: number;
 }
 
 /** Per-player fog: 0 unknown, 1 explored (remembered). Current visibility is derived. */
@@ -250,6 +348,44 @@ export interface FogState {
   explored: number[];
   /** Adventure-spell vision (Divine Sight); absent in older saves. */
   temporaryReveals?: TemporaryRevealState[];
+}
+
+/**
+ * Scouting intel (scenario feature `scoutingIntelV1`): one player's last observation of an
+ * enemy hero or wandering monster — only the fields its stage permitted (policy
+ * `snapshotFields`). Written by the rules after a command, from current vision only; never
+ * updated remotely (outside vision it is LAST KNOWN with its date). Removed when its tile is
+ * in view again with nothing there, or when an event the player took part in settles the
+ * army's fate (a battle it fought, neutrals that joined or fled).
+ */
+export interface IntelSnapshot {
+  targetId: HeroId;
+  lastSeenCoord: HexCoord;
+  observedDay: number;
+  stage: 'sighting' | 'identified' | 'scouted';
+  /** The owner its banner showed. */
+  knownOwner: PlayerId | null;
+  /** Index into the policy's strength bands. */
+  strengthBand: number;
+  /** Identified or scouted: the creature types seen (grouped by creature ID). */
+  permittedCreatureTypes?: CreatureId[];
+  /** Scouted: the quantity range of each type, in the same order. */
+  permittedCountRanges?: { min: number; max: number | null }[];
+  /**
+   * The latest observation more detailed than this one (e.g. a scout report before a later
+   * distant sighting): kept apart, dated, and never shown as a current estimate.
+   */
+  earlier?: IntelEarlierReport;
+}
+
+export interface IntelEarlierReport {
+  lastSeenCoord: HexCoord;
+  observedDay: number;
+  stage: 'identified' | 'scouted';
+  knownOwner: PlayerId | null;
+  strengthBand: number;
+  permittedCreatureTypes: CreatureId[];
+  permittedCountRanges?: { min: number; max: number | null }[];
 }
 
 // ---------------------------------------------------------------------------
@@ -360,6 +496,8 @@ export type PendingDecision = LevelUpDecision;
 export type BattleSideId = 'attacker' | 'defender';
 
 export interface BattleCommanderSnapshot {
+  /** The commander's Defense excluding equipment, for bounded defense-piercing effects. */
+  defenseWithoutArtifacts?: number;
   heroId: HeroId | null;
   name: string;
   portraitAssetId: AssetId;
@@ -375,6 +513,12 @@ export interface BattleCommanderSnapshot {
 }
 
 export interface BattleSideState {
+  armyBarrier?: number;
+  markedUndeadId?: BattleStackId;
+  spellCredit?: { amount: number; expiresAtRound: number };
+  actedInBattle?: boolean;
+  /** Saved shared effect quotas; original army slots survive deployment splits/merges. */
+  effectUses?: Record<string, number>;
   sideId: BattleSideId;
   playerId: PlayerId | null;
   controller: 'human' | 'ai';
@@ -393,6 +537,7 @@ export interface BattleSideState {
 
 /** Snapshot of the battle-relevant player-wide effects of one side. */
 export interface BattleSideEffects {
+  library?: readonly import('../definitions/logic').LibraryPassiveEffect[];
   /** Summed casualty_recovery percent applied if this side wins. */
   recoveryPercent: number;
   /** Summed battle_xp_percent applied to a winning hero's XP. */
@@ -423,9 +568,38 @@ export type BattleStatusKind =
   /** Distract: the next otherwise-legal retaliation is suppressed (then removed). */
   | 'retaliation_suppressed'
   /** Reed Guard: immune to one forced pull (then removed). */
-  | 'pull_immunity';
+  | 'pull_immunity'
+  | 'ranged_lock'
+  | 'retaliation_weaken'
+  | 'debuff_ward'
+  | 'projectile_spell_ward'
+  | 'one_hit_thorns'
+  | 'retaliation_bonus'
+  | 'last_creature_guard'
+  | 'pierce_borrowed_defense'
+  | 'faithful_shadow'
+  | 'buff_suppression'
+  | 'temporary_flight'
+  | 'spell_lock'
+  | 'fear'
+  | 'blind'
+  | 'mind_control_ward'
+  | 'fire_dot'
+  | 'element_barrier'
+  | 'rooted';
 
 export interface BattleStatusState {
+  /** Consumed at the end of the next real activation, never by Wait. */
+  expiresAfterActivation?: boolean;
+  /** False until an activation begins after the cast (casting on the active ally does not shorten it). */
+  nextActivationStarted?: boolean;
+  /** A charge is spent only by the matching successful trigger. */
+  charges?: number;
+  capHp?: number;
+  /** Mind controls respect explicit creature immunities and cleanse tags. */
+  mind?: boolean;
+  /** Explicit protection for authored statuses; old spell statuses remain dispellable. */
+  dispellable?: boolean;
   sourceId: string;
   label: string;
   kind: BattleStatusKind;
@@ -440,9 +614,25 @@ export interface BattleStatusState {
   hostile?: boolean;
   /** Application order within the battle (earliest first; absent on older saves = 0). */
   seq?: number;
+  /**
+   * Who applied it (expedition kit 2026-10-17; inspection shows it, no rule reads it). Recorded when the
+   * status is applied, never inferred: the casting commander's hero (a commander without a HeroState has
+   * none), the stack whose ability it is, and the side that applied it (spell, miracle or ability). All
+   * absent on older saves and on statuses a battle was set up with: the source is then unknown.
+   */
+  sourceHeroId?: HeroId;
+  sourceStackId?: BattleStackId;
+  sourceSide?: BattleSideId;
 }
 
 export interface BattleStackState {
+  /** Temporary battle objects never become army troops or award kill XP. */
+  summoned?: { kind: 'illusion' | 'summon'; sourceId: string; sourceCount: number; expiresAtRound: number };
+  /** Separate restored HP, consumed before permanent HP and discarded before casualty persistence. */
+  temporaryLife?: { hp: number; expiresAtRound: number };
+
+  /** One following activation of immunity after a control expires. Serialized with the battle. */
+  controlGrace?: readonly BattleStatusKind[];
   id: BattleStackId;
   side: BattleSideId;
   /** Originating army slot (hero/garrison/guard) for persistent casualty accounting. */
@@ -469,10 +659,26 @@ export interface BattleStackState {
 }
 
 export interface BattleEncounterRef {
-  kind: 'site_guard' | 'hero' | 'town_siege';
+  /** `naval_boarding` (navalMovementV1): an occupied ship boards a hostile occupied ship (`attackerShipId`, `defenderShipId`). */
+  kind: 'site_guard' | 'hero' | 'town_siege' | 'caravan_intercept' | 'naval_boarding' | 'wreck_expedition';
+  /**
+   * naval_boarding only: the two ships (`destination` is the defender ship's water tile, the contested hex).
+   * wreck_expedition (sea-sites kit): a hero aboard `attackerShipId` fights the raiders moored alongside the
+   * wreck `siteId`; `destination` is the hero's own approach hex (the hero stays on its ship there).
+   */
+  attackerShipId?: ShipId | null;
+  defenderShipId?: ShipId | null;
+  /**
+   * A single-ship sea encounter (`seaEncountersV1`): the ship whose deck is the battlefield. Its hero
+   * may be the attacker (it sailed into sea creatures) or the defender; `board.shipSide` says which.
+   * Absent on every other battle.
+   */
+  sourceShipId?: ShipId | null;
   siteId: SiteId | null;
   /** Besieged town (town_siege only). */
   townId?: TownId | null;
+  /** The intercepted recruitment caravan (caravan_intercept only): its cargo defends without a commander. */
+  caravanId?: string | null;
   defenderHeroId: HeroId | null;
   attackerHeroId: HeroId;
   /** Where the attacking hero ends up if it wins. */
@@ -501,8 +707,38 @@ export interface SiegeState {
   moat: BattleCell[];
   /** Defender stacks left out of the battle (garrison/visitor reserves). */
   reserves: { source: 'hero' | 'garrison'; slot: number }[];
-  /** The structure the attacker aimed the Catapult at (absent: the default target). */
+  /** The structure the attacker aimed the Catapult at (absent: the default target). Legacy sieges only. */
   catapultTargetId?: string | null;
+  /**
+   * The attacker's stationary, killable catapult (`targetableCatapultV1`, decided when the battle was
+   * created). Present: the siege runs the engine phase (Fire / Skip once per round, no automatic shot);
+   * absent (older saves, legacy scenarios): the automatic round-start Catapult shot.
+   */
+  engine?: SiegeEngineState | null;
+}
+
+/**
+ * A siege engine on the board (`targetableCatapultV1`). A battle object, not a creature, army slot or
+ * town structure: it never counts for victory, morale, stack caps, casualties or XP. Persisted so a
+ * reload, a retried command or a skipped animation can never give it an extra shot.
+ */
+export interface SiegeEngineState {
+  barrier?: { hp: number; expiresAtRound: number };
+  id: string;
+  kind: 'catapult';
+  side: BattleSideId;
+  /** Fixed anchor and occupied cells (upper-left, reserved before deployment). */
+  anchor: BattleCell;
+  cells: BattleCell[];
+  hp: number;
+  maxHp: number;
+  defense: number;
+  /** The structure the attacker chose (kept after it falls: a new target must then be chosen). */
+  aimedStructureId: string | null;
+  /** The last round in which it fired (0: never). */
+  firedRound: number;
+  /** The last round whose engine phase was resolved (fired, skipped or auto-skipped; 0: none). */
+  phaseRound: number;
 }
 
 /** Defender stack choice when a visitor plus garrison exceed seven stacks (BAT-14). */
@@ -511,9 +747,27 @@ export interface DefenderSelectionState {
   max: number;
 }
 
-export type BattlePhase = 'selection' | 'deployment' | 'normal' | 'waiting';
+/**
+ * `engine`: after the normal and waiting queues of a round, the siege attacker's catapult phase
+ * (Fire or Skip; `targetableCatapultV1`). No stack is active then.
+ */
+export type BattlePhase = 'selection' | 'deployment' | 'normal' | 'waiting' | 'engine';
 
+export interface BattleFieldState {
+  id: string;
+  spellId: string;
+  side: BattleSideId;
+  kind: 'frost' | 'sanctuary' | 'eclipse' | 'glass';
+  cells: BattleCell[];
+  expiresAtRound: number;
+  damage: number;
+  percent: number;
+  spent?: string[];
+}
 export interface BattleState {
+  shadowChoice?: { stackId: BattleStackId; from: BattleCell; options: BattleCell[]; resume?: { stackId: BattleStackId; allowMorale: boolean } };
+  spellFields?: BattleFieldState[];
+
   battleId: BattleId;
   encounter: BattleEncounterRef;
   archetype: BattlefieldArchetype;
@@ -543,6 +797,33 @@ export interface BattleState {
   layoutSeed: number;
   /** The map climate's battle rule for both sides (scenario feature `climateRules`); absent or null = none. */
   climate?: BattleClimateState | null;
+  /**
+   * A board with a legal-cell mask (naval boarding: `boarding_two_ships_v1`); absent or null = every
+   * cell of the cols x rows board is legal (land battles, sieges).
+   */
+  board?: BattleBoardState | null;
+}
+
+/**
+ * The legal cells of a masked battlefield, copied from its layout when the battle began (saved with
+ * the battle). Every placement and movement rule reads it through `battleCellLegal`.
+ */
+export interface BattleBoardState {
+  layoutId: string;
+  /** Row-major zone letters, index = row * cols + col: 'a' attacker deck, 'd' defender deck, 'b' bridge, '.' water (illegal). */
+  cells: string;
+  /** Deployment columns from each side's edge, Tactics included (never beyond the deck). */
+  deploymentWidth: number;
+  /**
+   * The layout's zone occupancy policy, copied when the battle began (single-ship sea encounter: ground
+   * on 'k' deck, swimmers in '.' water, flyers on either, every footprint in one zone). Absent: the
+   * boarding mask — every zone but water, for every creature (older saves, boarding battles).
+   */
+  occupancy?: BoardOccupancyPolicy;
+  /** Sea encounters: the battle side that stands on the ship's deck (bound to `encounter.sourceShipId`'s hero). */
+  shipSide?: BattleSideId;
+  /** Sea encounters: the layout's deployment anchors, swimmer range floor and Deck Harpoon numbers. */
+  sea?: SeaEncounterBoardRules;
 }
 
 /** A climate's battle rule as it was when the battle began (saved with the battle). */
@@ -582,6 +863,72 @@ export interface BattleResultRecord {
 }
 
 // ---------------------------------------------------------------------------
+// Recruitment caravans (scenario feature `recruitmentCaravansV1`)
+// ---------------------------------------------------------------------------
+
+/**
+ * A shipment's state: `queued` (paid, first movement at its owner's next turn start),
+ * `travelling`, `blocked` (held where it stands: a blocker on the road, no known route or a lost
+ * destination — `blockedReason` says which), `intercepted` (its cargo is fighting an enemy hero:
+ * locked), `awaiting_garrison` (at its destination, which has no room for the whole cargo yet),
+ * `delivered` and `destroyed` (final; kept until the owner's next day for the receipt, then removed).
+ */
+export type CaravanStatus = 'queued' | 'travelling' | 'blocked' | 'intercepted' | 'awaiting_garrison' | 'delivered' | 'destroyed';
+
+/** Why a shipment holds (data for the notices; the words are `blockedMessage`). */
+export type CaravanBlockReason = 'route_blocked' | 'no_route' | 'destination_lost' | 'garrison_full';
+
+/**
+ * One recruitment caravan (expedition kit §06): recruits bought at `sourceTownId` at that town's
+ * prices plus the flat transport fee, travelling over explored land to its owner's
+ * `destinationTownId`. Changed only by the rules (systems/caravans.ts); the owner never changes
+ * when the source falls; never refunded, never converted into another army.
+ */
+export interface CaravanState {
+  id: string;
+  ownerId: PlayerId;
+  sourceTownId: TownId;
+  destinationTownId: TownId;
+  /** Where the wagon stands (a land tile; its source town's gate at dispatch). */
+  coord: HexCoord;
+  /** The remaining planned tiles after `coord`, ending at the destination's gate (saved between days). */
+  route: HexCoord[];
+  /** Up to seven stacks, one per creature form (identical creatures merged). */
+  cargo: CreatureStackState[];
+  status: CaravanStatus;
+  /** Why it holds (blocked or awaiting_garrison); null otherwise. */
+  blockedReason: CaravanBlockReason | null;
+  /** World day of dispatch: it first moves at its owner's next turn start (a later day). */
+  dispatchedDay: number;
+  /** World day of the owner's turn whose movement (or delivery attempt) was applied; 0 = none. Never repeated. */
+  lastMovedTurn: number;
+  /** The cargo was merged into the destination garrison (exactly once). */
+  deliveryApplied: boolean;
+  /** The interception battle its cargo is fighting (status `intercepted`); null otherwise. */
+  pendingBattleId: BattleId | null;
+  /** The status to return to when its cargo wins an interception. */
+  resumeStatus?: CaravanStatus | null;
+  /** What the shipment cost (the recruits at the source's prices plus the fee): the receipt, never refunded. */
+  paid: ResourceBundle;
+  /** World day it was delivered or destroyed (final states). */
+  endedDay?: number | null;
+  /** Dispatch order (the stable processing order with the ID). */
+  seq: number;
+}
+
+/**
+ * The caravan step of a turn start (interrupted-processing cursor): which owner's turn on which
+ * world day is being processed, the last caravan handled and whether all were. Saved, so a reload
+ * or a battle in between can never move a caravan twice in one turn.
+ */
+export interface CaravanTurnCursor {
+  day: number;
+  playerId: PlayerId;
+  lastCaravanId: string | null;
+  complete: boolean;
+}
+
+// ---------------------------------------------------------------------------
 // Match
 // ---------------------------------------------------------------------------
 
@@ -607,6 +954,8 @@ export interface ScenarioRuntimeInfo {
 }
 
 export interface MatchState {
+  /** Explicit campaign coalition: native ownership and gods, one shared treasury and day. */
+  coalition?: { playerIds: PlayerId[]; treasury: ResourceBundle };
   kind: 'match';
   matchId: string;
   revision: number;
@@ -638,6 +987,23 @@ export interface MatchState {
   outcome: MatchOutcome;
   /** Day-by-day statistics for the end-of-game summary (absent in older states). */
   stats?: MatchStats;
+  /**
+   * Scouting intel snapshots per observing player, keyed by the observed hero's ID (scenario
+   * feature `scoutingIntelV1`; absent in older saves and with the feature off).
+   */
+  intel?: Record<PlayerId, Record<HeroId, IntelSnapshot>>;
+  /**
+   * Recruitment caravans by ID (scenario feature `recruitmentCaravansV1`; absent in older saves and
+   * with the feature off = none).
+   */
+  caravans?: Record<string, CaravanState>;
+  /** The caravan step of the latest turn start (absent: none processed yet). */
+  caravanTurn?: CaravanTurnCursor | null;
+  /**
+   * Coastal watchtowers (sea-sites kit): per owning player, the hostile ships its towers see and the
+   * alerts already raised this owner-turn (absent: no tower has been owned yet; older saves).
+   */
+  seaWatch?: Record<PlayerId, SeaWatchState>;
 }
 
 export const ARMY_SLOT_COUNT = 7;

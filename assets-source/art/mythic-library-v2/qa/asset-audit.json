@@ -1,0 +1,470 @@
+{
+  "counts": {
+    "artifact": 40,
+    "spell": 40,
+    "blessing": 12
+  },
+  "icons": 92,
+  "vfxMaterials": 36,
+  "recipes": 92,
+  "uniqueNewIds": true,
+  "uniqueNamesAgainstCurrentCatalog": true,
+  "godPrerequisitesExist": true,
+  "allRecipesResolve": true,
+  "sheets": [
+    {
+      "sheet": "icons-greek",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "hasTrueAlpha": true,
+      "clearOuterEdge": true,
+      "boundaryReview": [],
+      "rowCuts": [
+        0,
+        314,
+        627,
+        927,
+        1254
+      ],
+      "columnCutsByRow": [
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ]
+      ]
+    },
+    {
+      "sheet": "icons-norse",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "hasTrueAlpha": true,
+      "clearOuterEdge": true,
+      "boundaryReview": [],
+      "rowCuts": [
+        0,
+        314,
+        627,
+        940,
+        1254
+      ],
+      "columnCutsByRow": [
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          947,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ]
+      ]
+    },
+    {
+      "sheet": "icons-egyptian",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "hasTrueAlpha": true,
+      "clearOuterEdge": true,
+      "boundaryReview": [],
+      "rowCuts": [
+        0,
+        314,
+        627,
+        940,
+        1254
+      ],
+      "columnCutsByRow": [
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ]
+      ]
+    },
+    {
+      "sheet": "icons-japanese",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "hasTrueAlpha": true,
+      "clearOuterEdge": true,
+      "boundaryReview": [],
+      "rowCuts": [
+        0,
+        318,
+        627,
+        940,
+        1254
+      ],
+      "columnCutsByRow": [
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          318,
+          627,
+          940,
+          1254
+        ]
+      ]
+    },
+    {
+      "sheet": "icons-celtic",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "hasTrueAlpha": true,
+      "clearOuterEdge": true,
+      "boundaryReview": [],
+      "rowCuts": [
+        0,
+        314,
+        627,
+        940,
+        1254
+      ],
+      "columnCutsByRow": [
+        [
+          0,
+          314,
+          628,
+          940,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ]
+      ]
+    },
+    {
+      "sheet": "icons-mesoamerican",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "hasTrueAlpha": true,
+      "clearOuterEdge": true,
+      "boundaryReview": [],
+      "rowCuts": [
+        0,
+        314,
+        627,
+        937,
+        1254
+      ],
+      "columnCutsByRow": [
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          309,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ]
+      ]
+    },
+    {
+      "sheet": "icons-general",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "hasTrueAlpha": true,
+      "clearOuterEdge": true,
+      "boundaryReview": [],
+      "rowCuts": [
+        0,
+        314,
+        627,
+        929,
+        1254
+      ],
+      "columnCutsByRow": [
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ],
+        [
+          0,
+          314,
+          627,
+          940,
+          1254
+        ]
+      ]
+    },
+    {
+      "sheet": "vfx-greek-norse-egyptian",
+      "nativeSize": [
+        1448,
+        1086
+      ],
+      "hasTrueAlpha": true,
+      "clearOuterEdge": true,
+      "boundaryReview": [],
+      "rowCuts": [
+        0,
+        362,
+        724,
+        1086
+      ],
+      "columnCutsByRow": [
+        [
+          0,
+          362,
+          724,
+          1086,
+          1448
+        ],
+        [
+          0,
+          362,
+          724,
+          1086,
+          1448
+        ],
+        [
+          0,
+          362,
+          724,
+          1086,
+          1448
+        ]
+      ]
+    },
+    {
+      "sheet": "vfx-japanese-celtic-mesoamerican",
+      "nativeSize": [
+        1448,
+        1086
+      ],
+      "hasTrueAlpha": true,
+      "clearOuterEdge": true,
+      "boundaryReview": [],
+      "rowCuts": [
+        0,
+        362,
+        724,
+        1086
+      ],
+      "columnCutsByRow": [
+        [
+          0,
+          362,
+          724,
+          1086,
+          1448
+        ],
+        [
+          0,
+          362,
+          724,
+          1086,
+          1448
+        ],
+        [
+          0,
+          362,
+          724,
+          1086,
+          1448
+        ]
+      ]
+    },
+    {
+      "sheet": "vfx-utility",
+      "nativeSize": [
+        1448,
+        1086
+      ],
+      "hasTrueAlpha": true,
+      "clearOuterEdge": true,
+      "boundaryReview": [],
+      "rowCuts": [
+        0,
+        362,
+        724,
+        1086
+      ],
+      "columnCutsByRow": [
+        [
+          0,
+          362,
+          724,
+          1086,
+          1448
+        ],
+        [
+          0,
+          362,
+          724,
+          1086,
+          1448
+        ],
+        [
+          0,
+          362,
+          724,
+          1086,
+          1448
+        ]
+      ]
+    }
+  ],
+  "runtimeBytes": 17842543,
+  "limitations": [
+    "No game code changed.",
+    "No gameplay playtesting or integration validation.",
+    "VFX are textures plus runtime recipes, not baked frame sequences.",
+    "Native icon atlases 1254 square; no upscaling.",
+    "No separate PNG per icon: use measured atlas frames."
+  ]
+}

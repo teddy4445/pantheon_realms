@@ -23,13 +23,23 @@
  * Campaign expansion (2026-10-15): an optional "New neutral creatures" pool (off
  * by default) — hiring sites of the six new neutrals, only where their habitat
  * fits the map (`app/editorV2Sites.ts` passes content's table to the generator).
+ *
+ * Naval templates (2026-10-17, assets-source/art/naval-random-v1/): The Shattered Crown and The
+ * Serpent Straits follow the nine land layouts, tagged "Ships required". Their seat
+ * counts and the Huge size are the only ones offered (others disabled with the
+ * reason; the player count is never changed for the player), two-way portals are
+ * locked off ("Ships connect these islands."), the type needs hero ships to be ready
+ * in this build, and Create World shows the type's loading painting while the
+ * islands are generated.
  */
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   createRandomSkirmish,
   skirmishSizeAllows,
   skirmishTypeAllows,
-  SKIRMISH_MAP_TYPES,
+  RANDOM_MAP_TYPES,
+  navalSettingsProblem,
+  navalTemplatesReadiness,
   SKIRMISH_MAX_EMPIRES,
   SKIRMISH_SIZE_LABEL,
   SKIRMISH_START_WALLET,
@@ -38,7 +48,7 @@ import {
   type RandomSkirmish,
   type RoadDensity,
   type SkirmishMapSize,
-  type SkirmishMapType,
+  type RandomMapType,
   type SkirmishVictory,
   type StartWealth,
   type TreasureLevel,
@@ -47,11 +57,12 @@ import {
   neutralSpeciesForBiome,
   skirmishMapBiome,
 } from '@pr/session';
-import { RESOURCE_KEYS, RESOURCE_LABELS } from '@pr/rules';
+import { NAVAL_PORTAL_LOCK_REASON, RESOURCE_KEYS, RESOURCE_LABELS } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Button, Panel, SectionTitle, Segmented, Toggle } from '../components/kit';
 import { FrontendShell, IllustratedChoice, radioKeys } from '../components/frontend';
-import { frontendArt } from '../assets/manifest';
+import { frontendArt, navalRandomArt } from '../assets/manifest';
+import '../styles/navalRandom.css';
 import { DifficultyPicker } from './Setup';
 import { SeatRow, patchSeat, patronsOf, type SeatDraft } from '../components/seats';
 import { NEUTRAL_SITE_TABLE } from '../app/editorV2Sites';
@@ -80,7 +91,7 @@ export function RandomSetupScreen() {
   const [victoryType, setVictoryType] = useState<'elimination' | 'hold_relic'>('elimination');
   const [relicDays, setRelicDays] = useState(7);
   const [monsters, setMonsters] = useState<'none' | 'few' | 'many'>('few');
-  const [mapType, setMapType] = useState<SkirmishMapType>('continental');
+  const [mapType, setMapType] = useState<RandomMapType>('continental');
   const [guards, setGuards] = useState<GuardStrength>('normal');
   const [treasure, setTreasure] = useState<TreasureLevel>('normal');
   const [startWealth, setStartWealth] = useState<StartWealth>('normal');
@@ -96,6 +107,10 @@ export function RandomSetupScreen() {
   const [difficulty, setDifficulty] = useState('normal');
   const [chapter, setChapter] = useState<'land' | 'empires' | 'rules'>('land');
   const [busy, setBusy] = useState(false);
+  // Naval templates: the type's loading painting while the islands are generated.
+  const [loadingType, setLoadingType] = useState<RandomMapType | null>(null);
+  /** The loading painting has been drawn (or could not load): the game may open. */
+  const loadingArtShown = useRef(false);
   const typeRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [seats, setSeats] = useState<SeatDraft[]>(() =>
     Array.from({ length: MAX_SEATS }, (_, i) => i).map((i) => {
@@ -107,10 +122,15 @@ export function RandomSetupScreen() {
   const humans = active.filter((s) => s.controller === 'human').length;
   const anyAi = active.some((s) => s.controller === 'ai');
   const sizeOk = skirmishSizeAllows(size, count);
+  const typeInfo = RANDOM_MAP_TYPES.find((x) => x.id === mapType) ?? RANDOM_MAP_TYPES[0]!;
+  const naval = typeInfo.naval ?? null;
+  const navalReady = navalTemplatesReadiness(catalog);
+  const navalProblem = naval ? (navalReady.ready ? navalSettingsProblem(naval.id, size, count, unownedTowns) : navalReady.reason) : null;
 
   const victory: SkirmishVictory = victoryType === 'hold_relic' ? { type: 'hold_relic', days: relicDays } : { type: 'elimination' };
   const turnOrder = count >= 3 ? (rotating ? ('rotating' as const) : ('fixed' as const)) : undefined;
   const options = {
+    features: { expandedContent: true, mythicLibraryV2: true, weeklyEvents: true, interventions: true, heroSpecialties: true, neutralReactions: true, climateRules, aiTemperaments, cityDedicationsV1: true, scoutingIntelV1: true, targetableCatapultV1: true, recruitmentCaravansV1: true, navalMovementV1: true, seaEncountersV1: true },
     size,
     seats: active.map((s) => ({ pantheonId: s.pantheonId, controller: s.controller })),
     victory,
@@ -121,7 +141,8 @@ export function RandomSetupScreen() {
     startWealth,
     roads,
     revealMap,
-    portals,
+    // Naval templates: portals are locked off (ships connect the islands).
+    portals: naval ? false : portals,
     climateRules,
     aiTemperaments,
     ...(turnOrder ? { turnOrder } : {}),
@@ -137,7 +158,9 @@ export function RandomSetupScreen() {
 
   const setSeat = (i: number, patch: Partial<SeatDraft>) => setSeats((list) => list.map((s, k) => (k === i ? patchSeat(catalog, s, patch) : s)));
 
-  const reason = !sizeOk
+  const reason = navalProblem
+    ? navalProblem
+    : !sizeOk
     ? 'Four or more empires need a large or huge map'
     : humans === 0
       ? 'At least one seat must be played by a person'
@@ -147,6 +170,25 @@ export function RandomSetupScreen() {
 
   const start = () => {
     if (reason || busy) return;
+    if (naval) {
+      // Show the type's loading painting while the islands are generated (painted first, then the work).
+      setBusy(true);
+      loadingArtShown.current = false;
+      setLoadingType(naval.id);
+      const began = Date.now();
+      window.setTimeout(() => {
+        let ok = false;
+        try {
+          ok = startNow(() => Date.now() - began);
+        } finally {
+          if (!ok) {
+            setBusy(false);
+            setLoadingType(null);
+          }
+        }
+      }, 60);
+      return;
+    }
     setBusy(true);
     try {
       startNow();
@@ -154,7 +196,7 @@ export function RandomSetupScreen() {
       setBusy(false);
     }
   };
-  const startNow = () => {
+  const startNow = (elapsed?: () => number): boolean => {
     // A fresh seed every time (a rare seed the generator cannot lay out is replaced by another).
     let generated: RandomSkirmish | null = null;
     let lastError = '';
@@ -167,7 +209,7 @@ export function RandomSetupScreen() {
     }
     if (!generated) {
       setFailure({ key: optionsKey, text: `The map could not be generated: ${lastError}` });
-      return;
+      return false;
     }
     const ids = [generated.mission.player.playerId, ...(generated.mission.rivals ?? []).map((r) => r.playerId)];
     const playerNames: Record<string, string> = {};
@@ -177,10 +219,54 @@ export function RandomSetupScreen() {
       if (s.controller === 'human') playerNames[id] = s.name.trim() || `Player ${i + 1}`;
       if (i > 0 && s.controller === 'human' && s.godId) patronGodIds[id] = s.godId;
     });
-    store.startGenerated(generated, active[0]!.controller === 'human' ? active[0]!.godId : null, { difficultyId: anyAi ? difficulty : 'normal', playerNames, patronGodIds });
+    const go = () => store.startGenerated(generated!, active[0]!.controller === 'human' ? active[0]!.godId : null, { difficultyId: anyAi ? difficulty : 'normal', playerNames, patronGodIds });
+    // The loading painting stays until it is shown and at least a moment, so it can be seen and read
+    // (never a gameplay wait; at most four seconds when the picture is slow to load).
+    if (!elapsed) {
+      go();
+      return true;
+    }
+    const tick = () => {
+      const t = elapsed();
+      if ((loadingArtShown.current && t >= 1500) || t >= 4000) go();
+      else window.setTimeout(tick, 100);
+    };
+    tick();
+    return true;
   };
 
-  const typeInfo = SKIRMISH_MAP_TYPES.find((x) => x.id === mapType) ?? SKIRMISH_MAP_TYPES[0]!;
+  /** Choose a map type: a naval template brings its own size and default victory (the player count is never changed). */
+  const chooseType = (id: RandomMapType) => {
+    setMapType(id);
+    const info = RANDOM_MAP_TYPES.find((t) => t.id === id)?.naval;
+    if (!info) return;
+    if (!info.sizes.includes(size)) setSize(info.sizes[info.sizes.length - 1]!);
+    if (info.defaultVictory.type === 'hold_relic') {
+      setVictoryType('hold_relic');
+      setRelicDays(info.defaultVictory.days);
+    } else setVictoryType('elimination');
+  };
+  const typeReason = (t: (typeof RANDOM_MAP_TYPES)[number]): string | null => {
+    if (t.naval) {
+      if (!navalReady.ready) return navalReady.reason;
+      return t.naval.seats.includes(count) ? null : `For ${t.naval.seats.join(', ').replace(/, (\d+)$/, ' or $1')} empires`;
+    }
+    return skirmishTypeAllows(t.id, count) ? null : `For ${t.maxEmpires} empires`;
+  };
+  const countOption = (id: '2' | '3' | '4' | '5' | '6') => {
+    const n = Number(id);
+    const off = naval && !naval.seats.includes(n) ? naval.seatReason : null;
+    return { id, label: id, disabled: !!off, title: off ?? undefined };
+  };
+  const loadingArt = loadingType ? navalRandomArt(RANDOM_MAP_TYPES.find((t) => t.id === loadingType)?.naval?.loadingArtId ?? '') : null;
+  // A naval type's loading painting is fetched as soon as the type is chosen, so Create World shows it at once.
+  const preloadUrl = naval ? navalRandomArt(naval.loadingArtId)?.url : undefined;
+  useEffect(() => {
+    if (!preloadUrl) return;
+    const img = new Image();
+    img.decoding = 'async';
+    img.src = preloadUrl;
+  }, [preloadUrl]);
   const typeArt = frontendArt(`frontend.random.${typeInfo.id}`);
   const chapters = [
     { id: 'land' as const, label: 'Land' },
@@ -227,8 +313,8 @@ export function RandomSetupScreen() {
                   <div className="setting-block">
                     <div className="setting-block__label">Map type</div>
                     <div className="map-type-grid fe-random__types" role="radiogroup" aria-label="Map type" data-testid="random-type">
-                      {SKIRMISH_MAP_TYPES.map((t, i) => {
-                        const allowed = skirmishTypeAllows(t.id, count);
+                      {RANDOM_MAP_TYPES.map((t, i) => {
+                        const why = typeReason(t);
                         return (
                           <IllustratedChoice
                             key={t.id}
@@ -239,13 +325,19 @@ export function RandomSetupScreen() {
                             name={t.label}
                             selected={mapType === t.id}
                             tabIndex={mapType === t.id ? 0 : -1}
-                            onKeyDown={radioKeys(SKIRMISH_MAP_TYPES, i, (x) => skirmishTypeAllows(x.id, count) && setMapType(x.id), typeRefs, 3)}
-                            onSelect={() => setMapType(t.id)}
-                            disabledReason={allowed ? null : `For ${t.maxEmpires} empires`}
+                            onKeyDown={radioKeys(RANDOM_MAP_TYPES, i, (x) => !typeReason(x) && chooseType(x.id), typeRefs, 3)}
+                            onSelect={() => chooseType(t.id)}
+                            disabledReason={why}
                             title={t.summary}
-                            className={`map-type fe-choice--type ${mapType === t.id ? 'is-selected' : ''}`}
+                            className={`map-type fe-choice--type ${mapType === t.id ? 'is-selected' : ''} ${t.naval ? 'fe-choice--naval' : ''}`}
                             testId={`random-type-${t.id}`}
-                          />
+                          >
+                            {t.naval ? (
+                              <span className="fe-choice__tag" data-testid={`random-type-${t.id}-ships`}>
+                                Ships required
+                              </span>
+                            ) : null}
+                          </IllustratedChoice>
                         );
                       })}
                     </div>
@@ -255,12 +347,30 @@ export function RandomSetupScreen() {
                     <div className="fe-random__type-caption">Illustrative landscape — every map is generated anew</div>
                     <h2 className="fe-random__type-name">{typeInfo.label}</h2>
                     <p className="fe-random__type-text">{typeInfo.summary}</p>
+                    {naval ? (
+                      <div className="naval-type" data-testid="random-naval-detail">
+                        <ul className="naval-type__tags" aria-label="About this map type">
+                          <li className="naval-type__tag naval-type__tag--ships">Ships required</li>
+                          <li className="naval-type__tag">{naval.sizes.map((x) => SKIRMISH_SIZE_LABEL[x]).join(', ')} only</li>
+                          <li className="naval-type__tag">{naval.seats.length === 1 ? `${naval.seats[0]} empires` : `${naval.seats.join(', ').replace(/, (\d+)$/, ' or $1')} empires`}</li>
+                          <li className="naval-type__tag">{Math.round(naval.waterBand[0] * 100)}–{Math.round(naval.waterBand[1] * 100)} % water</li>
+                        </ul>
+                        <p className="naval-type__text" data-testid="random-naval-description">{naval.description}</p>
+                        <p className={`naval-type__ready small ${navalReady.ready ? 'is-ready' : 'is-missing'}`} data-testid="random-naval-ready">
+                          {navalReady.ready ? navalReady.detail : navalReady.reason}
+                        </p>
+                      </div>
+                    ) : null}
                           <div className="setting-block">
                             <div className="setting-block__label">Size</div>
                             <Segmented
                               label="Map size"
                               value={size}
-                              options={(['small', 'medium', 'large', 'huge'] as const).map((id) => ({ id, label: SKIRMISH_SIZE_LABEL[id], disabled: !skirmishSizeAllows(id, count), title: !skirmishSizeAllows(id, count) ? 'Four or more empires need a large or huge map' : undefined }))}
+                              options={(['small', 'medium', 'large', 'huge'] as const).map((id) => {
+                                const navalOff = naval && !naval.sizes.includes(id) ? naval.sizeReason : null;
+                                const off = navalOff ?? (!skirmishSizeAllows(id, count) ? 'Four or more empires need a large or huge map' : null);
+                                return { id, label: SKIRMISH_SIZE_LABEL[id], disabled: !!off, title: off ?? undefined };
+                              })}
                               onChange={setSize}
                               testId="random-size"
                             />
@@ -270,7 +380,7 @@ export function RandomSetupScreen() {
                             <Segmented
                               label="Number of empires"
                               value={String(count) as '2' | '3' | '4' | '5' | '6'}
-                              options={(['2', '3', '4', '5', '6'] as const).map((id) => ({ id, label: id }))}
+                              options={(['2', '3', '4', '5', '6'] as const).map(countOption)}
                               onChange={(v) => {
                                 const n = Number(v);
                                 setCount(n);
@@ -348,10 +458,19 @@ export function RandomSetupScreen() {
                   <Toggle checked={revealMap} onChange={setRevealMap} label="Revealed map" />
                   <span className="small">Revealed map — terrain and sites known from the start (heroes stay hidden)</span>
                 </div>
-                <div className="row gap setting-block__details">
-                  <Toggle checked={portals} onChange={setPortals} label="Two-way portals" />
-                  <span className="small">Two-way portals link the empires’ outer lands: a shortcut to a rival — and a back door for them.</span>
-                </div>
+                {naval ? (
+                  <div className="row gap setting-block__details naval-portal-lock" data-testid="random-portals-lock">
+                    <Toggle checked={false} onChange={() => undefined} label="Two-way portals (locked)" disabled />
+                    <span className="small">
+                      Two-way portals are off on this map: <strong>{NAVAL_PORTAL_LOCK_REASON}</strong>
+                    </span>
+                  </div>
+                ) : (
+                  <div className="row gap setting-block__details">
+                    <Toggle checked={portals} onChange={setPortals} label="Two-way portals" />
+                    <span className="small">Two-way portals link the empires’ outer lands: a shortcut to a rival — and a back door for them.</span>
+                  </div>
+                )}
                 <div className="row gap setting-block__details">
                   <Toggle checked={climateRules} onChange={setClimateRules} label="Climate rules" />
                   <span className="small">Climate rules — the map’s weather changes every battle a little, for both sides alike: fog shortens shots, sand slows the ground troops, storms keep flyers low.</span>
@@ -362,19 +481,24 @@ export function RandomSetupScreen() {
                 <Segmented
                   label="Unowned towns"
                   value={unownedTowns}
-                  options={[
-                    { id: 'none', label: 'None' },
-                    { id: 'own', label: 'Same pantheon' },
-                    { id: 'other', label: 'Other pantheon' },
-                    { id: 'both', label: 'Both' },
-                  ]}
+                  options={(
+                    [
+                      { id: 'none', label: 'None' },
+                      { id: 'own', label: 'Same pantheon' },
+                      { id: 'other', label: 'Other pantheon' },
+                      { id: 'both', label: 'Both' },
+                    ] as const
+                  ).map((o) => {
+                    const off = naval ? navalSettingsProblem(naval.id, naval.sizes[0]!, naval.seats.includes(count) ? count : naval.seats[0]!, o.id) : null;
+                    return { ...o, disabled: !!off, title: off ?? undefined };
+                  })}
                   onChange={setUnownedTowns}
                   testId="random-unowned"
                 />
                 <p className="small faint setting-block__details" data-testid="random-unowned-text">
                   {unownedTowns === 'none'
                     ? 'Every town on the map starts with an empire.'
-                    : `${unownedTowns === 'both' ? 'Two towns' : 'A town'} in each empire’s outer lands start${unownedTowns === 'both' ? '' : 's'} without a lord or a hero, held by ${unownedTowns === 'both' ? 'their' : 'its'} own militia — ${unownedTowns === 'own' ? 'of the empire’s own pantheon' : unownedTowns === 'other' ? 'of another pantheon' : 'one of the empire’s own pantheon, one of another'}. Take ${unownedTowns === 'both' ? 'them' : 'it'} to build and recruit there.`}
+                    : `${unownedTowns === 'both' ? 'Two towns' : 'A town'} in each empire’s ${naval ? 'remote islands' : 'outer lands'} start${unownedTowns === 'both' ? '' : 's'} without a lord or a hero, held by ${unownedTowns === 'both' ? 'their' : 'its'} own militia — ${unownedTowns === 'own' ? 'of the empire’s own pantheon' : unownedTowns === 'other' ? 'of another pantheon' : 'one of the empire’s own pantheon, one of another'}. Take ${unownedTowns === 'both' ? 'them' : 'it'} to build and recruit there.`}
                 </p>
               </div>
               <div className="setting-block" data-testid="random-neutrals">
@@ -399,7 +523,7 @@ export function RandomSetupScreen() {
                 <Segmented
                   label="Number of empires"
                   value={String(count) as '2' | '3' | '4' | '5' | '6'}
-                  options={(['2', '3', '4', '5', '6'] as const).map((id) => ({ id, label: id }))}
+                  options={(['2', '3', '4', '5', '6'] as const).map(countOption)}
                   onChange={(v) => {
                     const n = Number(v);
                     setCount(n);
@@ -484,6 +608,18 @@ export function RandomSetupScreen() {
           </div>
         </Panel>
       </div>
+      {loadingType ? (
+        <div className="naval-loading" role="status" aria-live="polite" data-testid="random-naval-loading">
+          {loadingArt ? <img className="naval-loading__art" src={loadingArt.url} alt="" draggable={false} decoding="async" onLoad={() => (loadingArtShown.current = true)} onError={() => (loadingArtShown.current = true)} /> : null}
+          <div className="naval-loading__shade" aria-hidden="true" />
+          <div className="naval-loading__text">
+            <div className="naval-loading__kicker">Random map · Ships required</div>
+            <h2 className="naval-loading__title">{RANDOM_MAP_TYPES.find((t) => t.id === loadingType)?.label}</h2>
+            <p className="naval-loading__summary">{RANDOM_MAP_TYPES.find((t) => t.id === loadingType)?.naval?.description}</p>
+            <p className="naval-loading__status">Charting the islands…</p>
+          </div>
+        </div>
+      ) : null}
     </FrontendShell>
   );
 }

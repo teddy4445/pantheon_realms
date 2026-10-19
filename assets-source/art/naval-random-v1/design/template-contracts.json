@@ -1,0 +1,63 @@
+{
+  "templates": [
+    {
+      "id": "shattered_crown",
+      "name": "The Shattered Crown",
+      "stem": "shattered-crown",
+      "seats": [
+        2,
+        3,
+        6
+      ],
+      "water": [
+        70,
+        77
+      ],
+      "actual": 73.5,
+      "defaultVictory": {
+        "type": "hold_relic",
+        "days": 7
+      },
+      "description": "Sail between thirteen separate islands. Race for remote riches, invade rival shores, or hold the broken Crown at the center.",
+      "size": [
+        "huge"
+      ],
+      "allSixPantheonsSelectable": true,
+      "portals": false,
+      "requiredFeature": "navalMovementV1",
+      "startingEmptyShipsPerSeat": 1,
+      "referenceTopology": "design/shattered_crown.topology.json",
+      "art": "frontend.random.shattered_crown",
+      "loadingArt": "random.shattered_crown.loading",
+      "status": "Design contract for implementation; not current game catalog schema"
+    },
+    {
+      "id": "serpent_straits",
+      "name": "The Serpent Straits",
+      "stem": "serpent-straits",
+      "seats": [
+        2
+      ],
+      "water": [
+        66,
+        74
+      ],
+      "actual": 69.81,
+      "defaultVictory": {
+        "type": "elimination"
+      },
+      "description": "Two rival harbors, winding island channels and open-water flanking routes. Intercept enemy ships or sail around them to reach another landing beach.",
+      "size": [
+        "huge"
+      ],
+      "allSixPantheonsSelectable": true,
+      "portals": false,
+      "requiredFeature": "navalMovementV1",
+      "startingEmptyShipsPerSeat": 1,
+      "referenceTopology": "design/serpent_straits.topology.json",
+      "art": "frontend.random.serpent_straits",
+      "loadingArt": "random.serpent_straits.loading",
+      "status": "Design contract for implementation; not current game catalog schema"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+ "schema": "pantheon-realms-naval-random-1",
+ "notice": "Written by tools/assets/import_naval_random.py from the naval random-maps kit of 2026-10-17 (sources: assets-source/art/naval-random-v1). Relative paths only (naval-random-v1/...); merged by packages/ui/src/assets/manifest.ts. Decorative: every label stays live text; the paintings illustrate the templates and are never a preview of a generated map.",
+ "assets": {
+  "frontend.random.serpent_straits": {
+   "file": "naval-random-v1/serpent-straits-card.png",
+   "kind": "card",
+   "width": 1672,
+   "height": 941,
+   "bytes": 3308197,
+   "sha256": "68bb243989e21a8912c01b17d6310d3f304d142a74cb20f695fd22cc788ae408",
+   "fit": "cover",
+   "focal": [
+    0.5,
+    0.5
+   ],
+   "alt": "The Serpent Straits: rival harbors among winding island straits",
+   "role": "Random-map type chooser card, selected-type summary and save/scenario thumbnail fallback",
+   "status": "final",
+   "provenance": "Naval random-maps kit 2026-10-17 (built-in image generator). Native pixels, 1672 x 941 — below the requested 1920 x 1080, never enlarged or retouched. Copied byte for byte by tools/assets/import_naval_random.py."
+  },
+  "frontend.random.shattered_crown": {
+   "file": "naval-random-v1/shattered-crown-card.png",
+   "kind": "card",
+   "width": 1672,
+   "height": 941,
+   "bytes": 3308396,
+   "sha256": "0099eba19a68730f4e94322a3b9a9dea8fa572c8d4b694e2f862401605dee13a",
+   "fit": "cover",
+   "focal": [
+    0.5,
+    0.5
+   ],
+   "alt": "The Shattered Crown: island kingdoms around a broken crown at sea",
+   "role": "Random-map type chooser card, selected-type summary and save/scenario thumbnail fallback",
+   "status": "final",
+   "provenance": "Naval random-maps kit 2026-10-17 (built-in image generator). Native pixels, 1672 x 941 — below the requested 1920 x 1080, never enlarged or retouched. Copied byte for byte by tools/assets/import_naval_random.py."
+  },
+  "random.serpent_straits.loading": {
+   "file": "naval-random-v1/serpent-straits-loading.png",
+   "kind": "loading",
+   "width": 1672,
+   "height": 941,
+   "bytes": 2805153,
+   "sha256": "3da69280bf57a7c6548a95e80ee51389c6aa3b079af168907c7dfae36c10a990",
+   "fit": "cover",
+   "focal": [
+    0.5,
+    0.5
+   ],
+   "alt": "",
+   "role": "Generated-mission loading and briefing background for The Serpent Straits",
+   "status": "final",
+   "provenance": "Naval random-maps kit 2026-10-17 (built-in image generator). Native pixels, 1672 x 941 — below the requested 1920 x 1080, never enlarged or retouched. Copied byte for byte by tools/assets/import_naval_random.py."
+  },
+  "random.shattered_crown.loading": {
+   "file": "naval-random-v1/shattered-crown-loading.png",
+   "kind": "loading",
+   "width": 1672,
+   "height": 941,
+   "bytes": 2574850,
+   "sha256": "bb1c948978306bbfe9c8760609b4e407d25c71357a8dbad69b599bddb51336aa",
+   "fit": "cover",
+   "focal": [
+    0.5,
+    0.5
+   ],
+   "alt": "",
+   "role": "Generated-mission loading and briefing background for The Shattered Crown",
+   "status": "final",
+   "provenance": "Naval random-maps kit 2026-10-17 (built-in image generator). Native pixels, 1672 x 941 — below the requested 1920 x 1080, never enlarged or retouched. Copied byte for byte by tools/assets/import_naval_random.py."
+  }
+ }
+}

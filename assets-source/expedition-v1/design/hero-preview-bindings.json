@@ -1,0 +1,32 @@
+{
+  "greek": {
+    "id": "alexios",
+    "name": "Alexios",
+    "portrait": "reuse/ui/icons/final/hero.greek.alexios.portrait.webp"
+  },
+  "norse": {
+    "id": "norse_sigurd",
+    "name": "Sigurd",
+    "portrait": "reuse/ui/icons/final/hero.norse.sigurd.portrait.webp"
+  },
+  "egyptian": {
+    "id": "egyptian_imhotep",
+    "name": "Imhotep",
+    "portrait": "reuse/ui/icons/final/hero.egyptian.imhotep.portrait.webp"
+  },
+  "japanese": {
+    "id": "japanese_momotaro",
+    "name": "Momotaro",
+    "portrait": "reuse/ui/icons/final/hero.japanese.momotaro.portrait.webp"
+  },
+  "celtic": {
+    "id": "celtic_cu_chulainn",
+    "name": "Cu Chulainn",
+    "portrait": "reuse/ui/icons/final/hero.celtic.cu_chulainn.portrait.webp"
+  },
+  "mesoamerican": {
+    "id": "mesoamerican_hunahpu",
+    "name": "Hunahpu",
+    "portrait": "reuse/ui/icons/final/hero.mesoamerican.hunahpu.portrait.webp"
+  }
+}

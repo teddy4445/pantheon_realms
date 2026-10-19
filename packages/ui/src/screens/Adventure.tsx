@@ -1,3 +1,4 @@
+import { CourierDialog } from '../components/libraryAdventure';
 /**
  * S06 Adventure Map. The 2D map view shows committed world state; every
  * movement, path and legality question is answered by the rules (quoteMovement,
@@ -8,13 +9,12 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
+  allied,
+  visibleLibrarySignals,
   cellIndex,
   hexEquals,
   missionSite,
   parseHexKey,
-  quoteMovement,
-  routeDays,
-  routeStepDays,
   reachableTiles,
   siteAt,
   visibleCells,
@@ -28,6 +28,7 @@ import {
   interventionsFor,
   interventionUsedThisWeek,
   quoteNeutralReaction,
+  townDedicationView,
   questHutProgress,
   worldWeek,
   KEY_COLOR_HEX,
@@ -42,8 +43,22 @@ import {
   scenarioMission,
   heroInTown,
   isTownTile,
+  isSeaSiteKind,
   axialDistance,
+  caravansAt,
+  caravansOnMap,
+  heroShip,
+  landingCells,
+  quoteTravel,
+  type MovementQuote,
+  type VoyageTransition,
 } from '@pr/rules';
+import { journeyReasonText, navalOn, shipViews, takeNavalPlayback, transitionPrompt, travelReach, travelRoute, visibleShipAt, type PendingNavalPlayback, type ShipAction } from '../app/naval';
+import { ShipInspectPanel, ShipSidebar, ShipTileLines } from '../components/naval';
+import { SeaSiteTileLines, WreckPanel } from '../components/seaSites';
+import { SeaEncounterCards } from '../components/seaCreatures';
+import { seaSiteViews, wreckAt } from '../app/seaSites';
+import { expeditionArt } from '../assets/manifest';
 import { biomeTerrainCss, miracleLook, siteSpriteCandidates, spellLook } from '@pr/presentation/core';
 import type { AdventureSceneController, AdventureView } from '@pr/presentation';
 import { RANDOM_TEMPLATE_ID, type JourneyIntent } from '@pr/session';
@@ -76,6 +91,11 @@ import {
   terrainLabel,
   townAtHero,
 } from '../app/view';
+import { dedicationsOn, godName } from '../app/dedication';
+import { CityBlessingsSection } from '../components/dedication';
+import { currentIntelView, intelOn, lastKnownAt, lastKnownMarkers, lastKnownView } from '../app/intel';
+import { ArmyIntelPanel } from '../components/armyIntel';
+import { CaravanSidebar, CaravanTileLines } from '../components/caravans';
 
 // ---------------------------------------------------------------------------
 // View model
@@ -140,10 +160,12 @@ function buildView(
   grid: AdventureView['grid'],
   auras: readonly { matchId: string; heroId: string; id: string; untilDay: number }[] = [],
   calm = false,
+  landingPick = false,
 ): AdventureView {
   const explored = state.fog[playerId]?.explored ?? [];
   const visible = visibleCells(catalog, state, playerId);
   const map = state.world.map;
+  const naval = navalOn(state);
   const mission = scenarioMission(catalog, state);
   // Quest markers over the sites of open objectives (the journal's state): a campaign objective's own icon, else the generic one.
   const quests = questMarkerSites(catalog, state, playerId);
@@ -151,7 +173,8 @@ function buildView(
     const st = state.world.sites[def.id];
     const quest = quests.get(def.id);
     const idx = cellIndex(map, def.coord);
-    const shown = explored[idx] === 1 || state.mission.revealedSiteIds.includes(def.id);
+    // Sea sites (lookouts, salvage, wrecks) are drawn by their own layer (`seaSites` below), never as a generic site.
+    const shown = (explored[idx] === 1 || state.mission.revealedSiteIds.includes(def.id)) && !isSeaSiteKind(def.kind.type);
     let owner = st?.owner ?? null;
     if (def.kind.type === 'town') owner = state.towns[def.kind.townId]?.ownerId ?? null;
     const guardArmy = st?.guard ?? def.guard?.army ?? [];
@@ -172,7 +195,7 @@ function buildView(
       open: def.kind.type === 'key_gate' ? (state.players[playerId]?.keys ?? []).includes(def.kind.color) : !!st?.open,
       claimed: !!st?.claimed,
       // The site's own picture first (its art, a sluice's state, a ferry landing, a neutral hiring site), from data only.
-      sprites: siteSpriteCandidates(def, st),
+      sprites: siteSpriteCandidates({ ...def, art: def.artStates?.find((a) => state.mission.flags[a.flag])?.art ?? def.art }, st),
       // A campaign icon not delivered falls back to the generic quest marker (the ID names the picture drawn).
       quest: quest ? ((id) => ({ id, url: resolveAsset(id).url }))(resolveAsset(quest.id).url ? quest.id : GENERIC_QUEST_MARKER) : null,
       ...(def.kind.type === 'key_gate' || def.kind.type === 'key_tent' || def.kind.type === 'skill_trainer' ? { tint: def.kind.type === 'skill_trainer' ? '#b5423a' : KEY_COLOR_HEX[def.kind.color] } : {}),
@@ -196,18 +219,22 @@ function buildView(
         pantheonId: catalog.heroes[h.definitionId]?.pantheonId ?? state.players[h.ownerId]?.pantheonId ?? null,
         // A spell lasting the day (Fleet Foot, Wings of Hermes) loops its aura on the viewer's own hero.
         aura: h.ownerId === playerId ? (auras.find((a) => a.heroId === h.id && a.matchId === state.matchId && state.day < a.untilDay)?.id ?? null) : null,
+        // Hero ships: aboard, the mounted avatar is hidden (the ship flies the hero's flag).
+        embarked: naval && !!heroShip(state, h.id),
       };
     });
   let reachable: HexCoord[] | null = null;
-  if (selected && showReach) reachable = [...reachableTiles(catalog, state, selected.id).keys()].map(parseHexKey);
+  if (selected && showReach) reachable = naval ? travelReach(catalog, state, selected.id) : [...reachableTiles(catalog, state, selected.id).keys()].map(parseHexKey);
   let path: AdventureView['path'] = null;
+  let transitions: { coord: HexCoord; kind: 'embark' | 'disembark' }[] = [];
+  let ring: HexCoord | null = null;
   if (selected && journey) {
     // The planned journey, quoted again from where the hero stands now (the destination is the plan; the tiles are not).
-    const q = quoteMovement(catalog, state, selected.id, journey.target);
-    if (q.reachable && q.path.length > 0) {
-      const days = routeStepDays(catalog, state, selected.id, q);
-      path = { steps: q.path, stopIndex: q.stopIndex, encounter: q.endsInEncounter, days, arrivalDay: days ? days[days.length - 1]! : null, destination: q.path[q.path.length - 1]! };
-    } else if (!q.reachable) path = { steps: [], stopIndex: -1, encounter: false, blocked: true, destination: journey.target };
+    // `quoteTravel` is what MoveHero commits: a destination over the water is a voyage with embark / disembark steps.
+    const route = travelRoute(catalog, state, selected.id, journey.target);
+    path = route.path;
+    transitions = [...route.transitions];
+    if (route.naval && naval && heroShip(state, selected.id) && route.path && !route.path.blocked) ring = route.path.destination ?? null;
   }
   return {
     map,
@@ -221,6 +248,31 @@ function buildView(
     path,
     grid,
     calm,
+    // Scouting intel: where enemy armies were last seen outside today's vision (their banner colour; no army data).
+    signals: visibleLibrarySignals(catalog, state, playerId),
+    lastKnown: intelOn(catalog, state) ? lastKnownMarkers(catalog, state, playerId, visible) : [],
+    // Recruitment caravans: own wagons always; another player's only while its tile is in sight (no route, no destination).
+    caravans: caravansOnMap(state)
+      .filter((k) => k.ownerId === playerId || visible.has(cellIndex(map, k.coord)))
+      .map((k) => ({
+        id: k.id,
+        coord: k.coord,
+        color: state.players[k.ownerId]?.color ?? '#999',
+        shown: true,
+        toward: k.ownerId === playerId ? (k.route[0] ?? null) : null,
+        sharesTile: heroes.some((h) => h.shown && hexEquals(h.coord, k.coord)),
+        held: k.ownerId === playerId && (k.status === 'blocked' || k.status === 'awaiting_garrison'),
+      })),
+    // Hero ships (navalMovementV1): own ships always, another's only while in sight (as heroes).
+    ...(naval
+      ? {
+          ships: shipViews(state, playerId, selected?.id ?? null, visible),
+          shipMarks: { landing: landingPick && selected && heroShip(state, selected.id) ? landingCells(catalog, state, selected.id) : [], ring, transitions },
+          shipOverlays: { wake: expeditionArt('expedition.overlay.wake')?.url ?? null, ring: expeditionArt('expedition.overlay.destination-ring')?.url ?? null },
+        }
+      : {}),
+    // Coastal watchtowers, floating salvage and shipwrecks (sea-sites kit; app/seaSites.ts).
+    seaSites: seaSiteViews(catalog, state, playerId),
   };
 }
 
@@ -300,6 +352,19 @@ function Minimap({ catalog, state, playerId, onPick, footprint }: { catalog: Con
       ctx.strokeRect(x - 2, y - 2, cell + 4, cell + 4);
     }
     const vis = visibleCells(catalog, state, playerId);
+    // Wagons use a diamond, distinct from hero circles and town squares. Never reveal fogged rivals.
+    if (state.scenario.features?.recruitmentCaravansV1) for (const wagon of caravansOnMap(state)) {
+      if (wagon.ownerId !== playerId && !vis.has(cellIndex(map, wagon.coord))) continue;
+      const x = px(wagon.coord.q, wagon.coord.r) + cell / 2;
+      const y = py(wagon.coord.r) + cell / 2;
+      const radius = Math.max(2, cell * 0.9);
+      ctx.fillStyle = state.players[wagon.ownerId]?.color ?? '#e9dfc4';
+      ctx.strokeStyle = '#000';
+      ctx.beginPath();
+      ctx.moveTo(x, y - radius); ctx.lineTo(x + radius, y);
+      ctx.lineTo(x, y + radius); ctx.lineTo(x - radius, y);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+    }
     for (const hero of Object.values(state.heroes)) {
       if (hero.status !== 'active') continue;
       if (hero.ownerId !== playerId && !vis.has(cellIndex(map, hero.position))) continue;
@@ -311,6 +376,33 @@ function Minimap({ catalog, state, playerId, onPick, footprint }: { catalog: Con
       ctx.fill();
       ctx.strokeStyle = '#000';
       ctx.stroke();
+    }
+    // Hero ships: a small hull mark in the owner's colour (neutral: pale), with the same sight rules as heroes.
+    for (const s of shipViews(state, playerId, null, vis)) {
+      if (s.occupied) continue; // a crewed ship's hero is already marked
+      const x = px(s.coord.q, s.coord.r) + cell / 2;
+      const y = py(s.coord.r) + cell / 2;
+      ctx.fillStyle = s.color ?? '#e9dfc4';
+      ctx.beginPath();
+      ctx.moveTo(x - cell * 0.7, y - cell * 0.15);
+      ctx.lineTo(x + cell * 0.7, y - cell * 0.15);
+      ctx.lineTo(x + cell * 0.4, y + cell * 0.45);
+      ctx.lineTo(x - cell * 0.4, y + cell * 0.45);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#000';
+      ctx.stroke();
+    }
+    // Scouting intel: last-known sightings as hollow rings in the banner colour seen (no army data).
+    if (intelOn(catalog, state)) {
+      for (const m of lastKnownMarkers(catalog, state, playerId, vis)) {
+        ctx.strokeStyle = m.color;
+        ctx.lineWidth = Math.max(1, cell * 0.35);
+        ctx.beginPath();
+        ctx.arc(px(m.coord.q, m.coord.r) + cell / 2, py(m.coord.r) + cell / 2, cell * 0.8, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.lineWidth = 1;
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [catalog, state, playerId, map, w, h, box]);
@@ -363,10 +455,17 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
   const site = siteAt(catalog, state, c);
   const other = Object.values(state.heroes).find((h) => h.status === 'active' && hexEquals(h.position, c));
   const vis = visibleCells(catalog, state, playerId).has(cellIndex(state.world.map, c));
-  const quote = hero && !hexEquals(hero.position, c) ? quoteMovement(catalog, state, hero.id, c) : null;
+  // The quote MoveHero commits (a destination over the water through a ship).
+  const quote = hero && !hexEquals(hero.position, c) ? quoteTravel(catalog, state, hero.id, c) : null;
   // Campaign v2 sites (sluice, supply depot, ferry landing, neutral hiring site): their known state and what a hero can do there.
   const v2 = site ? siteStatus(catalog, state, playerId, site.def.id, hero?.id ?? null) : null;
   const quest = site ? questMarkerSites(catalog, state, playerId).get(site.def.id) : undefined;
+  // Scouting intel (`scoutingIntelV1`): an enemy army in sight is shown at its observation stage only,
+  // and outside vision a tile shows its last-known report (dated); never the hidden army itself.
+  const intel = intelOn(catalog, state);
+  const shownHero = other && (vis || other.ownerId === playerId || !intel) ? other : undefined;
+  const foeIntel = shownHero && shownHero.ownerId !== playerId && vis && intel ? currentIntelView(catalog, state, playerId, shownHero.id) : null;
+  const stale = intel && !vis ? lastKnownAt(catalog, state, playerId, c) : null;
   return (
     <div className="tile-info">
       <div className="tile-info__head">
@@ -381,8 +480,10 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
             });
             return <MarkerIcon assetId={assetId} tint={siteMarkerTint(site.def.kind as { type: string; color?: string }, assetId, KEY_COLOR_HEX)} />;
           })()
-        ) : other ? (
-          <MarkerIcon assetId={other.ownerId === playerId ? 'icon.marker.hero' : 'icon.marker.enemy-hero'} />
+        ) : shownHero ? (
+          <MarkerIcon assetId={shownHero.ownerId === playerId ? 'icon.marker.hero' : 'icon.marker.enemy-hero'} />
+        ) : stale ? (
+          <MarkerIcon assetId="icon.marker.enemy-hero" />
         ) : null}
         <div className="tile-info__title">{site ? site.def.name : terrainLabel(state, c)}</div>
         {quest ? (
@@ -407,12 +508,23 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
           })()}
         </div>
       ) : null}
+      {site?.def.kind.type === 'town' && dedicationsOn(state) ? (() => {
+        // City dedications: which god a town honors is public (its Temple); its progress and choices stay the owner's.
+        const v = townDedicationView(catalog, state, site.def.kind.townId, playerId);
+        return v.active ? (
+          <div className="small" data-testid="tile-town-god">
+            Honors {godName(catalog, v.active.godId)}
+            {v.active.state === 'dormant' && v.ownerId === playerId ? ` (dormant: ${v.active.dormantReason})` : ''}
+          </div>
+        ) : null;
+      })() : null}
       {site?.def.guard && !site.state.cleared ? (
         <div className="tile-info__guard">
           <div>
             <Icon name="attack" className="inline-icon" /> <strong>{site.def.guard.label}</strong>
           </div>
           <ArmyPreview catalog={catalog} stacks={site.state.guard ?? site.def.guard.army} onInfo={(creatureId, count) => store.openOverlay({ kind: 'stack-info', creatureId, count })} testId="guard-army" />
+          {site.def.kind.type === 'sea_monster' ? <SeaEncounterCards catalog={catalog} stacks={site.state.guard ?? site.def.guard.army} /> : null}
           {hero ? (
             (() => {
               const r = quoteNeutralReaction(catalog, state, hero.id, site.def.coord);
@@ -453,6 +565,7 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
       {site?.def.kind.type === 'pickup' && !v2 ? <div className="small">{site.state.claimed ? 'Already collected' : 'Uncollected'}</div> : null}
       {site?.def.kind.type === 'gate' ? <div className="small">{site.state.open ? 'Open' : 'Sealed'}</div> : null}
       <NewSiteInfo site={site} hero={hero} />
+      <SeaSiteTileLines siteId={site?.def.id ?? null} heroId={hero?.id ?? null} />
       {v2 ? (
         <div className="small" data-testid="site-status">
           <div className={v2.locked && !v2.refused ? 'warn' : undefined} data-testid="site-state">
@@ -474,9 +587,14 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
         <div className="small">
           <Icon name="hero" className="inline-icon" /> {other.name} ({other.ownerId === playerId ? 'yours' : (state.players[other.ownerId]?.name ?? 'hostile')})
           {other.ownerId !== playerId ? (
-            <ArmyPreview catalog={catalog} stacks={other.army.slots.filter((s): s is NonNullable<typeof s> => !!s)} onInfo={(creatureId, count) => store.openOverlay({ kind: 'stack-info', creatureId, count })} testId="foe-army" />
+            foeIntel ? (
+              <ArmyIntelPanel catalog={catalog} view={foeIntel} compact testId="foe-intel" />
+            ) : (
+              <ArmyPreview catalog={catalog} stacks={other.army.slots.filter((s): s is NonNullable<typeof s> => !!s)} onInfo={(creatureId, count) => store.openOverlay({ kind: 'stack-info', creatureId, count })} testId="foe-army" />
+            )
           ) : null}
-          {other.ownerId !== playerId && other.monster && hero ? (
+          {/* Whether neutrals would join or flee compares exact strengths: with scouting intel it shows only when they meet (the encounter). */}
+          {other.ownerId !== playerId && other.monster && hero && !intel ? (
             (() => {
               const r = quoteNeutralReaction(catalog, state, hero.id, other.position);
               return r.kind ? <div>{r.kind === 'join' ? 'They would rather join your army than fight it.' : 'They will flee from your army rather than fight.'}</div> : null;
@@ -484,7 +602,15 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
           ) : null}
         </div>
       ) : null}
+      {stale ? <ArmyIntelPanel catalog={catalog} view={lastKnownView(catalog, state, stale)} compact testId="last-known-intel" /> : null}
+      <CaravanTileLines coord={c} />
+      <ShipTileLines coord={c} />
       {quote && !quote.reachable ? <div className="small danger">{quote.reason}</div> : null}
+      {quote?.voyage ? (
+        <div className="small" data-testid="tile-voyage">
+          <Icon name="ship" className="inline-icon" /> Over the water: {quote.voyage.transitions.map((t) => (t.kind === 'embark' ? 'embark' : 'go ashore')).join(', then ')} on the way
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -580,32 +706,50 @@ function JourneyBar({
   busy,
   onContinue,
   onCancel,
+  reason: journeyReason,
+  transition,
 }: {
   heroName: string;
   status: JourneyIntent['status'];
-  quote: ReturnType<typeof quoteMovement>;
+  quote: MovementQuote;
   days: number | null;
   rerouted: boolean;
   shortcut: string;
   busy: boolean;
   onContinue: () => void;
   onCancel: () => void;
+  /** Why the journey waits (session `JourneyIntent.reason`: interrupted, embark, disembark, no_ship, no_route). */
+  reason?: string;
+  /** The route stands at a mode change now: what Continue confirms, and whether the rules allow it today. */
+  transition?: { readonly kind: 'embark' | 'disembark'; readonly legal: boolean; readonly reason: string | null } | null;
 }) {
   const blocked = !quote.reachable;
-  const noMoveToday = !blocked && quote.stopIndex < 0;
-  const reason = blocked ? `Route unavailable: ${quote.reason ?? 'no way there now'}` : noMoveToday ? 'Continue next day' : busy ? 'Wait for the move to finish' : null;
+  const atTransition = !blocked && !!transition;
+  const noMoveToday = !blocked && !atTransition && quote.stopIndex < 0;
+  const why = journeyReasonText(journeyReason);
+  const reason = blocked
+    ? `Route unavailable: ${quote.reason ?? 'no way there now'}`
+    : atTransition && !transition!.legal
+      ? `${transition!.reason ?? 'Not possible now'} — continue next day`
+      : noMoveToday
+        ? 'Continue next day'
+        : busy
+          ? 'Wait for the move to finish'
+          : null;
   let text: string;
-  if (blocked) text = `Route unavailable — ${quote.reason ?? 'no way there now'}. The destination is kept.`;
+  if (blocked) text = `Route unavailable — ${why && (journeyReason === 'no_ship' || journeyReason === 'no_route') ? `${why.toLowerCase()} (${quote.reason ?? 'no way there now'})` : (quote.reason ?? 'no way there now')}. The destination is kept.`;
   else if (rerouted) text = `Route changed${quote.endsInEncounter ? ': it now ends in battle' : ''} — ${arrivalText(days).toLowerCase()}. Check the new way on the map.`;
+  else if (atTransition) text = `${transition!.kind === 'embark' ? 'At the shore beside the ship: Continue to embark' : 'At the coast: Continue to go ashore'} (uses all remaining movement) · ${arrivalText(days)}`;
   else {
     const parts = [arrivalText(days)];
+    if (quote.voyage) parts.push(`voyage: ${quote.voyage.transitions.map((t) => (t.kind === 'embark' ? 'embark' : 'go ashore')).join(' then ')}`);
     if (!quote.reachesDestinationToday && quote.stopIndex >= 0) parts.push(`${quote.stopIndex + 1} of ${quote.path.length} steps today`);
     if (noMoveToday) parts.push('no movement left today');
     if (quote.endsInEncounter) parts.push('ends in battle');
-    text = `${status === 'paused' ? 'Journey paused · ' : ''}${parts.join(' · ')}`;
+    text = `${status === 'paused' ? `Journey paused${why && journeyReason === 'interrupted' ? ` (${why.toLowerCase()})` : ''} · ` : ''}${parts.join(' · ')}`;
   }
   return (
-    <span className={`journey-bar ${blocked ? 'is-blocked' : ''} ${rerouted ? 'is-rerouted' : ''}`} data-testid="journey-bar" data-status={blocked ? 'blocked' : rerouted ? 'rerouted' : status}>
+    <span className={`journey-bar ${blocked ? 'is-blocked' : ''} ${rerouted ? 'is-rerouted' : ''}`} data-testid="journey-bar" data-status={blocked ? 'blocked' : rerouted ? 'rerouted' : status} data-reason={journeyReason ?? ''}>
       <span className="journey-bar__text small" data-testid="journey-status">
         <strong>{heroName}:</strong> {text}
       </span>
@@ -628,6 +772,53 @@ function JourneyBar({
 }
 
 // ---------------------------------------------------------------------------
+// Hero ships (navalMovementV1)
+// ---------------------------------------------------------------------------
+
+/**
+ * The explicit confirmation where a route reaches a ship or a shore: "Embark on the ship? Uses all
+ * remaining movement." — Confirm dispatches EmbarkHero / DisembarkHero; a mode change the rules
+ * refuse now (too little movement) says why instead.
+ */
+function confirmTransition(store: AppStore, heroId: string, t: VoyageTransition): void {
+  const s = store.session?.state;
+  if (!s) return;
+  const p = transitionPrompt(store.catalog, s, heroId, t);
+  if (!p.legal) {
+    store.toast(p.reason ?? 'Not possible now', 'error');
+    return;
+  }
+  store.confirm(p.title, p.body, p.confirmLabel, () => {
+    if (!store.dispatch(p.command)) store.toast(p.kind === 'embark' ? 'Embarked: the voyage goes on next turn.' : 'Ashore: the journey goes on next turn.', 'success');
+  });
+}
+
+/** Map playback of a boarding battle's aftermath kept while the map was closed (the battlefield and its result screen). */
+async function playPendingNaval(store: AppStore, c: AdventureSceneController, factor: number): Promise<void> {
+  const session = store.session;
+  if (!session) return;
+  const st = session.state;
+  const me = session.humanPlayerId;
+  const vis = visibleCells(store.catalog, st, me);
+  const seen = (p: HexCoord | undefined) => !!p && vis.has(cellIndex(st.world.map, p));
+  // Only what still matches the committed state (a loaded save of the same match never replays a stale wreck).
+  const items = (takeNavalPlayback(st.matchId) as PendingNavalPlayback[])
+    .filter((item) => (item.kind === 'wreck' ? !st.world.ships?.[item.shipId] : hexEquals(st.world.ships?.[item.shipId]?.coord ?? { q: -1, r: -1 }, item.coord)))
+    .filter((item) => item.ownerId === me || seen(item.coord) || seen(item.from));
+  // The ships that sail afterwards wait where they stood (the winner beside the contested hex) while a wreck sinks.
+  const holds = items.filter((item) => item.kind !== 'wreck' && item.from).map((item) => ({ item, release: c.holdShip(item.shipId, item.from!) }));
+  try {
+    for (const item of items) if (item.kind === 'wreck') await c.playShipSinking(item.shipId, factor, { coord: item.coord, color: item.ownerColor, ...(item.facing !== undefined ? { facing: item.facing } : {}), occupied: !!item.occupied });
+    for (const { item, release } of holds) {
+      release();
+      await c.playShipWithdraw(item.shipId, item.from!, item.coord, factor);
+    }
+  } finally {
+    for (const h of holds) h.release();
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Screen
 // ---------------------------------------------------------------------------
 
@@ -638,8 +829,9 @@ export function AdventureScreen() {
   const catalog = store.catalog;
   const player = humanPlayer(state);
   const playerId = player.id;
-  const heroes = playerHeroes(state, playerId);
-  const selected = heroes.find((h) => h.id === store.selectedHeroId) ?? heroes[0] ?? null;
+  const heroes = state.coalition ? Object.values(state.heroes).filter((h) => h.status === 'active' && allied(state, h.ownerId, playerId)) : playerHeroes(state, playerId);
+  const selected = heroes.find((h) => h.id === store.selectedHeroId && h.ownerId === playerId) ?? heroes.find((h)=>h.ownerId===playerId) ?? null;
+  useEffect(() => { if (selected && store.selectedHeroId !== selected.id) { store.selectedHeroId=selected.id; store.notify(); } }, [selected?.id, store]);
   // The selected hero's planned journey: kept by the session per match, player and hero (saved with the
   // game), so it survives the end of the day, other screens, other heroes and save/load (owner request 2026-10-14).
   const journey = selected ? session.journey(selected.id, playerId) : null;
@@ -651,7 +843,13 @@ export function AdventureScreen() {
   /** The coin shower over the Gold counter (Tithe of the Faithful, the Feathered Serpent's gift). */
   const [coins, setCoins] = useState<{ key: number; x: number; y: number } | null>(null);
   /** Adventure spell awaiting a target tile (Divine Sight). */
+  const [courierHero, setCourierHero] = useState<string | null>(null);
   const [casting, setCasting] = useState<string | null>(null);
+  /** Hero ships: the ship whose inspector is open, and whether the map waits for a shore to land on. */
+  const [shipPanel, setShipPanel] = useState<string | null>(null);
+  /** The wreck panel (sea-sites kit): the wreck's site ID, or null. */
+  const [wreckPanel, setWreckPanel] = useState<string | null>(null);
+  const [landingPick, setLandingPick] = useState(false);
   const ctrl = useRef<AdventureSceneController | null>(null);
   const humanTurn = state.activePlayerId === playerId && !state.battle && state.outcome.status === 'running';
   const pending = state.pendingDecisions.find((d) => state.heroes[d.heroId]?.ownerId === playerId);
@@ -684,7 +882,9 @@ export function AdventureScreen() {
   const [auraTick, setAuraTick] = useState(0);
   const calm = reducedMotion(store.prefs);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const view = useMemo(() => buildView(catalog, state, playerId, selected, humanTurn ? journey : null, humanTurn, grid, store.mapAuras, calm), [catalog, state, playerId, selected, journey, humanTurn, grid, auraTick, calm]);
+  // The shore pick is the selected embarked hero's (it ends with the hero's turn, the panel or the selection).
+  const picking = landingPick && humanTurn && !!selected && !!heroShip(state, selected.id);
+  const view = useMemo(() => buildView(catalog, state, playerId, selected, humanTurn ? journey : null, humanTurn, grid, store.mapAuras, calm, picking), [catalog, state, playerId, selected, journey, humanTurn, grid, auraTick, calm, picking]);
 
   // The controller can arrive after the first render (the 2D layer loads on demand),
   // so it reads the latest view and selection from refs when it does.
@@ -696,6 +896,14 @@ export function AdventureScreen() {
   useEffect(() => {
     ctrl.current?.update(view);
   }, [view]);
+
+  // A focus asked for while the map is open (a caravan tracker's Show on map): centre the camera once.
+  useEffect(() => {
+    if (store.focusRequest && ctrl.current) {
+      ctrl.current.focus(store.focusRequest);
+      store.focusRequest = null;
+    }
+  });
 
   // A different game (load, restart) abandons any pending readiness beat of the old one.
   const sessionRef = store.session;
@@ -737,6 +945,13 @@ export function AdventureScreen() {
         const teleportTo = tp && tp.kind === 'HeroTeleported' ? tp.to : undefined;
         const seen = mine || m.path.some((p) => vis.has(cellIndex(store.session!.state.world.map, p)));
         if (!seen) continue;
+        // Aboard a ship (navalMovementV1): the hull sails the committed route; the hidden avatar simply follows it.
+        const last = m.path[m.path.length - 1];
+        const sail = last ? events.find((x) => x.kind === 'ShipMoved' && x.heroId === m.heroId && hexEquals(x.path[x.path.length - 1] ?? last, last)) : undefined;
+        if (sail && sail.kind === 'ShipMoved') {
+          await c.playShipMove(sail.shipId, sail.path, adventurePlaybackFactor(store.prefs, source === 'ai'), mine);
+          continue;
+        }
         if (mine) store.audio?.heroSteps(true);
         try {
           // The viewer's own walk keeps its route on the ground, cleared step by step.
@@ -754,12 +969,48 @@ export function AdventureScreen() {
         const spell = cast && cast.kind === 'AdventureSpellCast' ? catalog.spells[cast.spellId] : undefined;
         await c.playHeroTeleport(t.heroId, t.to, adventurePlaybackFactor(store.prefs, source === 'ai'), true, spell ? { look: spellLook(spell), id: `fx.spell.${spell.id}` } : undefined);
       }
+      // Recruitment caravans: the viewer's own wagons, and another's whose whole road is in sight.
+      for (const e of events) {
+        if (e.kind !== 'CaravanMoved') continue;
+        const st = store.session?.state;
+        if (!st) break;
+        const mineCaravan = e.playerId === store.session?.humanPlayerId;
+        const vis = visibleCells(catalog, st, store.session!.humanPlayerId);
+        // Another player's wagon rolls on screen only along a road wholly in sight (no hidden stretch is shown).
+        if (!mineCaravan && !e.path.every((p) => vis.has(cellIndex(st.world.map, p)))) continue;
+        await c.playCaravanMove(e.caravanId, e.path, adventurePlaybackFactor(store.prefs, true), false);
+      }
+      await playNaval(c, events, source);
       await playMagic(c, events, source);
       siteNotices(events);
       const started = events.find((e) => e.kind === 'BattleStarted');
       if (started && started.kind === 'BattleStarted') await prepareBeforeBattle(c, started.battleId, source);
       afterMoves(moves);
     });
+    /**
+     * Hero ships (presentation of committed events only): a launched hull rises, embark / disembark
+     * crossfade the avatar and the crewed ship, a boarding holds both ships while the battlefield opens,
+     * and a battle's aftermath (withdrawal, wreck, the winner taking the hex) plays on the map.
+     */
+    async function playNaval(c: AdventureSceneController, events: readonly GameEvent[], source: string) {
+      const session = store.session;
+      if (!session || !navalOn(session.state)) return;
+      const st = session.state;
+      const me = session.humanPlayerId;
+      const factor = adventurePlaybackFactor(store.prefs, source === 'ai');
+      const vis = visibleCells(catalog, st, me);
+      const seen = (p: HexCoord) => vis.has(cellIndex(st.world.map, p));
+      for (const e of events) {
+        if (e.kind === 'ShipLaunched' && (e.playerId === me || seen(e.coord))) await c.playShipLaunch(e.shipId, factor);
+        else if ((e.kind === 'HeroEmbarked' || e.kind === 'HeroDisembarked') && (st.heroes[e.heroId]?.ownerId === me || seen(e.from) || seen(e.to))) {
+          const embark = e.kind === 'HeroEmbarked';
+          await c.playShipTransition(embark ? 'embark' : 'disembark', e.heroId, e.shipId, embark ? e.from : e.to, embark ? e.to : e.from, factor);
+        } else if (e.kind === 'BoardingStarted' && (st.heroes[e.attackerHeroId]?.ownerId === me || st.heroes[e.defenderHeroId]?.ownerId === me || seen(e.coord))) {
+          await Promise.all([c.playShipBoarding([e.attackerShipId, e.defenderShipId], factor), c.playShipHit(e.defenderShipId, factor)]);
+        }
+      }
+      await playPendingNaval(store, c, factor);
+    }
     /**
      * Notices for the sites a batch touched (shown after the walk, with or without the 2D view): a portal
      * or ferry the viewer's hero could not take — a ferry that does not run says why (its `lockedReason`) —
@@ -863,6 +1114,15 @@ export function AdventureScreen() {
       const hero = st.heroes[last.heroId];
       if (!hero || hero.ownerId !== session.humanPlayerId || hero.status !== 'active' || st.battle) return;
       if (store.overlays.length || store.screen.id !== 'adventure') return;
+      // A voyage stopped at its mode change (the shore beside the ship, or the coast): ask — never embark or land by itself.
+      const j = navalOn(st) ? session.journey(hero.id, session.humanPlayerId) : null;
+      if (j) {
+        const q = quoteTravel(catalog, st, hero.id, j.target);
+        if (q.reachable && q.transition && q.path.length === 0 && transitionPrompt(catalog, st, hero.id, q.transition).legal) {
+          confirmTransition(store, hero.id, q.transition);
+          return;
+        }
+      }
       const town = townAtHero(catalog, st, hero);
       if (town && town.ownerId === session.humanPlayerId) {
         store.selectedHeroId = hero.id;
@@ -891,12 +1151,14 @@ export function AdventureScreen() {
     (c: AdventureSceneController | null) => {
       ctrl.current = c;
       projectors.adventure = c ? (q, r) => toPage(c.projectHex({ q, r })) : undefined;
-      inspectors.adventure = c ? { heroes: () => c.heroAnimationDebug(), camera: () => c.cameraPose(), fx: () => c.fxDebug(), ground: () => c.groundDebug(), scenery: () => c.sceneryDebug(), route: () => c.routeDebug() } : undefined;
+      inspectors.adventure = c ? { heroes: () => c.heroAnimationDebug(), camera: () => c.cameraPose(), fx: () => c.fxDebug(), ground: () => c.groundDebug(), scenery: () => c.sceneryDebug(), route: () => c.routeDebug(), lastKnown: () => c.lastKnownDebug(), caravans: () => c.caravanDebug(), ships: () => c.shipDebug(), seaSites: () => c.seaSiteDebug() } : undefined;
       if (c) {
         c.update(viewRef.current);
         const focus = store.focusRequest ?? selectedRef.current?.position ?? null;
         store.focusRequest = null;
         if (focus) c.focus(focus, false);
+        // A boarding fought on the battlefield ended while the map was closed: its aftermath plays now.
+        void playPendingNaval(store, c, adventurePlaybackFactor(store.prefs, false));
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -907,10 +1169,10 @@ export function AdventureScreen() {
   const openSpells = () => {
     if (!selected) return;
     const hero = selected;
-    const options: Record<string, { castable: boolean; reason: string | null }> = {};
+    const options: Record<string, { castable: boolean; reason: string | null; manaCost?: number }> = {};
     for (const sp of adventureSpellsOf(catalog, state, hero.id)) {
       const q = quoteAdventureSpell(catalog, state, playerId, hero.id, sp.id, null);
-      options[sp.id] = { castable: humanTurn && q.legal, reason: !humanTurn ? 'Not your turn' : q.legal ? null : (q.reason ?? 'Cannot be cast now') };
+      options[sp.id] = { castable: humanTurn && q.legal, reason: !humanTurn ? 'Not your turn' : q.legal ? null : (q.reason ?? 'Cannot be cast now'), manaCost: q.manaCost };
     }
     store.openOverlay({
       kind: 'spellbook',
@@ -921,15 +1183,21 @@ export function AdventureScreen() {
         onCast: (spellId) => {
           const sp = catalog.spells[spellId];
           if (!sp) return;
+          if (sp.effect.type === 'adventure_courier') { setCourierHero(hero.id); return; }
           // A spell with a target tile (Divine Sight) asks for the tile next.
-          if (sp.effect.type === 'reveal_radius') {
+          if (sp.effect.type === 'adventure_decoy' || sp.effect.type === 'reveal_radius' || sp.effect.type === 'adventure_boatcall' || sp.effect.type === 'adventure_compact' || (sp.effect.type === 'adventure_report' && sp.effect.kind === 'omen') || (sp.effect.type === 'adventure_travel_buff' && sp.effect.toTown)) {
             setCasting(spellId);
             return;
           }
           const run = () => {
-            if (!store.dispatch({ kind: 'CastAdventureSpell', heroId: hero.id, spellId, target: hero.position })) store.toast(`${sp.name}: ${sp.summary}`, 'success');
+            if (!store.dispatch({ kind: 'CastAdventureSpell', heroId: hero.id, spellId, target: hero.position })) {
+              store.toast(`${sp.name}: ${sp.effect.type === 'adventure_report' ? 'Report recorded in your Journal.' : sp.summary}`, 'success');
+              if (sp.effect.type === 'adventure_report') store.goto('journal', { tab: 'scout-notes' });
+            }
           };
           if (sp.effect.type === 'recall') store.confirm(`Cast ${sp.name}?`, `${hero.name} returns to the nearest town you own and ends the day's movement there.`, 'Cast', run);
+          else if (sp.effect.type === 'adventure_camp') store.confirm(`Make camp?`, `End ${hero.name}'s movement for today. Gain ${sp.effect.mana} mana at dawn only if no battle interrupts the camp.`, 'Make camp', run);
+          else if (sp.effect.type === 'adventure_anchor') store.confirm(`Cast ${sp.name}?`, hero.libraryAdventure?.anchor && hero.libraryAdventure.anchor.untilDay > state.day ? 'Return to the marked anchor and end today’s movement.' : 'Mark this tile as your return anchor for two days.', 'Cast', run);
           else run();
         },
       },
@@ -938,13 +1206,16 @@ export function AdventureScreen() {
 
   // Selecting another hero keeps every hero's journey: coming back to one shows its route again.
   const selectHero = (h: HeroState) => {
+    if (state.coalition && h.ownerId !== state.activePlayerId && store.dispatch({ kind: 'SelectCoalitionSeat', playerId: h.ownerId })) return;
     store.selectedHeroId = h.id;
     ctrl.current?.focus(h.position);
     store.notify();
   };
 
-  /** The selected hero's remaining route, quoted now from where it stands. */
-  const journeyQuote = selected && target ? quoteMovement(catalog, state, selected.id, target) : null;
+  /** The selected hero's remaining route, quoted now from where it stands (the quote MoveHero commits: voyages included). */
+  const journeyRoute = selected && target ? travelRoute(catalog, state, selected.id, target) : null;
+  const journeyQuote = journeyRoute?.quote ?? null;
+  const journeyTransition = selected && journeyQuote?.reachable && journeyQuote.transition && journeyQuote.path.length === 0 ? transitionPrompt(catalog, state, selected.id, journeyQuote.transition) : null;
   const routeSig = selected && journeyQuote && journeyQuote.reachable && journeyQuote.path.length > 0 ? routeSignature(selected.position, journeyQuote) : null;
   const seenKey = selected ? `${state.matchId}|${playerId}|${selected.id}` : '';
   const seenSig = seenKey ? store.routeSeen.get(seenKey) : undefined;
@@ -967,11 +1238,47 @@ export function AdventureScreen() {
     store.notify();
   };
 
+  // ------------------------------------------------------------ hero ships
+  const openShip = (shipId: string) => {
+    setShipPanel(shipId);
+    setLandingPick(false);
+  };
+  const closeShip = () => {
+    setShipPanel(null);
+    setLandingPick(false);
+  };
+  /** DisembarkHero onto a chosen shore (the panel's list or a highlighted tile); the rules' quote decides. */
+  const landAt = (heroId: string, land: HexCoord) => {
+    if (!store.dispatch({ kind: 'DisembarkHero', heroId, landCoord: { q: land.q, r: land.r } })) {
+      store.toast('Ashore: the empty ship stays at anchor.', 'success');
+      closeShip();
+    }
+  };
+  /** Boarding a hostile ship is always confirmed by the player first (never automatic). */
+  const attackShip = (a: ShipAction) => {
+    if (!a.command || a.command.kind !== 'AttackShip') return;
+    const cmd = a.command;
+    const foe = state.heroes[state.world.ships?.[cmd.targetShipId]?.heroId ?? ''];
+    store.confirm(`${a.label}?`, `A boarding battle on the two decks against ${foe?.name ?? 'the enemy crew'}. ${a.detail ?? ''}`.trim(), 'Board', () => {
+      if (!store.dispatch(cmd)) closeShip();
+    }, { danger: true });
+  };
+  const routeToShip = (to: HexCoord) => {
+    if (!selected) return;
+    planJourney(selected.id, to);
+    closeShip();
+  };
+
   const tryMove = (dest: HexCoord) => {
     if (!selected) return;
-    const q = quoteMovement(catalog, state, selected.id, dest);
+    // The quote MoveHero commits: over the water, the route stops at its embark / disembark step.
+    const q = quoteTravel(catalog, state, selected.id, dest);
     if (!q.reachable) {
       store.toast(q.reason ?? 'No route', 'error');
+      return;
+    }
+    if (q.transition && q.path.length === 0) {
+      confirmTransition(store, selected.id, q.transition);
       return;
     }
     if (q.endsInEncounter && q.stopIndex === q.path.length - 1) {
@@ -1021,15 +1328,54 @@ export function AdventureScreen() {
         return;
       }
       if (!store.dispatch({ kind: 'CastAdventureSpell', heroId: sel.id, spellId: casting, target: c })) {
-        store.toast(`${q.spell?.name ?? 'Spell'}: the area is revealed until the next dawn`);
+        store.toast(`${q.spell?.name ?? 'Spell'}: ${q.spell?.effect.type === 'reveal_radius' ? 'the area is revealed until the next dawn' : q.spell?.effect.type === 'adventure_report' ? 'Report recorded in your Journal.' : q.spell?.summary ?? 'Cast successfully'}`);
+        if (q.spell?.effect.type === 'adventure_report') store.goto('journal', { tab: 'scout-notes' });
         setCasting(null);
       }
       return;
     }
-    const mine = playerHeroes(s, playerId).find((h) => hexEquals(h.position, c));
+    const mine = Object.values(s.heroes).filter((h)=>h.status==='active'&&allied(s,h.ownerId,playerId)).find((h) => hexEquals(h.position, c));
     const sel = playerHeroes(s, playerId).find((h) => h.id === store.selectedHeroId) ?? null;
+    // Hero ships: while Disembark waits for a shore, a highlighted shore lands there (the quote decides; water does nothing).
+    if (picking && sel && heroShip(s, sel.id)) {
+      if (landingCells(catalog, s, sel.id).some((x) => hexEquals(x, c))) {
+        landAt(sel.id, c);
+        return;
+      }
+      if (!hexEquals(sel.position, c)) {
+        store.toast('Pick one of the highlighted shores beside the ship (or cancel the landing)', 'info');
+        return;
+      }
+    }
+    // A ship the viewer can see: its inspector (the selected hero's own ship included); the journey's own target continues it.
+    const shipHere = navalOn(s) ? visibleShipAt(s, playerId, c, visibleCells(catalog, s, playerId)) : null;
+    if (shipHere && !(target && hexEquals(target, c))) {
+      const aboard = shipHere.heroId ? s.heroes[shipHere.heroId] : undefined;
+      if (aboard && allied(s, aboard.ownerId, playerId) && sel?.id !== aboard.id) selectHero(aboard);
+      openShip(shipHere.shipId);
+      return;
+    }
+    // A known shipwreck: its panel (Explore / Leave, or Sail beside it); a ship never sails into a wreck's hex.
+    const wreckHere = wreckAt(catalog, s, playerId, c);
+    if (wreckHere) {
+      closeShip();
+      setWreckPanel(wreckHere);
+      return;
+    }
+    // Recruitment caravans: a tile with the viewer's own wagon asks which actor the click meant
+    // (a hero there, the caravan, or the selected hero's route) — never silently the wrong one.
+    const myWagons = caravansAt(s, c).filter((k) => k.ownerId === playerId);
+    if (myWagons.length > 0 && !(target && hexEquals(target, c))) {
+      const canPlan = !!sel && !hexEquals(sel.position, c);
+      if (!mine && myWagons.length === 1 && !canPlan) {
+        store.openOverlay({ kind: 'caravan-tracker', caravanId: myWagons[0]!.id });
+        return;
+      }
+      store.openOverlay({ kind: 'actor-picker', coord: c, plan: canPlan ? () => planJourney(sel!.id, c) : null });
+      return;
+    }
     // Next to the selected hero: meet and trade troops (the exchange dialog).
-    if (mine && sel && mine.id !== sel.id && axialDistance(mine.position, sel.position) === 1) {
+    if (mine && sel && mine.ownerId === sel.ownerId && mine.id !== sel.id && axialDistance(mine.position, sel.position) === 1) {
       store.openOverlay({ kind: 'transfer', townId: null, heroId: sel.id, otherHeroId: mine.id });
       return;
     }
@@ -1115,6 +1461,28 @@ export function AdventureScreen() {
     } else go();
   };
 
+  // Esc closes the ship inspector (and its shore pick) before it would open the pause menu.
+  useEffect(() => {
+    if (!shipPanel) return;
+    const onEsc = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape' || store.overlays.length || store.story.length) return;
+      e.preventDefault();
+      e.stopPropagation();
+      if (landingPick) setLandingPick(false);
+      else setShipPanel(null);
+    };
+    window.addEventListener('keydown', onEsc, true);
+    return () => window.removeEventListener('keydown', onEsc, true);
+  }, [shipPanel, landingPick, store]);
+  // The inspected ship left the map (wrecked, or out of sight): the panel closes.
+  const shipGone = !!shipPanel && !visibleShipAt(state, playerId, state.world.ships?.[shipPanel]?.coord ?? { q: -1, r: -1 }, view.visible);
+  useEffect(() => {
+    if (shipGone) {
+      setShipPanel(null);
+      setLandingPick(false);
+    }
+  }, [shipGone]);
+
   // Esc while choosing a spell's tile cancels the spell (capture phase: before Esc opens the pause menu).
   useEffect(() => {
     if (!casting) return;
@@ -1134,6 +1502,9 @@ export function AdventureScreen() {
       if (store.overlays.length || e.ctrlKey || e.metaKey || e.altKey) return;
       const t = e.target as HTMLElement;
       if (t.tagName === 'INPUT' || t.tagName === 'SELECT' || t.tagName === 'TEXTAREA') return;
+      // Enter and Space on a focused button or link press that control, never a map shortcut as well
+      // (a keyboard player opening a caravan or a hero from the sidebar must not end the day).
+      if ((e.key === 'Enter' || e.key === ' ') && t.closest?.('button, a[href], summary, [role="button"]')) return;
       if (store.story.length > 0) return;
       const c = ctrl.current;
       const k = e.key;
@@ -1311,6 +1682,11 @@ export function AdventureScreen() {
                 </span>
               </div>
               <Bar value={selected.mana} max={Math.max(1, maxMana(catalog, state, selected))} kind="mana" label="Spell points" />
+              {navalOn(state) && heroShip(state, selected.id) ? (
+                <Button size="small" icon="ship" className="adv-command__aboard" onClick={() => openShip(heroShip(state, selected.id)!.shipId)} title={`${selected.name} is aboard a ship — inspect it`} data-testid="hero-aboard">
+                  Aboard
+                </Button>
+              ) : null}
             </div>
             <div className="adv-command__army">
               <ArmyStrip catalog={catalog} army={selected.army} label={`${selected.name}'s army`} onSlot={() => store.goto('hero', { heroId: selected.id })} onInfo={(creatureId) => store.openOverlay({ kind: 'stack-info', creatureId })} testId="adv-army" />
@@ -1321,9 +1697,9 @@ export function AdventureScreen() {
           <div className="adv-command__label">Towns</div>
           <div className="adv-list adv-command__towns">
             {Object.values(state.towns)
-              .filter((t) => t.ownerId === playerId)
+              .filter((t) => allied(state, t.ownerId, playerId))
               .map((t) => (
-                <button key={t.id} type="button" className="town-tab" onClick={() => store.goto('town', { townId: t.id })} onContextMenu={(e) => { e.preventDefault(); ctrl.current?.focus(t.coord); }} title={`Enter ${t.name} (right-click: show on the map)`} data-testid={`town-tab-${t.id}`}>
+                <button key={t.id} type="button" className="town-tab" onClick={() => { if (state.coalition && t.ownerId && t.ownerId !== state.activePlayerId && store.dispatch({kind:'SelectCoalitionSeat',playerId:t.ownerId})) return; store.goto('town', { townId: t.id }); }} onContextMenu={(e) => { e.preventDefault(); ctrl.current?.focus(t.coord); }} title={`Enter ${t.name} (right-click: show on the map)`} data-testid={`town-tab-${t.id}`}>
                   <Icon name="town" />
                   <span>{t.name}</span>
                   {t.buildUsedDay !== state.day ? (
@@ -1335,6 +1711,15 @@ export function AdventureScreen() {
               ))}
           </div>
         </section>
+        <CaravanSidebar onFocus={(at) => ctrl.current?.focus(at)} />
+        {navalOn(state) ? (
+          <ShipSidebar
+            onInspect={(shipId, at) => {
+              ctrl.current?.focus(at);
+              openShip(shipId);
+            }}
+          />
+        ) : null}
         <nav className="adv-command__grid adv-bottom__tools" aria-label="Commands">
           <Button icon="hero" onClick={() => selected && store.goto('hero', { heroId: selected.id })} disabled={!selected} disabledReason="No hero selected" title="Hero (H)">
             Hero
@@ -1372,23 +1757,63 @@ export function AdventureScreen() {
 
       {/* Over the map, at the left: what the rivals did, the inspected tile, the mission's objectives. */}
       <aside className="adv-left adv-info">
-        {store.rivalSummary && store.rivalSummary.viewerId === playerId ? (
+        {wreckPanel ? (
+          <WreckPanel
+            siteId={wreckPanel}
+            selectedHeroId={selected?.id ?? null}
+            onRoute={(to) => {
+              if (selected) planJourney(selected.id, to);
+            }}
+            onClose={() => setWreckPanel(null)}
+          />
+        ) : null}
+        {shipPanel && !shipGone ? (
+          <ShipInspectPanel
+            shipId={shipPanel}
+            selectedHeroId={selected?.id ?? null}
+            picking={picking}
+            onPickLanding={(on) => setLandingPick(on)}
+            onDisembark={(land) => {
+              const ship = state.world.ships?.[shipPanel];
+              if (ship?.heroId) landAt(ship.heroId, land);
+            }}
+            onAttack={attackShip}
+            onRoute={routeToShip}
+            onClose={closeShip}
+          />
+        ) : null}
+        {(store.rivalSummary && store.rivalSummary.viewerId === playerId) || (store.cityBlessings && store.cityBlessings.viewerId === playerId) || (store.caravanNotes && store.caravanNotes.viewerId === playerId) ? (
           <Panel
             className="adv-rivals"
             title="While you waited"
             headerIcon="hourglass"
             actions={<Button size="small" variant="ghost" icon="close" onClick={() => store.dismissRivalSummary()} aria-label="Close the rivals’ summary" data-testid="rival-summary-close" />}
           >
-            <ul className="adv-rivals__list" data-testid="rival-summary">
-              {store.rivalSummary.lines.map((l) => (
-                <li key={l.playerId} className={l.mine ? 'is-mine' : ''} data-testid={`rival-line-${l.playerId}`}>
-                  <span className="dot" style={{ background: state.players[l.playerId]?.color }} aria-hidden="true" />
-                  <span>
-                    <strong>{l.who}</strong> {l.text}.
-                  </span>
-                </li>
-              ))}
-            </ul>
+            {store.rivalSummary && store.rivalSummary.viewerId === playerId ? (
+              <ul className="adv-rivals__list" data-testid="rival-summary">
+                {store.rivalSummary.lines.map((l) => (
+                  <li key={l.playerId} className={l.mine ? 'is-mine' : ''} data-testid={`rival-line-${l.playerId}`}>
+                    <span className="dot" style={{ background: state.players[l.playerId]?.color }} aria-hidden="true" />
+                    <span>
+                      <strong>{l.who}</strong> {l.text}.
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+            {/* City dedications: one grouped section for every city's weekly blessing (read from the dawn's events). */}
+            {store.cityBlessings && store.cityBlessings.viewerId === playerId ? <CityBlessingsSection catalog={catalog} summary={store.cityBlessings.summary} /> : null}
+            {/* Recruitment caravans: the viewer's shipments of the night (read from the committed events). */}
+            {store.caravanNotes && store.caravanNotes.viewerId === playerId ? (
+              <ul className="adv-rivals__list adv-caravans" data-testid="caravan-summary">
+                {store.caravanNotes.lines.map((l, i) => (
+                  <li key={i} className="is-mine">
+                    <Icon name="caravan" className="inline-icon" />
+                    <span>{l}.</span>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </Panel>
         ) : null}
         {info ? (
@@ -1436,7 +1861,7 @@ export function AdventureScreen() {
         <div className="adv-bottom__status">
           {casting ? (
             <span className="small" data-testid="casting-hint">
-              {catalog.spells[casting]?.name}: click a tile you have already explored (radius {catalog.spells[casting]?.effect.type === 'reveal_radius' ? catalog.spells[casting]!.effect.radius : 0}) · Esc to cancel{' '}
+              {catalog.spells[casting]?.name}: {catalog.spells[casting]?.effect.type === 'adventure_boatcall' ? 'choose an owned empty ship' : catalog.spells[casting]?.effect.type === 'adventure_compact' ? 'choose an adjacent neutral hiring site' : catalog.spells[casting]?.effect.type === 'adventure_report' ? 'choose a known neutral guard within six hexes' : catalog.spells[casting]?.effect.type === 'adventure_travel_buff' ? 'choose a visited owned town' : 'choose an explored tile'} · Esc to cancel{' '}
               <Button size="small" onClick={() => setCasting(null)}>
                 Cancel
               </Button>
@@ -1446,7 +1871,9 @@ export function AdventureScreen() {
               heroName={selected.name}
               status={journey.status}
               quote={journeyQuote}
-              days={journeyQuote.reachable ? routeDays(catalog, state, selected.id, journeyQuote) : null}
+              days={journeyRoute?.days ?? null}
+              reason={journey.reason}
+              transition={journeyTransition}
               rerouted={rerouted}
               shortcut={keyLabel(keyFor(store.prefs, 'continue_move'))}
               busy={store.presentationBusy}
@@ -1465,6 +1892,7 @@ export function AdventureScreen() {
           ) : null}
         </div>
       </footer>
+      {courierHero ? <CourierDialog heroId={courierHero} onClose={() => setCourierHero(null)} /> : null}
     </div>
   );
 }

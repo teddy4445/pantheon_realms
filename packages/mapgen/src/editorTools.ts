@@ -258,6 +258,16 @@ export function customMapFromGenerated(catalog: ContentCatalog, g: GeneratedForE
       case 'watchtower':
         site = { ...base, kind: 'watchtower', radius: 9, name: s.name };
         break;
+      // Sea sites (2026-10-18): their stored values are kept (the outcome kind; the raiders are drawn again by the editor's compile).
+      case 'coastal_watchtower':
+        site = { ...base, kind: 'coastal_watchtower', radius: k.radius, name: s.name };
+        break;
+      case 'sea_pickup':
+        site = { ...base, kind: 'sea_pickup', resource: k.resource, amount: k.amount };
+        break;
+      case 'shipwreck':
+        site = { ...base, kind: 'shipwreck', outcome: k.outcome.kind, skin: k.skin, name: s.name };
+        break;
       case 'crossing':
       case 'landmark':
         // A guarded crossing or ruin: a standing army with its reward.

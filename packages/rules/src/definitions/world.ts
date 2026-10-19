@@ -12,6 +12,7 @@ import type {
   CreatureFamilyId,
   HeroClassId,
   HeroDefinitionId,
+  HeroId,
   MapTemplateId,
   ObjectiveId,
   SiteId,
@@ -22,6 +23,7 @@ import type {
 import type { HexCoord } from '../core/hex';
 import type { ResourceCost, ResourceKey } from '../core/resources';
 import type { HeroAttribute, RequirementDefinition, RewardDefinition } from './logic';
+import type { CoastalTowerSkin, SeaPickupResource, ShipwreckSkin, WreckOutcomeDefinition } from './seaSites';
 
 /**
  * Ground types. `void` is not ground: the cells of the stored map array that lie
@@ -100,11 +102,14 @@ export interface WorldMapDefinition {
   readonly terrain: string;
   /** Sorted undirected road edge keys (see hex.edgeKey). */
   readonly roads: readonly string[];
+  /** Explicit logical desert cells; empty/absent in legacy maps. Artwork never defines movement. */
+  readonly desertCells?: readonly number[];
   readonly logicalHash: string;
   readonly biome: MapTemplateDefinition['biome'];
 }
 
-export type BattlefieldArchetype = 'coast_road' | 'ridge_pass' | 'grove' | 'plateau' | 'beacon_clearing' | 'open_field';
+/** `boarding_two_ships_v1`: two ships joined by one bridge (naval boarding battles only; a legal-cell mask, definitions/naval.ts). */
+export type BattlefieldArchetype = 'coast_road' | 'ridge_pass' | 'grove' | 'plateau' | 'beacon_clearing' | 'open_field' | 'boarding_two_ships_v1' | 'single_ship_sea_encounter_v2';
 
 export interface StackSpec {
   readonly creatureId: CreatureId;
@@ -182,6 +187,14 @@ export type SiteKind =
       /** Hiring opens only once this mission flag is set (a pact); `lockedReason` says how. */
       readonly requiresFlag?: string;
       readonly lockedReason?: string;
+      /**
+       * Training allowance of a site that trains (a neutral hiring site that hires both
+       * forms; owner decision 2026-10-16): at most this many creatures are upgraded here
+       * per week, shared by every empire and renewed each new week (when the stock
+       * refills). Absent: `weeklyGrowth` — as many as the site hires a week. 0: the
+       * site trains nobody. Ignored where the site trains nothing (`campTrainingAllowance`).
+       */
+      readonly weeklyTraining?: number;
     }
   /** One-time map event: the first hero to arrive chooses one option. */
   | { readonly type: 'map_event'; readonly title: string; readonly text: string; readonly options: readonly MapEventOptionDefinition[] }
@@ -237,7 +250,20 @@ export type SiteKind =
   /** Treasure chest: the first hero to open it chooses `gold` Gold or `xp` experience. */
   | { readonly type: 'treasure_chest'; readonly gold: number; readonly xp: number }
   /** Prison: the first hero to stop here frees a captive hero, who joins that player at `level`. */
-  | { readonly type: 'prison'; readonly heroDefinitionId: HeroDefinitionId; readonly level: number };
+  | { readonly type: 'prison'; readonly heroDefinitionId: HeroDefinitionId; readonly level: number }
+  // --- Coastal sites and sea salvage (sea-map objects kit 2026-10-17; definitions/seaSites.ts) ---
+  /** Capturable coastal lookout (land, beside navigable water): its owner sees within `radius` while holding it. `skin` is presentation only. */
+  | { readonly type: 'coastal_watchtower'; readonly radius: number; readonly skin: CoastalTowerSkin }
+  /** Floating salvage on one water hex: a hero aboard a ship ending a sea move here collects `amount` once (drawn at generation). */
+  | { readonly type: 'sea_pickup'; readonly resource: SeaPickupResource; readonly amount: number }
+  /** A wreck on one water hex (blocks sailing): an adjacent embarked hero may Explore for `exploreCost` movement; the outcome is stored. */
+  | { readonly type: 'shipwreck'; readonly exploreCost: number; readonly outcome: WreckOutcomeDefinition; readonly skin: ShipwreckSkin }
+  /**
+   * A neutral sea-monster stack on a water tile (sea-creature delivery 2026-10-17, scenario feature
+   * `seaEncountersV1`): its `guard` (swimmers and flyers only) fights a hero's ship on the
+   * single-ship sea encounter board. Reached only by sea; never on land.
+   */
+  | { readonly type: 'sea_monster' };
 
 /** What a quest hut asks for (proposed 2026-10-02). */
 export type QuestHutQuest =
@@ -252,6 +278,9 @@ export const KEY_COLOR_LABEL: Readonly<Record<KeyColor, string>> = { azure: 'Azu
 export const KEY_COLOR_HEX: Readonly<Record<KeyColor, string>> = { azure: '#3b8fe0', crimson: '#c0392b', emerald: '#2e9e5b', amber: '#d9a21b', violet: '#8e5bd6', ivory: '#e8e2cf' };
 
 export interface MapEventOptionDefinition {
+  /** A declared coalition reserve delivered to this allied hero instead of the visitor. */
+  readonly rewardHeroId?: HeroId;
+  readonly checkpointBefore?: boolean;
   readonly label: string;
   /** Exact result shown to the player; must match `reward` and `cost`. */
   readonly summary: string;
@@ -268,6 +297,7 @@ export interface MapEventOptionDefinition {
 }
 
 export interface SiteDefinition {
+  readonly artStates?: readonly { readonly flag: string; readonly art: string }[];
   readonly id: SiteId;
   readonly anchorId: string;
   readonly coord: HexCoord;
@@ -296,6 +326,7 @@ export interface EntitlementDefinition {
 }
 
 export interface HostileHeroDefinition {
+  readonly assaultSiteIds?: readonly SiteId[];
   /**
    * Campaign v2: the patrol's home camp. Taking that site (its guard cleared) stops
    * this patrol for good — it withdraws — so pressure is finite and visible.

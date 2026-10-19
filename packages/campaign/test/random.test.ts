@@ -354,7 +354,7 @@ describe('random skirmish matches', () => {
     const g = createRandomSkirmish(catalog, opts(3, 'small', 2024));
     const { match } = createGeneratedMatch(catalog, g, { matchId: 'test:random3' });
     expect(match.customMission?.id).toBe(g.mission.id);
-    expect(match.scenario.features).toEqual({ expandedContent: true, weeklyEvents: true, interventions: true, heroSpecialties: true, neutralReactions: true, climateRules: true, aiTemperaments: true });
+    expect(match.scenario.features).toEqual({ expandedContent: true, weeklyEvents: true, interventions: true, heroSpecialties: true, neutralReactions: true, climateRules: true, aiTemperaments: true, cityDedicationsV1: true, scoutingIntelV1: true, targetableCatapultV1: true, recruitmentCaravansV1: true, navalMovementV1: true });
     const end = playOut(match);
     expect(end.outcome.status).not.toBe('running');
     expect(end.outcome.winnerIds?.length).toBe(1);

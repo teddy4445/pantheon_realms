@@ -12,6 +12,8 @@ npm run balance -- skirmish --matches 6      # one suite, more matches
 npm run balance -- armies tiers --seeds 20 --jobs 4
 npm run balance -- --pantheons greek,egyptian
 npm run balance -- --no-signatures           # duels with troops only
+npm run balance -- skirmish --matches 2 --legacy-gods   # the same matches with city dedications OFF
+npm run balance -- skirmish --matches 2 --legacy-intel  # the same matches with scouting intel OFF (full information)
 npm run balance -- --help
 ```
 
@@ -35,6 +37,28 @@ Shapeshift). Signatures that act after a battle (Afterlife, Glory) or on the
 economy (Offering) show up only in the `skirmish` suite. Add
 `--no-signatures` to measure troops alone (the neutral gold-mine guard is the
 opponent, as in content 0.4).
+
+## City dedications on and off
+
+The whole-match suites (`skirmish`, `random`, `random1v1`, `maps`) play with city
+dedications on, as new games do (app 1.5.0). `--legacy-gods` plays the very same
+matches (same seeds and maps) with the feature off: no dedications, and the gods'
+direct daily income and weekly growth as before. Every whole-match report has an
+**Economy and city dedications** section per pantheon — Temple II and first
+dedication rates and days, switches, weekly income (dawn income plus city gifts, in
+Gold equivalent) and its resources, extra stock from dedications, army strength on
+days 15 and 29, unrecruited town stock (growth never used), recruitment, the first
+day of Town Hall III and the tier-6/7 dwellings — and a per-god table of
+commitment rates and dedication picks. The raw per-seat records are in the JSON
+(`econ` on each match). Compare an on and an off report of the same suite and size.
+
+## Scouting intel on and off
+
+The whole-match suites play with scouting intel on (`scoutingIntelV1`, expedition kit), as new games
+do: the AI judges an enemy army in view only from what its observation stage permits (a strength-band
+prior, the identified creature types, the middle of each scouted quantity range; `packages/ai/src/observation.ts`).
+`--legacy-intel` plays the very same matches with the feature off — every visible enemy army known in full,
+as before. Compare an on and an off report of the same suite and size.
 
 ## Debugging one match
 

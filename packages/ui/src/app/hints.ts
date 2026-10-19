@@ -28,7 +28,7 @@ export const HINTS: Readonly<Record<string, HintDefinition>> = {
   first_battle: {
     id: 'first_battle',
     title: 'Your first battle',
-    text: 'Stacks act in the order shown at the top. Click a hex to move, an enemy to attack, or use Wait and Defend. Ranged stacks shoot when no enemy is next to them.',
+    text: 'Stacks act in the order shown at the top. Click a hex to move, an enemy to attack, or use Wait and Defend. Ranged stacks shoot when no enemy is next to them. Right-click a stack (or press I) to inspect it: its current values, health and effects.',
   },
   troop_training: {
     id: 'troop_training',

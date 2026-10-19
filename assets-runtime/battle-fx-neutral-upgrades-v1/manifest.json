@@ -6936,7 +6936,16 @@
    "sourcePoint": "throwing-hand-or-weapon",
    "sizeHex": 0.64,
    "impactSizeHex": 0.7,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "combat.swing",
+     "maxMs": 600
+    },
+    "impact": {
+     "id": "combat.arrow_hit"
+    }
+   }
   },
   "veteran_peltast": {
    "unitId": "veteran_peltast",
@@ -7027,7 +7036,16 @@
    "sourcePoint": "throwing-hand-or-weapon",
    "sizeHex": 0.64,
    "impactSizeHex": 0.7,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "combat.swing",
+     "maxMs": 600
+    },
+    "impact": {
+     "id": "combat.arrow_hit"
+    }
+   }
   },
   "temple_adept": {
    "unitId": "temple_adept",
@@ -7118,7 +7136,17 @@
    "sourcePoint": "throwing-hand-or-weapon",
    "sizeHex": 0.72,
    "impactSizeHex": 0.72,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "magic.cast",
+     "maxMs": 600
+    },
+    "impact": {
+     "id": "magic.strike",
+     "maxMs": 700
+    }
+   }
   },
   "temple_seer": {
    "unitId": "temple_seer",
@@ -7209,7 +7237,17 @@
    "sourcePoint": "throwing-hand-or-weapon",
    "sizeHex": 0.72,
    "impactSizeHex": 0.72,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "magic.cast",
+     "maxMs": 600
+    },
+    "impact": {
+     "id": "magic.strike",
+     "maxMs": 700
+    }
+   }
   },
   "cyclops": {
    "unitId": "cyclops",
@@ -7300,7 +7338,16 @@
    "sourcePoint": "throwing-hand-or-weapon",
    "sizeHex": 0.62,
    "impactSizeHex": 0.8,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "combat.catapult",
+     "maxMs": 750
+    },
+    "impact": {
+     "id": "combat.stone_hit"
+    }
+   }
   },
   "stormforged_cyclops": {
    "unitId": "stormforged_cyclops",
@@ -7391,7 +7438,16 @@
    "sourcePoint": "throwing-hand-or-weapon",
    "sizeHex": 0.62,
    "impactSizeHex": 0.8,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "combat.catapult",
+     "maxMs": 750
+    },
+    "impact": {
+     "id": "combat.stone_hit"
+    }
+   }
   },
   "norse_lindworm": {
    "unitId": "norse_lindworm",
@@ -7482,7 +7538,17 @@
    "sourcePoint": "mouth",
    "sizeHex": 0.72,
    "impactSizeHex": 0.72,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "magic.water",
+     "maxMs": 600
+    },
+    "impact": {
+     "id": "magic.frost",
+     "maxMs": 900
+    }
+   }
   },
   "norse_storm_lindworm": {
    "unitId": "norse_storm_lindworm",
@@ -7573,7 +7639,17 @@
    "sourcePoint": "mouth",
    "sizeHex": 0.72,
    "impactSizeHex": 0.72,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "magic.water",
+     "maxMs": 600
+    },
+    "impact": {
+     "id": "magic.frost",
+     "maxMs": 900
+    }
+   }
   },
   "egyptian_jackal_guardian": {
    "unitId": "egyptian_jackal_guardian",
@@ -7664,7 +7740,16 @@
    "sourcePoint": "throwing-hand-or-weapon",
    "sizeHex": 0.64,
    "impactSizeHex": 0.7,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "combat.swing",
+     "maxMs": 600
+    },
+    "impact": {
+     "id": "combat.arrow_hit"
+    }
+   }
   },
   "egyptian_anubian_warden": {
    "unitId": "egyptian_anubian_warden",
@@ -7755,7 +7840,16 @@
    "sourcePoint": "throwing-hand-or-weapon",
    "sizeHex": 0.64,
    "impactSizeHex": 0.7,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "combat.swing",
+     "maxMs": 600
+    },
+    "impact": {
+     "id": "combat.arrow_hit"
+    }
+   }
   },
   "egyptian_desert_colossus": {
    "unitId": "egyptian_desert_colossus",
@@ -7846,7 +7940,16 @@
    "sourcePoint": "throwing-hand-or-weapon",
    "sizeHex": 0.62,
    "impactSizeHex": 0.8,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "combat.catapult",
+     "maxMs": 750
+    },
+    "impact": {
+     "id": "combat.stone_hit"
+    }
+   }
   },
   "egyptian_divine_colossus": {
    "unitId": "egyptian_divine_colossus",
@@ -7937,7 +8040,16 @@
    "sourcePoint": "throwing-hand-or-weapon",
    "sizeHex": 0.62,
    "impactSizeHex": 0.8,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "combat.catapult",
+     "maxMs": 750
+    },
+    "impact": {
+     "id": "combat.stone_hit"
+    }
+   }
   },
   "japanese_kirin": {
    "unitId": "japanese_kirin",
@@ -8028,7 +8140,16 @@
    "sourcePoint": "mouth",
    "sizeHex": 0.72,
    "impactSizeHex": 0.72,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "magic.fire"
+    },
+    "impact": {
+     "id": "magic.holy",
+     "maxMs": 800
+    }
+   }
   },
   "japanese_celestial_kirin": {
    "unitId": "japanese_celestial_kirin",
@@ -8119,7 +8240,16 @@
    "sourcePoint": "mouth",
    "sizeHex": 0.72,
    "impactSizeHex": 0.72,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "magic.fire"
+    },
+    "impact": {
+     "id": "magic.holy",
+     "maxMs": 800
+    }
+   }
   },
   "celtic_banshee": {
    "unitId": "celtic_banshee",
@@ -8210,7 +8340,17 @@
    "sourcePoint": "mouth",
    "sizeHex": 0.72,
    "impactSizeHex": 0.72,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "magic.shadow",
+     "maxMs": 700
+    },
+    "impact": {
+     "id": "magic.curse",
+     "maxMs": 700
+    }
+   }
   },
   "celtic_battle_banshee": {
    "unitId": "celtic_battle_banshee",
@@ -8301,7 +8441,17 @@
    "sourcePoint": "mouth",
    "sizeHex": 0.72,
    "impactSizeHex": 0.72,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "magic.shadow",
+     "maxMs": 700
+    },
+    "impact": {
+     "id": "magic.curse",
+     "maxMs": 700
+    }
+   }
   },
   "mesoamerican_eagle_warrior_spirit": {
    "unitId": "mesoamerican_eagle_warrior_spirit",
@@ -8392,7 +8542,16 @@
    "sourcePoint": "throwing-hand-or-weapon",
    "sizeHex": 0.64,
    "impactSizeHex": 0.7,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "combat.swing",
+     "maxMs": 600
+    },
+    "impact": {
+     "id": "combat.arrow_hit"
+    }
+   }
   },
   "mesoamerican_solar_eagle_warrior": {
    "unitId": "mesoamerican_solar_eagle_warrior",
@@ -8483,7 +8642,16 @@
    "sourcePoint": "throwing-hand-or-weapon",
    "sizeHex": 0.64,
    "impactSizeHex": 0.7,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "combat.swing",
+     "maxMs": 600
+    },
+    "impact": {
+     "id": "combat.arrow_hit"
+    }
+   }
   },
   "mesoamerican_xiuhcoatl": {
    "unitId": "mesoamerican_xiuhcoatl",
@@ -8574,7 +8742,16 @@
    "sourcePoint": "mouth",
    "sizeHex": 0.72,
    "impactSizeHex": 0.72,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "magic.fire"
+    },
+    "impact": {
+     "id": "magic.strike",
+     "maxMs": 700
+    }
+   }
   },
   "mesoamerican_divine_xiuhcoatl": {
    "unitId": "mesoamerican_divine_xiuhcoatl",
@@ -8665,7 +8842,16 @@
    "sourcePoint": "mouth",
    "sizeHex": 0.72,
    "impactSizeHex": 0.72,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "magic.fire"
+    },
+    "impact": {
+     "id": "magic.strike",
+     "maxMs": 700
+    }
+   }
   },
   "hill_slinger": {
    "unitId": "hill_slinger",
@@ -8756,7 +8942,16 @@
    "sourcePoint": "throwing-hand-or-weapon",
    "sizeHex": 0.64,
    "impactSizeHex": 0.7,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "combat.swing",
+     "maxMs": 600
+    },
+    "impact": {
+     "id": "combat.hit_heavy"
+    }
+   }
   },
   "sling_master": {
    "unitId": "sling_master",
@@ -8847,7 +9042,16 @@
    "sourcePoint": "throwing-hand-or-weapon",
    "sizeHex": 0.64,
    "impactSizeHex": 0.7,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "combat.swing",
+     "maxMs": 600
+    },
+    "impact": {
+     "id": "combat.hit_heavy"
+    }
+   }
   },
   "siege_turret": {
    "unitId": "siege_turret",
@@ -8938,7 +9142,15 @@
    "sourcePoint": "throwing-hand-or-weapon",
    "sizeHex": 0.64,
    "impactSizeHex": 0.7,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "combat.turret"
+    },
+    "impact": {
+     "id": "combat.arrow_hit"
+    }
+   }
   },
   "catapult": {
    "unitId": "catapult",
@@ -9029,7 +9241,15 @@
    "sourcePoint": "throwing-hand-or-weapon",
    "sizeHex": 0.62,
    "impactSizeHex": 0.8,
-   "blend": "normal-alpha"
+   "blend": "normal-alpha",
+   "sounds": {
+    "release": {
+     "id": "combat.catapult"
+    },
+    "impact": {
+     "id": "combat.stone_hit"
+    }
+   }
   }
  }
 }

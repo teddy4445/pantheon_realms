@@ -1,0 +1,252 @@
+{
+  "schema": "twin-campaign-state-bindings-design-v1",
+  "status": "Implementation contract, not an engine import schema",
+  "namespace": "confluence",
+  "precedence": "chapter event > imported named choice > explicit standalone preset; never infer rules from image pixels",
+  "landmarks": [
+    {
+      "id": "confluence.longship",
+      "sheet": "twin.longship",
+      "chapters": [
+        "P1",
+        "E1"
+      ],
+      "initial": "discovered",
+      "prologueChoice": {
+        "refuge": "refuge",
+        "palisade": "palisade"
+      },
+      "laterEntry": {
+        "refuge": "war_refuge",
+        "palisade": "war_fort"
+      },
+      "restored": "memorial",
+      "rules": "Choice changes one disclosed reserve. Both rescue the crew. Keep original choice after restoration for dialogue and reserves."
+    },
+    {
+      "id": "confluence.frostwatch_quay",
+      "sheet": "twin.fjord-quay",
+      "chapters": [
+        "P2",
+        "E2"
+      ],
+      "initial": "iced",
+      "eventStates": {
+        "landing_cleared": "opened",
+        "supplies_delivered": "supplied",
+        "war_blockade": "blockaded",
+        "quay_damaged": "war_broken",
+        "blockade_lifted_and_quay_repaired": "restored"
+      },
+      "rules": "P2 western_channel/eastern_road is a route choice stored separately. Both retain a usable port. Do not use blocked quay state to delete the only ship source."
+    },
+    {
+      "id": "confluence.delta_sluice",
+      "sheet": "twin.delta-sluice",
+      "chapters": [
+        "P3",
+        "E3"
+      ],
+      "initial": "closed",
+      "prologueChoice": {
+        "merchant_canal": "canal_open",
+        "floodplain": "irrigation_open"
+      },
+      "laterEntry": "war_fortified",
+      "eventStates": {
+        "war_damage": "war_broken",
+        "restoration_completed": "repaired"
+      },
+      "rules": "E3 repair priority changes finite reserve/trust; both river functions ultimately recover. Terrain edits must check occupied cells and alternative routes."
+    },
+    {
+      "id": "confluence.inner_light",
+      "sheet": "twin.lantern-watchlight",
+      "chapters": [
+        "P4",
+        "E5"
+      ],
+      "initial": "unlit",
+      "eventStates": {
+        "lit": "lit",
+        "wartime_blackout": "shuttered",
+        "war_damage": "war_broken",
+        "restored": "restored",
+        "convoy_memorial": "memorial"
+      },
+      "rules": "Independent stable site ID; P4 choice lights inner OR outer first. E5 eventually restores both."
+    },
+    {
+      "id": "confluence.outer_light",
+      "sheet": "twin.lantern-watchlight",
+      "chapters": [
+        "P4",
+        "E5"
+      ],
+      "initial": "unlit",
+      "eventStates": {
+        "lit": "lit",
+        "wartime_blackout": "shuttered",
+        "war_damage": "war_broken",
+        "restored": "restored"
+      },
+      "rules": "Same sheet as inner light, distinct coordinates and persistent state."
+    },
+    {
+      "id": "confluence.living_arch",
+      "sheet": "twin.living-arch",
+      "chapters": [
+        "P5",
+        "E4"
+      ],
+      "initial": "untouched",
+      "prologueChoice": {
+        "sanctuary": "sanctuary",
+        "public_road": "road"
+      },
+      "laterEntry": "burned_gate",
+      "restored": {
+        "sanctuary": "witness_grove",
+        "public_road": "reopened_road"
+      },
+      "rules": "Burned arch retains two traversable approaches around checkpoint; route blocks are declared in map rules. E4 truth hearing order is separate from P5 land-use choice."
+    },
+    {
+      "id": "confluence.observatory",
+      "sheet": "twin.observatory",
+      "chapters": [
+        "P6",
+        "E6"
+      ],
+      "initial": "weathered",
+      "prologueChoice": {
+        "observatory_records": "records_kept",
+        "harbor_stores": "weathered"
+      },
+      "laterEntry": "fractured",
+      "eventStates": {
+        "repair_started": "braced",
+        "repair_completed": "stabilized"
+      },
+      "optionalVariant": "supplied",
+      "rules": "Harbor-stores choice uses existing supply-depot art at a separate harbor site; do not turn the observatory into the harbor. Supplied variant is optional dressing only."
+    },
+    {
+      "id": "confluence.accord_stone",
+      "sheet": "twin.accord-platform",
+      "chapters": [
+        "P7",
+        "E7"
+      ],
+      "initial": "empty",
+      "eventStates": {
+        "first_accord_signed": "ratified",
+        "intervening_war": "ruined",
+        "crown_host_occupation": "occupied",
+        "shared_custody": "shared_custody",
+        "open_passage": "open_passage"
+      },
+      "rules": "P7 agreement is mortal safe passage, not successful divine settlement. E7 settlement selectable only after stabilization; either is victory."
+    }
+  ],
+  "towns": {
+    "pantheons": [
+      "greek",
+      "norse",
+      "egyptian",
+      "japanese",
+      "celtic",
+      "mesoamerican"
+    ],
+    "mapSheet": "twin.town-ruins",
+    "start": "E1-E6 start with corresponding ruined map frame and war-damaged town background, one actual level-1 civic core and small force.",
+    "restoreTrigger": "Town hall reaches level 2 through normal construction. Switch to existing faction map-town art and the existing level-2 town background. Later normal L3/L4. For initial L1 repairs before upgrade, use existing normal L1 only after an explicitly labelled restoration event.",
+    "persistence": "Never reset this again when merging into E7. Cosmetic ruin fragments do not grant functional buildings."
+  },
+  "choices": {
+    "P1": [
+      "refuge",
+      "palisade"
+    ],
+    "P2": [
+      "western_channel",
+      "eastern_road"
+    ],
+    "P3": [
+      "merchant_canal",
+      "floodplain"
+    ],
+    "P4": [
+      "inner_light",
+      "outer_light"
+    ],
+    "P5": [
+      "sanctuary",
+      "public_road"
+    ],
+    "P6": [
+      "observatory_records",
+      "harbor_stores"
+    ],
+    "E1": [
+      "military_grain",
+      "civilian_shipment"
+    ],
+    "E2": [
+      "armed_exchange",
+      "dismantle_depot"
+    ],
+    "E3": [
+      "irrigation_first",
+      "canal_first"
+    ],
+    "E4": [
+      "hearing_first",
+      "stores_first"
+    ],
+    "E5": [
+      "inner_first",
+      "outer_first"
+    ],
+    "E6": [
+      "emergency_repairs",
+      "expedition_reserve"
+    ],
+    "E7": [
+      "shared_custody",
+      "open_passage"
+    ]
+  },
+  "standalonePreset": {
+    "label": "Established chronicle — authored starting history",
+    "P1": "refuge",
+    "P2": "western_channel",
+    "P3": "floodplain",
+    "P4": "inner_light",
+    "P5": "sanctuary",
+    "P6": "observatory_records",
+    "mainCampaignEndings": "Unspecified; neutral dialogue. Never invent completion or select a moral ending silently."
+  },
+  "ledgerEvent": {
+    "id": "unique mission/site/event ID",
+    "appliedOnce": true,
+    "fields": [
+      "campaignRunId",
+      "missionId",
+      "chapterDay",
+      "siteId",
+      "beforeState",
+      "afterState",
+      "choiceId",
+      "revealedTo",
+      "effectSummary"
+    ],
+    "transaction": "Validate -> apply rule effect and appearance atomically -> record applied ID -> save -> present optional animation. Replaying journal never re-runs rewards."
+  },
+  "visualRendering": {
+    "stateChange": "200-350ms crossfade at stable world anchor; no frame looping. Reduced-motion switches immediately.",
+    "ownership": "Use existing runtime owner flag/crest overlay. Decorative banners within paintings are not ownership data.",
+    "frames": "Use sprite-frames.json exact rectangles; living-arch and accord-platform are intentionally not uniform grid cells.",
+    "registration": "Anchor relative to source rectangle. Start width1.35hex for landmarks/1.6hex for towns; tune in actual engine without changing occupied cells."
+  }
+}

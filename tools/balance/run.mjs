@@ -21,6 +21,10 @@
  *   --quick           seeds 4, matches 1
  *   --no-signatures   army/escort/tier duels without pantheon signatures (troops only)
  *   --no-temperaments skirmish/random matches with every AI empire playing the same (neutral) way
+ *   --legacy-gods     skirmish/random/random1v1/maps with city dedications OFF (the gods' old direct daily
+ *                     income and weekly growth, as before 1.5.0): the same matches, to compare with the default
+ *   --legacy-intel    skirmish/random/random1v1/maps with scouting intel OFF (every visible enemy army known in
+ *                     full, as before the expedition kit): the same matches, to compare with the default
  *   --empires 2,3     empire counts for the random suite (default both)
  *   --sizes a,b       map sizes for random1v1 (default small)
  *   --map-types a,b   map types for random1v1 (default: all six, in turn)
@@ -49,7 +53,7 @@ const LAYOUT_FLOOR = 0.4;
 const layoutFailures = [];
 
 function parseArgs(argv) {
-  const o = { suites: [], seeds: 12, matches: 3, pantheons: PANTHEONS, maxDay: 40, jobs: Math.min(8, Math.max(1, cpus().length)), out: join(ROOT, 'balance-reports'), signatures: true, temperaments: true };
+  const o = { suites: [], seeds: 12, matches: 3, pantheons: PANTHEONS, maxDay: 40, jobs: Math.min(8, Math.max(1, cpus().length)), out: join(ROOT, 'balance-reports'), signatures: true, temperaments: true, legacyGods: false, legacyIntel: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     const next = () => argv[++i];
@@ -62,6 +66,8 @@ function parseArgs(argv) {
     else if (a === '--out') o.out = resolve(next());
     else if (a === '--no-signatures') o.signatures = false;
     else if (a === '--no-temperaments') o.temperaments = false;
+    else if (a === '--legacy-gods') o.legacyGods = true;
+    else if (a === '--legacy-intel') o.legacyIntel = true;
     else if (a === '--empires') o.empires = next().split(',').map(Number);
     else if (a === '--sizes') o.sizes = next().split(',');
     else if (a === '--map-types') o.mapTypes = next().split(',');
@@ -84,7 +90,7 @@ function parseArgs(argv) {
 function runShard(opts, shard, shards, outDir) {
   const require = createRequire(import.meta.url);
   const vitest = join(dirname(require.resolve('vitest/package.json')), 'vitest.mjs');
-  const env = { ...process.env, BALANCE_OPTS: JSON.stringify({ suites: opts.suites, seeds: opts.seeds, matches: opts.matches, pantheons: opts.pantheons, maxDay: opts.maxDay, signatures: opts.signatures, temperaments: opts.temperaments, empires: opts.empires, sizes: opts.sizes, mapTypes: opts.mapTypes, focus: opts.focus, maps: opts.maps, shard, shards, outDir }) };
+  const env = { ...process.env, BALANCE_OPTS: JSON.stringify({ suites: opts.suites, seeds: opts.seeds, matches: opts.matches, pantheons: opts.pantheons, maxDay: opts.maxDay, signatures: opts.signatures, temperaments: opts.temperaments, legacyGods: opts.legacyGods, legacyIntel: opts.legacyIntel, empires: opts.empires, sizes: opts.sizes, mapTypes: opts.mapTypes, focus: opts.focus, maps: opts.maps, shard, shards, outDir }) };
   return new Promise((ok, fail) => {
     const child = spawn(process.execPath, [vitest, 'run', '--config', 'tools/balance/vitest.config.ts', 'tools/balance/balance.measure.ts'], { cwd: ROOT, env, stdio: ['ignore', 'pipe', 'pipe'] });
     let err = '';
@@ -125,7 +131,7 @@ function render(opts, results, seconds, contentVersion) {
   const out = [];
   out.push(`# Balance report — ${new Date().toISOString().slice(0, 16).replace('T', ' ')} UTC`);
   out.push('');
-  out.push(`Content \`${contentVersion}\` · suites: ${opts.suites.join(', ')} · duel seeds ${opts.seeds} per direction · skirmish matches ${opts.matches} per ordered pairing and first-mover order · day cap ${opts.maxDay} · duels ${opts.signatures ? 'with' : 'without'} pantheon signatures · AI temperaments ${opts.temperaments ? 'on' : 'off'} · ${opts.jobs} worker(s) · ${(seconds / 60).toFixed(1)} min.`);
+  out.push(`Content \`${contentVersion}\` · suites: ${opts.suites.join(', ')} · duel seeds ${opts.seeds} per direction · skirmish matches ${opts.matches} per ordered pairing and first-mover order · day cap ${opts.maxDay} · duels ${opts.signatures ? 'with' : 'without'} pantheon signatures · AI temperaments ${opts.temperaments ? 'on' : 'off'} · city dedications ${opts.legacyGods ? '**off** (`--legacy-gods`: the gods\' old direct economy)' : 'on'} · scouting intel ${opts.legacyIntel ? '**off** (`--legacy-intel`: visible enemy armies known in full)' : 'on'} · ${opts.jobs} worker(s) · ${(seconds / 60).toFixed(1)} min.`);
   out.push('');
   out.push('All numbers are **AI-vs-AI measurements** with the shipped tactical and strategic AI (both sides the same AI), not playtest verdicts. Scores are the row pantheon\'s win rate against the column pantheon; side-neutral: every duel is fought in both directions and every skirmish pairing is played from both towns with both first movers. ⚠ marks averages outside 0.35–0.65.');
   out.push('');
@@ -322,6 +328,8 @@ function render(opts, results, seconds, contentVersion) {
     }
   }
 
+  out.push(...renderEcon(opts, results));
+
   const armies = results.filter((r) => r.job.suite === 'armies');
   if (armies.length) {
     out.push('## Full-roster armies');
@@ -373,6 +381,93 @@ function render(opts, results, seconds, contentVersion) {
     out.push('');
   }
   return out.join('\n');
+}
+
+// ---------------------------------------------------------------------------
+// Economy and city dedications (whole matches): per pantheon and per god
+// ---------------------------------------------------------------------------
+
+const VALUE = { gold: 1, wood: 250, stone: 250, crystal: 500 };
+const goldEq = (b) => Object.entries(b ?? {}).reduce((n, [k, v]) => n + (VALUE[k] ?? 0) * (v ?? 0), 0);
+const mean = (xs) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null);
+const f0 = (x) => (x === null || Number.isNaN(x) ? '—' : Math.round(x).toLocaleString('en-US'));
+const f1 = (x) => (x === null || Number.isNaN(x) ? '—' : x.toFixed(1));
+const share = (k, n) => (n ? `${Math.round((100 * k) / n)}%` : '—');
+
+/** Every seat's economy record of the whole-match suites. */
+function econSeats(results) {
+  const out = [];
+  for (const r of results) {
+    const e = r.skirmish?.econ ?? r.random?.econ ?? r.duel1v1?.econ ?? r.map?.econ;
+    if (e) for (const s of e.seats) out.push({ ...s, matchDay: e.day, feature: e.feature });
+  }
+  return out;
+}
+
+function renderEcon(opts, results) {
+  const seats = econSeats(results);
+  if (!seats.length) return [];
+  const P = opts.pantheons;
+  const out = [];
+  out.push(`## Economy and city dedications (whole matches, ${opts.legacyGods ? 'dedications off' : 'dedications on'})`);
+  out.push('');
+  out.push('Per seat, then averaged by pantheon. Income per week = the dawn income (handicap applied) plus the weekly city gifts, in Gold equivalent (Wood and Stone 250, Crystal 500; Favor left out). Stock = creatures waiting unrecruited in the seat\'s towns (Gold value at the base price) — growth that was never used. Snapshot days are the mornings of day 15 and 29 (seats still in the match). Milestones: first day a seat reached the building in any town (share of seats that did).');
+  out.push('');
+  out.push('| Pantheon | Seats | Temple II (day) | Dedicated (first day) | Switches /seat | Income /week | of it city gifts | Extra stock (creatures, Gold) | Army d15 | Army d29 | Stock Gold d29 | Stock Gold end | Town Hall III (day) | Tier 6 (day) | Tier 7 (day) |');
+  out.push('|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|');
+  const milestone = (xs, m) => {
+    const days = xs.map((s) => s.milestones?.[m]).filter((d) => d !== undefined);
+    return `${share(days.length, xs.length)} (${f1(mean(days))})`;
+  };
+  const snap = (xs, day, key) => mean(xs.map((s) => s.snapshots.find((x) => x.tag === `d${day}`)).filter(Boolean).map((x) => x[key]));
+  for (const p of P) {
+    const xs = seats.filter((s) => s.pantheon === p);
+    if (!xs.length) continue;
+    const firstDays = xs.map((s) => s.dedications.find((d) => d.kind === 'first')?.day).filter((d) => d !== undefined);
+    const weekly = xs.map((s) => (s.incomeDays ? ((goldEq(s.income) + s.giftGoldEq) / s.incomeDays) * 7 : 0));
+    const gifts = xs.map((s) => (s.incomeDays ? (s.giftGoldEq / s.incomeDays) * 7 : 0));
+    const end = (s) => s.snapshots.find((x) => x.tag === 'end');
+    out.push(`| ${NAMES[p]} | ${xs.length} | ${milestone(xs, 'temple2')} | ${share(firstDays.length, xs.length)} (${f1(mean(firstDays))}) | ${f1(mean(xs.map((s) => s.dedications.filter((d) => d.kind === 'switch').length)))} | ${f0(mean(weekly))} | ${f0(mean(gifts))} | ${f1(mean(xs.map((s) => s.devotionAdded)))}, ${f0(mean(xs.map((s) => s.devotionGold)))} | ${f0(snap(xs, 15, 'army'))} | ${f0(snap(xs, 29, 'army'))} | ${f0(snap(xs, 29, 'stockGold'))} | ${f0(mean(xs.map((s) => end(s).stockGold)))} | ${milestone(xs, 'civic3')} | ${milestone(xs, 'dwelling6')} | ${milestone(xs, 'dwelling7')} |`);
+  }
+  out.push('');
+  // Weekly income by resource (dawn income only), per pantheon.
+  out.push('Dawn income per week by resource (handicap applied; city gifts not included):');
+  out.push('');
+  out.push('| Pantheon | Gold | Wood | Stone | Crystal | Favor | Recruited (Gold value per seat) |');
+  out.push('|---|---|---|---|---|---|---|');
+  for (const p of P) {
+    const xs = seats.filter((s) => s.pantheon === p);
+    if (!xs.length) continue;
+    const per = (k) => f1(mean(xs.map((s) => (s.incomeDays ? ((s.income[k] ?? 0) / s.incomeDays) * 7 : 0))));
+    out.push(`| ${NAMES[p]} | ${per('gold')} | ${per('wood')} | ${per('stone')} | ${per('crystal')} | ${per('favor')} | ${f0(mean(xs.map((s) => s.recruitedGold)))} |`);
+  }
+  out.push('');
+  // Gods: commitment rate (share of the pantheon's seats) and dedication picks.
+  const gods = new Map();
+  const god = (g, p) => gods.get(g) ?? (gods.set(g, { p, commits: 0, patron: 0, first: 0, switchTo: 0, giftSeats: 0 }), gods.get(g));
+  for (const s of seats) {
+    if (s.patron) god(s.patron, s.pantheon).patron++;
+    for (const x of s.gods) god(x.godId, s.pantheon).commits++;
+    for (const d of s.dedications) {
+      const g = god(d.godId, s.pantheon);
+      if (d.kind === 'first') g.first++;
+      else g.switchTo++;
+    }
+  }
+  if (gods.size) {
+    out.push('Gods: commitment rate (share of that pantheon\'s seats; the patron is the starting god), first dedications and switches to the god (all towns), and its share of the pantheon\'s first dedications:');
+    out.push('');
+    out.push('| God | Pantheon | Committed | First dedications | Share of first dedications | Switches to |');
+    out.push('|---|---|---|---|---|---|');
+    const rows = [...gods.entries()].sort((a, b) => (a[1].p < b[1].p ? -1 : a[1].p > b[1].p ? 1 : a[0] < b[0] ? -1 : 1));
+    for (const [g, x] of rows) {
+      const n = seats.filter((s) => s.pantheon === x.p).length;
+      const firsts = seats.filter((s) => s.pantheon === x.p).reduce((k, s) => k + s.dedications.filter((d) => d.kind === 'first').length, 0);
+      out.push(`| ${g} | ${NAMES[x.p] ?? x.p} | ${x.patron ? `patron (${share(x.patron, n)})` : share(x.commits, n)} | ${x.first} | ${share(x.first, firsts)} | ${x.switchTo} |`);
+    }
+    out.push('');
+  }
+  return out;
 }
 
 const opts = parseArgs(process.argv.slice(2));

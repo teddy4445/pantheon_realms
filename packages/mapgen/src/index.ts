@@ -5,3 +5,6 @@ export * from './custom';
 export * from './unownedTowns';
 export * from './editorTools';
 export * from './neutralSites';
+export * from './naval';
+export * from './seaSites';
+export * from './seaMonsters';

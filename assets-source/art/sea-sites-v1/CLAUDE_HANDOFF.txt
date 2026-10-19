@@ -1,0 +1,128 @@
+PANTHEON REALMS — COASTAL SITES AND SEA SALVAGE
+Art + implementation handoff · 17 October2026
+Source folder: C:/Users/lazeb/Desktop/blannder_models/sea-map-objects-2026-10-17
+Separate target project: C:/Users/lazeb/Desktop/pantheon_realms
+Depends on naval movement/boarding package:
+C:/Users/lazeb/Desktop/blannder_models/naval-scouting-caravan-siege-kit-2026-10-17
+Related random maps:
+C:/Users/lazeb/Desktop/blannder_models/naval-random-maps-2026-10-17
+
+DELIVERY
+Eight original native PNGs: two coastal tower skins, two wreck silhouettes, wood/stone/gold floating pickups, and a shipwreck encounter painting. Seven transparent map sprites plus one opaque wide illustration. Built-in image_gen used; prompts and original paths included. No code-based pixel edits, upscaling or background removal.
+This is a material/design delivery. No game files were modified. New mechanics and numbers below are proposed and need implementation/playtesting. The five wildlife ideas at the end are suggestions only, NOT creatures to implement or silently add to encounters.
+
+INSTALL
+Copy assets to C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sea-sites-v1
+Keep source masters in C:/Users/lazeb/Desktop/pantheon_realms/assets-source/art/sea-sites-v1
+Use asset-manifest.json IDs and runtime paths. New IDs start seaSites. Do not replace legacy land-watchtower or generic land-resource assets.
+Native square sprites have generous transparent margins. Use alpha bounds and the manifest render anchors; never scale by full canvas width alone. Inspect at64/96/128pixel map sizes. Maintain fixed isometric camera and current depth sorting.
+Tower height:1.8–2.2 current hex widths; wreck visible hull width:1.4–1.7 hex widths; pickup width:0.55–0.7 hex widths. These are presentation sizes, not collision footprints. Don't let a tall object's sprite obscure clickable neighbors.
+Ownership flags, hover rings, subtle idle bob and consumed fade are runtime overlays. Never tint the whole sprite to an owner color. Seven PNGs include their tiny waterline/base details; no extra opaque blue ellipse is needed.
+Tower art has a bare mast near its top; normalized flag anchors in manifest are approximate and require actual-game tuning. The art variants are biome skins, not levels or different rewards.
+Use existing status/inspect/resource/close icons and prior naval-kit flags. The shipwreck painting is for encounter and reward panels, NOT a playable battle background.
+
+COASTAL WATCHTOWERS
+Suggested new kind coastal_watchtower (or an explicit mode on a versioned watchtower definition), radius6. Existing watchtower currently only reveals configured site IDs on first visit: packages/rules/src/systems/adventure.ts case watchtower. Do not globally turn old campaign towers into capturable surveillance towers.
+Placement: valid coastal land hex, adjacent to navigable water, legal land approach and a nearby disembark beach. Never place on a water tile or over a required channel. Use warm art for sand/temperate coasts, cold art for rock/cool/marsh-adjacent coasts. Neutral across all six pantheons.
+Visit/capture: a land-mode hero reaches the actual tower interaction cell; an embarked hero must first disembark legally. Optional existing neutral guards can protect it. No new remote ship capture. On successful capture set ownerId, emit one capture event and recompute vision.
+Benefit: owner receives live ordinary visibility within6 adventure hexes while owning it, including sea lanes. Newly seen terrain remains explored after capture loss, but live hostile positions stop updating. A tower reports no exact enemy troop counts, artifacts, mana or invisible units. Pass observations through the current/scouting-kit information policy. Passive tower observation is an ordinary distant sighting; it does not inherit a remote hero's Scouting skill.
+Alert: “Enemy ship sighted near [tower]” only when a genuinely visible hostile ship enters the tower's observation range. Coalesce overlap from several towers, at most one alert per ship per owner-turn. Do not reveal a ship through fog or replay historical alerts on load.
+States: neutral -> owned -> recaptured. Neutral flag omitted; owned flag uses actual player color. Tower remains static, no building bob or flame animation on an unlit brazier required. Guarded/visited badges use existing controls.
+Save owner, site state and any event dedup keys. Restore shared/allied vision according to existing alliance rules; do not invent a new alliance system.
+A radius6 tower is a proposed starting value. Balance through placements; avoid exposing a rival's starting harbor on day1 by default.
+
+FLOATING WOOD / STONE / GOLD
+Display names: Driftwood Bundle, Stone Cargo, Lost Treasury.
+Use existing resource types wood, stone, gold and the existing pickup/grantReward transaction where practical. Site definition explicitly requires naval interaction; do not globally make ordinary land pickups reachable from water.
+Single water hex, stationary logical coordinate. A subtle visual bob0.8–1.5px/3–4seconds is enough; no logical current/drift simulation. Disable bob under reduced motion.
+The hero must be embarked in an occupied ship, and normally moves onto the pickup hex. Pay normal water movement cost. Pickups do not block movement or become enemy ships. Resolve site action after movement. A land hero standing next to it cannot collect remotely. Flying army composition gives no exception.
+Proposed reward per pickup: wood3–6, stone3–6, gold250–500. Sample once from map seed/content RNG at generation, store the chosen reward, never reroll on hover or reload. Equal seed/symmetric region budget means equal rewards even when visual arrangement varies.
+Atomic collection: verify active hero/ownership/legal movement and unclaimed site; mark claimed and grant reward once in one command. Repeated commands/load cannot duplicate income. Show existing resource toast and remove/fade sprite over250ms. No confirmation modal for routine pickups. Keep a claimed tombstone/state for persistence even if renderer hides it.
+Do not award the wooden raft as extra wood when collecting stone/gold.
+Stone and gold sit on barrel-supported cargo rafts, so they visually float; these are one-time salvage, not resource mines or daily production.
+Never fill a launch cell, required landing cell, occupied ship cell or wreck interaction ring with forced collectibles. Pickups themselves remain traversable, but reserve important UI/visual lanes.
+Map suggestions:1–2 pickups of each resource per active-player region in new Huge naval templates, with matching budgets and2+hex visual spacing. Additional shared treasures can appear farther offshore. Not a weekly respawn system.
+
+SHIPWRECK EXPEDITIONS
+Two interchangeable map skins: broken mast with torn sail, and split exposed hull. Names/guard/reward are seeded site data, never guessed from the image.
+Placement: a stationary water landmark occupying one logical hex, with at least two free adjacent water approach cells in a connected sea. Wreck occupies its own anchor, so route to a legal adjacent approach rather than moving the ship into its hull. Keep wrecks away from launch cells and do not cut the last navigable route. Decorative sprite spill is non-colliding.
+Interaction: only an adjacent hero in a ship may inspect/explore. “Explore” costs100 movement, requires at least100 available, and starts a persisted encounter; “Leave” costs0. Moving there already paid normal sailing cost. User must confirm a guarded fight; never autoplay it by clicking a route.
+Panel uses shipwreck-expedition-scene.png, name, scouting-allowed danger information, known/unknown reward indication, Explore and Leave controls. Paint does not reveal which guards are aboard.
+Proposed outcome table, sampled once at generation:
+-50% abandoned cargo: reward500Gold +4Wood, no fight.
+-40% guarded salvage: reward1000Gold +8Wood after victory; existing catalog Brigand and Brigand Cutthroat are suitable humanoid guards. Example14brigands+4cutthroats is only a starting point; scale through current guard-budget rules, no new pirate art.
+-10% guarded rare cache:750Gold plus one existing eligible minor artifact; stronger existing guards using the same budget system. Select and persist artifactId at generation. Do not introduce a new artifact.
+Weighting/rewards are proposed. Any generated guard must use valid current catalog IDs, normal stack limits and a legal full deployment footprint. Do not spawn the five proposed sea creatures from this document.
+Combat: use prior two-deck boarding battlefield, explained as raiders moored alongside the wreck. This is an ordinary land-on-deck fight with existing ground rules; no aquatic creatures are required. Caller retains the visiting hero's ship on its approach hex. The wreck is a site, NOT a hostile hero ship that should be deleted by ship-vs-ship resolution.
+Add a distinct wreck encounter origin/context. On victory, clear the site, grant rewards once, return hero to the same ship. On defeat, use hero/army defeat rules and the naval ship-loss contract; no duplicate hero or orphan ship. Surviving neutral guard state follows existing encounter persistence consistently. Retreat/cancel rules must not teleport a hero onto land.
+If artifact inventory cannot accept the reward, preserve a pending artifact reward attached to the cleared site/player and show the ordinary swap/leave choice. Already-granted resources cannot be granted again when claiming the artifact. Do not discard the artifact silently.
+State: untouched, encounterPending, cleared, pendingReward if necessary. Persist guard definition, reward, battle reference and claim state. Retry commands must be idempotent. A completed site can fade from the map or remain non-interactive with a cleared overlay; no new wreck image is needed.
+Campaign combat remains manual where campaign rules prohibit automatic resolution. These additions do not change that policy.
+
+ANIMATION PRESENTATION
+Towers: static art plus live owner flag.
+Pickups: gentle bob, tiny runtime ripple if desired, collect fade. Stable hitbox at logical tile.
+Wrecks: almost static, bob<=0.4px and roll<=0.15degrees; no sailing wake or moving coordinate.
+Rewards: existing resource toast and optional brief gold spark; no mandatory new particle sheet.
+Use shared time functions and reduced-motion setting. No frame strips or rigged models are included or claimed.
+
+NEW NAVAL MAP PLACEMENT
+The Shattered Crown: one accessible coastal tower per active home region and one contested lookout per equal-budget inner region where land capacity allows. Wrecks between resource islands, never on the mandatory beach. Symmetric early salvage budgets.
+The Serpent Straits: lookouts on the curved neutral islands reveal inner passages; outer bypass remains out of at least some tower sight. One wreck off each flank and equal starting salvage.
+Use existing natural biome decorations; these new objects must not produce land bridges or alter water passability. Re-run naval connectivity checks AFTER every placement stage. Old random templates change only when this new sea-sites feature is explicitly enabled.
+
+FIVE MYTH-ROOTED NEUTRAL SEA CREATURES — REVISED PROPOSALS
+Supersedes the generic wildlife suggestions. Neutral describes gameplay allegiance; all creatures must be rooted in traditions represented by the game. No creature visuals are generated yet. Sources support myth identity; roles, sizes and abilities below are proposed game adaptations.
+
+1. Hippocampus
+Myth root: Greek myth; fish-tailed horse associated with sea gods.
+Gameplay: Proposed fast sea scout and flanking unit.
+Compatibility: Aquatic; water combat required.
+Source: https://www.theoi.com/Ther/Hippokampoi.html
+
+2. Cetus (Ketos)
+Myth root: Greek myth; sea monster in the Perseus and Andromeda story.
+Gameplay: Proposed heavy coastal guardian with a sweeping bite.
+Compatibility: Aquatic; scale and abilities are game adaptations.
+Source: https://www.theoi.com/Ther/KetosAithiopios.html
+
+3. Hafgufa
+Myth root: Medieval Norse maritime tradition; enormous sea creature described in the King's Mirror.
+Gameplay: Proposed rare sea boss guarding a rich wreck.
+Compatibility: Aquatic; boss rather than ordinary recruit.
+Source: https://www.abc.net.au/news/science/2023-03-01/ancient-texts-norse-saga-hafgufa-whale-trap-feeding/102027600
+
+4. Isonade
+Myth root: Japanese folklore; sea monster with a hooked or barbed tail.
+Gameplay: Proposed ambusher whose tail sweep briefly reduces movement.
+Compatibility: Aquatic; no instant drowning or forced movement into illegal cells.
+Source: https://en.wikipedia.org/wiki/Isonade
+
+5. Abtu and Ant (Anet)
+Myth root: Egyptian sacred fish associated with the solar boat in Book of the Dead translations.
+Gameplay: Proposed paired support encounter granting a temporary scouting blessing.
+Compatibility: Myth-rooted sea-map adaptation, not traditionally a naval combat unit.
+Source: https://www.holybooks.com/wp-content/uploads/Egyptian-Book-of-the-Dead.pdf
+
+Keep Abtu/Ant as a paired sacred-fish encounter, not a claim that Egyptian texts describe recruitable war-fish. Hafgufa belongs to medieval Norse sea tradition. These five candidates cover four represented traditions; no claim of one creature per pantheon. None should be placed on the existing dry boarding deck without an explicit aquatic combat design. Existing faction kelpies/selkies are not new neutral creatures. Do not implement this proposed roster until approved.
+
+IMPLEMENTATION TOUCHPOINTS
+Existing definitions: C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/world.ts
+Existing site visits: C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/adventure.ts
+Other site interactions/rewards: packages/rules/src/systems/sites.ts and current grantReward implementation.
+Presentation: packages/presentation/src/adventure.ts and live sprite/site selection registry.
+UI: existing encounter/reward panels, inspect tooltips, army/scouting information policy and active-player notifications.
+Generator/editor/save: extend current public schemas and serialization; preserve site modes, claims, guards, rewards, owner and ship encounter origin. Add new IDs to actual asset manifest through established project patterns.
+Do not mutate game behavior solely in Pixi/React; rules commands authorize claims, capture, exploration and rewards.
+
+ACCEPTANCE
+All8images load;7map sprites have actual alpha. Check dark water/light water coast composition and small map scale; no black/checkerboard matte. Flag anchor does not drift with UI scale.
+Wood/stone/gold enter the right wallet key once. Try duplicate requests, autosave-before/after collection, no movement, empty ship, land hero, full route and occupied cell.
+Tower captures/recaptures update legitimate vision immediately; prior explored terrain persists; live enemy info disappears appropriately. Overlap alerts deduplicate; hidden ships never leak.
+Wreck outcome/guards/treasure stay identical across reload. Confirm/leave/retreat/defeat/victory and full artifact inventory each preserve correct ship/hero/site state and do not double-charge movement/rewards.
+AI can capture towers, collect salvage and evaluate wreck encounters without walking over water. No new object blocks mandatory sea corridors.
+Run relevant rules/UI tests, typecheck, boundary lint/build and actual-game visual QA. Report real results; this asset delivery does not prove gameplay implementation.
+
+CLAUDE PROMPT
+Implement this coastal-sites/sea-salvage package in C:/Users/lazeb/Desktop/pantheon_realms using C:/Users/lazeb/Desktop/blannder_models/sea-map-objects-2026-10-17/CLAUDE_HANDOFF.txt and asset-manifest.json. Copy the new visuals from this separate folder. Integrate with the previous naval and naval-random-map handoffs. Add towers, wreck expeditions and wood/stone/gold pickups with persistence, AI, save/load and proper vision. Treat the five sea creature descriptions as proposals only. Preserve current campaign/manual battle rules and provide actual tests and screenshots.
+

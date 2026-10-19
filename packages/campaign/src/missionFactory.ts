@@ -1,3 +1,4 @@
+import { restoreRegionalState, type RegionalSnapshot } from './regionalState';
 /**
  * MissionRuntimeFactory: builds the starting MatchState of a scenario from its
  * content manifest, a generated logical map and (for later campaign missions) the
@@ -50,6 +51,9 @@ import {
   placementSlot,
   type AuthoredMapDefinition,
   type SiteDefinition,
+  initialShips,
+  establishCoalition,
+  shareCoalitionFog,
 } from '@pr/rules';
 import { buildDecor, deriveStreams, generateMap, type DecorItem, type GenerationMode } from '@pr/mapgen';
 
@@ -71,6 +75,7 @@ export interface HeroCarryover {
 }
 
 export interface MissionStartOptions {
+  readonly regions?: readonly RegionalSnapshot[];
   readonly matchId: string;
   readonly seed?: number;
   readonly mode?: GenerationMode;
@@ -111,7 +116,8 @@ export function authoredWorldMap(m: AuthoredMapDefinition): WorldMapDefinition {
     height: m.height,
     terrain,
     roads: [...m.roads].sort(),
-    logicalHash: hashValue({ terrain, roads: [...m.roads].sort() }),
+    logicalHash: hashValue({ terrain, roads: [...m.roads].sort(), ...(m.desertCells ? { desertCells: m.desertCells } : {}) }),
+    ...(m.desertCells ? { desertCells: [...m.desertCells] } : {}),
     biome: m.biome,
   };
 }
@@ -204,7 +210,7 @@ function revealInitial(catalog: ContentCatalog, state: MatchState): void {
     }
     for (const t of Object.values(state.towns)) {
       if (t.ownerId !== playerId) continue;
-      for (const c of cellsWithin(map, t.coord, townVisionRadius(catalog, t))) fog.explored[cellIndex(map, c)] = 1;
+      for (const c of cellsWithin(map, t.coord, townVisionRadius(catalog, state, t))) fog.explored[cellIndex(map, c)] = 1;
     }
   }
 }
@@ -367,6 +373,7 @@ function buildMissionMatch(
       // Unowned towns' garrisons scale like the guards, the computer rivals' by their own share; a human seat's never.
       ...(setup.garrison ? { garrison: ownerId === null ? scaleArmy(setup.garrison, guardPercent) : players[ownerId]?.controller === 'ai' ? scaleArmy(setup.garrison, rivalArmyPercent) : setup.garrison } : {}),
     });
+    if (setup.warDamaged) towns[setup.townId]!.warDamaged = true;
   };
   addTown(p.town, p.playerId);
   for (const rival of mission.rivals ?? []) addTown(rival.town, rival.playerId);
@@ -417,6 +424,7 @@ function buildMissionMatch(
       ...(hh.ai.regionRadius !== undefined ? { regionRadius: hh.ai.regionRadius } : {}),
     };
     if (hh.homeSiteId) h.ai.homeSiteId = hh.homeSiteId;
+    if (hh.assaultSiteIds) h.ai.assaultSiteIds = [...hh.assaultSiteIds];
     if (hh.dormantUntilFlag) h.ai.dormantUntilFlag = hh.dormantUntilFlag;
     if (hh.monster) h.monster = { bounty: resources(hh.monster.bounty), creatureId: hh.army[0]?.creatureId ?? '' };
     heroes[id] = h;
@@ -428,7 +436,8 @@ function buildMissionMatch(
     sites[s.id] = {
       siteId: s.id,
       owner: townOwner,
-      cleared: !s.guard,
+      // A shipwreck is cleared only when explored (its raiders live in its outcome; sea-sites kit).
+      cleared: !s.guard && s.kind.type !== 'shipwreck',
       claimed: false,
       activated: false,
       visitedBy: [],
@@ -497,6 +506,9 @@ function buildMissionMatch(
   };
 
   applyEntryBonuses(state, mission, bonuses, playerHero.id);
+  // Hero ships (navalMovementV1): the scenario's empty ships; no `ships` record when the feature is off.
+  const ships = initialShips(state, mission);
+  if (ships) state.world.ships = ships;
   // Sluices (content v2): the channel starts in its written state.
   for (const s of mission.sites) {
     if (s.kind.type !== 'sluice') continue;
@@ -524,7 +536,13 @@ function buildMissionMatch(
   // A deadline whose trigger already holds starts on day 1 (its start day is saved).
   evaluateTimers(tx);
   tx.finalize();
+  if (opts.regions) restoreRegionalState(catalog, state, opts.regions);
+  if (mission.coalitionPlayerIds) {
+    establishCoalition(state, mission.coalitionPlayerIds);
+    state.scenario.protectedHeroIds = Object.values(state.heroes).filter((h) => mission.coalitionPlayerIds!.includes(h.ownerId)).map((h) => h.id);
+  }
   revealInitial(catalog, state);
+  shareCoalitionFog(state);
   ensureStats(state);
   recordDayStats(catalog, state, (id) => projectedIncome({ catalog, state }, id));
   return { match: state, decor: gen.decor, entryHash: hashValue(state) };

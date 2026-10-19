@@ -1,0 +1,341 @@
+{
+  "icons": [
+    {
+      "id": "expedition.icon.inspect",
+      "file": "assets/icons/icon-inspect.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.pin",
+      "file": "assets/icons/icon-pin.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.source",
+      "file": "assets/icons/icon-source.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.remaining",
+      "file": "assets/icons/icon-remaining.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.sighting",
+      "file": "assets/icons/icon-sighting.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.identified",
+      "file": "assets/icons/icon-identified.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.scouted",
+      "file": "assets/icons/icon-scouted.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.stale-report",
+      "file": "assets/icons/icon-stale-report.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.caravan",
+      "file": "assets/icons/icon-caravan.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.dispatch",
+      "file": "assets/icons/icon-dispatch.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.arrival",
+      "file": "assets/icons/icon-arrival.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.cargo",
+      "file": "assets/icons/icon-cargo.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.route",
+      "file": "assets/icons/icon-route.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.blocked",
+      "file": "assets/icons/icon-blocked.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.intercept",
+      "file": "assets/icons/icon-intercept.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.garrison",
+      "file": "assets/icons/icon-garrison.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.ship",
+      "file": "assets/icons/icon-ship.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.embark",
+      "file": "assets/icons/icon-embark.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.disembark",
+      "file": "assets/icons/icon-disembark.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.boarding",
+      "file": "assets/icons/icon-boarding.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.anchor",
+      "file": "assets/icons/icon-anchor.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.catapult",
+      "file": "assets/icons/icon-catapult.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.aim",
+      "file": "assets/icons/icon-aim.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.fire",
+      "file": "assets/icons/icon-fire.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.skip",
+      "file": "assets/icons/icon-skip.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.wreck",
+      "file": "assets/icons/icon-wreck.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.flag",
+      "file": "assets/icons/icon-flag.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    },
+    {
+      "id": "expedition.icon.water",
+      "file": "assets/icons/icon-water.svg",
+      "format": "svg",
+      "viewBox": [
+        0,
+        0,
+        24,
+        24
+      ],
+      "source": "New repo-native vector control following existing Icon component style"
+    }
+  ],
+  "implementation": "Can import SVGs directly or port paths into existing Icon name union. Labels/tooltips remain live."
+}

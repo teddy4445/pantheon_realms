@@ -42,7 +42,9 @@ export type RejectionCode =
   | 'already_done'
   | 'invalid_command'
   /** Automation tried to act for a human side of a campaign battle (fought by hand only). */
-  | 'manual_battle_required';
+  | 'manual_battle_required'
+  /** A planned mixed land/sea route stands at an embark or disembark step: confirm it with EmbarkHero / DisembarkHero. */
+  | 'transition_required';
 
 export interface Rejection {
   readonly code: RejectionCode;

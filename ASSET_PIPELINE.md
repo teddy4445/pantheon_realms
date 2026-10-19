@@ -1361,7 +1361,18 @@ screenshots and base comparison copies are never imported.
   size), Dawncrest and Dreamtusk body scale (pixels per hex 130 and 128; the
   others keep the delivered 82 % of the base registration), two Dawncrest death
   anchors +3 / +4 px, and the small physical impacts (javelins, darts, slings,
-  tower arrow) drawn at 0.7 hex instead of 0.5.
+  tower arrow) drawn at 0.7 hex instead of 0.5;
+- writes each profile's **sounds** (app 1.4.0, `SOUNDS` table by the delivery's
+  `family`, the siege actors by unit): a release and an impact sound ID from
+  `assets-runtime/audio/manifest.json` with an optional `maxMs` (the import stops
+  on an unknown family or sound ID; no new audio files). Javelins and darts:
+  `combat.swing` / `combat.arrow_hit`; slings: `combat.swing` /
+  `combat.hit_heavy`; boulders and granite: `combat.catapult` /
+  `combat.stone_hit`; arcane bolt: `magic.cast` / `magic.strike`; frost breath:
+  `magic.water` / `magic.frost`; holy fire: `magic.fire` / `magic.holy`; serpent
+  fire: `magic.fire` / `magic.strike`; spectral wail: `magic.shadow` /
+  `magic.curse`; tower and catapult unchanged. Chosen from durations, loudness
+  envelopes and source titles, not by ear — the owner should listen.
 
 `packages/ui/src/assets/manifest.ts` merges it into the sprite manifest (creatures,
 projectiles, effects, `projectileProfiles`) and resolves the portraits; it never
@@ -1374,3 +1385,73 @@ once at the contact point with the hit reaction and damage words, fading over it
 last 100 ms. Unknown future shooters keep the generic arrow. All of it is
 cosmetic: no rule, damage, splash or random draw changes.
 
+
+## 22. Expedition, naval & siege kit (2026-10-17)
+
+Delivered as the expedition kit folder beside the game (nothing in the game points
+at it). **13 native PNGs** — the neutral ship in three facings (`ship-e/-ne/-se`;
+W/NW/SW are runtime mirrors) and its wreck, the caravan wagon in three facings, the
+boarding battlefield (1672 × 941, below full HD, kept native), the unknown-army
+vignette, the caravan dispatch and arrival paintings, the damaged and destroyed
+catapult — plus three vector overlays (flag template, wake, destination ring) and 28
+SVG controls. Its `reuse/` copies of existing game files and `reference/` concepts
+never enter the runtime.
+
+`npm run expedition:import` (`tools/assets/import_expedition.py`; `-- --kit DIR` the
+first time) checks every file against the delivery's manifests, copies
+`assets/` (icons/ kept) byte for byte to `assets-runtime/expedition-v1/`, the masters,
+prompts, design, runtime reference and handoff to `assets-source/expedition-v1/`, the
+handoff and design to `docs/expedition-v1/`, and writes
+`assets-runtime/expedition-v1/manifest.json` (relative paths; IDs `expedition.*` with
+native size, SHA-256, visible bounds and ground anchors; `expedition.icon.<name>`).
+The ship and wagon are **map tokens** (`presentation/src/mapTokens.ts`:
+`mapTokenPicture`, `tokenHeading`, `mirroredAnchor`, `flagMount`), animated at runtime
+by `shipMotion.ts` (a port of the kit's `runtime/ship-motion.js`: idle, sailing,
+embark/disembark, boarding, hit, sinking; presentation time only) — never registered
+as frame strips. Only the owner flag takes the player's colour. The catapult variants
+replace the intact engine at 60 and 0 health; the art throws to the right
+(`ENGINE_ART_FACING = 1`). The icons are drawn by the Icon component
+(`EXPEDITION_ICONS`).
+
+## 23. Naval random-map paintings (2026-10-17)
+
+Four native PNGs, all 1672 × 941 (never called 1080p): the Shattered Crown and Serpent
+Straits chooser cards (`frontend.random.<type>`) and loading pictures
+(`random.<type>.loading`). `npm run naval-random:import` (`tools/assets/import_naval_random.py`,
+`--kit`) copies them to `assets-runtime/naval-random-v1/` with a manifest (cover fit,
+centred focus) and the masters plus the kit's design and documents to
+`assets-source/art/naval-random-v1/`; `frontendArt` falls back to `navalRandomArt(id)`.
+The topology JSONs and SVG layouts are design inputs for `packages/mapgen/src/naval/`,
+never maps or UI art.
+
+## 24. Sea creatures (2026-10-17)
+
+37 native PNGs: 22 transparent creature atlases (1254 × 1254) for the ten forms of
+the five neutral sea families, four projectile/impact atlases (1774 × 887), ten
+opaque portraits and the single-ship battlefield (1672 × 941). `npm run
+sea-creatures:import` (`tools/assets/import_sea_creatures.py`, `--kit`) copies the
+contents of `assets/` (animations/ kept) to `assets-runtime/sea-creatures-v1/`, the
+whole delivery to `assets-source/art/sea-creatures-v1/`, and deep-merges the
+delivery's `sprite-manifest-merge.json` (creatures, effects, projectiles,
+projectileProfiles) into `assets-runtime/sprites/manifest.json` under the canonical
+IDs, keeping every other entry; the manifest is written atomically (old snapshot
+folders hard-link it). Frames use the delivered **explicit regions** (rect,
+per-frame anchor, sourceScale, pixelsPerHex), never a uniform grid; the Razorwake
+Isonade shoot has three frames and the Tempest Hippocampus landing is its takeoff
+reversed (both deliberate). `events` metadata carries the contact frame, mirrored
+release sockets (mouth, tail-tip, conch-bell), hover and sink-fade; only the
+Deepwater Blast's travelling art is turned by π (`travelRotation`), impacts never.
+The board is drawn and hit-tested from the delivered 176-cell table
+(`hexmath.tableProjection` / `pickTableCell`).
+
+## 25. Coastal sites and sea salvage (2026-10-17)
+
+Eight native PNGs: two coastal watchtower skins (warm, cold/rocky), two shipwrecks
+(broken mast, split hull), three floating pickups (wood, stone, gold) and the
+shipwreck expedition painting (panels only, never a battlefield). `npm run
+sea-sites:import` (`tools/assets/import_sea_sites.py`, `--kit`) copies them to
+`assets-runtime/sea-sites-v1/` with a measured-bounds manifest (IDs `seaSites.*`) and
+the masters and documents to `assets-source/art/sea-sites-v1/`. The kit's sea-creature
+proposals are never imported. Sizes come from the painted bounds (`seaSiteLayout`):
+towers about 2 hexes tall, wreck hulls 1.4–1.7 hexes, pickups 0.55–0.7; the owner flag
+is an overlay, the sprite is never tinted.

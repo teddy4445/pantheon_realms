@@ -7,7 +7,7 @@
  * They never contain renderer objects (sprites, textures), React objects or native handles.
  * Loading never regenerates a map; the stored logical map is authoritative.
  */
-import { canonicalJson, hashString, type ContentCatalog, type MatchState, type VersionBundle, scenarioMission } from '@pr/rules';
+import { battlePlacementIssues, canonicalJson, hashString, navalPolicyIssues, shipInvariantIssues, type ContentCatalog, type MatchState, type VersionBundle, scenarioMission } from '@pr/rules';
 import { contentVersionOf, runMissionIds, type CampaignState } from '@pr/campaign';
 import type { SessionPresentation } from './journeys';
 
@@ -136,6 +136,18 @@ export function checkEnvelope(catalog: ContentCatalog, raw: unknown): SaveCompat
     return { status: 'incompatible', reason: `Saved with content ${v.contentVersion}; this build uses ${catalog.versions.contentVersion}` };
   }
   if (!scenarioMission(catalog, e.snapshot.match)) return { status: 'incompatible', reason: 'The saved scenario is not part of this build' };
+  // Hero ships (navalMovementV1): a hero on land or aboard exactly one ship, one ship per tile (absent = none).
+  const ships = shipInvariantIssues(catalog, e.snapshot.match);
+  if (ships.length > 0) return { status: 'corrupt', reason: `The ships are inconsistent: ${ships[0]}` };
+  // A battle in progress is restored from its rules state, never repaired: every stack must stand where the board allows
+  // (the sea encounter's zones: walkers on deck, swimmers in the water, nothing astride the rail; no shared hex).
+  const placement = battlePlacementIssues(catalog, e.snapshot.match);
+  if (placement.length > 0) return { status: 'corrupt', reason: `The battle is inconsistent: ${placement[0]}` };
+  // Naval-only maps (naval random templates): the travel rule travels with the generated mission; a save
+  // that turned ships off, persisted portals as on or holds a portal, ferry or sluice is refused, never repaired.
+  const mission = scenarioMission(catalog, e.snapshot.match)!;
+  const naval = navalPolicyIssues(mission, e.snapshot.match.scenario.features);
+  if (naval.length > 0) return { status: 'corrupt', reason: `The naval travel rule is broken: ${naval[0]}` };
   return { status: 'ok' };
 }
 

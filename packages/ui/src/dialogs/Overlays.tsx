@@ -22,6 +22,7 @@ import {
   quoteTransfer,
   siegeTownAt,
   siteAt,
+  enemyCaravanAt,
   townFortificationLevel,
   type ArmyRef,
   type ArmyState,
@@ -34,6 +35,7 @@ import {
 } from '@pr/rules';
 import { useStore } from '../app/context';
 import { endOfGameSplash } from '../components/moments';
+import { SeaEncounterCards } from '../components/seaCreatures';
 import type { AppStore, Overlay } from '../app/store';
 import { AUTO_SLOTS, CHECKPOINT_SLOT, MANUAL_SLOTS, type SlotInfo } from '../app/saves';
 import { Button, Chip, MenuButton, Modal, QuantitySelector, SectionTitle, useModalFocus } from '../components/kit';
@@ -53,11 +55,15 @@ import { CampDialog, ChestDialog, GameOverDialog, HandoffDialog, InterventionsDi
 import { SpellBook } from '../components/spellbook';
 import { AbilityBadge } from '../components/badges';
 import { QuickBattlePanel, useQuickBattlePreview } from './QuickBattle';
+import { currentIntelView, intelOn } from '../app/intel';
+import { ArmyIntelPanel } from '../components/armyIntel';
 import { missionIntro } from '../app/missionLedger';
 import { IntroChapterFacts, LedgerIcon, ManualBattleNotice, introCoverArt } from '../components/missionLedger';
 import { contentVersionOf } from '@pr/session';
 import { campaignEpilogue, carryoverLines, chapterFacts, chapterTitle, chronicleModel, defaultSelection, saveRunInfo, type ChronicleNode } from '../app/chronicle';
 import { BRANCH_ICON, Chronicle, SaveRunTags } from '../components/chronicle';
+import { ActorPickerDialog, CaravanArrivalDialog, CaravanDispatchDialog, CaravanTrackerDialog } from '../components/caravans';
+import { caravanFullCargo, caravanIntelView } from '../app/caravans';
 
 // ---------------------------------------------------------------------------
 
@@ -168,6 +174,8 @@ function SaveLoadDialog({ mode: initialMode }: { mode: 'save' | 'load' }) {
   // Only a list that was read and holds nothing is "empty"; reading, unavailable and failed storage say so instead.
   const archiveEmpty = mode === 'load' && slots !== null && !error && slots.length === 0;
   const missionOf = (x: SlotInfo | undefined) => x?.envelope?.snapshot.match.mission.missionId ?? null;
+  // A generated mission (random map) is not in the catalog: its own card is the thumbnail (naval types: their painting).
+  const thumbOf = (x: SlotInfo | undefined) => x?.envelope?.snapshot.match.customMission?.thumbnailAssetId;
   const when = (iso: string | null) => (iso ? new Date(iso).toLocaleString() : '');
   return (
     <Modal
@@ -239,7 +247,7 @@ function SaveLoadDialog({ mode: initialMode }: { mode: 'save' | 'load' }) {
                       data-testid={`save-${id}`}
                     >
                       <span className="fe-save-row__thumb" aria-hidden="true">
-                        {mission ? <MissionThumb catalog={store.catalog} missionId={mission} style={{ width: '100%', height: '100%' }} /> : <span className="fe-save-row__laurel" />}
+                        {mission ? <MissionThumb catalog={store.catalog} missionId={mission} assetId={thumbOf(s)} style={{ width: '100%', height: '100%' }} /> : <span className="fe-save-row__laurel" />}
                       </span>
                       <span className="fe-save-row__text">
                         <span className="save-row__kind">{kindLabel}</span>
@@ -275,7 +283,7 @@ function SaveLoadDialog({ mode: initialMode }: { mode: 'save' | 'load' }) {
               <>
                 {missionOf(sel) ? (
                   <figure className="fe-saves__art">
-                    <MissionThumb catalog={store.catalog} missionId={missionOf(sel)!} style={{ width: '100%', height: '100%' }} />
+                    <MissionThumb catalog={store.catalog} missionId={missionOf(sel)!} assetId={thumbOf(sel)} style={{ width: '100%', height: '100%' }} />
                     <figcaption>Illustration of the mission — not a picture of the saved game</figcaption>
                   </figure>
                 ) : null}
@@ -1149,13 +1157,26 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
   const at = siteAt(catalog, state, dest);
   const town = at && hero ? siegeTownAt(catalog, state, at, hero.ownerId) : null;
   const level = town ? townFortificationLevel(catalog, town) : 0;
+  // Scouting intel (`scoutingIntelV1`): an enemy hero or wandering monster is summarized at its observation
+  // stage only (the rules' projection); its exact army is never listed. Guards and garrisons keep today's view.
+  const intelMode = !!enemyHero && !!hero && enemyHero.ownerId !== hero.ownerId && intelOn(catalog, state);
+  // Recruitment caravans: an enemy wagon's cargo is summarized at its scouting stage only (never its destination).
+  const caravan = !town && !enemyHero && hero ? enemyCaravanAt(state, dest, hero.ownerId) : undefined;
+  const caravanView = caravan && hero ? caravanIntelView(catalog, state, hero.ownerId, caravan) : null;
+  const caravanCargo = caravan && hero && !caravanView ? (caravanFullCargo(catalog, state, hero.ownerId, caravan) ?? []) : null;
+  const foeIntel = intelMode ? currentIntelView(catalog, state, hero!.ownerId, enemyHero!.id) : caravanView;
+  const shownFoe = enemyHero && !intelMode ? enemyHero : null;
   const army = town
-    ? [...(enemyHero ? armyStacks(enemyHero.army) : []), ...armyStacks(town.garrison)].map((s) => ({ creatureId: s.creatureId, count: s.count }))
-    : enemyHero
-      ? armyStacks(enemyHero.army).map((s) => ({ creatureId: s.creatureId, count: s.count }))
-      : site
-        ? (state.world.sites[site.id]?.guard ?? site.guard?.army ?? [])
-        : [];
+    ? [...(shownFoe ? armyStacks(shownFoe.army) : []), ...armyStacks(town.garrison)].map((s) => ({ creatureId: s.creatureId, count: s.count }))
+    : shownFoe
+      ? armyStacks(shownFoe.army).map((s) => ({ creatureId: s.creatureId, count: s.count }))
+      : enemyHero
+        ? []
+        : caravan
+          ? (caravanCargo ?? [])
+          : site
+            ? (state.world.sites[site.id]?.guard ?? site.guard?.army ?? [])
+            : [];
   const label = q?.encounterLabel ?? site?.guard?.label ?? 'Encounter';
   const reward = site?.guard?.reward;
   // Much weaker neutrals join for free or flee (scenario feature; proposed 2026-10-02).
@@ -1170,12 +1191,15 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
   // Campaign battles are fought on the battlefield (handoff 2026-10-15): no quick
   // battle and no casualty preview there; the rules refuse it as well.
   const manualOnly = manualBattlesRequired(state);
-  const preview = useQuickBattlePreview(heroId, dest, !manualOnly);
+  // Against an army the player has not seen in full, the quick battle is not previewed (its result would
+  // reveal the hidden numbers); the button still fights it, with the battle AI on both sides.
+  const hiddenFoe = intelMode || !!caravanView;
+  const preview = useQuickBattlePreview(heroId, dest, !manualOnly && !hiddenFoe);
   const quick = () => {
     store.closeOverlay();
     store.quickBattle({ kind: 'MoveHero', heroId, destination: dest, confirmEncounter: true });
   };
-  const quickReason = !preview ? 'Working out the quick battle…' : preview.run.ok ? null : preview.run.reason;
+  const quickReason = hiddenFoe ? null : !preview ? 'Working out the quick battle…' : preview.run.ok ? null : preview.run.reason;
   const react = (choice: 'join' | 'release') => {
     store.closeOverlay();
     const names = (reaction?.stacks ?? []).map((s) => `${s.count} ${s.count === 1 ? catalog.creatures[s.creatureId]?.name : catalog.creatures[s.creatureId]?.pluralName}`).join(', ');
@@ -1268,9 +1292,10 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
           </section>
           <section className="ak-pane encounter-side encounter-side--foe" aria-label={town ? 'Defenders' : 'Opponent'}>
             <h3 className="ak-pane__title">
-              {town ? 'Defenders' : enemyHero ? 'Enemy hero' : 'Guards'}
+              {town ? 'Defenders' : enemyHero ? 'Enemy hero' : caravan ? 'Supply caravan' : 'Guards'}
               <span className="ak-encounter__foe-name"> · {town ? town.name : (enemyHero?.name ?? site?.guard?.commander?.name ?? label)}</span>
             </h3>
+            {foeIntel ? <ArmyIntelPanel catalog={catalog} view={foeIntel} compact testId="encounter-intel" /> : intelMode ? <p className="small dim" data-testid="encounter-intel-unseen">Not in sight: its army is unknown.</p> : null}
             <div className="encounter-army">
               {army.map((s, i) => (
                 <div key={i} className="encounter-army__stack">
@@ -1279,6 +1304,7 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
                 </div>
               ))}
             </div>
+            {site?.kind.type === 'sea_monster' && !town && !enemyHero ? <SeaEncounterCards catalog={catalog} stacks={army} /> : null}
             {town && enemyHero ? <div className="encounter-side__note">Led by {enemyHero.name}</div> : !enemyHero && site?.guard?.commander ? <div className="encounter-side__note">Commander: {site.guard.commander.name}</div> : null}
           </section>
         </div>
@@ -1292,15 +1318,27 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
             <ClimateChip climate={climate} testId="encounter-climate-chip" /> {climate.summary.slice(climate.name.length + 2)} Both armies alike.
           </p>
         ) : null}
+        {caravan ? (
+          <p className="small ak-pane encounter-note" data-testid="caravan-encounter-note">
+            Its cargo defends without a commander: no hero, no spells, no retreat. If it falls, nothing it carries joins your army and there is no loot.
+          </p>
+        ) : null}
         {town ? (
           <div className="ak-pane encounter-note siege-brief" data-testid="siege-brief">
             <p>
-              <strong>Siege.</strong> {FORT_TEXT[level] ?? FORT_TEXT[0]} Your Catapult removes one structure point at the start of every round — the gate first, or the section you aim it at on your turn (click it in the fortification list); Cyclopes can batter the walls instead of shooting. Shots into the town across an intact wall deal half damage.{level >= 2 ? ' The keep and towers fire at the stack their shot hurts most, shooters first.' : ''}
+              <strong>Siege.</strong> {FORT_TEXT[level] ?? FORT_TEXT[0]} {state.scenario.features?.targetableCatapultV1 ? `Your catapult stands in the upper left of the field: once a round, after every creature has acted, fire it at the wall section, gate, tower or keep you choose (${catalog.rulesProfile.combat.siege.catapultDamage} structure point${catalog.rulesProfile.combat.siege.catapultDamage === 1 ? '' : 's'}), or skip; the defenders can strike and destroy it.` : 'Your Catapult removes one structure point at the start of every round — the gate first, or the section you aim it at on your turn (click it in the fortification list);'} Cyclopes can batter the walls instead of shooting. Shots into the town across an intact wall deal half damage.{level >= 2 ? ' The keep and towers fire at the stack their shot hurts most, shooters first.' : ''}
             </p>
             <p className="faint">The defender fights with at most seven stacks (identical stacks may be combined first) and cannot retreat or surrender. Winning captures {town.name}. Values are proposed.</p>
           </div>
         ) : null}
-        {manualOnly ? null : <QuickBattlePanel preview={preview} />}
+        {manualOnly ? null : hiddenFoe ? (
+          <div className="quick-battle is-off is-hidden-intel" data-testid="quick-battle" data-status="hidden">
+            <Icon name="auto" className="quick-battle__icon" />
+            <span className="dim small">No preview: your scouts do not know this army's exact numbers. Quick battle still fights it, with the battle AI on both sides.</span>
+          </div>
+        ) : (
+          <QuickBattlePanel preview={preview} />
+        )}
         {reward?.resources || reward?.artifactIds?.length ? (
           <div className="encounter-reward">
             <span className="encounter-reward__label">Reward on victory</span>
@@ -1489,5 +1527,13 @@ export function OverlayLayer() {
       return store.session ? <GameOverDialog /> : null;
     case 'shortcuts':
       return <ShortcutsDialog />;
+    case 'caravan-dispatch':
+      return store.session ? <CaravanDispatchDialog key={top.townId} townId={top.townId} {...(top.creatureId ? { creatureId: top.creatureId } : {})} /> : null;
+    case 'caravan-tracker':
+      return store.session ? <CaravanTrackerDialog key={top.caravanId} caravanId={top.caravanId} {...(top.message ? { message: top.message } : {})} /> : null;
+    case 'caravan-arrival':
+      return store.session ? <CaravanArrivalDialog key={top.receipt.caravanId} receipt={top.receipt} /> : null;
+    case 'actor-picker':
+      return store.session ? <ActorPickerDialog coord={top.coord} onPlan={top.plan ?? null} /> : null;
   }
 }

@@ -162,14 +162,33 @@ function Token({ text, children, className = '', testId }: { text: string; child
   );
 }
 
+/** A god's blessing in one rules mode (`godBenefitsForMode`): the direct benefits that apply and their sentences. */
+export interface ModeBlessing {
+  readonly retained: readonly EffectDefinition[];
+  readonly suppressed: readonly EffectDefinition[];
+  readonly summary: readonly string[];
+}
+
 /**
  * A god's blessings as icon rows. A blessing without an icon form, and gods with
- * no mechanical blessing (the patrons), keep their sentences.
+ * no mechanical blessing (the patrons), keep their sentences. With `blessing` (city
+ * dedications, handoff §05) the rows show the benefits that still apply empire-wide; a god
+ * left with none says that its blessing now comes through city dedications. Without it
+ * (legacy games, the encyclopedia outside a game) the authored blessing is shown as before.
  */
-export function GodBenefits({ catalog, god }: { catalog: ContentCatalog; god: GodDefinition }) {
-  const rows = god.benefits.map((e, i) => ({ text: god.benefitSummary[i] ?? e.type, glyphs: god.benefits.length === god.benefitSummary.length ? benefitGlyphs(catalog, e) : null }));
+export function GodBenefits({ catalog, god, blessing }: { catalog: ContentCatalog; god: GodDefinition; blessing?: ModeBlessing }) {
+  const benefits = blessing ? blessing.retained : god.benefits;
+  const summary = blessing ? blessing.summary : god.benefitSummary;
+  if (blessing && blessing.suppressed.length > 0 && benefits.length === 0 && summary.length === 0) {
+    return (
+      <p className="ded-only-cities small" data-testid={`god-blessing-cities-${god.id}`}>
+        No empire-wide blessing: their blessing now comes through city dedications.
+      </p>
+    );
+  }
+  const rows = benefits.map((e, i) => ({ text: summary[i] ?? e.type, glyphs: benefits.length === summary.length ? benefitGlyphs(catalog, e) : null }));
   const tokens = rows.filter((r) => r.glyphs);
-  const sentences = god.benefits.length === 0 ? [...god.benefitSummary] : rows.filter((r) => !r.glyphs).map((r) => r.text);
+  const sentences = benefits.length === 0 ? [...summary] : rows.filter((r) => !r.glyphs).map((r) => r.text);
   return (
     <>
       {tokens.length ? (
@@ -285,7 +304,7 @@ export function PermanentNote({ children }: { children: ReactNode }) {
  * costs (icon rows), the gods of the same choice it shuts out for good, and
  * that the choice is permanent.
  */
-export function GodCommitPreview({ catalog, god, excluded }: { catalog: ContentCatalog; god: GodDefinition; excluded: readonly GodDefinition[] }) {
+export function GodCommitPreview({ catalog, god, excluded, blessing, extra }: { catalog: ContentCatalog; god: GodDefinition; excluded: readonly GodDefinition[]; blessing?: ModeBlessing; extra?: ReactNode }) {
   return (
     <div className="god-commit" data-testid="god-commit-preview">
       <div className="god-commit__head">
@@ -296,7 +315,8 @@ export function GodCommitPreview({ catalog, god, excluded }: { catalog: ContentC
           <GodPrice catalog={catalog} god={god} />
         </div>
       </div>
-      <GodBenefits catalog={catalog} god={god} />
+      <GodBenefits catalog={catalog} god={god} {...(blessing ? { blessing } : {})} />
+      {extra}
       {excluded.length ? (
         <div className="god-commit__excludes" data-testid="god-commit-excludes">
           <span className="god-commit__label">

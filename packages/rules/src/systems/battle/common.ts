@@ -4,12 +4,17 @@
  * Aggregate stack HP is stored; alive count and front-creature HP are derived
  * (design/04 §5), never stored independently.
  */
+import { permanentHp } from './libraryLife';
 import type { BattleStackId, CreatureId } from '../../ids';
 import { cellDistance, cellKey, footprintCells, inBattleBounds, type BattleCell } from '../../core/hex';
 import { getAbility, requireStats, type ContentCatalog } from '../../definitions/catalog';
 import type { AbilityRule, CreatureStats } from '../../definitions/creatures';
 import type { BattleSideId, BattleStackState, BattleState, MatchState } from '../../state/match';
 import { reject, type Tx } from '../../engine/tx';
+import { battleCellLegal, boardZone, footprintLegalFor } from './board';
+import type { MovementClass } from '../../definitions/seaEncounter';
+import { creatureMovementClass } from '../../resolvers/seaEncounter';
+import { consumeLastCreatureGuard, libraryEffects, originalGroup } from './libraryRelics';
 
 export function requireBattle(state: MatchState): BattleState {
   if (!state.battle || state.battle.status !== 'active') reject('no_battle', 'No battle in progress');
@@ -70,30 +75,48 @@ export function opposing(side: BattleSideId): BattleSideId {
 export function occupancy(catalog: ContentCatalog, battle: BattleState, exceptId?: BattleStackId, forSide?: BattleSideId): Map<string, string> {
   const occ = new Map<string, string>();
   for (const o of battle.obstacles) occ.set(cellKey(o), 'obstacle');
+  for (const f of battle.spellFields ?? []) if (f.kind === 'glass' && f.expiresAtRound > battle.round) for (const c of f.cells) occ.set(cellKey(c), 'spell:glass');
   for (const s of battle.siege?.structures ?? []) {
     if (s.hp <= 0 || (s.kind === 'gate' && forSide === 'defender')) continue;
     for (const c of s.cells) occ.set(cellKey(c), `structure:${s.id}`);
   }
+  // The standing siege engine (`targetableCatapultV1`) takes its fixed cells; its wreck blocks nothing.
+  const engine = battle.siege?.engine;
+  if (engine && engine.hp > 0) for (const c of engine.cells) occ.set(cellKey(c), `engine:${engine.id}`);
   const structureCells = new Set((battle.siege?.structures ?? []).flatMap((st) => st.cells.map(cellKey)));
   for (const s of Object.values(battle.stacks)) {
     if (s.id === exceptId) continue;
     if (isAlive(s)) {
       for (const c of stackCells(catalog, s)) occ.set(cellKey(c), s.id);
-    } else if (s.anchor) {
+    } else if (s.anchor && !s.summoned) {
       // The fallen stay where they fell (owner request 2026-10-03): their cells are taken
       // for the rest of the battle — except in a wall or gate opening, so a corpse in a
       // breach can never seal a town. Flyers still pass over them.
       for (const c of stackCells(catalog, s)) {
         const k = cellKey(c);
-        if (!occ.has(k) && !structureCells.has(k)) occ.set(k, `corpse:${s.id}`);
+        // Nor on a boarding bridge (the only way between the decks; expedition kit §08).
+        if (!occ.has(k) && !structureCells.has(k) && boardZone(battle, c) !== 'bridge') occ.set(k, `corpse:${s.id}`);
       }
     }
   }
   return occ;
 }
 
-export function footprintFree(cells: readonly BattleCell[], occ: Map<string, string>, battle: BattleState): boolean {
-  return cells.every((c) => inBattleBounds(c, battle.cols, battle.rows) && !occ.has(cellKey(c)));
+/**
+ * Every cell of a footprint is on the board, legal (the board's mask: never water on a boarding
+ * board) and unoccupied. The one placement test of deployment, ground steps, flight landings and
+ * forced moves. With the mover's class (`cls`), the board's zone occupancy policy decides legality
+ * (a sea encounter: walkers on the deck, swimmers in the water, every footprint in one zone);
+ * without it, any cell some creature may stand on.
+ */
+export function footprintFree(cells: readonly BattleCell[], occ: Map<string, string>, battle: BattleState, cls?: MovementClass): boolean {
+  if (!cells.every((c) => inBattleBounds(c, battle.cols, battle.rows) && !occ.has(cellKey(c)))) return false;
+  return cls ? footprintLegalFor(battle, cells, cls) : cells.every((c) => battleCellLegal(battle, c));
+}
+
+/** How a creature occupies a battlefield: flying (`flight`), swimming (the `swimmer` trait) or walking. */
+export function movementClassOf(catalog: ContentCatalog, creatureId: CreatureId): MovementClass {
+  return creatureMovementClass(catalog, creatureId);
 }
 
 // ---------------------------------------------------------------------------
@@ -164,7 +187,9 @@ export function attackBreakdown(catalog: ContentCatalog, battle: BattleState, st
   const side = battle.sides[stack.side];
   const base = statsOf(catalog, stack.creatureId).attack;
   const commander = side.commander?.attack ?? 0;
-  const statuses = statusSum(stack, 'attack_bonus');
+  const positiveSpellAttack = stack.statuses.filter((s) => s.kind === 'attack_bonus' && s.sourceId.startsWith('spell:') && s.amount > 0).reduce((sum, s) => sum + s.amount, 0);
+  const suppression = Math.max(0, ...stack.statuses.filter((s) => s.kind === 'buff_suppression').map((s) => s.amount));
+  const statuses = statusSum(stack, 'attack_bonus') - Math.min(positiveSpellAttack, suppression);
   const aspect = aspectMod(catalog, stack, 'attack');
   const effects = sideStatMod(catalog, battle, stack, 'attack') + (side.effects?.harmony?.attack ?? 0);
   const fury = furyActive(catalog, battle, stack) ? (side.effects?.fury?.attack ?? 0) : 0;
@@ -178,7 +203,12 @@ export function defenseBreakdown(catalog: ContentCatalog, battle: BattleState, s
   const commander = side.commander?.defense ?? 0;
   const statuses = statusSum(stack, 'defense_bonus');
   const aspect = aspectMod(catalog, stack, 'defense');
-  const effects = sideStatMod(catalog, battle, stack, 'defense') + (side.effects?.harmony?.defense ?? 0);
+  const group = originalGroup(battle, stack);
+  const originalCount = group.reduce((n, s) => n + s.startingCount, 0);
+  const living = group.reduce((n, s) => n + aliveCount(catalog, s), 0);
+  const isLiving = !catalog.creatures[stack.creatureId]!.traits?.some((t) => t === 'undead' || t === 'construct');
+  const wounded = isLiving ? Math.max(0, ...libraryEffects(battle, stack.side, 'library_wounded_defense').filter((e) => living * 100 < originalCount * e.belowPercent).map((e) => e.defense)) : 0;
+  const effects = sideStatMod(catalog, battle, stack, 'defense') + (side.effects?.harmony?.defense ?? 0) + wounded;
   return { base, commander, statuses, aspect, effects, total: Math.max(0, base + commander + statuses + aspect + effects) };
 }
 
@@ -209,7 +239,7 @@ export function effectiveMorale(catalog: ContentCatalog, battle: BattleState, st
 export function effectiveLuck(catalog: ContentCatalog, battle: BattleState, stack: BattleStackState): number {
   const clamp = catalog.rulesProfile.combat.luckClamp;
   const l = battle.sides[stack.side].commander?.luck ?? 0;
-  return Math.max(-clamp, Math.min(clamp, l));
+  return Math.max(-clamp, Math.min(stack.statuses.some((s) => s.kind === 'buff_suppression') ? 0 : clamp, l));
 }
 
 export function retaliationAllowance(catalog: ContentCatalog, creatureId: CreatureId): number | 'unlimited' {
@@ -218,7 +248,7 @@ export function retaliationAllowance(catalog: ContentCatalog, creatureId: Creatu
 }
 
 export function canRetaliate(catalog: ContentCatalog, stack: BattleStackState): boolean {
-  if (!isAlive(stack)) return false;
+  if (!isAlive(stack) || stack.summoned?.kind === 'illusion') return false;
   const allowance = retaliationAllowance(catalog, stack.creatureId);
   return allowance === 'unlimited' || stack.retaliationsUsed < allowance;
 }
@@ -227,7 +257,10 @@ export function canRetaliate(catalog: ContentCatalog, stack: BattleStackState): 
 export function shootingRange(catalog: ContentCatalog, creatureId: CreatureId, battle?: BattleState): number {
   const base = statsOf(catalog, creatureId).range ?? 0;
   const mod = battle?.climate?.rangeMod ?? 0;
-  return base > 0 && mod !== 0 ? Math.max(1, base + mod) : base;
+  const range = base > 0 && mod !== 0 ? Math.max(1, base + mod) : base;
+  // A swimmer's innate shots on a sea-encounter board reach at least its floor, after the climate.
+  const floor = battle?.board?.sea?.swimmerShotRangeFloor ?? 0;
+  return range > 0 && floor > range && movementClassOf(catalog, creatureId) === 'swim' ? floor : range;
 }
 
 /** Whether a shooter's target lies within its range (nearest cells of the two stacks; the battle's climate counts). */
@@ -253,13 +286,41 @@ export function killsFrom(catalog: ContentCatalog, target: BattleStackState, dam
 
 /** Apply hostile HP damage to a stack (kills count for XP); removes a destroyed stack from the queues. */
 export function applyDamage(tx: Tx, battle: BattleState, target: BattleStackState, damage: number): number {
+  return resolveStackDamage(tx, battle, target, damage).killed;
+}
+
+/** One receipt for previews/logs: mitigation precedes this shared barrier, then physical survival guards. */
+export function resolveStackDamage(tx: Tx, battle: BattleState, target: BattleStackState, damage: number, physical = false): { damage: number; killed: number } {
+  if (target.summoned?.kind === 'illusion' && damage > 0) {
+    target.totalHp = 0;
+    tx.emit({ kind: 'BattleStackDestroyed', stackId: target.id });
+    battle.normalQueue = battle.normalQueue.filter((id) => id !== target.id);
+    battle.waitQueue = battle.waitQueue.filter((id) => id !== target.id);
+    return { damage: 1, killed: 0 };
+  }
+  const permanentBefore = permanentHp(target);
+  const side = battle.sides[target.side];
+  const absorbed = Math.min(Math.max(0, damage), side.armyBarrier ?? 0);
+  if (absorbed) {
+    side.armyBarrier! -= absorbed;
+    damage -= absorbed;
+    tx.emit({ kind: 'BattleBarrierAbsorbed', side: target.side, targetId: target.id, amount: absorbed, remaining: side.armyBarrier! });
+  }
+  if (physical) damage = consumeLastCreatureGuard(battle, target, damage);
   const killed = killsFrom(tx.catalog, target, damage);
   target.totalHp = Math.max(0, target.totalHp - damage);
-  target.killedByEnemy += killed;
+  if (target.temporaryLife) {
+    target.temporaryLife.hp = Math.max(0, target.temporaryLife.hp - damage);
+    if (!target.temporaryLife.hp) delete target.temporaryLife;
+  }
+  if (!target.summoned) {
+    const hp = statsOf(tx.catalog, target.creatureId).hp;
+    target.killedByEnemy += Math.max(0, Math.ceil(permanentBefore / hp) - Math.ceil(permanentHp(target) / hp));
+  }
   if (!isAlive(target)) {
     tx.emit({ kind: 'BattleStackDestroyed', stackId: target.id });
     battle.normalQueue = battle.normalQueue.filter((id) => id !== target.id);
     battle.waitQueue = battle.waitQueue.filter((id) => id !== target.id);
   }
-  return killed;
+  return { damage, killed };
 }

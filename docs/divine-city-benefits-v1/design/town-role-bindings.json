@@ -1,0 +1,476 @@
+{
+  "greek": {
+    "archetypeId": "greek_polis",
+    "roles": {
+      "civic_hall": {
+        "slotId": "civic_hall",
+        "buildingIds": [
+          "village_hall",
+          "town_hall",
+          "city_hall",
+          "capitol"
+        ]
+      },
+      "pantheon_temple": {
+        "slotId": "pantheon_temple",
+        "buildingIds": [
+          "temple_1",
+          "temple_2"
+        ]
+      },
+      "mage_guild": {
+        "slotId": "mage_guild",
+        "buildingIds": [
+          "sanctum_1",
+          "sanctum_2",
+          "sanctum_3"
+        ]
+      },
+      "watchtower": {
+        "slotId": "watchtower",
+        "buildingIds": [
+          "watchtower"
+        ]
+      },
+      "artifact_merchant": {
+        "slotId": "artifact_merchant",
+        "buildingIds": [
+          "artifact_merchant"
+        ]
+      },
+      "tavern": {
+        "slotId": "tavern",
+        "buildingIds": [
+          "tavern"
+        ]
+      },
+      "marketplace": {
+        "slotId": "marketplace",
+        "buildingIds": [
+          "market"
+        ]
+      },
+      "training_academy": {
+        "slotId": "training_academy",
+        "buildingIds": [
+          "training_academy"
+        ]
+      },
+      "workshop": {
+        "slotId": "workshop",
+        "buildingIds": [
+          "workshop"
+        ]
+      },
+      "resource_depot": {
+        "slotId": "resource_depot",
+        "buildingIds": [
+          "supply_depot"
+        ]
+      },
+      "fortifications": {
+        "slotId": "fortifications",
+        "buildingIds": [
+          "fort",
+          "citadel",
+          "castle"
+        ]
+      }
+    }
+  },
+  "norse": {
+    "archetypeId": "norse_hold",
+    "roles": {
+      "civic_hall": {
+        "slotId": "civic_hall",
+        "buildingIds": [
+          "norse_longhouse",
+          "norse_jarls_hall",
+          "norse_high_hall",
+          "norse_hall_of_kings"
+        ]
+      },
+      "pantheon_temple": {
+        "slotId": "pantheon_temple",
+        "buildingIds": [
+          "norse_hof_1",
+          "norse_hof_2"
+        ]
+      },
+      "mage_guild": {
+        "slotId": "mage_guild",
+        "buildingIds": [
+          "norse_rune_circle_1",
+          "norse_rune_circle_2",
+          "norse_rune_circle_3"
+        ]
+      },
+      "watchtower": {
+        "slotId": "watchtower",
+        "buildingIds": [
+          "norse_watchtower"
+        ]
+      },
+      "artifact_merchant": {
+        "slotId": "artifact_merchant",
+        "buildingIds": [
+          "norse_rune_merchant"
+        ]
+      },
+      "tavern": {
+        "slotId": "tavern",
+        "buildingIds": [
+          "norse_mead_hall"
+        ]
+      },
+      "marketplace": {
+        "slotId": "marketplace",
+        "buildingIds": [
+          "norse_trading_post"
+        ]
+      },
+      "training_academy": {
+        "slotId": "training_academy",
+        "buildingIds": [
+          "norse_training_ground"
+        ]
+      },
+      "workshop": {
+        "slotId": "workshop",
+        "buildingIds": [
+          "norse_smithy"
+        ]
+      },
+      "resource_depot": {
+        "slotId": "resource_depot",
+        "buildingIds": [
+          "norse_storehouse"
+        ]
+      },
+      "fortifications": {
+        "slotId": "fortifications",
+        "buildingIds": [
+          "norse_palisade",
+          "norse_stronghold",
+          "norse_fortress"
+        ]
+      }
+    }
+  },
+  "egyptian": {
+    "archetypeId": "egyptian_city",
+    "roles": {
+      "civic_hall": {
+        "slotId": "civic_hall",
+        "buildingIds": [
+          "egyptian_civic_hall_l1",
+          "egyptian_civic_hall_l2",
+          "egyptian_civic_hall_l3",
+          "egyptian_civic_hall_l4"
+        ]
+      },
+      "pantheon_temple": {
+        "slotId": "pantheon_temple",
+        "buildingIds": [
+          "egyptian_pantheon_temple_l1",
+          "egyptian_pantheon_temple_l2"
+        ]
+      },
+      "mage_guild": {
+        "slotId": "mage_guild",
+        "buildingIds": [
+          "egyptian_mage_guild_l1",
+          "egyptian_mage_guild_l2",
+          "egyptian_mage_guild_l3"
+        ]
+      },
+      "watchtower": {
+        "slotId": "watchtower",
+        "buildingIds": [
+          "egyptian_watchtower_l1"
+        ]
+      },
+      "artifact_merchant": {
+        "slotId": "artifact_merchant",
+        "buildingIds": [
+          "egyptian_artifact_merchant_l1"
+        ]
+      },
+      "tavern": {
+        "slotId": "tavern",
+        "buildingIds": [
+          "egyptian_tavern_l1"
+        ]
+      },
+      "marketplace": {
+        "slotId": "marketplace",
+        "buildingIds": [
+          "egyptian_marketplace_l1"
+        ]
+      },
+      "training_academy": {
+        "slotId": "training_academy",
+        "buildingIds": [
+          "egyptian_training_academy_l1"
+        ]
+      },
+      "workshop": {
+        "slotId": "workshop",
+        "buildingIds": [
+          "egyptian_workshop_l1"
+        ]
+      },
+      "resource_depot": {
+        "slotId": "resource_depot",
+        "buildingIds": [
+          "egyptian_resource_depot_l1"
+        ]
+      },
+      "fortifications": {
+        "slotId": "fortifications",
+        "buildingIds": [
+          "egyptian_fortifications_l1",
+          "egyptian_fortifications_l2",
+          "egyptian_fortifications_l3"
+        ]
+      }
+    }
+  },
+  "japanese": {
+    "archetypeId": "japanese_castle_town",
+    "roles": {
+      "civic_hall": {
+        "slotId": "civic_hall",
+        "buildingIds": [
+          "japanese_civic_hall_l1",
+          "japanese_civic_hall_l2",
+          "japanese_civic_hall_l3",
+          "japanese_civic_hall_l4"
+        ]
+      },
+      "pantheon_temple": {
+        "slotId": "pantheon_temple",
+        "buildingIds": [
+          "japanese_pantheon_temple_l1",
+          "japanese_pantheon_temple_l2"
+        ]
+      },
+      "mage_guild": {
+        "slotId": "mage_guild",
+        "buildingIds": [
+          "japanese_mage_guild_l1",
+          "japanese_mage_guild_l2",
+          "japanese_mage_guild_l3"
+        ]
+      },
+      "watchtower": {
+        "slotId": "watchtower",
+        "buildingIds": [
+          "japanese_watchtower_l1"
+        ]
+      },
+      "artifact_merchant": {
+        "slotId": "artifact_merchant",
+        "buildingIds": [
+          "japanese_artifact_merchant_l1"
+        ]
+      },
+      "tavern": {
+        "slotId": "tavern",
+        "buildingIds": [
+          "japanese_tavern_l1"
+        ]
+      },
+      "marketplace": {
+        "slotId": "marketplace",
+        "buildingIds": [
+          "japanese_marketplace_l1"
+        ]
+      },
+      "training_academy": {
+        "slotId": "training_academy",
+        "buildingIds": [
+          "japanese_training_academy_l1"
+        ]
+      },
+      "workshop": {
+        "slotId": "workshop",
+        "buildingIds": [
+          "japanese_workshop_l1"
+        ]
+      },
+      "resource_depot": {
+        "slotId": "resource_depot",
+        "buildingIds": [
+          "japanese_resource_depot_l1"
+        ]
+      },
+      "fortifications": {
+        "slotId": "fortifications",
+        "buildingIds": [
+          "japanese_fortifications_l1",
+          "japanese_fortifications_l2",
+          "japanese_fortifications_l3"
+        ]
+      }
+    }
+  },
+  "celtic": {
+    "archetypeId": "celtic_hillfort",
+    "roles": {
+      "civic_hall": {
+        "slotId": "civic_hall",
+        "buildingIds": [
+          "celtic_civic_hall_l1",
+          "celtic_civic_hall_l2",
+          "celtic_civic_hall_l3",
+          "celtic_civic_hall_l4"
+        ]
+      },
+      "pantheon_temple": {
+        "slotId": "pantheon_temple",
+        "buildingIds": [
+          "celtic_pantheon_temple_l1",
+          "celtic_pantheon_temple_l2"
+        ]
+      },
+      "mage_guild": {
+        "slotId": "mage_guild",
+        "buildingIds": [
+          "celtic_mage_guild_l1",
+          "celtic_mage_guild_l2",
+          "celtic_mage_guild_l3"
+        ]
+      },
+      "watchtower": {
+        "slotId": "watchtower",
+        "buildingIds": [
+          "celtic_watchtower_l1"
+        ]
+      },
+      "artifact_merchant": {
+        "slotId": "artifact_merchant",
+        "buildingIds": [
+          "celtic_artifact_merchant_l1"
+        ]
+      },
+      "tavern": {
+        "slotId": "tavern",
+        "buildingIds": [
+          "celtic_tavern_l1"
+        ]
+      },
+      "marketplace": {
+        "slotId": "marketplace",
+        "buildingIds": [
+          "celtic_marketplace_l1"
+        ]
+      },
+      "training_academy": {
+        "slotId": "training_academy",
+        "buildingIds": [
+          "celtic_training_academy_l1"
+        ]
+      },
+      "workshop": {
+        "slotId": "workshop",
+        "buildingIds": [
+          "celtic_workshop_l1"
+        ]
+      },
+      "resource_depot": {
+        "slotId": "resource_depot",
+        "buildingIds": [
+          "celtic_resource_depot_l1"
+        ]
+      },
+      "fortifications": {
+        "slotId": "fortifications",
+        "buildingIds": [
+          "celtic_fortifications_l1",
+          "celtic_fortifications_l2",
+          "celtic_fortifications_l3"
+        ]
+      }
+    }
+  },
+  "mesoamerican": {
+    "archetypeId": "mesoamerican_city",
+    "roles": {
+      "civic_hall": {
+        "slotId": "civic_hall",
+        "buildingIds": [
+          "mesoamerican_civic_hall_l1",
+          "mesoamerican_civic_hall_l2",
+          "mesoamerican_civic_hall_l3",
+          "mesoamerican_civic_hall_l4"
+        ]
+      },
+      "pantheon_temple": {
+        "slotId": "pantheon_temple",
+        "buildingIds": [
+          "mesoamerican_pantheon_temple_l1",
+          "mesoamerican_pantheon_temple_l2"
+        ]
+      },
+      "mage_guild": {
+        "slotId": "mage_guild",
+        "buildingIds": [
+          "mesoamerican_mage_guild_l1",
+          "mesoamerican_mage_guild_l2",
+          "mesoamerican_mage_guild_l3"
+        ]
+      },
+      "watchtower": {
+        "slotId": "watchtower",
+        "buildingIds": [
+          "mesoamerican_watchtower_l1"
+        ]
+      },
+      "artifact_merchant": {
+        "slotId": "artifact_merchant",
+        "buildingIds": [
+          "mesoamerican_artifact_merchant_l1"
+        ]
+      },
+      "tavern": {
+        "slotId": "tavern",
+        "buildingIds": [
+          "mesoamerican_tavern_l1"
+        ]
+      },
+      "marketplace": {
+        "slotId": "marketplace",
+        "buildingIds": [
+          "mesoamerican_marketplace_l1"
+        ]
+      },
+      "training_academy": {
+        "slotId": "training_academy",
+        "buildingIds": [
+          "mesoamerican_training_academy_l1"
+        ]
+      },
+      "workshop": {
+        "slotId": "workshop",
+        "buildingIds": [
+          "mesoamerican_workshop_l1"
+        ]
+      },
+      "resource_depot": {
+        "slotId": "resource_depot",
+        "buildingIds": [
+          "mesoamerican_resource_depot_l1"
+        ]
+      },
+      "fortifications": {
+        "slotId": "fortifications",
+        "buildingIds": [
+          "mesoamerican_fortifications_l1",
+          "mesoamerican_fortifications_l2",
+          "mesoamerican_fortifications_l3"
+        ]
+      }
+    }
+  }
+}

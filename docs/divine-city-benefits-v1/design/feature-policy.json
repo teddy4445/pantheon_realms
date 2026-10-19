@@ -1,0 +1,39 @@
+{
+  "id": "cityDedicationsV1",
+  "defaultNewSkirmish": true,
+  "defaultNewCampaign": true,
+  "legacySaveDefault": false,
+  "legacyTutorialOverride": false,
+  "requiredTempleLevel": 2,
+  "firstDedicationCost": {},
+  "switchCost": {
+    "gold": 500
+  },
+  "switchActivation": "next world-week boundary",
+  "initialActivation": "immediate service; weekly gifts/growth begin next world-week boundary",
+  "scope": "Owned same-pantheon city only; chosen patron or already committed minor",
+  "resourcePayout": "weekly; never on selection/capture/load",
+  "growthQuarters": {
+    "1": 8,
+    "2": 8,
+    "3": 4,
+    "4": 4,
+    "5": 4,
+    "6": 2,
+    "7": 1
+  },
+  "legacyEffectsSuppressed": [
+    "direct god daily_income",
+    "direct god weekly_growth_bonus"
+  ],
+  "unaffected": [
+    "hero perks",
+    "buildings",
+    "weekly events",
+    "artifacts",
+    "pantheon signatures",
+    "god combat effects",
+    "spell eligibility",
+    "campaign manual-only combat"
+  ]
+}

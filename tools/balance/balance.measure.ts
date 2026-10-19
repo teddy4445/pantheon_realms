@@ -8,10 +8,12 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { loadCatalog } from '@pr/content';
 import { buildJobs, runJob, type BalanceOptions } from './jobs';
+import { setLegacyIntel } from './lib';
 
 it('balance shard', () => {
   const opts = JSON.parse(process.env.BALANCE_OPTS ?? '{}') as BalanceOptions & { shard: number; shards: number; outDir: string };
   const catalog = loadCatalog();
+  setLegacyIntel(opts.legacyIntel === true);
   const jobs = buildJobs(catalog, opts).filter((_, i) => i % opts.shards === opts.shard);
   const results = [];
   const t0 = Date.now();

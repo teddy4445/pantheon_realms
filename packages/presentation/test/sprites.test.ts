@@ -15,6 +15,7 @@ import { buildCatalog } from '@pr/content';
 import {
   ANIMATION_FALLBACK,
   BASE_ANIMATIONS,
+  FIGURE_SITE_ARCHETYPES,
   SITE_ARCHETYPES,
   STATE_SITE_ARCHETYPES,
   axialPoint,
@@ -99,8 +100,9 @@ function checkSet(where: string, set: SpriteSetDefinition): void {
 describe('sprite manifest', () => {
   it('every creature form of the catalog has a sprite set whose required animations all resolve', () => {
     const forms = Object.values(catalog.creatures).filter((c) => !!c.stats);
-    // 102 pantheon and legacy neutral forms, plus the six expansion neutrals and their six upgrades (2026-10-15).
-    expect(forms.length).toBe(114);
+    // 102 pantheon and legacy neutral forms, plus the six expansion neutrals and their six upgrades (2026-10-15),
+    // plus the ten sea forms (sea-creature delivery 2026-10-17).
+    expect(forms.length).toBe(124);
     for (const c of forms) {
       const set = manifest.creatures[c.id];
       expect(set, c.id).toBeDefined();
@@ -215,13 +217,18 @@ describe('sprite manifest', () => {
 
   it('every map location kind has a sprite; towns have one per pantheon, pickups one per resource', () => {
     // A kind painted only per state (the campaign-v2 sluice) is checked in v2Sites.test.ts with the kit's manifest.
-    for (const k of SITE_ARCHETYPES) if (!STATE_SITE_ARCHETYPES[k]) expect(siteSprite(k), k).not.toBeNull();
+    for (const k of SITE_ARCHETYPES) if (!STATE_SITE_ARCHETYPES[k] && !FIGURE_SITE_ARCHETYPES.includes(k)) expect(siteSprite(k), k).not.toBeNull();
     for (const p of Object.keys(catalog.pantheons)) expect(siteSprite('town', p), p).toBe(manifest.sites[`map.site.town.${p}`]);
     for (const r of ['gold', 'wood', 'stone', 'crystal', 'favor', 'artifact']) expect(manifest.sites[`map.site.pickup.${r}`], r).toBeDefined();
     for (const section of ['sites', 'decor', 'obstacles', 'siege', 'projectiles'] as const) {
       for (const [k, d] of Object.entries(manifest[section])) {
-        const [w, h] = webpSize(path.join(runtime, d.file));
-        expect([w, h], `${section} ${k}`).toEqual([d.width, d.height]);
+        // The sea-creature delivery's missile stills are its native PNG atlases (never re-encoded).
+        const [w, h] = d.file.endsWith('.png') ? pngSize(path.join(runtime, d.file)) : webpSize(path.join(runtime, d.file));
+        // A still cut from an atlas by its rectangle (`frame`): the rectangle lies inside and is the declared size.
+        if (d.frame) {
+          expect(d.frame[0] + d.frame[2] <= w && d.frame[1] + d.frame[3] <= h, `${section} ${k} frame inside`).toBe(true);
+          expect([d.frame[2], d.frame[3]], `${section} ${k}`).toEqual([d.width, d.height]);
+        } else expect([w, h], `${section} ${k}`).toEqual([d.width, d.height]);
         expect(d.pixelsPerHex, k).toBeGreaterThan(0);
         expect(['final', 'placeholder'], k).toContain(d.status);
       }

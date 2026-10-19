@@ -105,6 +105,8 @@ export interface CreatureDefinition {
   readonly stats?: CreatureStats;
   readonly cost?: ResourceCost;
   readonly abilityIds: readonly AbilityId[];
+  /** Explicit rule tags; never inferred from portrait, name or pantheon. */
+  readonly traits?: readonly ('mind_immune' | 'undead' | 'construct')[];
   readonly summary: string;
   readonly loreId: LoreId;
   readonly presentation: CreaturePresentationRefs;
@@ -126,6 +128,12 @@ export interface CreatureFamilyDefinition {
   readonly upgradedCreatureId?: CreatureId;
   /** Shared weekly growth for the family pool (base and upgraded share it). */
   readonly baseGrowth: number;
+  /**
+   * Where a neutral family appears (sea-creature delivery 2026-10-17). Absent: wherever neutrals
+   * appear (guards, camps, wandering monsters, random maps). `sea_encounters`: only in sea-monster
+   * encounters on water — never recruited, never on land, never joining an army.
+   */
+  readonly availability?: 'sea_encounters';
   readonly dwellingBuildingId?: BuildingId;
   readonly upgradedDwellingBuildingId?: BuildingId;
   readonly implementationStatus: ImplementationStatus;
@@ -202,13 +210,26 @@ export type AbilityRule =
    * clear straight line is pulled one hex toward the user when that cell is empty, on the board
    * and not a hazard. No damage, attack or retaliation; a pull-immune target cannot be chosen.
    */
-  | { readonly type: 'tail_snare'; readonly distance: 2; readonly usesPerBattle: number };
+  | { readonly type: 'tail_snare'; readonly distance: 2; readonly usesPerBattle: number }
+  // --- Sea creatures (sea-creature delivery 2026-10-17; proposed, unplaytested) ---
+  /**
+   * Swimmer (aquatic trait): on a battlefield with a zone occupancy policy (the single-ship sea
+   * encounter) every footprint cell must be water. Boards without a policy are unchanged.
+   */
+  | { readonly type: 'swimmer' }
+  /**
+   * Renewable shots: the stack's ammunition is set to `capacity` at the start of every battle round,
+   * round 1 included. A shot still spends one shot and the activation; refilling grants no action.
+   */
+  | { readonly type: 'renewable_shots'; readonly capacity: number };
 
 /** Active abilities of the neutral creatures that spend a per-stack use (handoff 2026-10-15). */
 export const STACK_USE_ABILITY_TYPES = ['sheltering_wings', 'distract', 'devour_dread', 'reed_guard', 'tail_snare'] as const;
 export type StackUseAbilityType = (typeof STACK_USE_ABILITY_TYPES)[number];
 
 export interface AbilityDefinition {
+  /** Explicit creature spell, distinct from a physical active ability. */
+  readonly spellcasting?: boolean;
   readonly id: AbilityId;
   readonly name: string;
   readonly activation: 'passive' | 'active';

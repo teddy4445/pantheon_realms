@@ -48,6 +48,8 @@ export function armyValue(catalog: ContentCatalog, state: MatchState, playerId: 
   };
   for (const h of Object.values(state.heroes)) if (h.ownerId === playerId && h.status === 'active') add(h.army.slots);
   for (const t of playerTowns(state, playerId)) add(t.garrison.slots);
+  // Recruitment caravans on the road (cargo is the owner's creatures until delivered or lost).
+  for (const c of Object.values(state.caravans ?? {})) if (c.ownerId === playerId && c.status !== 'delivered' && c.status !== 'destroyed') add(c.cargo);
   return total;
 }
 

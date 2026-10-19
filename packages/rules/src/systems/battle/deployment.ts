@@ -17,8 +17,12 @@ import type { StackSpec } from '../../definitions/world';
 import type { BattleSideId, BattleStackState, BattleState, DefenderSelectionState } from '../../state/match';
 import { armyCompositionMorale, skillValue } from '../../resolvers/heroes';
 import { reject, type Tx } from '../../engine/tx';
-import { footprintFree, isAlive, occupancy, requireBattle, sideStacks, stackCells, statsOf } from './common';
+import { footprintFree, isAlive, movementClassOf, occupancy, requireBattle, sideStacks, stackCells, statsOf } from './common';
+import { footprintZoneProblem } from './board';
+import { SEA_ANCHOR_SPREAD } from '../../definitions/seaEncounter';
+import { sideFacing, sideOnLeft, seaDeploymentAnchors } from './seaBoard';
 import { beginRounds } from './flow';
+import { freeDeployAnchor, liveEngine } from './engine';
 import { requireControl } from './actions';
 
 const ROWS_BY_COUNT: Record<number, number[]> = {
@@ -40,13 +44,34 @@ export interface DeployEntry {
 
 /** Place a side's stacks in the default formation. IDs: a<slot> attacker, d<slot> defender hero/guard, g<slot> garrison. */
 export function placeStacks(tx: Tx, battle: BattleState, side: BattleSideId, entries: readonly DeployEntry[]): void {
-  const facing = side === 'attacker' ? 1 : -1;
+  // Facing and edge follow the side's half of the board (a sea encounter's ship side is always the deck, west).
+  const facing = sideFacing(battle, side);
+  const west = sideOnLeft(battle, side);
   const present = entries.filter((e) => e.spec.count > 0);
   const rows = ROWS_BY_COUNT[present.length] ?? ROWS_BY_COUNT[7]!;
+  // A sea encounter deploys on its layout's anchors: a one-hex stack on the anchor, a two-hex stack extending behind it.
+  const seaAnchors = seaDeploymentAnchors(battle, side);
+  const spread = SEA_ANCHOR_SPREAD[present.length] ?? SEA_ANCHOR_SPREAD[7]!;
+  const anchors = present.map((e, i) => {
+    const stats = statsOf(tx.catalog, e.spec.creatureId);
+    if (seaAnchors) {
+      const a = seaAnchors[spread[i] ?? i] ?? seaAnchors[i]!;
+      return { col: a.col, row: a.row };
+    }
+    const row = rows[i] ?? i;
+    const col = west ? (stats.footprint === 2 ? 1 : 0) : stats.footprint === 2 ? battle.cols - 2 : battle.cols - 1;
+    return { col, row };
+  });
+  relocateFromEngine(tx, battle, side, present, anchors, facing);
+  // The one occupancy validator (board zones; never relocated or drowned): an illegal deployment is refused.
+  present.forEach((e, i) => {
+    const cells = footprintCells(anchors[i]!, statsOf(tx.catalog, e.spec.creatureId).footprint, facing);
+    const why = footprintZoneProblem(battle, cells, movementClassOf(tx.catalog, e.spec.creatureId));
+    if (why) reject('illegal_move', `${tx.catalog.creatures[e.spec.creatureId]?.pluralName ?? e.spec.creatureId} cannot deploy there: ${why}`);
+  });
   present.forEach((e, i) => {
     const stats = statsOf(tx.catalog, e.spec.creatureId);
-    const row = rows[i] ?? i;
-    const col = side === 'attacker' ? (stats.footprint === 2 ? 1 : 0) : stats.footprint === 2 ? battle.cols - 2 : battle.cols - 1;
+    const { col, row } = anchors[i]!;
     const prefix = side === 'attacker' ? 'a' : e.source === 'garrison' ? 'g' : 'd';
     const id = `${prefix}${e.slot}` as BattleStackId;
     const stack: BattleStackState = {
@@ -71,6 +96,32 @@ export function placeStacks(tx: Tx, battle: BattleState, side: BattleSideId, ent
   });
 }
 
+/**
+ * The siege engine's cells are reserved before anyone deploys (`targetableCatapultV1`): a default
+ * formation slot that would overlap them moves to the nearest free anchor of the side's deployment
+ * zone (stable order), clear of the other slots. Battles without an engine are unchanged.
+ */
+function relocateFromEngine(tx: Tx, battle: BattleState, side: BattleSideId, present: readonly DeployEntry[], anchors: BattleCell[], facing: 1 | -1): void {
+  const engine = liveEngine(battle);
+  if (!engine) return;
+  const reserved = new Set(engine.cells.map(cellKey));
+  const fpOf = (i: number) => (a: BattleCell) => footprintCells(a, statsOf(tx.catalog, present[i]!.spec.creatureId).footprint, facing);
+  const taken = new Set<string>(reserved);
+  for (const s of Object.values(battle.stacks)) for (const c of stackCells(tx.catalog, s)) taken.add(cellKey(c));
+  const collides = anchors.map((a, i) => fpOf(i)(a).some((c) => reserved.has(cellKey(c))));
+  anchors.forEach((a, i) => {
+    if (!collides[i]) for (const c of fpOf(i)(a)) taken.add(cellKey(c));
+  });
+  const zone = deploymentZone(tx.catalog, battle, side);
+  anchors.forEach((a, i) => {
+    if (!collides[i]) return;
+    const moved = freeDeployAnchor(battle, a, fpOf(i), zone, (c) => taken.has(cellKey(c)));
+    if (!moved) return;
+    anchors[i] = moved;
+    for (const c of fpOf(i)(moved)) taken.add(cellKey(c));
+  });
+}
+
 export function tacticsColumns(catalog: ContentCatalog, battle: BattleState, side: BattleSideId): number {
   const commander = battle.sides[side].commander;
   return commander ? skillValue(catalog, commander, 'tactics') : 0;
@@ -90,7 +141,9 @@ export function deploymentZone(catalog: ContentCatalog, battle: BattleState, sid
   if (siege && siege.level > 0) {
     width = side === 'attacker' ? Math.min(width, siege.wallCol - 2) : Math.min(width, battle.cols - siege.wallCol - 1);
   }
-  return side === 'attacker'
+  // A masked board (boarding): each side deploys on its own deck only, Tactics or not.
+  if (battle.board) width = Math.min(width, battle.board.deploymentWidth);
+  return sideOnLeft(battle, side)
     ? { minCol: 0, maxCol: width - 1, width }
     : { minCol: battle.cols - width, maxCol: battle.cols - 1, width };
 }
@@ -110,7 +163,7 @@ export function deploymentAnchors(catalog: ContentCatalog, battle: BattleState, 
       const c = { col, row };
       if (cellEquals(c, stack.anchor)) continue;
       const cells = footprintCells(c, fp, stack.facing);
-      if (inZone(zone, cells) && footprintFree(cells, occ, battle)) out.push(c);
+      if (inZone(zone, cells) && footprintFree(cells, occ, battle, movementClassOf(catalog, stack.creatureId))) out.push(c);
     }
   }
   return out;
@@ -165,7 +218,8 @@ export function commitBattleDeploy(tx: Tx, stackId: BattleStackId, to: BattleCel
   if (!inZone(zone, cells)) reject('illegal_move', 'Stay inside your deployment zone');
   if (cellEquals(to, stack.anchor)) reject('illegal_move', 'Choose a different hex');
   const occ = occupancy(tx.catalog, battle, stack.id, stack.side);
-  if (footprintFree(cells, occ, battle)) {
+  const cls = movementClassOf(tx.catalog, stack.creatureId);
+  if (footprintFree(cells, occ, battle, cls)) {
     stack.anchor = to;
     tx.emit({ kind: 'BattleStackDeployed', stackId, to });
     return;
@@ -178,7 +232,7 @@ export function commitBattleDeploy(tx: Tx, stackId: BattleStackId, to: BattleCel
     const occ2 = new Map([...occ].filter(([, v]) => v !== other.id));
     const otherCells = stackCells(tx.catalog, other, stack.anchor);
     const overlap = otherCells.some((a) => cells.some((b) => cellEquals(a, b)));
-    if (!overlap && inZone(zone, otherCells) && footprintFree(cells, occ2, battle) && footprintFree(otherCells, occ2, battle)) {
+    if (!overlap && inZone(zone, otherCells) && footprintFree(cells, occ2, battle, cls) && footprintFree(otherCells, occ2, battle, movementClassOf(tx.catalog, other.creatureId))) {
       const from = stack.anchor;
       stack.anchor = to;
       other.anchor = from;

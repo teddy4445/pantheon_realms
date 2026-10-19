@@ -1,0 +1,588 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>City Dedications · Claude Handoff</title><style>body{background:#10191e;color:#e8e5d9;font:16px/1.65 system-ui;margin:0}main{max-width:1050px;margin:auto;padding:35px 24px}h1,h2{font-family:Georgia;color:#e5c589;line-height:1.25}h1{font-size:36px}h2{margin-top:48px;border-bottom:1px solid #6b6044;padding-bottom:12px}.prose{white-space:pre-wrap;overflow-wrap:anywhere}a{color:#e5c589}nav{display:grid;gap:7px;margin:30px 0}@media print{body{background:white;color:black}h1,h2{color:black}nav{display:none}}</style></head><body><main><a href="index.html">← Visual reference and all 60 profiles</a><h1>City dedications</h1><p>Resources, favored creatures and town services · <a href="CLAUDE_HANDOFF.txt">Plain text for Claude</a></p><nav><a href="#s0">01. IMPLEMENTATION REQUEST</a><a href="#s1">02. PATHS AND DELIVERY CONTENT</a><a href="#s2">03. PLAYER RULES AND ELIGIBILITY</a><a href="#s3">04. WEEKLY RESOURCES AND CREATURE PRODUCTION</a><a href="#s4">05. REBALANCE EXISTING GOD BONUSES WITHOUT DOUBLE COUNTING</a><a href="#s5">06. SERVICE RULES AND PRICE CALCULATION</a><a href="#s6">07. COMPLETE SIX-PANTHEON / SIXTY-GOD TABLE</a><a href="#s7">08. SAVE STATE, COMMANDS AND DETERMINISM</a><a href="#s8">09. SCREENS AND VISUAL REUSE</a><a href="#s9">10. CURRENT CODE INTEGRATION POINTS</a><a href="#s10">11. AI AND BALANCE ACCEPTANCE</a><a href="#s11">12. TESTS AND DELIVERY CHECKLIST</a></nav><section id="s0"><h2>01. IMPLEMENTATION REQUEST</h2><div class="prose">Implement city dedications for all six pantheons using existing gods, creatures, buildings and art. Each active dedication grants exactly three local benefits: one weekly resource gift, extra production of one favored creature family, and one town-service advantage. There are 60 authored profiles: all 6 patrons and all 54 current minor gods.
+
+This package is a design and art-reuse handoff based on game version 1.4.0, inspected 17 October 2026. It does not modify or implement the game. All numerical values are proposed starting balance, not playtest results. Use the delivered explicit profiles; do not infer benefits by parsing god names/domains at runtime.
+
+Scope: resources, creature recruitment stock and existing town services. Do NOT add a new paid weekly ritual menu, combat stances, new gods, new creatures, new buildings, free troops, new spell effects or faction-wide combat buffs. Existing divine commitments, hero gifts, spell eligibility, pantheon signatures and campaign story gates remain in place except the explicit direct-god economic replacement below.
+
+The brief refinements supersede the earlier illustrative chat table: Anubis gives 1 Crystal, Inari 600 Gold, and Tlaloc favors Cenote Crocodiles rather than all tier 1–3 dwellings. The attached 60-row JSON is the single authoritative proposal for this delivery.</div></section><section id="s1"><h2>02. PATHS AND DELIVERY CONTENT</h2><div class="prose">ART/DESIGN WORKSPACE (separate project):
+C:/Users/lazeb/Desktop/blannder_models/divine-city-benefits-2026-10-17
+
+GAME WORKSPACE:
+C:/Users/lazeb/Desktop/pantheon_realms
+
+Read first:
+C:/Users/lazeb/Desktop/blannder_models/divine-city-benefits-2026-10-17/CLAUDE_HANDOFF.txt
+C:/Users/lazeb/Desktop/blannder_models/divine-city-benefits-2026-10-17/index.html
+
+Copy the design JSONs, handoff and validation reports into:
+C:/Users/lazeb/Desktop/pantheon_realms/docs/divine-city-benefits-v1
+
+The implementation data is in:
+C:/Users/lazeb/Desktop/blannder_models/divine-city-benefits-2026-10-17/design/god-city-profiles.json
+C:/Users/lazeb/Desktop/blannder_models/divine-city-benefits-2026-10-17/design/service-rules.json
+C:/Users/lazeb/Desktop/blannder_models/divine-city-benefits-2026-10-17/design/town-role-bindings.json
+C:/Users/lazeb/Desktop/blannder_models/divine-city-benefits-2026-10-17/design/legacy-benefit-replacement.json
+C:/Users/lazeb/Desktop/blannder_models/divine-city-benefits-2026-10-17/design/feature-policy.json
+C:/Users/lazeb/Desktop/blannder_models/divine-city-benefits-2026-10-17/design/balance-inputs.json
+
+Visual source map:
+C:/Users/lazeb/Desktop/blannder_models/divine-city-benefits-2026-10-17/visual-reuse-manifest.json
+
+No new raster paintings or icons are required. All 204 referenced files exist in the game. The reuse/ folder is a byte-for-byte portable copy for this reference document, not a new runtime art pack. Resolve existing asset IDs in the game; do not create duplicate registrations, hotlink the art workspace, or replace entire runtime manifests. If Claude is working in another clone, copy any missing files from reuse/&lt;runtime-relative-path&gt; into that clone’s assets-runtime/&lt;runtime-relative-path&gt;, verify hashes and retain existing IDs.
+
+The game source remains untouched. The source-catalog.json snapshot records the current 60 gods, families, buildings and rules; recheck against the live checkout before implementing if it has changed.</div></section><section id="s2"><h2>03. PLAYER RULES AND ELIGIBILITY</h2><div class="prose">A city can have ONE active dedication and at most ONE pending replacement. Owning several cities permits different dedications. A god may be honored in several cities; each eligible city earns its own local benefits. No empire-wide multiplier or capital-only restriction.
+
+Eligibility: the scenario enables cityDedicationsV1; the active player owns the city; the city’s pantheon matches the player and god; the city has Temple level II; the god is either the player’s CURRENT starting patron or an already committed minor god. Honor the existing mission god allowlist and commitment exclusivity. Dedication does not make a new commitment, bypass a choice group, or charge the original Favor cost again. The six patrons are included as useful starter options once Temple II exists.
+
+Foreign-pantheon conquered cities retain ordinary buildings, economy and recruits, but cannot receive a new dedication from this player’s incompatible pantheon. Explain this in the interface. Do not silently convert the town or invent foreign god commitments.
+
+FIRST DEDICATION: free, activated immediately for services. It grants no resources or population on selection. First recurring resource/growth reward is the next world-week boundary (normally days 8, 15, 22...). Creating a dedication before a rollover does not grant missed previous weeks.
+
+SWITCHING: costs 500 Gold; schedule the new god for the next world-week boundary. The current god remains active until then. Only one pending switch; reject a second request or selecting the active/pending god again. Show exact cost, current benefits, replacement benefits and activation day before confirmation. This version has no cancel/reorder action; say so in confirmation. The fee is spent on confirmation and is not refunded if the city is captured before activation.
+
+Temple loss/invalid eligibility: active dedication becomes dormant immediately; no services, weekly gift or growth credit while invalid. Keep its identity/credits for the same owner. A pending switch is evaluated at its scheduled boundary; if it is temporarily invalid, keep it pending and try at the next weekly boundary, with the reason displayed. It produces no replacement benefits while waiting. The currently active god continues only if independently eligible.
+
+CAPTURE/OWNER CHANGE: clear active god, pending switch and all growth credits immediately, including on loss to a neutral owner. Keep the historical per-town payout-week stamp. The conqueror receives no inherited gift/service and may make a fresh eligible dedication. Recapture does not restore the previous dedication. No capture, liberation, load, menu opening or god-selection event may trigger recurring payment.
+
+Ownership/script changes must all route through the clearing hook. A pending switch stores its requesting owner and may never activate for another player. Guard against stale UI commands by requoting on commit.</div></section><section id="s3"><h2>04. WEEKLY RESOURCES AND CREATURE PRODUCTION</h2><div class="prose">RESOURCE: add the profile’s fixed resource amount to the owning player’s wallet at a world-week boundary, once per eligible city. No manual claim button, no free starting grant, no banked gifts for dormant weeks. Apply the existing owner incomePercent handicap exactly once, flooring each resource; preview the resulting amount. Do not include the gift in daily income or divide it by seven.
+
+CREATURE: extra stock belongs only to the favored family’s existing shared base/upgraded town population. The matching base dwelling and all normal family/covenant access must exist. No new creature family is unlocked; an upgraded dwelling is not required for the growth benefit. Upgrading the dwelling does not double the pool. Players still pay to recruit the units. Neutral hiring sites and neutral weekly stocks are unaffected.
+
+Production rates by favored family tier:
+• Tier 1–2: +2 creatures each eligible week.
+• Tier 3–5: +1 each eligible week.
+• Tier 6: +1 every two eligible weeks.
+• Tier 7: +1 every four eligible weeks.
+
+Use integer quarter credits to avoid rounding rare-unit growth down forever: profile weeklyGrowthQuarters is 8, 4, 2 or 1. At one eligible weekly update:
+  credit = storedCredit[familyId] + weeklyGrowthQuarters
+  extra = floor(credit / 4)
+  storedCredit[familyId] = credit % 4
+  sharedPopulation[familyId] += extra
+
+Credits accrue only while the dedication AND matching built dwelling are eligible. Building the dwelling grants only its existing initial population, not divine stock or retroactive credits. Do not multiply this bonus by Citadel/Castle growth, weekly events or other growth modifiers. Calculate normal growth with its normal modifiers, then add this dedication bonus once. Keep retained non-god growth effects intact.
+
+Credit is stored per city and family, not globally. Switching to a god favoring the same family continues its credit. Switching to another family parks the old family’s remainder; only the currently favored family accrues. There is at most one favored-family credit update per town per week. Capture clears remainders. Temporary dormancy pauses them without catch-up.
+
+Player text for rare growth must be understandable: “One extra Bennu every 2 eligible weeks — 1 week remaining.” Show “Build the Bennu dwelling to begin” when absent. Show separate weekly resource eligibility and creature-growth eligibility; a missing dwelling does not block the resource gift or an unrelated service.
+
+Dawn order: advance world day; announce the existing weekly event; on a new week activate due valid pending dedications; preserve the existing income process; pay new weekly city gifts; apply ordinary weekly growth plus the one dedication credit update; refresh shops; refresh movement/mana; complete ordinary turn bookkeeping. Services of an activated pending god apply to subsequent commands, not to any already committed transaction.</div></section><section id="s4"><h2>05. REBALANCE EXISTING GOD BONUSES WITHOUT DOUBLE COUNTING</h2><div class="prose">Feature ON: suppress ONLY direct GodDefinition.benefits entries of type daily_income and weekly_growth_bonus for ALL committed gods, whether or not a city currently honors them. Their new economic benefit comes through the local dedication profiles. Keep all their other benefits (combat stats, movement, recovery, morale, spell eligibility, offering rules, vision, etc.). There are 12 gods with affected direct economic entries; the exact removed and retained arrays are in legacy-benefit-replacement.json.
+
+Filter inside godEffects(), where source provenance is known. Do not filter the combined playerEffects() array by type: that would wrongly remove income or growth from signatures, weekly events and other sources. Do not mutate the immutable global catalog or remove the original entries for legacy games.
+
+Hero level-10/15 god gifts remain unchanged, including any daily_income effect on an already chosen hero perk. Temple Favor income, ordinary building income, mines, hero artifacts/skills, weekly events, signatures and existing paid divine-gift commands are unrelated and remain unchanged. Do not reuse TownState.lastGiftWeek (the paid gift system) as the dedication payout marker.
+
+This deliberately moves economic gods from passive empire-wide bonuses to city specialization. It is a material rebalance, especially Hermes, Njord, Hathor and Inari. Show the new effective empire blessing plus city options on god cards; do not leave old daily-income/growth benefitSummary text visible in new-mode games. Legacy-mode cards retain the old text.
+
+No guarantee is made that the proposed small weekly gifts replace the exact old economic power. Benchmark one-, three- and six-city empires and both short/long scenarios before final tuning. Change numbers in data rather than layering the old bonuses back in. Record any tuning and update visible summaries from the same rules data.</div></section><section id="s5"><h2>06. SERVICE RULES AND PRICE CALCULATION</h2><div class="prose">TRAINING — Hero training
+20% less Gold for weekly hero training; XP and the once-per-hero-per-week limit stay unchanged.
+
+TRADE — Market purchases
+10% less Gold when buying Wood, Stone or Crystal at this city; selling prices stay unchanged.
+
+FORTIFY — Fortification construction
+10% less Gold to build or upgrade this city’s Fort, Citadel and Castle; material costs and one build per day stay unchanged.
+
+LIBRARY — Library construction
+10% less Gold to build or upgrade this city’s spell library; material costs and spell prerequisites stay unchanged.
+
+SPELLBOOK — Spellbook purchase
+25% less Gold for a visiting hero’s spellbook. Learning eligible spells remains free, as in the current game.
+
+RECRUIT — Favored recruitment
+5% less Gold per recruited member of the favored family, both unlocked forms. Other resources, population and access checks stay unchanged.
+
+UPGRADE — Favored troop training
+15% less Gold on the normal per-unit upgrade price difference for the favored family in this city. No extra stock is consumed.
+
+EQUIPMENT — Artifact purchases
+10% less Gold for purchases from this city’s Artifact Merchant or Workshop. Stocks, rarities and other resource costs stay unchanged.
+
+WATCH — Watchtower vision
++2 hexes to this city’s existing vision radius while its Watchtower is built; no hero vision bonus and no fog-map reveal on dedication.
+
+DWELLING — Favored dwelling construction
+10% less Gold to build or upgrade the favored family’s dwelling in this city. No new creature access or covenant is granted.
+
+CIVIC — Civic construction
+10% less Gold on this city’s civic-hall upgrades; level prerequisites and construction limits stay unchanged.
+
+All services are LOCAL to the active eligible city and require their normal service building or normal build prerequisites. A discount never grants a building effect before construction. For construction discounts, the target building need not already exist, but all ordinary requirements do. Use archetype slot roles and the delivered town-role-bindings.json, never English display-name comparisons. The favored dwelling is found by familyId/dwelling metadata.
+
+Gold discount arithmetic: discountedUnitGold = ceil(normalUnitGold × (100 - percent) / 100). A positive normal cost remains at least 1; a zero cost remains zero. Other resources are unchanged. For recruit and upgrade quantities compute the discounted PER-UNIT price, then multiply by quantity. This avoids order-splitting exploits. Single recruit, recruit all/max, batch recruit, AI quote, preview and commit must share the same resolver.
+
+Only the active city dedication’s relevant service applies. For other independent percentage discounts, use the highest applicable percent instead of adding or compounding percentages. Compute discounts after the existing non-discount base-cost modifiers, once. Keep cost breakdowns (normal, saving, final) in quote results; commit requotes against current wallet, owner, buildings and dedication.
+
+Market: determine the existing tier from actual owned markets. For each resource, discountedBuyRate = max(ceil(normalBuyRate × 0.90), maximumOrdinarySellRateForThatResourceAcrossMarketTiers + 1). Sell rates and market count stay unchanged. A discounted city is not an extra market. Test every pair of towns and supported resource for a profitable immediate buy/sell loop; none is allowed.
+
+Troop upgrades: start from the ordinary positive base→upgraded catalog resource difference; discount only its Gold component per unit. Do not derive it from another city’s discounted recruitment prices. Require normal upgraded dwelling/covenant/access, selected base stack and space. Population is not consumed by training, as in existing rules.
+
+Training: normal 500 XP and once-per-hero-per-week gate are unchanged; the ordinary 1000 Gold example becomes 800. Visit several cities must not permit repeated training.
+
+Spellbooks: discount purchase cost only. Spell learning is ALREADY FREE after an eligible visit with a book; never introduce a learning fee. The existing library already restores all mana at dawn for a visiting hero, so do not add a redundant mana-restoration perk.
+
+Equipment: both existing shop types get the same discount when present; do not generate extra stock, reroll stock on dedication, increase rarity, or bypass artifact legality. Watchtower: add exactly 2 to the ordinary town radius only when its normal building is present; use state-aware resolution wherever town fog/vision is calculated. No hero scouting bonus.
+
+Examples: recruitment 61 Gold at 5% off =&gt; 58 each, ten cost 580. Upgrade difference 17 Gold at 15% off =&gt; 15 each. Construction 2500 Gold/5 Stone at 10% off =&gt; 2250 Gold/5 Stone. Trade common buy rate 500 =&gt; 450; original sell rate 50 stays 50.</div></section><section id="s6"><h2>07. COMPLETE SIX-PANTHEON / SIXTY-GOD TABLE</h2><div class="prose">GREEK / Zeus [zeus] — patron
+  Weekly gift: 1 Crystal
+  Favored family: Cyclopes [cyclops], tier 7; +1 every 4 eligible weeks
+  Applies to the shared pool of cyclops / stormforged_cyclops
+  Service: 10% less Gold to build or upgrade this city’s Fort, Citadel and Castle; material costs and one build per day stay unchanged.
+
+GREEK / Athena [athena] — first_minor
+  Weekly gift: 3 Stone
+  Favored family: Hoplites [hoplite], tier 1; +2 each week
+  Applies to the shared pool of hoplite / veteran_hoplite
+  Service: 20% less Gold for weekly hero training; XP and the once-per-hero-per-week limit stay unchanged.
+
+GREEK / Ares [ares] — first_minor
+  Weekly gift: 300 Gold
+  Favored family: Peltasts [peltast], tier 2; +2 each week
+  Applies to the shared pool of peltast / veteran_peltast
+  Service: 15% less Gold on the normal per-unit upgrade price difference for the favored family in this city. No extra stock is consumed.
+
+GREEK / Apollo [apollo] — first_minor
+  Weekly gift: 1 Crystal
+  Favored family: Temple Adepts [temple_adept], tier 5; +1 each week
+  Applies to the shared pool of temple_adept / temple_seer
+  Service: 25% less Gold for a visiting hero’s spellbook. Learning eligible spells remains free, as in the current game.
+
+GREEK / Artemis [artemis] — first_minor
+  Weekly gift: 3 Wood
+  Favored family: Griffins [griffin], tier 3; +1 each week
+  Applies to the shared pool of griffin / windcrest_griffin
+  Service: +2 hexes to this city’s existing vision radius while its Watchtower is built; no hero vision bonus and no fog-map reveal on dedication.
+
+GREEK / Hermes [hermes] — second_minor
+  Weekly gift: 600 Gold
+  Favored family: Cavalry [cavalry], tier 4; +1 each week
+  Applies to the shared pool of cavalry / companion_cavalry
+  Service: 10% less Gold when buying Wood, Stone or Crystal at this city; selling prices stay unchanged.
+
+GREEK / Demeter [demeter] — second_minor
+  Weekly gift: 4 Wood
+  Favored family: Hoplites [hoplite], tier 1; +2 each week
+  Applies to the shared pool of hoplite / veteran_hoplite
+  Service: 5% less Gold per recruited member of the favored family, both unlocked forms. Other resources, population and access checks stay unchanged.
+
+GREEK / Hades [hades] — second_minor
+  Weekly gift: 3 Stone
+  Favored family: Minotaurs [minotaur], tier 6; +1 every 2 eligible weeks
+  Applies to the shared pool of minotaur / labyrinth_warden
+  Service: 15% less Gold on the normal per-unit upgrade price difference for the favored family in this city. No extra stock is consumed.
+
+GREEK / Poseidon [poseidon] — second_minor
+  Weekly gift: 3 Wood
+  Favored family: Cavalry [cavalry], tier 4; +1 each week
+  Applies to the shared pool of cavalry / companion_cavalry
+  Service: 10% less Gold to build or upgrade the favored family’s dwelling in this city. No new creature access or covenant is granted.
+
+GREEK / Hera [hera] — second_minor
+  Weekly gift: 400 Gold
+  Favored family: Griffins [griffin], tier 3; +1 each week
+  Applies to the shared pool of griffin / windcrest_griffin
+  Service: 10% less Gold on this city’s civic-hall upgrades; level prerequisites and construction limits stay unchanged.
+
+NORSE / Odin [norse_odin] — patron
+  Weekly gift: 1 Crystal
+  Favored family: Lindworms [norse_lindworm], tier 5; +1 each week
+  Applies to the shared pool of norse_lindworm / norse_storm_lindworm
+  Service: 25% less Gold for a visiting hero’s spellbook. Learning eligible spells remains free, as in the current game.
+
+NORSE / Thor [norse_thor] — first_minor
+  Weekly gift: 3 Stone
+  Favored family: Jotnar [norse_jotunn], tier 6; +1 every 2 eligible weeks
+  Applies to the shared pool of norse_jotunn / norse_runic_jotunn
+  Service: 10% less Gold to build or upgrade this city’s Fort, Citadel and Castle; material costs and one build per day stay unchanged.
+
+NORSE / Tyr [norse_tyr] — first_minor
+  Weekly gift: 3 Stone
+  Favored family: Draugar [norse_draugr], tier 1; +2 each week
+  Applies to the shared pool of norse_draugr / norse_deathless_draugr
+  Service: 20% less Gold for weekly hero training; XP and the once-per-hero-per-week limit stay unchanged.
+
+NORSE / Frigg [norse_frigg] — first_minor
+  Weekly gift: 1 Crystal
+  Favored family: Valkyries [norse_valkyrie], tier 4; +1 each week
+  Applies to the shared pool of norse_valkyrie / norse_battle_valkyrie
+  Service: +2 hexes to this city’s existing vision radius while its Watchtower is built; no hero vision bonus and no fog-map reveal on dedication.
+
+NORSE / Baldr [norse_baldr] — first_minor
+  Weekly gift: 300 Gold
+  Favored family: Valkyries [norse_valkyrie], tier 4; +1 each week
+  Applies to the shared pool of norse_valkyrie / norse_battle_valkyrie
+  Service: 10% less Gold to build or upgrade this city’s spell library; material costs and spell prerequisites stay unchanged.
+
+NORSE / Freyja [norse_freyja] — second_minor
+  Weekly gift: 4 Wood
+  Favored family: Valkyries [norse_valkyrie], tier 4; +1 each week
+  Applies to the shared pool of norse_valkyrie / norse_battle_valkyrie
+  Service: 5% less Gold per recruited member of the favored family, both unlocked forms. Other resources, population and access checks stay unchanged.
+
+NORSE / Heimdall [norse_heimdall] — second_minor
+  Weekly gift: 3 Stone
+  Favored family: Draugar [norse_draugr], tier 1; +2 each week
+  Applies to the shared pool of norse_draugr / norse_deathless_draugr
+  Service: +2 hexes to this city’s existing vision radius while its Watchtower is built; no hero vision bonus and no fog-map reveal on dedication.
+
+NORSE / Hel [norse_hel] — second_minor
+  Weekly gift: 1 Crystal
+  Favored family: Draugar [norse_draugr], tier 1; +2 each week
+  Applies to the shared pool of norse_draugr / norse_deathless_draugr
+  Service: 15% less Gold on the normal per-unit upgrade price difference for the favored family in this city. No extra stock is consumed.
+
+NORSE / Loki [norse_loki] — second_minor
+  Weekly gift: 400 Gold
+  Favored family: Lindworms [norse_lindworm], tier 5; +1 each week
+  Applies to the shared pool of norse_lindworm / norse_storm_lindworm
+  Service: 10% less Gold for purchases from this city’s Artifact Merchant or Workshop. Stocks, rarities and other resource costs stay unchanged.
+
+NORSE / Njord [norse_njord] — second_minor
+  Weekly gift: 4 Wood
+  Favored family: Frost Trolls [norse_frost_troll], tier 3; +1 each week
+  Applies to the shared pool of norse_frost_troll / norse_ancient_frost_troll
+  Service: 10% less Gold when buying Wood, Stone or Crystal at this city; selling prices stay unchanged.
+
+EGYPTIAN / Ra [egyptian_ra] — patron
+  Weekly gift: 400 Gold
+  Favored family: Sacred Scarabs [egyptian_sacred_scarab], tier 1; +2 each week
+  Applies to the shared pool of egyptian_sacred_scarab / egyptian_solar_scarab
+  Service: 10% less Gold on this city’s civic-hall upgrades; level prerequisites and construction limits stay unchanged.
+
+EGYPTIAN / Set [egyptian_set] — first_minor
+  Weekly gift: 3 Stone
+  Favored family: Desert Colossi [egyptian_desert_colossus], tier 7; +1 every 4 eligible weeks
+  Applies to the shared pool of egyptian_desert_colossus / egyptian_divine_colossus
+  Service: 10% less Gold to build or upgrade this city’s Fort, Citadel and Castle; material costs and one build per day stay unchanged.
+
+EGYPTIAN / Isis [egyptian_isis] — first_minor
+  Weekly gift: 1 Crystal
+  Favored family: Bennu [egyptian_bennu], tier 6; +1 every 2 eligible weeks
+  Applies to the shared pool of egyptian_bennu / egyptian_radiant_bennu
+  Service: 10% less Gold to build or upgrade this city’s spell library; material costs and spell prerequisites stay unchanged.
+
+EGYPTIAN / Anubis [egyptian_anubis] — first_minor
+  Weekly gift: 1 Crystal
+  Favored family: Jackal Guardians [egyptian_jackal_guardian], tier 2; +2 each week
+  Applies to the shared pool of egyptian_jackal_guardian / egyptian_anubian_warden
+  Service: 15% less Gold on the normal per-unit upgrade price difference for the favored family in this city. No extra stock is consumed.
+
+EGYPTIAN / Bastet [egyptian_bastet] — first_minor
+  Weekly gift: 300 Gold
+  Favored family: Sphinxes [egyptian_sphinx], tier 4; +1 each week
+  Applies to the shared pool of egyptian_sphinx / egyptian_great_sphinx
+  Service: +2 hexes to this city’s existing vision radius while its Watchtower is built; no hero vision bonus and no fog-map reveal on dedication.
+
+EGYPTIAN / Osiris [egyptian_osiris] — second_minor
+  Weekly gift: 3 Stone
+  Favored family: Ushabti [egyptian_ushabti], tier 3; +1 each week
+  Applies to the shared pool of egyptian_ushabti / egyptian_royal_ushabti
+  Service: 5% less Gold per recruited member of the favored family, both unlocked forms. Other resources, population and access checks stay unchanged.
+
+EGYPTIAN / Thoth [egyptian_thoth] — second_minor
+  Weekly gift: 2 Crystal
+  Favored family: Sphinxes [egyptian_sphinx], tier 4; +1 each week
+  Applies to the shared pool of egyptian_sphinx / egyptian_great_sphinx
+  Service: 25% less Gold for a visiting hero’s spellbook. Learning eligible spells remains free, as in the current game.
+
+EGYPTIAN / Horus [egyptian_horus] — second_minor
+  Weekly gift: 3 Wood
+  Favored family: Bennu [egyptian_bennu], tier 6; +1 every 2 eligible weeks
+  Applies to the shared pool of egyptian_bennu / egyptian_radiant_bennu
+  Service: 20% less Gold for weekly hero training; XP and the once-per-hero-per-week limit stay unchanged.
+
+EGYPTIAN / Hathor [egyptian_hathor] — second_minor
+  Weekly gift: 600 Gold
+  Favored family: Sacred Scarabs [egyptian_sacred_scarab], tier 1; +2 each week
+  Applies to the shared pool of egyptian_sacred_scarab / egyptian_solar_scarab
+  Service: 10% less Gold when buying Wood, Stone or Crystal at this city; selling prices stay unchanged.
+
+EGYPTIAN / Sobek [egyptian_sobek] — second_minor
+  Weekly gift: 3 Stone
+  Favored family: Crocodile Beasts [egyptian_crocodile_beast], tier 5; +1 each week
+  Applies to the shared pool of egyptian_crocodile_beast / egyptian_sobek_warbeast
+  Service: 10% less Gold to build or upgrade the favored family’s dwelling in this city. No new creature access or covenant is granted.
+
+JAPANESE / Amaterasu [japanese_amaterasu] — patron
+  Weekly gift: 400 Gold
+  Favored family: Kitsune [japanese_kitsune], tier 1; +2 each week
+  Applies to the shared pool of japanese_kitsune / japanese_nine_tailed_kitsune
+  Service: 10% less Gold on this city’s civic-hall upgrades; level prerequisites and construction limits stay unchanged.
+
+JAPANESE / Hachiman [japanese_hachiman] — first_minor
+  Weekly gift: 3 Stone
+  Favored family: Oni [japanese_oni], tier 4; +1 each week
+  Applies to the shared pool of japanese_oni / japanese_oni_warlord
+  Service: 20% less Gold for weekly hero training; XP and the once-per-hero-per-week limit stay unchanged.
+
+JAPANESE / Susanoo [japanese_susanoo] — first_minor
+  Weekly gift: 3 Wood
+  Favored family: Orochi [japanese_orochi], tier 7; +1 every 4 eligible weeks
+  Applies to the shared pool of japanese_orochi / japanese_imperial_orochi
+  Service: 10% less Gold to build or upgrade this city’s Fort, Citadel and Castle; material costs and one build per day stay unchanged.
+
+JAPANESE / Tsukuyomi [japanese_tsukuyomi] — first_minor
+  Weekly gift: 1 Crystal
+  Favored family: Jorogumo [japanese_jorogumo], tier 5; +1 each week
+  Applies to the shared pool of japanese_jorogumo / japanese_queen_jorogumo
+  Service: +2 hexes to this city’s existing vision radius while its Watchtower is built; no hero vision bonus and no fog-map reveal on dedication.
+
+JAPANESE / Benzaiten [japanese_benzaiten] — first_minor
+  Weekly gift: 1 Crystal
+  Favored family: Kirin [japanese_kirin], tier 6; +1 every 2 eligible weeks
+  Applies to the shared pool of japanese_kirin / japanese_celestial_kirin
+  Service: 25% less Gold for a visiting hero’s spellbook. Learning eligible spells remains free, as in the current game.
+
+JAPANESE / Inari [japanese_inari] — second_minor
+  Weekly gift: 600 Gold
+  Favored family: Kitsune [japanese_kitsune], tier 1; +2 each week
+  Applies to the shared pool of japanese_kitsune / japanese_nine_tailed_kitsune
+  Service: 5% less Gold per recruited member of the favored family, both unlocked forms. Other resources, population and access checks stay unchanged.
+
+JAPANESE / Fujin [japanese_fujin] — second_minor
+  Weekly gift: 3 Wood
+  Favored family: Tengu [japanese_tengu], tier 3; +1 each week
+  Applies to the shared pool of japanese_tengu / japanese_great_tengu
+  Service: 10% less Gold to build or upgrade the favored family’s dwelling in this city. No new creature access or covenant is granted.
+
+JAPANESE / Raijin [japanese_raijin] — second_minor
+  Weekly gift: 2 Crystal
+  Favored family: Kirin [japanese_kirin], tier 6; +1 every 2 eligible weeks
+  Applies to the shared pool of japanese_kirin / japanese_celestial_kirin
+  Service: 15% less Gold on the normal per-unit upgrade price difference for the favored family in this city. No extra stock is consumed.
+
+JAPANESE / Izanagi [japanese_izanagi] — second_minor
+  Weekly gift: 4 Stone
+  Favored family: Kappa [japanese_kappa], tier 2; +2 each week
+  Applies to the shared pool of japanese_kappa / japanese_river_elder_kappa
+  Service: 10% less Gold to build or upgrade this city’s spell library; material costs and spell prerequisites stay unchanged.
+
+JAPANESE / Izanami [japanese_izanami] — second_minor
+  Weekly gift: 1 Crystal
+  Favored family: Jorogumo [japanese_jorogumo], tier 5; +1 each week
+  Applies to the shared pool of japanese_jorogumo / japanese_queen_jorogumo
+  Service: 10% less Gold for purchases from this city’s Artifact Merchant or Workshop. Stocks, rarities and other resource costs stay unchanged.
+
+CELTIC / Dagda [celtic_dagda] — patron
+  Weekly gift: 4 Wood
+  Favored family: Pooka [celtic_pooka], tier 1; +2 each week
+  Applies to the shared pool of celtic_pooka / celtic_elder_pooka
+  Service: 10% less Gold on this city’s civic-hall upgrades; level prerequisites and construction limits stay unchanged.
+
+CELTIC / Morrigan [celtic_morrigan] — first_minor
+  Weekly gift: 1 Crystal
+  Favored family: Banshees [celtic_banshee], tier 4; +1 each week
+  Applies to the shared pool of celtic_banshee / celtic_battle_banshee
+  Service: 15% less Gold on the normal per-unit upgrade price difference for the favored family in this city. No extra stock is consumed.
+
+CELTIC / Brigid [celtic_brigid] — first_minor
+  Weekly gift: 3 Stone
+  Favored family: Cu Sith [celtic_cu_sith], tier 2; +2 each week
+  Applies to the shared pool of celtic_cu_sith / celtic_great_cu_sith
+  Service: 10% less Gold to build or upgrade this city’s Fort, Citadel and Castle; material costs and one build per day stay unchanged.
+
+CELTIC / Nuada [celtic_nuada] — first_minor
+  Weekly gift: 300 Gold
+  Favored family: Fomorian Giants [celtic_fomorian_giant], tier 7; +1 every 4 eligible weeks
+  Applies to the shared pool of celtic_fomorian_giant / celtic_ancient_fomorian
+  Service: 20% less Gold for weekly hero training; XP and the once-per-hero-per-week limit stay unchanged.
+
+CELTIC / Danu [celtic_danu] — first_minor
+  Weekly gift: 3 Wood
+  Favored family: Horned Stag Spirits [celtic_horned_stag_spirit], tier 6; +1 every 2 eligible weeks
+  Applies to the shared pool of celtic_horned_stag_spirit / celtic_great_stag_spirit
+  Service: 10% less Gold to build or upgrade this city’s spell library; material costs and spell prerequisites stay unchanged.
+
+CELTIC / Cernunnos [celtic_cernunnos] — second_minor
+  Weekly gift: 4 Wood
+  Favored family: Cu Sith [celtic_cu_sith], tier 2; +2 each week
+  Applies to the shared pool of celtic_cu_sith / celtic_great_cu_sith
+  Service: 5% less Gold per recruited member of the favored family, both unlocked forms. Other resources, population and access checks stay unchanged.
+
+CELTIC / Epona [celtic_epona] — second_minor
+  Weekly gift: 400 Gold
+  Favored family: Kelpies [celtic_kelpie], tier 3; +1 each week
+  Applies to the shared pool of celtic_kelpie / celtic_dread_kelpie
+  Service: 10% less Gold to build or upgrade the favored family’s dwelling in this city. No new creature access or covenant is granted.
+
+CELTIC / Lugh [celtic_lugh] — second_minor
+  Weekly gift: 1 Crystal
+  Favored family: Horned Stag Spirits [celtic_horned_stag_spirit], tier 6; +1 every 2 eligible weeks
+  Applies to the shared pool of celtic_horned_stag_spirit / celtic_great_stag_spirit
+  Service: 10% less Gold for purchases from this city’s Artifact Merchant or Workshop. Stocks, rarities and other resource costs stay unchanged.
+
+CELTIC / Arawn [celtic_arawn] — second_minor
+  Weekly gift: 1 Crystal
+  Favored family: Cu Sith [celtic_cu_sith], tier 2; +2 each week
+  Applies to the shared pool of celtic_cu_sith / celtic_great_cu_sith
+  Service: 25% less Gold for a visiting hero’s spellbook. Learning eligible spells remains free, as in the current game.
+
+CELTIC / Manannan [celtic_manannan] — second_minor
+  Weekly gift: 4 Wood
+  Favored family: Selkies [celtic_selkie], tier 5; +1 each week
+  Applies to the shared pool of celtic_selkie / celtic_storm_selkie
+  Service: 10% less Gold when buying Wood, Stone or Crystal at this city; selling prices stay unchanged.
+
+MESOAMERICAN / Quetzalcoatl [mesoamerican_quetzalcoatl] — patron
+  Weekly gift: 1 Crystal
+  Favored family: Feathered Serpents [mesoamerican_feathered_serpent], tier 1; +2 each week
+  Applies to the shared pool of mesoamerican_feathered_serpent / mesoamerican_celestial_feathered_serpent
+  Service: 10% less Gold to build or upgrade this city’s spell library; material costs and spell prerequisites stay unchanged.
+
+MESOAMERICAN / Huitzilopochtli [mesoamerican_huitzilopochtli] — first_minor
+  Weekly gift: 300 Gold
+  Favored family: Eagle Warrior Spirits [mesoamerican_eagle_warrior_spirit], tier 3; +1 each week
+  Applies to the shared pool of mesoamerican_eagle_warrior_spirit / mesoamerican_solar_eagle_warrior
+  Service: 20% less Gold for weekly hero training; XP and the once-per-hero-per-week limit stay unchanged.
+
+MESOAMERICAN / Coatlicue [mesoamerican_coatlicue] — first_minor
+  Weekly gift: 3 Stone
+  Favored family: Stone Colossi [mesoamerican_stone_colossus], tier 7; +1 every 4 eligible weeks
+  Applies to the shared pool of mesoamerican_stone_colossus / mesoamerican_sun_colossus
+  Service: 10% less Gold to build or upgrade this city’s Fort, Citadel and Castle; material costs and one build per day stay unchanged.
+
+MESOAMERICAN / Mixcoatl [mesoamerican_mixcoatl] — first_minor
+  Weekly gift: 3 Wood
+  Favored family: Eagle Warrior Spirits [mesoamerican_eagle_warrior_spirit], tier 3; +1 each week
+  Applies to the shared pool of mesoamerican_eagle_warrior_spirit / mesoamerican_solar_eagle_warrior
+  Service: +2 hexes to this city’s existing vision radius while its Watchtower is built; no hero vision bonus and no fog-map reveal on dedication.
+
+MESOAMERICAN / Xolotl [mesoamerican_xolotl] — first_minor
+  Weekly gift: 400 Gold
+  Favored family: Jaguar Spirits [mesoamerican_jaguar_spirit], tier 2; +2 each week
+  Applies to the shared pool of mesoamerican_jaguar_spirit / mesoamerican_sun_jaguar
+  Service: 15% less Gold on the normal per-unit upgrade price difference for the favored family in this city. No extra stock is consumed.
+
+MESOAMERICAN / Tlaloc [mesoamerican_tlaloc] — second_minor
+  Weekly gift: 4 Wood
+  Favored family: Cenote Crocodiles [mesoamerican_cenote_crocodile], tier 4; +1 each week
+  Applies to the shared pool of mesoamerican_cenote_crocodile / mesoamerican_temple_crocodile
+  Service: 10% less Gold to build or upgrade the favored family’s dwelling in this city. No new creature access or covenant is granted.
+
+MESOAMERICAN / Tezcatlipoca [mesoamerican_tezcatlipoca] — second_minor
+  Weekly gift: 1 Crystal
+  Favored family: Camazotz [mesoamerican_camazotz], tier 5; +1 each week
+  Applies to the shared pool of mesoamerican_camazotz / mesoamerican_blood_moon_camazotz
+  Service: 10% less Gold for purchases from this city’s Artifact Merchant or Workshop. Stocks, rarities and other resource costs stay unchanged.
+
+MESOAMERICAN / Xiuhtecuhtli [mesoamerican_xiuhtecuhtli] — second_minor
+  Weekly gift: 3 Stone
+  Favored family: Xiuhcoatl [mesoamerican_xiuhcoatl], tier 6; +1 every 2 eligible weeks
+  Applies to the shared pool of mesoamerican_xiuhcoatl / mesoamerican_divine_xiuhcoatl
+  Service: 10% less Gold for purchases from this city’s Artifact Merchant or Workshop. Stocks, rarities and other resource costs stay unchanged.
+
+MESOAMERICAN / Chalchiuhtlicue [mesoamerican_chalchiuhtlicue] — second_minor
+  Weekly gift: 4 Wood
+  Favored family: Cenote Crocodiles [mesoamerican_cenote_crocodile], tier 4; +1 each week
+  Applies to the shared pool of mesoamerican_cenote_crocodile / mesoamerican_temple_crocodile
+  Service: 5% less Gold per recruited member of the favored family, both unlocked forms. Other resources, population and access checks stay unchanged.
+
+MESOAMERICAN / Mictlantecuhtli [mesoamerican_mictlantecuhtli] — second_minor
+  Weekly gift: 1 Crystal
+  Favored family: Camazotz [mesoamerican_camazotz], tier 5; +1 each week
+  Applies to the shared pool of mesoamerican_camazotz / mesoamerican_blood_moon_camazotz
+  Service: 15% less Gold on the normal per-unit upgrade price difference for the favored family in this city. No extra stock is consumed.</div></section><section id="s7"><h2>08. SAVE STATE, COMMANDS AND DETERMINISM</h2><div class="prose">Suggested catalog addition: cityDedicationProfiles keyed by godId. Keep the existing GodDefinition benefits for legacy-mode evaluation and use new-mode source-aware filtering. Register the profile data under content; do not make the rules import the UI or filesystem JSON.
+
+Suggested optional TownState record:
+  dedication?: {
+    activeGodId: GodId | null;
+    ownerId: PlayerId | null;
+    pending?: { godId: GodId; requestedBy: PlayerId; activationWeek: number };
+    growthCredits: Record&lt;CreatureFamilyId, 0 | 1 | 2 | 3&gt;;
+    lastProcessedWeek: number;
+  }
+Persist the scenario feature/version, the active/pending IDs, credit remainders and processed stamp. Capture must preserve lastProcessedWeek while clearing owner-specific contents. Stamp is not reset on dedication, temple destruction, capture or restore.
+
+Suggested commands: DedicateTown(townId,godId) and ScheduleTownRededication(townId,godId), each with quote/commit functions. First command legal only without active/pending dedication; switching command requires an active dedication. First selection cannot be used to bypass a pending switch. Existing GodSelected commitment remains a separate command with existing costs and requirements.
+
+Suggested events: TownDedicated, TownRededicationScheduled, TownRededicationActivated, TownDedicationCleared, CityGiftGranted, CityDevotionGrowthApplied. Resource/growth events contain townId, playerId, godId, world week, actual amounts and remaining credit. Use stable state/command data, not wall-clock time or UI-derived week numbers. UI messages are produced from events and current quotes.
+
+Weekly processing is atomic and idempotent. Use an applyOnce key per town/world week AND the persisted marker. Mark processing even when a city is ineligible that boundary so it cannot later back-claim that same week. One coherent per-town transaction applies queued activation, gift, growth credit and stamp. Ordinary population growth remains in its existing once-weekly loop; integrate the extra there or have one central helper provide the delta, never pay through two separate paths.
+
+Quote/preview functions MUST be pure: projecting several weeks cannot consume credits, change state or set idempotency keys. The preview and commit use the same computation on a copy/current state respectively. Sorting towns/families and event emission order must be deterministic for replay.
+
+NEW GAMES: enable the feature for new skirmishes, new random/editor scenarios and new campaign starts where economic rules are unrestricted. Preserve the documented Three Beacons tutorial/rule-profile exception with an explicit feature=false override; do not infer it from unrelated signatureMechanics flags. Campaign god allowlists and story commitments still apply. No automatic battle resolution in campaigns.
+
+OLD SAVES/REPLAYS: absent feature flag means false, maintaining the old god economics and no city dedications. Do not silently turn on the feature or autoassign dedications after a load. New-mode saves initialize optional town records lazily. Version the change under the existing save/content compatibility policy. Do not alter old replay command meaning. Starting a new campaign chapter may set the intended feature in its newly created scenario; never mutate an already running legacy match.</div></section><section id="s8"><h2>09. SCREENS AND VISUAL REUSE</h2><div class="prose">A. Town / Temple panel
+Use the existing Temple II art and chosen god portrait. Add a small dedication medallion beside the temple’s existing label; it opens the dedication pane. Do not paint a new structure into the background or cover building entrances/click targets. Show god name and active/pending/dormant state, then three compact illustrated benefit rows: weekly resource, favored creature, service. Each row shows its own prerequisite status. Show next payout day and next rare-creature increment, not a vague “bonus active”.
+
+B. Dedication selection
+Show only the player’s patron and already committed eligible minor gods as actionable cards. Other gods may appear under a clearly separate locked “Future choices” list, with existing commitment restrictions and reasons. The reference HTML browses all 60 for design review; it is NOT permission to select all 60 in gameplay. Cards use existing portraits plus resource icon, favored-creature portrait, and the relevant town-building image. No new banner, icon or background is needed.
+
+C. God commitment screen
+Separate “Empire blessing” (retained current combat/utility effects) from “Available city dedication” (these local effects). State that the dedication requires Temple II and selection per city. Display effects possible now vs after a dwelling/service is built. Do not multiply the new god’s gift by every city automatically: show current eligible cities that COULD switch, with their existing trade-offs. A commitment does not silently rededicate any town. Continue to show future hero gifts using existing logic.
+
+D. Recruitment
+Growth breakdown: base + fortification effect + any retained non-god modifiers + local god increment. Use god medallion on the favored family card and the base/upgraded portraits already present. Show actual shared pool and forthcoming increment. No new combat stat badge: this delivery adds production, not new unit attack/defense. Service discount shows normal and final Gold prices, and recruit all/max uses the same price.
+
+E. Town services and construction
+In the existing quote panel show “Athena’s patronage — saves 200 Gold” or equivalent. Disabled services explain missing Academy/Watchtower/dwelling. Keep stock, quantities, artifact details, spellbook state and existing errors visible. Update town/hero overview, AI tooltips and construction/recruit-all estimators too. Do not use the daily-income icon alone for a weekly gift: pair the resource icon with explicit “Each week” text.
+
+F. Weekly summary
+Extend the existing summary/event log with one grouped city-blessings section, using god portraits and resource/creature icons. Show actual resources, actual new stock and progress toward rare-unit growth. No blocking popup per city. Opening the summary never pays anything. Pending dedication activations appear in the same summary.
+
+G. Encyclopedia
+God pages list all three city benefits and retained empire blessing for the selected rules mode. Favored creature page may cross-reference its eligible gods, without claiming the creature is locked behind worship. Existing base/upgraded art stays intact.
+
+Visual IDs/absolute paths/hashes are in visual-reuse-manifest.json. It includes all 60 gods, affected creature forms, resources, commitment seal, growth icon and six pantheons’ existing town service art/backgrounds. Use normal alpha on transparent PNGs. Do not create a faction-specific painting for a mechanic that works with existing portraits and live text.
+
+Keyboard selection, visible focus, readable text labels, tooltips on focus as well as hover, and touch-friendly targets are required. Benefits must remain understandable without color. Respect reduced-motion; a short seal pulse on confirmation is sufficient. No new video or audio assets are necessary.</div></section><section id="s9"><h2>10. CURRENT CODE INTEGRATION POINTS</h2><div class="prose">C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/gods.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/godPerks.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/catalog.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/pantheonKit.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/pantheons.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/catalog.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/state/match.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/commands/commands.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/divine.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/resolvers/effects.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/resolvers/town.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/turn.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/economy.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/services.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/heroes.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/ownership.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Town.tsx
+C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Pantheon.tsx
+C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Recruitment.tsx
+C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Encyclopedia.tsx
+C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/assets/manifest.ts
+
+Extend the existing command validator/dispatcher, save serialization and scenario creation paths as located in the current checkout. Specific hooks: godEffects source filter; weeklyGrowthFor/read-only forecasts; processDawn new-week transaction; quoteConstruction; quoteRecruitment/quoteRecruitBatch/recruit-max planner; quoteUpgrade; quoteTrade; quoteTraining; quoteArtifactPurchase; quoteSpellbookPurchase/current equivalent; state-aware townVisionRadius; changeTownOwner and every script ownership path. Update call sites after adding state arguments. Do not restrict implementation to the visible UI buttons.
+
+Prefer a small typed CityDedicationProfile and shared service quote resolver over god-name branches. Keep the data/logic/UI package boundaries. Do not overwrite current 1.4.0 projectile or upgraded-neutral work, and do not reuse unrelated “covenant assignment” state for these dedications.</div></section><section id="s10"><h2>11. AI AND BALANCE ACCEPTANCE</h2><div class="prose">AI must obey the exact same commitments, costs, temple requirements, growth pools and service quotes. Do not auto-grant all gods or silently select from the wrong pantheon.
+
+For first dedication score only eligible chosen gods: resource need, expected four-week recruit usage, built/forthcoming favored dwelling, relevant service usage and remaining scenario horizon. Growth has value only if the AI can afford/use recruits. Service savings count only for planned transactions. Treat future rare growth as zero if it cannot mature before the estimated end. Tie-break with stable godId order; do not consume combat RNG.
+
+For switching compare expected four-week benefit against the current dedication plus the 500 Gold fee and one-week delay; switch only when the estimated additional value exceeds fee by at least 25%. Do not switch each week merely because a resource count fluctuated. Re-evaluate on important construction, new commitment or resource strategy changes. No new AI difficulty cheating; existing incomePercent treatment applies to resource gifts once.
+
+Balance review: compare economic gods with combat gods across 1/3/6 cities; Temple-II timing; built versus absent favored dwelling; 2/4/8-week horizons; tier 6–7 accumulation; resource scarcity; ownership churn; service usage by several heroes. Report commitment and dedication selection rates, army strength/stock, unused growth, weekly resource income and turns to important buildings. Avoid asserting that a recruit’s catalog Gold price is free income—the stock still costs money.
+
+The earlier broad economic gods are materially rebalanced. Include legacy-versus-new economic deltas in the implementation report. Preserve clear strategic alternatives; do not require every profile to have identical theoretical Gold value, and do not compensate by adding unrelated combat powers.</div></section><section id="s11"><h2>12. TESTS AND DELIVERY CHECKLIST</h2><div class="prose">DATA
+• Exactly 60 profiles; every god ID and family ID resolves; family pantheon matches god; one gift resource, growth rate and supported service per profile.
+• Temple/service bindings resolve for all six actual town archetypes; favored dwellings are real roster families.
+• All referenced art exists; no missing image or placeholder silently used; no duplicate asset IDs.
+
+RULES
+• First selection free; existing god commitment costs unchanged; no weekly reward at selection.
+• Reject wrong owner, incompatible faction, absent Temple II, uncommitted/excluded god, disabled scenario, stale duplicate/pending switch and insufficient switch Gold.
+• Service effect immediate for first dedication; switch effects appear only on its due world week. Existing benefit continues until valid activation. Invalid pending choice waits; capture clears it without refund.
+• Repeated save/load, repeated preview, repeated weekly event delivery and capture/recapture cannot duplicate a payout.
+• Tier 1–2 adds 8 creatures across four eligible weeks; tier 3–5 adds 4; tier 6 adds 2; tier 7 adds 1. A missing dwelling/dormant temple adds zero credits. Credits pause and resume correctly and reset on ownership change.
+• Fortification multipliers affect normal growth but never multiply divine extra. Base/upgraded forms share one pool. Initial dwelling grant remains unchanged.
+• Suppress only direct economic god effects in new mode; retain other direct effects, hero gifts, mines, building income, events and signatures. Legacy mode produces original results.
+• Per-unit ceiling arithmetic gives identical single/batch/max/AI/commit prices. Upgrade cost starts from normal catalog difference. No negative/zero positive-cost purchases.
+• No profitable market buy/sell round trip across market tiers/cities. Workshop/merchant stock unchanged. Hero training remains once per hero/week across cities. Spell learning remains free and ordinary dawn mana restoration unchanged.
+• Town vision updates on dedication, temple/watchtower loss, capture and load; no stale visibility/hero bonus.
+• Paid divine gifts and creature offerings retain their own independent caps/state. Neutral-site recruitment/training is unchanged.
+
+UI / GAMEPLAY
+• Review Town, Temple, Pantheon, Recruitment, construction, Market, Academy, shops, spellbook purchase, weekly summary and Encyclopedia in all six factions.
+• Show current vs future eligibility, active vs pending, actual quantities/prices, shared pools and clear rare-growth progress; no raw quarter counters in player text.
+• Test small supported desktop viewport, keyboard, mouse, reduced-motion and mixed-language/long god names. Keep critical controls visible without nested scrolling.
+• Verify AI can select/benefit through the same commands. Old saves/replays remain legacy; new saves restore active/pending/credits exactly.
+• Campaign battles remain manual-only; campaign allowlists and story objectives are unchanged.
+
+Run existing project typecheck, boundary checks, focused rules/UI tests and production build, then actual game visual QA. Add meaningful tests for weekly idempotency, replacement provenance, price parity, capture/switching and backward compatibility. The art package’s validation is not evidence that gameplay is implemented.
+
+Report changed files, checks run, screenshots of the main screens, balance changes from the proposed data and remaining issues. Do not mark this complete after only importing the JSON or drawing a new panel.</div></section></main></body></html>

@@ -14,6 +14,11 @@
  *    never share a stack. Movement is capped as in a town, never refilled.
  *  - A town's training never reaches a neutral family through its own dwellings.
  *  - Ordinary camps (growth restock) still hire only their listed creature.
+ *  - Weekly training allowance (owner decision 2026-10-16): a site upgrades at most
+ *    `weeklyTraining` (default: its weekly hiring stock) a week, all empires
+ *    together, renewed each new week; the quote caps its maximum by what is left and
+ *    a larger training is refused ("Its trainers can take 2 more this week (8 a
+ *    week)"); a save from before has nothing trained this week.
  */
 import { describe, expect, it } from 'vitest';
 import { GameDriver } from '@pr/testing';
@@ -21,6 +26,9 @@ import {
   campForms,
   campSiteForms,
   campStock,
+  campTrainedThisWeek,
+  campTrainingAllowance,
+  campTrainingLeft,
   hashValue,
   missionSite,
   movementBudget,
@@ -318,6 +326,172 @@ describe('training at the hiring site', () => {
     const b = run();
     expect(hashValue(a.state)).toBe(hashValue(b.state));
     expect(slots(a)).toEqual([['root_runner', 3], ['crownroot_runner', 5], null, null, null, null, null]);
+  });
+});
+
+describe('the weekly training allowance (owner decision 2026-10-16)', () => {
+  /** The grove trains at most 8 a week (its weekly hiring stock), every empire together. */
+  const left = (d: GameDriver) => campTrainingLeft(d.catalog, d.state, SITE);
+
+  it('defaults to the weekly hiring stock; the quote exposes it, what is left, and caps the maximum by it', () => {
+    const { d, site } = grove([['root_runner', 12], ['norse_draugr', 10], null, null, null, null, null]);
+    expect(campTrainingAllowance(d.catalog, site)).toBe(8);
+    expect((site.kind as { weeklyGrowth: number }).weeklyGrowth).toBe(8);
+    expect(left(d)).toBe(8);
+    const q = quoteCampTraining(d.catalog, d.state, 'player', 'hervor', SITE, 'root_runner', 1);
+    expect(q).toMatchObject({ legal: true, weeklyAllowance: 8, leftThisWeek: 8, maxQuantity: 8, stackCount: 12 });
+    // The whole stack of 12 is more than the week allows.
+    const r = d.reject({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 12 });
+    expect(r).toEqual({ code: 'no_population', message: 'Its trainers can take 8 more this week (8 a week)' });
+    d.do({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 6 });
+    expect(slots(d)).toEqual([['root_runner', 6], ['norse_draugr', 10], ['crownroot_runner', 6], null, null, null, null]);
+    expect(left(d)).toBe(2);
+    expect(d.state.world.sites[SITE]).toMatchObject({ trainedThisWeek: 6, trainedWeek: 1 });
+    expect(quoteCampTraining(d.catalog, d.state, 'player', 'hervor', SITE, 'root_runner', 1)).toMatchObject({ leftThisWeek: 2, maxQuantity: 2 });
+    expect(d.reject({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 3 }).message).toBe('Its trainers can take 2 more this week (8 a week)');
+    d.do({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 2 });
+    expect(left(d)).toBe(0);
+    const none = d.reject({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 1 });
+    expect(none).toEqual({ code: 'no_population', message: 'Its trainers can take no more this week (8 a week)' });
+    expect(quoteCampTraining(d.catalog, d.state, 'player', 'hervor', SITE, 'root_runner', 1)).toMatchObject({ legal: false, leftThisWeek: 0, maxQuantity: 0 });
+    // Training still uses no hiring stock, and hiring uses none of the allowance.
+    expect(campStock(d.catalog, d.state, SITE)).toBe(8);
+    d.do({ kind: 'RecruitFromCamp', heroId: 'hervor', siteId: SITE, quantity: 8, creatureId: 'crownroot_runner' });
+    expect(campStock(d.catalog, d.state, SITE)).toBe(0);
+    expect(d.state.world.sites[SITE]!.trainedThisWeek).toBe(8);
+    expect(campTrainedThisWeek(d.catalog, d.state, SITE)).toBe(8);
+  });
+
+  it('is shared by every empire: what one trains, the other cannot this week', () => {
+    const { d, site } = grove([['root_runner', 5], ['norse_draugr', 10], null, null, null, null, null]);
+    d.do({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 5 });
+    d.do({ kind: 'EndTurn' });
+    expect(d.state.activePlayerId).toBe('hostile');
+    expect(d.state.day).toBe(1);
+    const rival = Object.values(d.state.heroes).find((h) => h.ownerId === 'hostile' && h.status === 'active')!;
+    rival.position = { ...site.coord };
+    rival.army.slots[5] = null;
+    rival.army.slots[6] = { stackId: 'rv-rr', creatureId: 'root_runner', count: 6 };
+    (d.state.players['hostile']!.wallet as Record<string, number>).gold = 5000;
+    const q = quoteCampTraining(d.catalog, d.state, 'hostile', rival.id, SITE, 'root_runner', 1);
+    expect(q).toMatchObject({ legal: true, leftThisWeek: 3, weeklyAllowance: 8 });
+    // Six would need more than is left; the rival's army has free slots, so a part trains.
+    expect(q.maxQuantity).toBe(3);
+    expect(d.reject({ kind: 'TrainAtCamp', heroId: rival.id, siteId: SITE, fromCreatureId: 'root_runner', quantity: 6 }, 'hostile').message).toBe('Its trainers can take 3 more this week (8 a week)');
+    d.do({ kind: 'TrainAtCamp', heroId: rival.id, siteId: SITE, fromCreatureId: 'root_runner', quantity: 3 }, 'hostile');
+    expect(left(d)).toBe(0);
+    expect(d.reject({ kind: 'TrainAtCamp', heroId: rival.id, siteId: SITE, fromCreatureId: 'root_runner', quantity: 1 }, 'hostile').message).toBe('Its trainers can take no more this week (8 a week)');
+    const rv = d.state.heroes[rival.id]!.army.slots;
+    expect(rv[6]).toMatchObject({ creatureId: 'root_runner', count: 3 });
+    expect(rv.some((s) => s?.creatureId === 'crownroot_runner' && s.count === 3)).toBe(true);
+  });
+
+  it('renews with the new week (the week the stock refills), without carrying over or doubling', () => {
+    const { d } = grove([['root_runner', 20], null, null, null, null, null, null]);
+    d.do({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 8 });
+    expect(left(d)).toBe(0);
+    for (let i = 0; i < 40 && d.state.day < 7; i++) d.do({ kind: 'EndTurn' }, d.state.activePlayerId);
+    expect(d.state.day).toBe(7);
+    // The last day of the week: still none.
+    expect(left(d)).toBe(0);
+    for (let i = 0; i < 40 && d.state.day < 8; i++) d.do({ kind: 'EndTurn' }, d.state.activePlayerId);
+    expect(d.state.day).toBe(8);
+    while (d.state.activePlayerId !== 'player') d.do({ kind: 'EndTurn' }, d.state.activePlayerId);
+    // A new week: the full allowance again (8, not 16), on the day the stock refills; the stored count is last week's.
+    expect(d.state.world.sites[SITE]).toMatchObject({ trainedThisWeek: 8, trainedWeek: 1 });
+    expect(left(d)).toBe(8);
+    expect(campTrainedThisWeek(d.catalog, d.state, SITE)).toBe(0);
+    d.hero('hervor').position = { ...missionSite(d.catalog, d.state, SITE)!.coord };
+    expect(d.reject({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 9 }).message).toBe('Its trainers can take 8 more this week (8 a week)');
+    d.do({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 4 });
+    expect(d.state.world.sites[SITE]).toMatchObject({ trainedThisWeek: 4, trainedWeek: 2 });
+    expect(left(d)).toBe(4);
+    // An unused week does not pile up: two weeks later, still 8.
+    for (let i = 0; i < 80 && d.state.day < 22; i++) d.do({ kind: 'EndTurn' }, d.state.activePlayerId);
+    expect(d.state.day).toBe(22);
+    expect(left(d)).toBe(8);
+  });
+
+  it('an old save’s site state (no training fields) has nothing trained this week; a stale count is ignored', () => {
+    const { d } = grove([['root_runner', 6], null, null, null, null, null, null]);
+    const st = d.state.world.sites[SITE]!;
+    expect('trainedThisWeek' in st).toBe(false);
+    expect('trainedWeek' in st).toBe(false);
+    expect(left(d)).toBe(8);
+    d.do({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 6 });
+    expect(left(d)).toBe(2);
+    // Only a count alone (no week) or a count of another week: none this week.
+    const fresh = grove([['root_runner', 6], null, null, null, null, null, null]).d;
+    fresh.state.world.sites[SITE]!.trainedThisWeek = 8;
+    expect(campTrainingLeft(fresh.catalog, fresh.state, SITE)).toBe(8);
+    fresh.state.world.sites[SITE]!.trainedWeek = 0;
+    expect(campTrainingLeft(fresh.catalog, fresh.state, SITE)).toBe(8);
+    fresh.state.world.sites[SITE]!.trainedWeek = 1;
+    expect(campTrainingLeft(fresh.catalog, fresh.state, SITE)).toBe(0);
+  });
+
+  it('a partial training keeps its slot rules within the allowance', () => {
+    // Every slot full: the stack of 10 can only train whole, and the week allows 8.
+    const full: ([string, number] | null)[] = [['root_runner', 10], ['norse_draugr', 1], ['norse_draugr', 2], ['norse_draugr', 3], ['norse_frost_wolf', 1], ['norse_frost_wolf', 2], ['norse_frost_wolf', 3]];
+    const { d } = grove(full);
+    expect(quoteCampTraining(d.catalog, d.state, 'player', 'hervor', SITE, 'root_runner', 1).maxQuantity).toBe(0);
+    expect(d.reject({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 10 }).message).toBe('Its trainers can take 8 more this week (8 a week)');
+    expect(d.reject({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 5 }).code).toBe('no_capacity');
+    // A stack of 8 trains whole, in place.
+    const eight = grove([['root_runner', 8], ...full.slice(1)]).d;
+    expect(quoteCampTraining(eight.catalog, eight.state, 'player', 'hervor', SITE, 'root_runner', 1).maxQuantity).toBe(8);
+    eight.do({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 8 });
+    expect(slots(eight)[0]).toEqual(['crownroot_runner', 8]);
+  });
+
+  it('weeklyTraining in the site’s data overrides the default; 0 trains nobody', () => {
+    const withTraining = (n: number) => {
+      const { d } = grove([['root_runner', 6], null, null, null, null, null, null]);
+      const m = d.catalog.missions['winter_oath_v2_m02']!;
+      d.state.customMission = { ...m, sites: m.sites.map((s) => (s.id === SITE && s.kind.type === 'creature_camp' ? { ...s, kind: { ...s.kind, weeklyTraining: n } } : s)) } as MissionDefinition;
+      return d;
+    };
+    const d = withTraining(3);
+    expect(campTrainingAllowance(d.catalog, missionSite(d.catalog, d.state, SITE)!)).toBe(3);
+    expect(quoteCampTraining(d.catalog, d.state, 'player', 'hervor', SITE, 'root_runner', 1)).toMatchObject({ weeklyAllowance: 3, leftThisWeek: 3, maxQuantity: 3 });
+    expect(d.reject({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 6 }).message).toBe('Its trainers can take 3 more this week (3 a week)');
+    d.do({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 3 });
+    expect(campTrainingLeft(d.catalog, d.state, SITE)).toBe(0);
+    // The hiring stock is the site's own (8), whatever the training allowance.
+    expect(campStock(d.catalog, d.state, SITE)).toBe(8);
+    const zero = withTraining(0);
+    expect(campTrainingAllowance(zero.catalog, missionSite(zero.catalog, zero.state, SITE)!)).toBe(0);
+    const r = zero.reject({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 1 });
+    expect(r.code).toBe('not_recruitable');
+    expect(r.message).toBe(`${missionSite(zero.catalog, zero.state, SITE)!.name} trains no creatures`);
+    // Hiring is unchanged there.
+    zero.do({ kind: 'RecruitFromCamp', heroId: 'hervor', siteId: SITE, quantity: 1, creatureId: 'crownroot_runner' });
+  });
+
+  it('a site that trains nothing has no allowance (ordinary camps)', () => {
+    const { d, site } = grove();
+    const m = d.catalog.missions['winter_oath_v2_m02']!;
+    const camp: SiteDefinition = { id: 'nu_centaurs2', anchorId: 'nu_centaurs2', coord: { q: site.coord.q, r: site.coord.r + 1 }, name: 'Centaur Camp', description: '', kind: { type: 'creature_camp', creatureId: 'centaur', weeklyGrowth: 4, initialStock: 6, weeklyTraining: 4 } };
+    d.state.customMission = { ...m, sites: [...m.sites, camp] } as MissionDefinition;
+    d.state.world.sites[camp.id] = { siteId: camp.id, owner: null, cleared: true, claimed: false, activated: false, visitedBy: [], open: false, guard: null };
+    expect(campTrainingAllowance(d.catalog, camp)).toBe(0);
+    expect(campTrainingLeft(d.catalog, d.state, camp.id)).toBe(0);
+    expect(campTrainingAllowance(d.catalog, { kind: { type: 'pickup', reward: {} } } as unknown as SiteDefinition)).toBe(0);
+  });
+
+  it('the commands written before the allowance stay valid within it: no slot, no form, the same results', () => {
+    const { d } = grove([['root_runner', 6], null, null, null, null, null, null]);
+    d.do({ kind: 'RecruitFromCamp', heroId: 'hervor', siteId: SITE, quantity: 2 });
+    d.do({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 8 });
+    expect(slots(d)).toEqual([['crownroot_runner', 8], null, null, null, null, null, null]);
+    expect(left(d)).toBe(0);
+    const a = grove([['root_runner', 6], null, null, null, null, null, null]).d;
+    const b = grove([['root_runner', 6], null, null, null, null, null, null]).d;
+    for (const g of [a, b]) {
+      g.do({ kind: 'TrainAtCamp', heroId: 'hervor', siteId: SITE, fromCreatureId: 'root_runner', quantity: 2 });
+      g.do({ kind: 'RecruitFromCamp', heroId: 'hervor', siteId: SITE, quantity: 1, creatureId: 'crownroot_runner' });
+    }
+    expect(hashValue(a.state)).toBe(hashValue(b.state));
   });
 });
 

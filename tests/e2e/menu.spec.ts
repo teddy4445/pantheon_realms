@@ -115,7 +115,9 @@ test('every delivered final icon and creature portrait is served and decodes; un
   await expect(page.getByTestId('codex-japanese_kitsune').locator('.portrait img')).toHaveAttribute('src', /creature\.japanese\.tier1\.base\.portrait\.webp$/);
   // Forms whose portrait is not delivered keep the generated stand-in; once every form's portrait is
   // delivered (the owner's import of 2026-10-03), every creature card shows its painting.
-  const forms = Object.keys(buildCatalog().creatures).length;
+  // Only forms whose portrait lives in the interface manifest count here; the neutral and sea forms bring
+  // their own delivered portraits (campaign-v2, battle-fx and sea-creature kits), never a stand-in.
+  const forms = Object.values(buildCatalog().creatures).filter((c) => c.presentation.portraitAssetId.startsWith('creature.')).length;
   const delivered = entries.filter(([id]) => /^creature\..*\.portrait$/.test(id)).length;
   if (delivered >= forms) {
     for (const id of ['japanese_nine_tailed_kitsune', 'celtic_pooka', 'mesoamerican_stone_colossus']) await expect(page.getByTestId(`codex-${id}`).locator('.portrait img')).toHaveCount(1);

@@ -36,6 +36,8 @@ export interface FamilySpec {
   base: FormSpec;
   /** Absent: a single-form neutral family (no upgrade; handoff 2026-10-15). */
   upgraded?: FormSpec;
+  /** Neutral families met only in sea encounters (sea-creature delivery 2026-10-17): `CreatureFamilyDefinition.availability`. */
+  availability?: 'sea_encounters';
 }
 
 /** Creature statistics; shooters also take their shooting range in hexes (proposed values, 2026-10-02). */
@@ -333,6 +335,7 @@ export function buildFamilies(
       baseCreatureId: f.base.id,
       ...(f.upgraded ? { upgradedCreatureId: f.upgraded.id } : {}),
       baseGrowth: f.growth,
+      ...(f.availability ? { availability: f.availability } : {}),
       ...(f.dwelling ? { dwellingBuildingId: f.dwelling } : {}),
       ...(f.dwellingUp ? { upgradedDwellingBuildingId: f.dwellingUp } : {}),
       implementationStatus: 'implemented',
