@@ -36,7 +36,7 @@ export const NORSE_GODS: readonly GodDefinition[] = [
     domain: 'Strength & Storms',
     role: 'minor',
     exclusivityGroup: 'first_minor',
-    requirements: [{ type: 'has_building', buildingId: 'norse_hof_2' }],
+    requirements: [{ type: 'has_building', buildingId: 'norse_hof_1' }],
     favorCost: 20,
     benefits: [
       { type: 'commander_attribute', attribute: 'attack', amount: 1 },
@@ -55,7 +55,7 @@ export const NORSE_GODS: readonly GodDefinition[] = [
     domain: 'Law & Honor',
     role: 'minor',
     exclusivityGroup: 'first_minor',
-    requirements: [{ type: 'has_building', buildingId: 'norse_hof_2' }],
+    requirements: [{ type: 'has_building', buildingId: 'norse_hof_1' }],
     favorCost: 20,
     benefits: [
       { type: 'commander_attribute', attribute: 'defense', amount: 1 },
@@ -74,7 +74,7 @@ export const NORSE_GODS: readonly GodDefinition[] = [
       ['norse_frigg', 'Frigg', 'Foresight & Protection', 'I know how this ends. Walk where I point.', blessing(BLESSINGS.attribute('knowledge', 1), BLESSINGS.vision(2))],
       ['norse_baldr', 'Baldr', 'Light & Purity', 'Even the long night has a morning in it.', blessing(BLESSINGS.attribute('power', 1), BLESSINGS.manaRegen(2))],
     ] as const
-  ).map(([id, name, domain, quote, b]) => firstMinorGod({ id, pantheonId: 'norse', name, domain, quote, ...b, portraitAssetId: `god.norse.${id.replace(/^norse_/, '')}.portrait`, templeId: 'norse_hof_2' })),
+  ).map(([id, name, domain, quote, b]) => firstMinorGod({ id, pantheonId: 'norse', name, domain, quote, ...b, portraitAssetId: `god.norse.${id.replace(/^norse_/, '')}.portrait`, templeId: 'norse_hof_1' })),
   // Second minor-god choice (proposed this build).
   ...(
     [

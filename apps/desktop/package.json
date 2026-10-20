@@ -1,8 +1,8 @@
 {
   "name": "@pr/desktop",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "private": true,
-  "description": "Pantheon Realms — turn-based mythological strategy.",
+  "description": "Pantheon Realms \u2014 turn-based mythological strategy.",
   "main": "dist/main.cjs",
   "scripts": {
     "build": "node scripts/build.mjs",

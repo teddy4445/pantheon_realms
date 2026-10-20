@@ -1,0 +1,4 @@
+
+> pantheon-realms@1.8.0 typecheck
+> tsc -p tsconfig.core.json && tsc -p apps/client/tsconfig.json && tsc -p apps/desktop/tsconfig.json
+

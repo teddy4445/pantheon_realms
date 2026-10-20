@@ -1,0 +1,9 @@
+Single Battle production visuals, 2026-10-19
+
+setup-background.png: generated with the built-in image_gen tool for this release.
+Exact prompt:
+Use case: illustration-story. Asset type: full-screen background for the Pantheon Realms single battle army setup interface. Create a wide 16:9 painterly mythological strategy game background: an empty ancient stone war council room, a broad dark navy stone planning table in the foreground, slender classical columns framing a distant coastal vista with a fortified city and small ancient ships. No people or heroes. Antique gold edge accents, atmospheric deep blue shadows, subtle warm daylight at the distant horizon. Keep the central 80 percent dark, calm and low contrast so gold text and three opaque interface panels remain readable. Rich hand-painted fantasy realism, restrained ornament, dignified classical strategy game visual style. This is background art only: no lettering, no text, no logos, no UI, no borders, no symbols or diagrams on the table.
+
+mode-single-battle.png: approved menu painting from docs/single-battle-design/single-battle-card.png. Original generation prompt is preserved in docs/single-battle-design/plan.html.
+
+The setup uses existing final creature portraits, faction emblems and combat artwork. New interface icons are authored SVG paths in packages/ui/src/components/SingleBattleIcon.tsx. The deployment diagram is rendered from the authoritative battle board; it is not a painted approximation.

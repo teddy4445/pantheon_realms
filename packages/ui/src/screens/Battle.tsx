@@ -81,7 +81,7 @@ import { MiracleBook, type MiracleOption } from '../components/miraclebook';
 import { stackMarks } from '../app/stackMarks';
 import { abilityActions, abilityFxOf, usesText, type AbilityAction } from '../app/battleAbilities';
 import { expeditionArt, resolveAsset } from '../assets/manifest';
-import { CatapultPhasePanel, CatapultStatus } from '../components/catapultControls';
+import { CatapultStatus } from '../components/catapultControls';
 import { catapultBoardClick, engineAt, engineAttackFrom, engineCommandable, engineSiegeView, engineTargetCells, keepClick, type BoardClick } from '../app/catapultView';
 import { MiniBanner, contextTheme } from '../components/gui';
 
@@ -317,7 +317,7 @@ function buildView(
     const sel = deploySel ? battle.stacks[deploySel] : undefined;
     if (sel) moves = deploymentAnchors(catalog, battle, sel);
   }
-  const siege = battle.siege && battle.siege.level > 0 ? { structures: battle.siege.structures, moat: battle.siege.moat, wallCol: battle.siege.wallCol, pantheonId: state.towns[battle.siege.townId]?.pantheonId ?? null, engine: engineSiegeView(battle) } : null;
+  const siege = battle.siege && battle.siege.level > 0 ? { structures: battle.siege.structures, moat: battle.siege.moat, wallCol: battle.siege.wallCol, pantheonId: state.standalone?.spec.defender.pantheonId ?? state.towns[battle.siege.townId]?.pantheonId ?? null, engine: engineSiegeView(battle) } : null;
   const highlightKey = `${deploySel ?? ''}|${zone.length}|${state.revision}|${mode.kind}|${mode.kind === 'field' ? mode.cells.map(cellKey).join(';') : ''}|${'spellId' in mode ? mode.spellId : 'abilityId' in mode ? mode.abilityId : ''}|${path?.map(cellKey).join(';') ?? ''}|${attackFrom ? cellKey(attackFrom) : ''}|${la?.stackId ?? ''}|${footprint?.map(cellKey).join(';') ?? ''}`;
   return {
     view: { battleId: battle.battleId, cols: battle.cols, rows: battle.rows, obstacles: battle.obstacles, spellFields: battle.spellFields?.map((f) => ({ kind: f.kind, cells: f.cells.filter((c) => !f.spent?.includes(cellKey(c))), label: catalog.spells[f.spellId]?.name ?? f.spellId })), archetype: battle.archetype, climate: state.world.map.biome, stacks, moves, targets, path, attackFrom, highlightKey, grid, siege, zone, mirrored: orient.mirrored, blueSide: orient.blueSide, catapultAim: catapultAimId ? { structureId: catapultAimId } : null, board: boardingBoardView(state), ...(footprint ? { footprint } : {}) },
@@ -644,7 +644,8 @@ export function BattleScreen() {
   /** Carry out what a board click means for the catapult or the engine. */
   const boardOrder = (o: NonNullable<BoardClick>) => {
     if (o.kind === 'command') {
-      if (o.payload.kind === 'BattleAimCatapult') store.dispatch(o.payload);
+      if (o.payload.kind === 'BattleAimCatapult' && commandEngine) act({ kind: 'BattleFireCatapult', structureId: o.payload.structureId, expectedRound: battle.round });
+      else if (o.payload.kind === 'BattleAimCatapult') store.dispatch(o.payload);
       else act(o.payload);
     } else if (o.kind === 'toast') store.toast(o.message, 'error');
     else setEngineCard(true);
@@ -742,7 +743,7 @@ export function BattleScreen() {
     const side = battle.sides[sideId];
     const pl = side.playerId ? state.players[side.playerId] : undefined;
     const stacks = Object.values(battle.stacks).filter((s) => s.side === sideId && s.totalHp > 0);
-    return { side, name: side.commander?.name ?? (sideId === 'defender' ? battle.encounter.label : 'Attacker'), owner: pl?.name ?? 'Neutral', total: stacks.reduce((n, s) => n + aliveCount(catalog, s), 0), color: pl?.color ?? NEUTRAL_ACCENT, mana: commanderMana(state, side), pantheonId: pl?.pantheonId ?? null };
+    return { side, name: side.commander?.name ?? (sideId === 'defender' ? (state.standalone ? 'Defender' : battle.encounter.label) : 'Attacker'), owner: pl?.name ?? 'Neutral', total: stacks.reduce((n, s) => n + aliveCount(catalog, s), 0), color: pl?.color ?? NEUTRAL_ACCENT, mana: commanderMana(state, side), pantheonId: pl?.pantheonId ?? null };
   };
   // The commander's portrait (Brief 9) beside the side's name: a hero's, or a named guard commander's own
   // (Doros, Theron, Melas — the battle snapshot keeps its portrait ID); guards without a commander have none.
@@ -898,12 +899,12 @@ export function BattleScreen() {
             // A targetable catapult has its explicit aim (no fallback); a legacy one its round-start target.
             const aimed = engineSt ? engineSt.aimedStructureId === x.id : catapultTarget(battle)?.id === x.id;
             // The human attacker aims the Catapult by clicking a standing structure (on its own turn).
-            const canAim = canAimCatapult && x.hp > 0 && !aimed;
-            const label = `${structureLabel(x.id).replace('Wall section ', 'W')} ${x.hp}/${x.maxHp}`;
-            const title = `${structureLabel(x.id)}: ${x.hp}/${x.maxHp} structure points${aimed ? ' — the Catapult’s next target' : canAim ? ' — click to aim the Catapult here' : ''}`;
+            const canAim = (commandEngine || canAimCatapult) && x.hp > 0 && (commandEngine || !aimed);
+            const label = structureLabel(x.id).replace('Wall section ', 'W');
+            const title = `${structureLabel(x.id)}: ${x.hp <= 0 ? 'destroyed' : x.hp < x.maxHp ? 'damaged' : 'intact'}${aimed ? ' — the Catapult’s next target' : canAim ? (commandEngine ? ' — click to fire' : ' — click to aim the Catapult here') : ''}`;
             const cls = `siege-status__item${x.hp <= 0 ? ' is-down' : ''}${aimed ? ' is-aim' : ''}${canAim ? ' is-aimable' : ''}`;
             return canAim ? (
-              <button key={x.id} type="button" className={cls} title={title} onClick={() => act({ kind: 'BattleAimCatapult', structureId: x.id })} data-testid={`catapult-aim-${x.id}`}>
+              <button key={x.id} type="button" className={cls} title={title} onClick={() => boardOrder({ kind: 'command', payload: { kind: 'BattleAimCatapult', structureId: x.id } })} data-testid={`catapult-aim-${x.id}`}>
                 {label}
               </button>
             ) : (
@@ -1044,7 +1045,6 @@ export function BattleScreen() {
         </div>
       ) : null}
 
-      {commandEngine ? <CatapultPhasePanel catalog={catalog} state={state} onCommand={(payload) => (payload.kind === 'BattleAimCatapult' ? store.dispatch(payload) : act(payload))} onPreview={setAimPreview} /> : null}
 
       {aiming && la ? (
         <AbilityCard
@@ -1168,12 +1168,12 @@ export function BattleScreen() {
             </span>
           ) : !humanTurn ? (
             <span className="dim small">
-              <span className="spinner" /> {store.presentationBusy ? 'Resolving…' : 'Enemy turn…'}
+              <span className="spinner" /> {store.presentationBusy ? 'Resolving…' : session.isReplay ? 'Replay…' : state.standalone && !session.humanSeats.length ? 'Watching battle…' : 'Enemy turn…'}
             </span>
           ) : deploySide ? (
             <>
               <span className="small" data-testid="deploy-hint">
-                Deploy your army inside the shaded {battle.deployment?.columns[deploySide] ?? 2} columns (Tactics). {deploySel ? 'Click a highlighted hex, or another stack to swap.' : 'Click one of your stacks to move it.'}
+                Deploy your army inside the shaded {battle.deployment?.columns[deploySide] ?? 2} columns{state.standalone ? '' : ' (Tactics)'}. {deploySel ? 'Click a highlighted hex, or another stack to swap.' : 'Click one of your stacks to move it.'}
               </span>
               <Button variant="primary" icon="play" onClick={() => store.dispatch({ kind: 'BattleConfirmDeployment' })} data-testid="deploy-confirm">
                 Start battle
@@ -1183,7 +1183,7 @@ export function BattleScreen() {
             <span className="small dim">Choose the town’s defenders.</span>
           ) : commandEngine ? (
             <span className="small" data-testid="catapult-phase-hint">
-              Catapult phase: choose a target in the catapult panel or on the battlefield, then Fire or Skip.
+              Catapult phase: click a standing wall, gate or keep to fire.
             </span>
           ) : mode.kind === 'structure' && la ? (
             <>
@@ -1259,7 +1259,7 @@ export function BattleScreen() {
               <Button icon="defend" onClick={() => act({ kind: 'BattleDefend', stackId: la.stackId })} title="Defend (D)" data-testid="battle-defend">
                 Defend
               </Button>
-              <Button
+              {!state.standalone ? <Button
                 icon="spell"
                 onClick={openSpells}
                 data-testid="battle-spell"
@@ -1268,7 +1268,7 @@ export function BattleScreen() {
                 title="Cast spell (S)"
               >
                 Spell
-              </Button>
+              </Button> : null}
               {miracles.length > 0 ? (
                 <Button icon="favor" onClick={() => setMode({ kind: 'miracles' })} title="Divine interventions (Favor, once per week)" data-testid="battle-miracles">
                   Miracle
@@ -1324,7 +1324,7 @@ export function BattleScreen() {
                 disabled={!la.canRetreat}
                 // Boarding battles: the ship needs open water to withdraw to (the rules' reason); never a land teleport.
                 disabledReason={la.withdrawalBlockedReason ?? (battle.encounter.kind === 'town_siege' && la.side === 'defender' ? 'A town defender cannot retreat' : 'Only a hero commander can retreat')}
-                onClick={() => store.confirm('Retreat?', seaRetreatText(battle, la.side) ?? (battle.encounter.kind === 'naval_boarding' ? 'Your hero’s ship withdraws to open water with no army. The surviving troops are lost.' : 'Your hero escapes with no army. The surviving troops are lost.'), 'Retreat', () => act({ kind: 'BattleRetreat' }), { danger: true })}
+                onClick={() => store.confirm('Retreat?', state.standalone ? 'Withdraw this army and end the battle.' : seaRetreatText(battle, la.side) ?? (battle.encounter.kind === 'naval_boarding' ? 'Your hero’s ship withdraws to open water with no army. The surviving troops are lost.' : 'Your hero escapes with no army. The surviving troops are lost.'), 'Retreat', () => act({ kind: 'BattleRetreat' }), { danger: true })}
                 data-testid="battle-retreat"
               >
                 Retreat
@@ -1335,10 +1335,10 @@ export function BattleScreen() {
                   variant="ghost"
                   disabled={!la.canSurrender}
                   disabledReason={la.withdrawalBlockedReason ?? null}
-                  onClick={() => store.confirm('Surrender?', `Pay ${la.surrenderCost} Gold to keep your surviving army and leave the field${battle.encounter.kind === 'naval_boarding' ? ' (your ship withdraws to open water)' : ''}.`, 'Surrender', () => act({ kind: 'BattleSurrender' }))}
+                  onClick={() => store.confirm('Surrender?', state.standalone ? 'Concede this battle to the opposing army.' : `Pay ${la.surrenderCost} Gold to keep your surviving army and leave the field${battle.encounter.kind === 'naval_boarding' ? ' (your ship withdraws to open water)' : ''}.`, 'Surrender', () => act({ kind: 'BattleSurrender' }))}
                   data-testid="battle-surrender"
                 >
-                  Surrender ({la.surrenderCost})
+                  Surrender{state.standalone ? '' : ` (${la.surrenderCost})`}
                 </Button>
               ) : null}
             </>

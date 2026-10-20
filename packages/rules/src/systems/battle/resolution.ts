@@ -65,6 +65,16 @@ export function resolveBattle(tx: Tx, battle: BattleState, winner: BattleSideId,
   const attackerLines = lines('attacker');
   const defenderLines = lines('defender');
 
+  if (state.standalone) {
+    const humanSide = battle.sides.attacker.controller === 'human' ? 'attacker' : battle.sides.defender.controller === 'human' ? 'defender' : null;
+    state.lastBattleResult = { battleId: battle.battleId, label: battle.encounter.label, winner, outcome, playerSide: humanSide,
+      attacker: { name: 'Attacker', playerId: 'attacker', lines: attackerLines }, defender: { name: 'Defender', playerId: 'defender', lines: defenderLines },
+      xpAwarded: [], rewards: { resources: resources(), artifactIds: [], entitlementIds: [] }, objectivesAdvanced: [], levelUpsQueued: 0,
+      heroOutcome: '', day: 1, rounds: battle.round };
+    state.battle = null;
+    return;
+  }
+
   // --- XP: base HP of opposing creatures actually killed by hostile damage ---
   const xpFor = (side: BattleSideId) =>
     Object.values(battle.stacks)

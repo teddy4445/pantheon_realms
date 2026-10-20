@@ -1,3 +1,4 @@
+import { type SingleBattleSpec } from '@pr/rules';
 /**
  * AppStore: application-level UI state (navigation, overlays, toasts,
  * preferences, setup draft) plus the current GameSession.
@@ -33,6 +34,7 @@ import { sceneIllustrationId } from './missionLedger';
 
 export type ScreenId =
   | 'main-menu'
+  | 'single-battle'
   | 'game-mode'
   | 'scenario-select'
   | 'pantheon-select'
@@ -57,6 +59,7 @@ export type ScreenId =
 export const SCREEN_CODES: Record<ScreenId, string> = {
   'main-menu': 'S01',
   'game-mode': 'S02',
+  'single-battle': 'S23',
   'scenario-select': 'S03',
   'pantheon-select': 'S04',
   adventure: 'S06',
@@ -103,6 +106,7 @@ export interface SpellCastRequest {
 }
 
 export type Overlay =
+  | { kind: 'cheat' }
   | { kind: 'pause' }
   | { kind: 'save-load'; mode: 'save' | 'load' }
   | { kind: 'confirm'; title: string; body: string; confirmLabel: string; danger?: boolean; onConfirm: () => void; detail?: string[]; content?: ReactNode; cancelLabel?: string }
@@ -228,6 +232,7 @@ export class AppStore {
   toasts: Toast[] = [];
   prefs: Preferences = DEFAULT_PREFERENCES;
   session: GameSession | null = null;
+  singleBattleDraft: SingleBattleSpec | null = null;
   setup: SetupDraft = { mode: null, campaignId: null, missionId: null, pantheonId: null, godId: null };
   readonly saves: SaveManager;
   continueSlot: SlotInfo | null = null;
@@ -394,6 +399,7 @@ export class AppStore {
     this.overlays = this.overlays.slice(0, -1);
     this.notify();
     this.checkLevelUp();
+    this.scheduleAI();
   }
 
   closeAllOverlays(): void {
@@ -508,6 +514,30 @@ export class AppStore {
     this.notify();
   }
 
+  startBattleReplay(value: unknown): void {
+    const session = GameSession.fromBattleReplay(this.catalog, value);
+    this.attach(session); this.boardLoading = true; this.overlays = [];
+    this.resetTo('battle'); this.scheduleAI();
+  }
+
+  startSingleBattle(spec: SingleBattleSpec): void {
+    const session = GameSession.newSingleBattle(this.catalog, spec);
+    this.singleBattleDraft = structuredClone(spec);
+    this.attach(session);
+    this.boardLoading = true;
+    this.overlays = [];
+    this.resetTo('battle');
+    this.scheduleAI();
+  }
+
+  editSingleBattle(): void {
+    const spec = this.session?.state.standalone?.spec;
+    if (spec) this.singleBattleDraft = structuredClone(spec);
+    this.endSession();
+    this.boardLoading = false;
+    this.resetTo('single-battle');
+  }
+
   startCampaign(campaignId: string, godId: string | null, difficultyId: string | null = DEFAULT_CAMPAIGN_DIFFICULTY): void {
     const runId = `run-${Date.now().toString(36)}`;
     const session = GameSession.newCampaign(this.catalog, campaignId, godId, runId, this.catalog.difficulties?.[difficultyId ?? '']?.scope === 'campaign' ? difficultyId : null);
@@ -546,7 +576,7 @@ export class AppStore {
     this.overlays = [];
     const s = session.state;
     if (s.battle) this.resetTo('battle');
-    else this.resetTo('adventure');
+    else this.resetTo(s.standalone ? 'battle-result' : 'adventure');
     if (s.pendingDecisions.length > 0) this.goto('level-up');
     this.openCampaignResult();
     this.notify();
@@ -783,7 +813,7 @@ export class AppStore {
 
   private checkHandoff(): void {
     const session = this.session;
-    if (!session || session.state.coalition || session.humanSeats.length < 2) return;
+    if (!session || session.state.standalone || session.state.coalition || session.humanSeats.length < 2) return;
     const st = session.state;
     if (st.battle || st.outcome.status !== 'running') return;
     const active = st.players[st.activePlayerId];
@@ -1012,7 +1042,7 @@ export class AppStore {
       // The result screen opens after the rules committed casualties and rewards
       // and after the final blows have been shown.
       const result = s.lastBattleResult;
-      const playerInvolved = result?.playerSide !== null;
+      const playerInvolved = !!s.standalone || result?.playerSide !== null;
       // A short beat on the battlefield after the final blow has played.
       const beat = playerInvolved && this.screen.id === 'battle' && battlePlaybackFactor(this.prefs) > 0 ? FINAL_BLOW_BEAT_MS : 0;
       void this.whenIdle()
@@ -1207,12 +1237,14 @@ export class AppStore {
     const session = this.session;
     if (!session || this.aiTimer || !session.needsAI()) return;
     if (this.story.length > 0) return;
+    if (session.state.standalone && (this.overlays.length > 0 || this.screen.id !== 'battle')) return;
     if (this.overlays.some((o) => o.kind === 'mission-failed' || o.kind === 'debrief' || o.kind === 'campaign-complete' || o.kind === 'game-over')) return;
     const enemyDelay = 180 * adventurePlaybackFactor(this.prefs, true);
     this.aiTimer = setTimeout(() => {
       this.aiTimer = null;
       void this.whenIdle().then(() => {
         if (this.session !== session || !session.needsAI()) return;
+        if (session.state.standalone && (this.overlays.length > 0 || this.screen.id !== 'battle')) return;
         if (this.presentationBusy || this.boardLoading) return this.scheduleAI();
         try {
           session.stepAI();

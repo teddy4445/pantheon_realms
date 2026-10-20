@@ -1,3 +1,4 @@
+import { heroStartingArmy } from './startingArmies';
 /**
  * Hero progression: experience, level-up decisions, spellbooks, spell learning, equipment.
  *
@@ -326,8 +327,6 @@ export function commitUnequip(tx: Tx, heroId: HeroId, slot: EquipSlot): void {
 // Hero hiring (Tavern / Heroes' Lodge)
 // ---------------------------------------------------------------------------
 
-/** design/02: a new hero receives 10 of the town pantheon's tier-1 base creature (10 Hoplites for Greek). */
-export const HIRE_STARTING_TROOPS = 10;
 /** design/04 §9: a retreated hero returns with one tier-1 creature so they can travel. */
 export const REHIRE_RETREAT_TROOPS = 1;
 
@@ -436,7 +435,9 @@ export function commitHireHero(tx: Tx, townId: TownId, definitionId: string): vo
     return;
   }
 
-  const hero = createRecruitedHero(tx, definitionId, tx.actorId, { ...townGate(tx.catalog, tx.state, town.id) }, slots(HIRE_STARTING_TROOPS));
+  const escort = heroStartingArmy(tx.catalog, definitionId);
+  const army = Array.from({ length: tx.profile.armySlots }, (_, i) => escort[i] ? { ...escort[i]!, stackId: tx.nextId('stack') } : null);
+  const hero = createRecruitedHero(tx, definitionId, tx.actorId, { ...townGate(tx.catalog, tx.state, town.id) }, army);
   tx.emit({ kind: 'HeroHired', heroId: hero.id, definitionId, townId });
   learnSpellsAtTown(tx, hero, town);
 }

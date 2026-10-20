@@ -1,0 +1,17 @@
+
+> pantheon-realms@1.7.2 test
+> vitest run --pool=threads --maxWorkers=2
+
+
+ RUN  v5.0.2 C:/Users/Teddy Lazebnik/Desktop/pantheon_realms
+
+
+ Test Files  164 passed (164)
+      Tests  1514 passed | 1 skipped (1515)
+   Start at  19:09:12
+   Duration  219.14s (tests 45%, import 45%, transform 9%)
+
+     Import  510 modules were evaluated 32348 times · 179.70s total, 45% of tracked time
+             ~87.56s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation
+

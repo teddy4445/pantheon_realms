@@ -214,8 +214,8 @@ export function legalActions(catalog: ContentCatalog, state: MatchState): Battle
     spells,
     canWait: battle.phase === 'normal' && !stack.waited && !battle.activeIsBonus,
     canDefend: true,
-    canRetreat: side.commander?.heroId != null && !townDefender && !seaBlocked,
-    canSurrender: canSurrenderTo(battle, stack.side) && !townDefender && !seaBlocked,
+    canRetreat: !!battle.standalone || (side.commander?.heroId != null && !townDefender && !seaBlocked),
+    canSurrender: !!battle.standalone || (canSurrenderTo(battle, stack.side) && !townDefender && !seaBlocked),
     ...(battle.encounter.kind === 'naval_boarding' || battle.encounter.sourceShipId ? { withdrawalBlockedReason: seaBlocked } : {}),
     surrenderCost,
     castAvailable: !side.castThisRound && !!side.commander?.spellbook,
@@ -803,6 +803,7 @@ export function commitBattleRetreat(tx: Tx): void {
   if (!active) reject('illegal_action', 'Retreat is chosen on a friendly activation');
   requireControl(tx, battle, active.side);
   const side = battle.sides[active.side];
+  if (battle.standalone) { side.retreated = true; resolveBattle(tx, battle, opposing(active.side), 'retreat'); return; }
   if (!side.commander?.heroId) reject('illegal_action', 'Only a hero-led army can retreat');
   if (battle.encounter.kind === 'town_siege' && active.side === 'defender') reject('illegal_action', 'A town defender cannot retreat');
   const seaBlocked = boardingWithdrawalBlocked(tx.catalog, tx.state, battle, active.side);
@@ -817,6 +818,7 @@ export function commitBattleSurrender(tx: Tx): void {
   if (!active) reject('illegal_action', 'Surrender is chosen on a friendly activation');
   requireControl(tx, battle, active.side);
   const opponent = battle.sides[opposing(active.side)];
+  if (battle.standalone) { battle.sides[active.side].surrendered = true; resolveBattle(tx, battle, opposing(active.side), 'surrender'); return; }
   if (battle.encounter.kind === 'town_siege' && active.side === 'defender') reject('illegal_action', 'A town defender cannot surrender');
   if (!canSurrenderTo(battle, active.side) || !opponent.commander?.heroId) reject('illegal_action', 'Surrender is only possible against an enemy hero');
   const seaBlocked = boardingWithdrawalBlocked(tx.catalog, tx.state, battle, active.side);

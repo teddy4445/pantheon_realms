@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Greek Polis — city art test</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#131b22;color:#f1e8d2;font:14px system-ui}header{padding:16px 22px;border-bottom:1px solid #65573b;display:flex;gap:16px;align-items:center;flex-wrap:wrap}h1{font:24px Georgia;margin:0}button{background:#35404a;color:inherit;border:1px solid #88744a;padding:8px 12px;border-radius:4px;cursor:pointer}main{display:grid;grid-template-columns:1fr 280px;gap:16px;padding:16px}.stage{position:relative;width:100%;aspect-ratio:3/2;overflow:hidden;background:#27313a;touch-action:none}.background,.reference{position:absolute;width:100%;height:100%;object-fit:fill;pointer-events:none}.reference{display:none;z-index:1000}.building{position:absolute;transform:translate(-50%,-100%);height:auto;cursor:grab;user-select:none;touch-action:none}.building.selected{filter:drop-shadow(0 0 3px #ffe8a7)}aside{background:#202a33;padding:16px;max-height:85vh;overflow:auto}label{display:block;margin:8px 0}input[type=range]{width:100%}.muted{color:#b8b5a9;font-size:12px;line-height:1.5}.row{display:flex;gap:8px;align-items:center}.row input{flex:none}.row button{flex:1;text-align:left;border:0;background:transparent;padding:5px}#selected{border-top:1px solid #65573b;margin-top:16px;padding-top:12px}footer{padding:0 16px 20px;color:#b8b5a9} @media(max-width:900px){main{grid-template-columns:1fr}aside{max-height:none}}
+.building-controls{border-bottom:1px solid #46505b;padding:5px 0 10px}.building-controls select{width:100%;background:#131b22;color:#f1e8d2;padding:5px;border:1px solid #665a42;border-radius:3px}
+</style>
+<header><h1>Greek Polis · city art test</h1><button id="base">All base versions</button><button id="maximum">All upgraded</button><a href="versions.html" style="color:#ead9a9">All 33 assets</a><button id="all">Show all</button><button id="none">Background only</button><button id="reference">View concept</button><button id="reset">Reset layout</button><button id="export">Export placement JSON</button></header>
+<main><section><div class="stage" id="stage"><img class="background" src="background.png" alt="Greek city background"><img class="reference" id="concept" src="full-city.png" alt="Complete city concept"></div><p class="muted">Select a building, then drag it to move it. Use the controls to adjust size and depth. Export saves placements for later integration.</p></section><aside><strong>Buildings</strong><div id="list"></div><div id="selected"><strong id="name">Select a building</strong><label>Width <input id="width" type="range" min="5" max="100" step=".1"></label><label>Depth <input id="depth" type="range" min="1" max="30" step="1"></label><p id="coordinates" class="muted"></p></div></aside></main>
+<footer>Prototype art kit. Placement values use percentages of the scene; x is the image center and y its bottom edge. Assets are generated reconstruction layers, not a lossless decomposition of the concept.</footer>
+<script src="manifest.js"></script>
+<script src="preview.js"></script>
+</html>

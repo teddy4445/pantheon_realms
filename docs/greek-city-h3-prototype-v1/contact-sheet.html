@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Greek city asset sheet</title>
+<style>
+body{background:#18222d;color:#f4e8cc;font:14px system-ui;margin:24px}h1{font:28px Georgia}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{padding:10px;background:#28333e;border:1px solid #756446;border-radius:6px}.art{height:210px;background:repeating-conic-gradient(#5b6370 0% 25%,#737a85 0% 50%) 50% / 20px 20px;display:flex;align-items:center;justify-content:center}.art img{max-height:100%;max-width:100%;object-fit:contain}.name{padding-top:10px}
+</style><h1>Greek Polis · 18 building layers</h1><div class="grid" id="grid"></div><script src="manifest.js"></script><script>
+for(const b of CITY_MANIFEST.buildings){const card=document.createElement('div');card.className='card';const art=document.createElement('div');art.className='art';const img=document.createElement('img');img.src=b.file;img.alt=b.name;art.append(img);const name=document.createElement('div');name.className='name';name.textContent=b.name;card.append(art,name);document.querySelector('#grid').append(card);}
+</script></html>

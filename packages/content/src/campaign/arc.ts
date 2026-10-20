@@ -563,7 +563,7 @@ export function covenantMission(ctx: ArcCampaignContext, s: CovenantSpec): Built
     O({ id: `${P}_pass`, title: s.objectives.pass, description: `Defeat ${armyText(ctx, s.pass.guard.army)} at ${s.pass.name}.`, category: 'primary', initialStatus: 'active', condition: { type: 'site_cleared', siteId: ids.pass }, markerSiteId: ids.pass }),
     locked(`${P}_roost`, s.objectives.roost, `Drive ${armyText(ctx, s.roost.guard.army)} out of ${s.roost.name}.`, [`${P}_pass`], { type: 'site_cleared', siteId: ids.roost }, { markerSiteId: ids.roost }),
     locked(`${P}_covenant`, s.objectives.covenant, s.objectives.covenantDescription, [`${P}_roost`], { type: 'any', conditions: [{ type: 'flag', flag: 'covenant_bargain' }, { type: 'site_cleared', siteId: ids.home }] }, { hint: 'Both routes give the same covenant. The fight gives experience; the bargain saves troops. Assign the covenant to your town to build its dwelling.' }),
-    locked(`${P}_god`, s.objectives.god, 'Build the Temple’s second level and commit to a first minor god (20 Favor, irreversible).', [`${P}_covenant`], { type: 'player_has_minor_god' }, { hint: 'Open the Pantheon screen once the Temple stands at its second level. A god chosen earlier counts as soon as this step opens.' }),
+    locked(`${P}_god`, s.objectives.god, 'Build the Temple’s first level and commit to a first minor god (20 Favor, irreversible).', [`${P}_covenant`], { type: 'player_has_minor_god' }, { hint: 'Open the Pantheon screen once the Temple stands at its first level. A god chosen earlier counts as soon as this step opens.' }),
     locked(`${P}_elite`, s.objectives.elite, `Have at least 2 ${nameOf(ctx, t4.up)} in ${ctx.hero.name}’s army.`, [`${P}_god`], { type: 'hero_army_contains', heroId: ctx.hero.heroId, creatureId: t4.up, count: 2 }, { live: true, hint: 'Build the tier-4 dwelling and its upgrade, then recruit or train.' }),
     locked(`${P}_activate`, s.objectives.activate, `Cross ${s.bridge.name} and, with a god chosen and the elite in the army, pay 500 Gold and 2 Crystal at ${s.stone.name}.`, [`${P}_elite`], { type: 'site_activated', siteId: ids.stone }, { markerSiteId: ids.stone }),
     optional(`${P}_cache`, s.objectives.cache, s.cache.description, { type: 'site_visited', siteId: ids.cache }, ids.cache),
@@ -620,7 +620,7 @@ export function covenantMission(ctx: ArcCampaignContext, s: CovenantSpec): Built
       helpTopics: [
         IN_ORDER,
         { id: 'covenant', title: 'Covenants', text: 'Some dwellings need a covenant. A covenant won in a mission is assigned to a town from the journal or the town screen; the dwelling can then be built there.' },
-        { id: 'first_god', title: 'The first minor god', text: 'A first minor god needs the Temple’s second level and costs 20 Favor. The choice is permanent and carries into later missions.' },
+        { id: 'first_god', title: 'The first minor god', text: 'A first minor god needs the Temple’s first level and costs 20 Favor. The choice is permanent and carries into later missions.' },
         ...(s.help ?? []),
       ],
     },

@@ -1,0 +1,15 @@
+Pantheon Realms 1.8.0 — Single Battle
+
+Full regression: 165 files passed; 1520 tests passed, 1 skipped.
+Expanded standalone suite: 8 tests passed (2 added after the full run).
+Browser: all 4 encounter flows, editor/library, spectator/pause/settings/rematch, unfinished sea save/load passed.
+New Game regression passed with current catalog counts.
+Typecheck, package-boundary validation and production build passed.
+Packaged desktop: all four encounter types, final artwork, deployment, battle, result, version and desktop bridge passed.
+
+Installer: installer/Pantheon-Realms-Setup-1.8.0-x64.exe
+Bytes: 1422866971
+SHA-256: 606F6DEAEE148BE39A3665FF3128DB14BE7CB46FD4056A89D74A69817F61C274
+Built and copied installer hashes match.
+
+The pre-existing whitespace warnings in strategic.ts and hiring.test.ts were left unchanged.

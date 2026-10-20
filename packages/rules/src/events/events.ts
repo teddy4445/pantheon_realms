@@ -32,6 +32,7 @@ import type { HeroAttribute } from '../definitions/logic';
 import type { BattleSideId } from '../state/match';
 
 export type GameEventPayload =
+  | { kind: 'CheatApplied'; playerId: PlayerId; effect: import('../systems/cheats').CheatEffect }
   // Economy & calendar
   | { kind: 'TurnEnded'; playerId: PlayerId }
   | { kind: 'TurnStarted'; playerId: PlayerId; day: number }

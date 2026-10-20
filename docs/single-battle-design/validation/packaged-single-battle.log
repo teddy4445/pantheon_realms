@@ -1,0 +1,7 @@
+(node:19880) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+PASS: packaged Land setup, assets, deployment, battle and result
+PASS: packaged Siege setup, assets, deployment, battle and result
+PASS: packaged Naval setup, assets, deployment, battle and result
+PASS: packaged Sea setup, assets, deployment, battle and result
+PASS: version 1.8.0, packaged origin, desktop bridge, all four battle types; no JavaScript errors.

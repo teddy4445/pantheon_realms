@@ -943,19 +943,17 @@ export function AdventureScreen() {
         const tp = tpIndex >= 0 ? teleports[tpIndex] : undefined;
         if (tp) played.add(tpIndex);
         const teleportTo = tp && tp.kind === 'HeroTeleported' ? tp.to : undefined;
-        const seen = mine || m.path.some((p) => vis.has(cellIndex(store.session!.state.world.map, p)));
-        if (!seen) continue;
         // Aboard a ship (navalMovementV1): the hull sails the committed route; the hidden avatar simply follows it.
         const last = m.path[m.path.length - 1];
         const sail = last ? events.find((x) => x.kind === 'ShipMoved' && x.heroId === m.heroId && hexEquals(x.path[x.path.length - 1] ?? last, last)) : undefined;
         if (sail && sail.kind === 'ShipMoved') {
-          await c.playShipMove(sail.shipId, sail.path, adventurePlaybackFactor(store.prefs, source === 'ai'), mine);
+          await c.playShipMove(sail.shipId, sail.path, adventurePlaybackFactor(store.prefs, source === 'ai'), true, mine ? undefined : p => vis.has(cellIndex(store.session!.state.world.map, p)));
           continue;
         }
         if (mine) store.audio?.heroSteps(true);
         try {
           // The viewer's own walk keeps its route on the ground, cleared step by step.
-          await c.playHeroMove(m.heroId, m.path, adventurePlaybackFactor(store.prefs, source === 'ai'), true, mine || (teleportTo && vis.has(cellIndex(store.session!.state.world.map, teleportTo))) ? teleportTo : undefined, mine);
+          await c.playHeroMove(m.heroId, m.path, adventurePlaybackFactor(store.prefs, source === 'ai'), true, mine || (teleportTo && vis.has(cellIndex(store.session!.state.world.map, teleportTo))) ? teleportTo : undefined, mine, mine ? undefined : p => vis.has(cellIndex(store.session!.state.world.map, p)));
         } finally {
           if (mine) store.audio?.heroSteps(false);
         }

@@ -63,6 +63,8 @@ import { Button, Panel, SectionTitle, Segmented, Toggle } from '../components/ki
 import { FrontendShell, IllustratedChoice, radioKeys } from '../components/frontend';
 import { frontendArt, navalRandomArt } from '../assets/manifest';
 import '../styles/navalRandom.css';
+import { Icon } from '../assets/icons';
+import '../styles/polish.css';
 import { DifficultyPicker } from './Setup';
 import { SeatRow, patchSeat, patronsOf, type SeatDraft } from '../components/seats';
 import { NEUTRAL_SITE_TABLE } from '../app/editorV2Sites';
@@ -392,10 +394,10 @@ export function RandomSetupScreen() {
                           </div>
                   </section>
                 </div>
-                <SectionTitle>The land</SectionTitle>
-                <div className="random-setup__grid">
+                <SectionTitle>Shape your world</SectionTitle>
+                <div className="random-setup__grid world-options">
               <div className="setting-block">
-                <div className="setting-block__label">Wandering monsters</div>
+                <div className="setting-block__label"><span className="world-options__icon"><Icon name="bestiary" /></span>Wandering monsters</div>
                 <Segmented
                   label="Wandering monsters"
                   value={monsters}
@@ -407,9 +409,10 @@ export function RandomSetupScreen() {
                   onChange={setMonsters}
                   testId="random-monsters"
                 />
+                <p className="small faint setting-block__details">{monsters === 'none' ? 'No roaming armies. Site guards remain.' : monsters === 'few' ? 'Occasional roaming armies challenge your explorers.' : 'Frequent roaming armies make the wilderness dangerous.'}</p>
               </div>
               <div className="setting-block">
-                <div className="setting-block__label">Guards</div>
+                <div className="setting-block__label"><span className="world-options__icon"><Icon name="defense" /></span>Guards</div>
                 <Segmented
                   label="Guard strength"
                   value={guards}
@@ -424,7 +427,7 @@ export function RandomSetupScreen() {
                 <p className="small faint setting-block__details">Armies guarding mines, camps, treasures, passes and the center ({guards === 'weak' ? '×0.6' : guards === 'strong' ? '×1.6' : '×1'}); wandering monsters too.</p>
               </div>
               <div className="setting-block">
-                <div className="setting-block__label">Treasure</div>
+                <div className="setting-block__label"><span className="world-options__icon"><Icon name="gold" /></span>Treasure</div>
                 <Segmented
                   label="Treasure"
                   value={treasure}
@@ -439,7 +442,7 @@ export function RandomSetupScreen() {
                 <p className="small faint setting-block__details">{treasure === 'scarce' ? 'Fewer sites, smaller rewards (×0.6).' : treasure === 'rich' ? 'A small gold mine at home, a sealed vault with a major artifact, a second crystal deposit, a relic at the center; rewards ×1.5.' : 'Mines, camps, one ruin with a minor artifact and a wayside shrine per empire.'}</p>
               </div>
               <div className="setting-block">
-                <div className="setting-block__label">Roads</div>
+                <div className="setting-block__label"><span className="world-options__icon"><Icon name="movement" /></span>Roads</div>
                 <Segmented
                   label="Roads"
                   value={roads}
@@ -453,10 +456,10 @@ export function RandomSetupScreen() {
                 <p className="small faint setting-block__details">{roads === 'full' ? 'Roads from every town to its mines, camps and the contested center.' : 'Roads only to the sawmill and quarry; everything else across country.'}</p>
               </div>
               <div className="setting-block">
-                <div className="setting-block__label">Map options</div>
+                <div className="setting-block__label"><span className="world-options__icon"><Icon name="map" /></span>Map options</div>
                 <div className="row gap">
                   <Toggle checked={revealMap} onChange={setRevealMap} label="Revealed map" />
-                  <span className="small">Revealed map — terrain and sites known from the start (heroes stay hidden)</span>
+                  <span className="small">Revealed map — see terrain and sites from the start. Heroes stay hidden.</span>
                 </div>
                 {naval ? (
                   <div className="row gap setting-block__details naval-portal-lock" data-testid="random-portals-lock">
@@ -468,16 +471,16 @@ export function RandomSetupScreen() {
                 ) : (
                   <div className="row gap setting-block__details">
                     <Toggle checked={portals} onChange={setPortals} label="Two-way portals" />
-                    <span className="small">Two-way portals link the empires’ outer lands: a shortcut to a rival — and a back door for them.</span>
+                    <span className="small">Two-way portals — shortcuts between empires, open to both sides.</span>
                   </div>
                 )}
                 <div className="row gap setting-block__details">
                   <Toggle checked={climateRules} onChange={setClimateRules} label="Climate rules" />
-                  <span className="small">Climate rules — the map’s weather changes every battle a little, for both sides alike: fog shortens shots, sand slows the ground troops, storms keep flyers low.</span>
+                  <span className="small">Weather in battle — fog limits shots, sand slows troops, and storms hinder flyers. Applies to both sides.</span>
                 </div>
               </div>
               <div className="setting-block">
-                <div className="setting-block__label">Unowned towns</div>
+                <div className="setting-block__label"><span className="world-options__icon"><Icon name="town" /></span>Unowned towns</div>
                 <Segmented
                   label="Unowned towns"
                   value={unownedTowns}
@@ -502,15 +505,15 @@ export function RandomSetupScreen() {
                 </p>
               </div>
               <div className="setting-block" data-testid="random-neutrals">
-                <div className="setting-block__label">Neutral creatures</div>
+                <div className="setting-block__label"><span className="world-options__icon"><Icon name="recruit" /></span>Neutral creatures</div>
                 <div className="row gap editor-v2-random">
                   <Toggle checked={neutralCreatures} onChange={setNeutralCreatures} label="New neutral creatures" />
                   <span className="small" data-testid="random-neutrals-text">
-                    New neutral creatures — hiring sites any pantheon may use, only where the creature’s habitat fits: {neutralCount === 1 ? 'one kind' : 'two kinds'} on a {SKIRMISH_SIZE_LABEL[size].toLowerCase()} map, a site in each empire’s lands.{' '}
+                    Recruit neutral creatures — camps open to every pantheon: {neutralCount === 1 ? 'one kind' : 'two kinds'} on a {SKIRMISH_SIZE_LABEL[size].toLowerCase()} map, a site in each empire’s lands.{' '}
                     {neutralNames.length ? `${typeInfo.label}: ${neutralNames.length > 1 ? `${neutralNames.slice(0, -1).join(', ')} or ${neutralNames[neutralNames.length - 1]}` : neutralNames[0]}.` : `None lives in ${typeInfo.label} lands.`}
                   </span>
                 </div>
-                <p className="small faint setting-block__details">Off by default: a map is then laid out exactly as without them.</p>
+
               </div>
                 </div>
               </>

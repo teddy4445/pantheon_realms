@@ -1,3 +1,4 @@
+import { SingleBattleIcon } from '../components/SingleBattleIcon';
 /**
  * Setup flow. Campaign: S02 Game Mode → S03 Campaign → Mission Briefing →
  * Adventure Map (a campaign is played with its own pantheon). Skirmish: S02 →
@@ -38,7 +39,8 @@ export function defaultPatron(catalog: ContentCatalog, pantheonId: string | null
 export function GameModeScreen() {
   const store = useStore();
   const catalog = store.catalog;
-  const pick = (mode: 'campaign' | 'skirmish' | 'random' | 'editor') => {
+  const pick = (mode: 'campaign' | 'skirmish' | 'random' | 'editor' | 'single') => {
+    if (mode === 'single') { store.goto('single-battle'); return; }
     if (mode === 'editor') {
       store.goto('map-editor');
       return;
@@ -66,6 +68,7 @@ export function GameModeScreen() {
     },
     { id: 'skirmish' as const, art: 'frontend.mode.skirmish', title: 'Skirmish', text: `${skirmishChoices} authored maps against the AI or other players on this computer (hot-seat). All ${pantheons} pantheons.` },
     { id: 'random' as const, art: 'frontend.mode.random-map', title: 'Random Map', text: `A new map every time: ${RANDOM_MAP_TYPES.length} layouts, 2 to ${SKIRMISH_MAX_EMPIRES} empires, AI or hot-seat seats and a choice of victory.` },
+    { id: 'single' as const, art: 'frontend.mode.single-battle', title: 'Single Battle', text: '' },
     { id: 'editor' as const, art: 'frontend.mode.map-editor', title: 'Map Editor', text: 'Draw your own map — ground, roads, towns, mines, treasures and the goal — keep it in the map library and play it.' },
   ];
   return (
@@ -77,7 +80,7 @@ export function GameModeScreen() {
     >
       <div className="fe-modes" role="group" aria-label="Game modes">
         {modes.map((m) => (
-          <IllustratedChoice key={m.id} artId={m.art} name={m.title} description={m.text} onSelect={() => pick(m.id)} testId={`mode-${m.id}`} className="fe-choice--mode" />
+          <IllustratedChoice key={m.id} artId={m.art} name={<><SingleBattleIcon name={({campaign:'campaign',skirmish:'defender',random:'random',single:'land',editor:'editor'})[m.id]} /> {m.title}</>} title={m.text || 'Single Battle'} onSelect={() => pick(m.id)} testId={`mode-${m.id}`} className="fe-choice--mode" />
         ))}
       </div>
     </FrontendShell>

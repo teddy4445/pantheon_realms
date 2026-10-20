@@ -9,7 +9,7 @@ import { frontendArt, resolveAsset } from '../assets/manifest';
 import { ScreenHeader } from './game';
 import { Icon, type IconName } from '../assets/icons';
 
-export type Backdrop = 'title-hall' | 'atlas' | 'library';
+export type Backdrop = 'title-hall' | 'atlas' | 'library' | 'battle-room';
 
 /** An absolute URL for a CSS custom property (a relative one would resolve against the stylesheet using it). */
 function cssUrl(url: string): string {

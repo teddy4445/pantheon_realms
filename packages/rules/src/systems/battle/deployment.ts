@@ -172,7 +172,7 @@ export function deploymentAnchors(catalog: ContentCatalog, battle: BattleState, 
 /** Sides that still have to confirm deployment; empty when no interactive step applies. */
 function sidesNeedingDeployment(catalog: ContentCatalog, battle: BattleState): BattleSideId[] {
   return (['attacker', 'defender'] as const).filter(
-    (side) => battle.sides[side].controller === 'human' && tacticsColumns(catalog, battle, side) > 0 && sideStacks(battle, side).length > 0,
+    (side) => battle.sides[side].controller === 'human' && (battle.standalone || tacticsColumns(catalog, battle, side) > 0) && sideStacks(battle, side).length > 0,
   );
 }
 

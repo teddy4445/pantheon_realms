@@ -35,7 +35,7 @@ export const GREEK_GODS: readonly GodDefinition[] = [
     domain: 'Knowledge & Strategy',
     role: 'minor',
     exclusivityGroup: 'first_minor',
-    requirements: [{ type: 'has_building', buildingId: 'temple_2' }],
+    requirements: [{ type: 'has_building', buildingId: 'temple_1' }],
     favorCost: 20,
     benefits: [
       { type: 'commander_attribute', attribute: 'defense', amount: 1 },
@@ -54,7 +54,7 @@ export const GREEK_GODS: readonly GodDefinition[] = [
     domain: 'War & Conquest',
     role: 'minor',
     exclusivityGroup: 'first_minor',
-    requirements: [{ type: 'has_building', buildingId: 'temple_2' }],
+    requirements: [{ type: 'has_building', buildingId: 'temple_1' }],
     favorCost: 20,
     benefits: [
       { type: 'commander_attribute', attribute: 'attack', amount: 1 },
@@ -73,7 +73,7 @@ export const GREEK_GODS: readonly GodDefinition[] = [
       ['apollo', 'Apollo', 'Sun & Inspiration', 'Sing before the battle, and the battle sings back.', blessing(BLESSINGS.attribute('power', 1), BLESSINGS.morale(1))],
       ['artemis', 'Artemis', 'Hunt & Wilderness', 'Wait for the wind. Then loose.', blessing(BLESSINGS.creatures('attack', 2, { ability: 'shooter', label: 'Your shooters' }), BLESSINGS.vision(1))],
     ] as const
-  ).map(([id, name, domain, quote, b]) => firstMinorGod({ id, pantheonId: 'greek', name, domain, quote, ...b, portraitAssetId: `god.greek.${id}.portrait`, templeId: 'temple_2' })),
+  ).map(([id, name, domain, quote, b]) => firstMinorGod({ id, pantheonId: 'greek', name, domain, quote, ...b, portraitAssetId: `god.greek.${id}.portrait`, templeId: 'temple_1' })),
   // Second minor-god choice (proposed this build; not available in The Three Beacons).
   ...(
     [

@@ -33,6 +33,8 @@ import './styles/editorv2.css';
 import './styles/caravans.css';
 import './styles/naval.css';
 import './styles/seaSites.css';
+import './styles/polish.css';
+import './styles/singleBattle.css';
 import { NEUTRAL_THEME, installGuiStyles } from './assets/guiArt';
 
 import { createElement } from 'react';

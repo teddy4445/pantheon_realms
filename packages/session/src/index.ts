@@ -104,3 +104,5 @@ export {
 export { coastalTowerSkin, customWaterSiteKind, seaSiteCustomProblem } from '@pr/campaign';
 // Sea creatures (2026-10-17): the editor's checks for sea-monster stacks.
 export { SEA_MONSTER_KIND, seaMonsterCustomProblem } from '@pr/campaign';
+
+export * from './singleBattle';

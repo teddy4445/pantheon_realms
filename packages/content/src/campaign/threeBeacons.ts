@@ -811,7 +811,7 @@ export const THREE_BEACONS: CampaignDefinition = {
     'A storm has extinguished the three signal beacons protecting the coast of Asterion. Lead Alexios through three short linked missions to reconnect the coast before its settlements abandon one another.',
   pantheonId: 'greek',
   startingGodOptions: ['zeus'],
-  startingGodNote: 'Zeus is the fixed patron of this campaign. Your first minor-god choice — Athena or Ares — opens in Mission 2, once Temple II stands; it is never required.',
+  startingGodNote: 'Zeus is the fixed patron of this campaign. Your first minor-god choice — Athena or Ares — opens in Mission 2, once Temple I stands; it is never required.',
   missionIds: [M01.id, M02.id, M03.id],
   heroDefinitionId: 'alexios',
   carryoverPolicy: [

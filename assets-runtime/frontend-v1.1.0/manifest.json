@@ -390,6 +390,18 @@
       "fit": "cover",
       "alt": "Illustrative central valley terrain",
       "provenance": "Native built-in image generator PNG; no resampling or code retouching"
+    },
+    "frontend.mode.single-battle": {
+      "file": "single-battle-v1/mode-single-battle.png",
+      "width": 1536,
+      "height": 1024,
+      "alt": "Opposing mythological armies, fortified city and ships"
+    },
+    "frontend.backdrop.battle-room": {
+      "file": "single-battle-v1/setup-background.png",
+      "width": 1672,
+      "height": 941,
+      "alt": "Ancient war room overlooking a fortified harbor"
     }
   }
 }

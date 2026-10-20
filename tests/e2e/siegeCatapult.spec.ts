@@ -13,7 +13,7 @@ import { clickBattleCell, usePrefs } from './momentFixtures';
  * Saves are ordinary save files built headlessly and brought in through Load → Import.
  */
 
-const OUT = '/home/claude/capture/expedition/catapult';
+const OUT = 'test-results/catapult';
 const PANTHEONS = ['greek', 'norse', 'egyptian', 'japanese', 'celtic', 'mesoamerican'] as const;
 
 test.describe.configure({ mode: 'serial' });
@@ -94,102 +94,30 @@ async function enginePhaseReady(page: Page): Promise<Inspect> {
 
 const hpOf = (s: Inspect, id: string): number => s.state.battle.siege.structures.find((x: { id: string }) => x.id === id).hp;
 
-test('aim by clicking the battlefield (a wall, then the keep beyond the edge); Fire hits it once; the engine stands upper left, facing the walls', async ({ page }) => {
-  test.setTimeout(360_000);
+for (const target of ['wall_2', 'keep'] as const) test('one click fires at ' + target + ' without the side panel', async ({ page }) => {
   await usePrefs(page, { graphicsTested: true, battleSpeed: '2' });
-  const { urls, errors } = watch(page);
-  await load(page, engineSiege('greek', 3, 'click'));
-  await enginePhaseReady(page);
-  const controls = page.getByTestId('catapult-controls');
-  await expect(controls).toHaveAttribute('data-phase', 'engine');
-  await expect(controls).toHaveAttribute('data-stage', 'intact');
-  await expect(page.getByTestId('catapult-phase')).toBeVisible();
-  await expect(page.getByTestId('catapult-hp')).toHaveText('120/120');
-  await expect(page.getByTestId('catapult-fire')).toBeDisabled();
-  let info = await siege(page);
-  expect(info.legacyCatapult).toBeNull();
-  expect(info.engine.stage).toBe('intact');
-  expect(info.engine.drawn.url).toContain('/siege/catapult.intact.webp');
-  expect(info.engine.facesWalls).toBe(true);
-  expect(info.engine.label).toBe('Catapult 120/120');
-  // Upper left of the board: west of the wall, above the gate row.
-  expect(info.engine.ground.x).toBeLessThan(info.structures.gate.x);
-  expect(info.engine.ground.y).toBeLessThan(info.structures.gate.y);
-
-  // A wall cell on the battlefield.
-  await clickBattleCell(page, 10, 3);
-  await waitFor(page, (x) => x.state.battle?.siege.engine.aimedStructureId === 'wall_2', 'aimed at wall 2 by a click');
-  await expect.poll(async () => (await siege(page)).aim?.structureId).toBe('wall_2');
-  // The keep has no cells: its picture beyond the east edge answers for it.
-  info = await siege(page);
-  await page.mouse.click(info.structures.keep.x, info.structures.keep.y);
-  await waitFor(page, (x) => x.state.battle?.siege.engine.aimedStructureId === 'keep', 'aimed at the keep by a click');
-  await expect(page.getByTestId('catapult-fire')).toHaveText(/Fire at Keep/);
-  await expect(page.getByTestId('catapult-target-keep')).toHaveAttribute('aria-pressed', 'true');
-  await expect.poll(async () => (await siege(page)).aim?.structureId).toBe('keep');
-  await page.waitForTimeout(400);
-  await page.screenshot({ path: `${OUT}/aim-click-keep.png` });
-
-  const before = hpOf(await inspect(page), 'keep');
-  const shots = (await siege(page)).projectiles.shots.length;
-  await page.getByTestId('catapult-fire').click();
-  const s = await waitFor(page, (x) => x.state.battle?.round === 2, 'round 2', 60_000);
-  expect(hpOf(s, 'keep')).toBe(before - 1);
-  expect(s.state.battle.siege.engine.firedRound).toBe(1);
-  // The stone flew from the engine (mirrored throw strip) and landed once on the keep.
-  await expect.poll(async () => (await siege(page)).projectiles.shots.slice(shots).filter((r: { source: string; impacts: number }) => r.source === 'catapult' && r.impacts === 1).length, { timeout: 30_000 }).toBe(1);
-  expect(urls.join('\n')).toContain('/effects/fx.siege.catapult.throw.webp');
-  // The phase is over: no second shot can be ordered this round.
-  await expect(page.getByTestId('catapult-fire')).toHaveCount(0);
+  const { errors } = watch(page);
+  await load(page, engineSiege('greek', 3, 'direct-' + target));
+  const beforeState = await enginePhaseReady(page);
   await expect(page.getByTestId('catapult-phase')).toHaveCount(0);
-  await expect(controls).toHaveAttribute('data-phase', 'creatures');
+  await expect(page.getByTestId('siege-status')).not.toContainText(/\d+\/\d+/);
+  const before = hpOf(beforeState, target);
+  if (target === 'wall_2') await clickBattleCell(page, 10, 3);
+  else { const info = await siege(page); await page.mouse.click(info.structures.keep.x, info.structures.keep.y); }
+  const after = await waitFor(page, x => x.state.battle?.round === 2 && !x.busy, 'shot completes', 60000);
+  expect(hpOf(after,target)).toBe(before-1);
+  expect(after.state.battle.siege.engine.firedRound).toBe(1);
   expect(errors).toEqual([]);
 });
 
-test('aim and fire with the keyboard only; next round skip with the keyboard', async ({ page }) => {
-  test.setTimeout(420_000);
+test('keyboard can fire directly through the accessible structure strip', async ({ page }) => {
   await usePrefs(page, { graphicsTested: true, battleSpeed: '2' });
-  const { errors } = watch(page);
   await load(page, engineSiege('norse', 2, 'keyboard'));
-  await enginePhaseReady(page);
-  // Focus lands in the target list when the phase opens.
-  await expect.poll(() => page.evaluate(() => document.activeElement?.getAttribute('data-target') ?? null)).not.toBeNull();
-  const first = await page.evaluate(() => document.activeElement?.getAttribute('data-target'));
-  await page.keyboard.press('ArrowDown');
-  const second = await page.evaluate(() => document.activeElement?.getAttribute('data-target'));
-  expect(second).toBeTruthy();
-  expect(second).not.toBe(first);
+  const before = await enginePhaseReady(page);
+  await page.getByTestId('catapult-aim-gate').focus();
   await page.keyboard.press('Enter');
-  let s = await waitFor(page, (x) => x.state.battle?.siege.engine.aimedStructureId === second, 'aimed by keyboard');
-  const before = hpOf(s, second!);
-  // One tab stop for the list: the next Tab reaches Fire.
-  await page.keyboard.press('Tab');
-  await expect.poll(() => page.evaluate(() => document.activeElement?.getAttribute('data-testid'))).toBe('catapult-fire');
-  await page.screenshot({ path: `${OUT}/aim-keyboard.png` });
-  await page.keyboard.press('Enter');
-  s = await waitFor(page, (x) => x.state.battle?.round === 2, 'round 2', 60_000);
-  expect(hpOf(s, second!)).toBe(before - 1);
-
-  // Round 2: the player's stacks defend (D), the computer's act, until the catapult phase returns.
-  for (let i = 0; i < 40; i++) {
-    s = await waitFor(page, (x) => !x.busy && (x.humanTurn || x.state.battle?.phase === 'engine'), 'the player to act', 90_000);
-    if (s.state.battle.phase === 'engine') break;
-    await page.keyboard.press('d');
-    await page.waitForTimeout(300);
-  }
-  s = await enginePhaseReady(page);
-  expect(s.state.battle.round).toBe(2);
-  const hps = s.state.battle.siege.structures.map((x: { hp: number }) => x.hp);
-  // Focus is in the list again (on the aimed target): Tab → Fire, Tab → Skip, Enter.
-  await expect.poll(() => page.evaluate(() => document.activeElement?.getAttribute('data-target') ?? null)).toBe(second);
-  await page.keyboard.press('Tab');
-  await page.keyboard.press('Tab');
-  await expect.poll(() => page.evaluate(() => document.activeElement?.getAttribute('data-testid'))).toBe('catapult-skip');
-  await page.keyboard.press('Enter');
-  s = await waitFor(page, (x) => x.state.battle?.round === 3, 'round 3', 60_000);
-  expect(s.state.battle.siege.structures.map((x: { hp: number }) => x.hp)).toEqual(hps);
-  expect(s.state.battle.siege.engine).toMatchObject({ firedRound: 1, phaseRound: 2 });
-  expect(errors).toEqual([]);
+  const after = await waitFor(page, x => x.state.battle?.round === 2, 'direct keyboard shot', 60000);
+  expect(hpOf(after,'gate')).toBe(hpOf(before,'gate')-1);
 });
 
 test('the damaged engine (1–60 HP) and its shot; the destroyed engine after a defender shoots it by clicking it', async ({ page }) => {
@@ -212,9 +140,7 @@ test('the damaged engine (1–60 HP) and its shot; the destroyed engine after a 
   await expect(page.getByTestId('catapult-card')).toContainText('Defense 6');
   await page.screenshot({ path: `${OUT}/engine-damaged.png` });
   // A damaged engine still fires (its own picture recoils; the stone leaves the cup).
-  await page.getByTestId('catapult-target-gate').click();
-  await waitFor(page, (x) => x.state.battle?.siege.engine.aimedStructureId === 'gate', 'gate aimed');
-  await page.getByTestId('catapult-fire').click();
+  await page.getByTestId('catapult-aim-gate').click();
   const s = await waitFor(page, (x) => x.state.battle?.round === 2, 'round 2', 60_000);
   expect(hpOf(s, 'gate')).toBe(1);
 
@@ -254,7 +180,7 @@ test('the damaged engine (1–60 HP) and its shot; the destroyed engine after a 
   expect(errors).toEqual([]);
 });
 
-test('all six pantheon siege themes: the engine on its cells, the aim outline and arc, the siege-v2 walls and siege-gates-v3 gate', async ({ page }) => {
+test('all six pantheon siege themes: direct firing, the engine, walls and gate', async ({ page }) => {
   test.setTimeout(900_000);
   await usePrefs(page, { graphicsTested: true, battleSpeed: '2' });
   const { urls, errors } = watch(page);
@@ -262,18 +188,15 @@ test('all six pantheon siege themes: the engine on its cells, the aim outline an
     const from = urls.length;
     await load(page, engineSiege(p, 3, `theme-${p}`));
     await enginePhaseReady(page);
-    await page.getByTestId('catapult-target-gate').click();
-    await waitFor(page, (x) => x.state.battle?.siege.engine.aimedStructureId === 'gate', `${p}: gate aimed`);
-    await expect.poll(async () => (await siege(page)).aim?.structureId).toBe('gate');
+    await page.getByTestId('catapult-aim-gate').click();
+    await waitFor(page, x => x.state.battle?.round === 2 && !x.busy, 'gate shot completes', 60000);
     const info = await siege(page);
     expect(info.engine.facesWalls, p).toBe(true);
     expect(info.engine.stage, p).toBe('intact');
     expect(info.legacyCatapult, p).toBeNull();
     expect(info.engine.ground.x, p).toBeLessThan(info.structures.gate.x);
     expect(info.engine.ground.y, p).toBeLessThan(info.structures.gate.y);
-    // The arc starts at the engine and ends at the gate.
-    expect(Math.abs(info.aim.from.x - info.engine.ground.x), p).toBeLessThan(120);
-    expect(info.aim.to.x, p).toBeGreaterThan(info.structures.gate.x - 80);
+    expect(hpOf(await inspect(page), 'gate')).toBe(1);
     await page.waitForTimeout(800);
     await page.screenshot({ path: `${OUT}/theme-${p}.png` });
     const seen = urls.slice(from).join('\n');

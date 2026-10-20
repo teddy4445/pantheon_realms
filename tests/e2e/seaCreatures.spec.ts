@@ -347,57 +347,23 @@ test('160 % interface scale: the sea board keeps its painting’s proportions; D
   await shot(page, 'board-160', 900);
 });
 
-test('encyclopedia: the sea section lists the ten forms with their cards and upgrade comparisons; one animated preview at a time, paused off-screen', async ({ page }) => {
-  test.setTimeout(400_000);
+test('encyclopedia: all ten sea forms use compact family cards and open unit details', async ({ page }) => {
   await page.setViewportSize(SMALL);
   const errors = errorsOf(page);
   await usePrefs(page, { graphicsTested: true, tutorialHints: false });
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
   await page.getByTestId('menu-encyclopedia').click();
-  await waitFor(page, (s) => s.screen === 'encyclopedia', 'encyclopedia', 60_000);
+  await page.getByTestId('codex-filter-neutral').click();
   const sea = page.getByTestId('codex-pantheon-sea');
-  await sea.scrollIntoViewIfNeeded();
-  await expect(sea).toBeVisible();
-  for (const id of SEA_FORMS) await expect(sea.getByTestId(`sea-card-${id}`)).toHaveCount(1);
-  // The sea families are not listed again with the land neutrals.
+  for (const id of SEA_FORMS) await expect(sea.getByTestId(`codex-${id}`)).toHaveCount(1);
+  await expect(sea.locator('.bestiary-tier')).toHaveCount(5);
+  await expect(sea.locator('table')).toHaveCount(0);
   await expect(page.getByTestId('codex-pantheon-neutral').getByTestId('codex-family-triton')).toHaveCount(0);
-  for (const fam of ['hippocampus', 'triton', 'isonade', 'cetus', 'hafgufa']) await expect(sea.getByTestId(`codex-sea-compare-${fam}`)).toBeVisible();
-  await expect(sea.getByTestId('codex-sea-compare-isonade')).toContainText('Range');
-  await expect(sea).not.toContainText(/sea_encounters|renewable_shots|_hippocampus/);
-  await sea.getByTestId('codex-sea-family-isonade').scrollIntoViewIfNeeded();
-  await shot(page, 'codex-compare-isonade-1280');
-  // One preview at a time.
-  await sea.getByTestId('codex-sea-preview-triton').click();
-  await expect(page.getByTestId('sea-preview-triton')).toHaveAttribute('data-state', 'playing');
-  await sea.getByTestId('codex-sea-preview-cetus').click();
-  await expect(page.locator('[data-testid^="sea-preview-"][data-state]')).toHaveCount(1);
-  await expect(page.getByTestId('sea-preview-cetus')).toHaveAttribute('data-state', 'playing');
-  await sea.getByTestId('codex-sea-family-cetus').scrollIntoViewIfNeeded();
-  await shot(page, 'codex-preview-cetus-1280', 900);
-  // Off-screen it pauses; back in view it plays.
-  await page.getByTestId('codex-sea-family-hippocampus').scrollIntoViewIfNeeded();
-  await page.evaluate(() => document.querySelector('.codex-pantheon--sea')?.closest('.scroll, [class*="scroll"]')?.scrollTo({ top: 0 }));
-  await page.locator('[data-testid="codex-pantheon-greek"]').scrollIntoViewIfNeeded().catch(() => undefined);
-  await expect(page.getByTestId('sea-preview-cetus')).toHaveAttribute('data-state', 'paused', { timeout: 10_000 });
-  await page.getByTestId('sea-preview-cetus').scrollIntoViewIfNeeded();
-  await expect(page.getByTestId('sea-preview-cetus')).toHaveAttribute('data-state', 'playing', { timeout: 10_000 });
-  // Each form idle, facing right and left (the board shows the sea side facing left).
-  for (const id of SEA_FORMS) {
-    await sea.getByTestId(`codex-sea-preview-${id}`).scrollIntoViewIfNeeded();
-    await sea.getByTestId(`codex-sea-preview-${id}`).click();
-    const pv = page.getByTestId(`sea-preview-${id}`);
-    await expect(pv).toHaveAttribute('data-state', 'playing');
-    await page.waitForTimeout(500);
-    await pv.locator('canvas').screenshot({ path: `${OUT}/idle-${id}-right.png` });
-    await pv.getByTestId('sea-preview-facing').click();
-    await expect(pv).toHaveAttribute('data-facing', 'left');
-    await page.waitForTimeout(500);
-    await pv.locator('canvas').screenshot({ path: `${OUT}/idle-${id}-left.png` });
-    const action = id.includes('hippocampus') ? 'attack' : 'shoot';
-    await pv.getByTestId(`sea-preview-anim-${action}`).click();
-    await page.waitForTimeout(450);
-    await pv.locator('canvas').screenshot({ path: `${OUT}/${action}-${id}.png` });
-  }
+  await sea.scrollIntoViewIfNeeded();
+  await shot(page, 'codex-sea-compact-1280');
+  await sea.getByTestId('codex-hippocampus').click();
+  await expect(page.getByTestId('unit-name')).toHaveText('Hippocampus');
+  await expect(page.locator('.unit-viewer')).toBeVisible();
   expect(realErrors(errors)).toEqual([]);
 });
 

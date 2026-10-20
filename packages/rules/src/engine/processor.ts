@@ -1,3 +1,4 @@
+import { commitCheat } from '../systems/cheats';
 /**
  * CommandProcessor: the single authoritative mutation path.
  *
@@ -98,6 +99,7 @@ export function processCommand(ctx: RulesContext, state: MatchState, command: Ga
       return fail('decision_pending', 'Resolve the pending level-up choice first');
     }
   }
+  if (state.standalone && !isBattle) return fail('not_in_scope', 'Only battle orders are available in Single Battle');
   if (!isBattle && command.actorPlayerId === NEUTRAL_PLAYER_ID) return fail('not_owner', 'Invalid actor');
 
   const draft = deepClone(state);
@@ -106,6 +108,17 @@ export function processCommand(ctx: RulesContext, state: MatchState, command: Ga
     // Scouting intel: a match's first command also records what every player saw at the start.
     if (draft.intel === undefined && !draft.battle) refreshIntelSnapshots(tx.catalog, draft);
     dispatch(tx, command);
+    if (draft.standalone) {
+      draft.standalone.commands.push(deepClone(command));
+      const totals = draft.standalone.damage ??= { attacker: 0, defender: 0 };
+      for (const e of tx.events) {
+        if (e.kind === 'BattleAttack') {
+          const side = state.battle?.stacks[e.attackerId]?.side;
+          if (side) totals[side] += e.damage;
+        } else if (e.kind === 'SiegeTurretShot') totals.defender += e.damage;
+      }
+    }
+    if (!draft.standalone) {
     // Hero ships (navalMovementV1): no hull keeps a hero who left it (a cheap consistency guard).
     reconcileShips(tx);
     // Coastal watchtowers (sea-sites kit): "Enemy ship sighted" alerts, once the map is settled.
@@ -125,6 +138,7 @@ export function processCommand(ctx: RulesContext, state: MatchState, command: Ga
     // Scouting intel (`scoutingIntelV1`): every player's snapshots follow what it sees now,
     // once the map is settled (not while a battle runs; its end brings the update).
     if (!tx.state.battle) refreshIntelSnapshots(tx.catalog, tx.state, tx.events);
+    }
     tx.finalize();
   } catch (err) {
     if (err instanceof RejectionError) return { ok: false, rejection: err.rejection };
@@ -145,6 +159,7 @@ export function processCommand(ctx: RulesContext, state: MatchState, command: Ga
 
 function dispatch(tx: Tx, c: GameCommand): void {
   switch (c.kind) {
+    case 'InvokeCheat': return commitCheat(tx, c.effect);
     case 'SelectCoalitionSeat': return commitSelectCoalitionSeat(tx, c.playerId);
     case 'EndTurn':
       return commitEndTurn(tx);

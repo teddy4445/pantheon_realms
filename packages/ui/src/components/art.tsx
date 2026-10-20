@@ -391,7 +391,7 @@ export function SpecialtyLine({ catalog, definitionId, active = true, size = '2.
       {icon}
       <div>
         <div className="specialty__name">
-          <span className="specialty__tag">Specialty</span> {sp.name}
+          {sp.name}
         </div>
         <div className="small">
           {sp.summary}

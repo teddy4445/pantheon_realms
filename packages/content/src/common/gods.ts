@@ -2,7 +2,7 @@
  * The second minor-god choice — PROPOSED this build (owner request: two or
  * three more minor gods per pantheon with real blessings).
  *
- * The documented first choice (Athena OR Ares and its mirrors, Temple II,
+ * The documented first choice (Athena OR Ares and its mirrors, Temple I,
  * 20 Favor, design/02 §8) is unchanged. The second choice is a separate,
  * later, irreversible commitment: one of three gods, 25 Favor, needing a
  * Temple II and a City Hall (level-3 civic building) in the same owned town
@@ -62,14 +62,14 @@ export interface FirstMinorSpec {
   readonly benefits: readonly EffectDefinition[];
   readonly benefitSummary: readonly string[];
   readonly portraitAssetId: string;
-  /** The pantheon's Temple II building ID. */
+  /** The pantheon's Temple I building ID. */
   readonly templeId: string;
 }
 
 /**
  * Two more options for the FIRST minor-god choice (owner answer 2026-10-02:
  * "Split 2 + 2" — of the four undesigned gods per pantheon, two join the first
- * choice and two the second). Same terms as Athena/Ares: Temple II, 20 Favor,
+ * choice and two the second). Same terms as Athena/Ares: Temple I, 20 Favor,
  * exclusive with the other first-choice gods. Blessings are proposals.
  */
 export function firstMinorGod(s: FirstMinorSpec): GodDefinition {

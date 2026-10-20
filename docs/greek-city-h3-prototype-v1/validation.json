@@ -1,0 +1,495 @@
+{
+  "assets": [
+    {
+      "name": "Temple II",
+      "width": 1774,
+      "height": 887,
+      "transparent": 618315,
+      "solid": 899221,
+      "partial": 56002,
+      "maxAlpha": 255,
+      "hasAlpha": true
+    },
+    {
+      "name": "Sanctum III",
+      "width": 1354,
+      "height": 1162,
+      "transparent": 921277,
+      "solid": 596689,
+      "partial": 55382,
+      "maxAlpha": 255,
+      "hasAlpha": true
+    },
+    {
+      "name": "Watchtower",
+      "width": 1310,
+      "height": 1201,
+      "transparent": 957718,
+      "solid": 554952,
+      "partial": 60640,
+      "maxAlpha": 255,
+      "hasAlpha": true
+    },
+    {
+      "name": "Capitol",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 767778,
+      "solid": 768438,
+      "partial": 36648,
+      "maxAlpha": 254,
+      "hasAlpha": true
+    },
+    {
+      "name": "Tavern",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 724848,
+      "solid": 805179,
+      "partial": 42837,
+      "maxAlpha": 254,
+      "hasAlpha": true
+    },
+    {
+      "name": "Artifact Merchant",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 741050,
+      "solid": 800654,
+      "partial": 31160,
+      "maxAlpha": 254,
+      "hasAlpha": true
+    },
+    {
+      "name": "Marketplace",
+      "width": 1774,
+      "height": 887,
+      "transparent": 667264,
+      "solid": 852398,
+      "partial": 53876,
+      "maxAlpha": 255,
+      "hasAlpha": true
+    },
+    {
+      "name": "Training Academy",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 674292,
+      "solid": 843011,
+      "partial": 55561,
+      "maxAlpha": 254,
+      "hasAlpha": true
+    },
+    {
+      "name": "Workshop",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 807493,
+      "solid": 734842,
+      "partial": 30529,
+      "maxAlpha": 254,
+      "hasAlpha": true
+    },
+    {
+      "name": "Resource Depot",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 823933,
+      "solid": 695312,
+      "partial": 53619,
+      "maxAlpha": 254,
+      "hasAlpha": true
+    },
+    {
+      "name": "Castle",
+      "width": 2135,
+      "height": 736,
+      "transparent": 641992,
+      "solid": 882374,
+      "partial": 46994,
+      "maxAlpha": 255,
+      "hasAlpha": true
+    },
+    {
+      "name": "Veteran Barracks",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 592747,
+      "solid": 934247,
+      "partial": 45870,
+      "maxAlpha": 254,
+      "hasAlpha": true
+    },
+    {
+      "name": "Veteran Range",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 669689,
+      "solid": 856645,
+      "partial": 46530,
+      "maxAlpha": 254,
+      "hasAlpha": true
+    },
+    {
+      "name": "Windcrest Aerie",
+      "width": 1223,
+      "height": 1286,
+      "transparent": 805304,
+      "solid": 722041,
+      "partial": 45433,
+      "maxAlpha": 255,
+      "hasAlpha": true
+    },
+    {
+      "name": "Companion Court",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 758738,
+      "solid": 775358,
+      "partial": 38768,
+      "maxAlpha": 254,
+      "hasAlpha": true
+    },
+    {
+      "name": "House of Seers",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 774038,
+      "solid": 757111,
+      "partial": 41715,
+      "maxAlpha": 254,
+      "hasAlpha": true
+    },
+    {
+      "name": "Warden Labyrinth",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 648560,
+      "solid": 881851,
+      "partial": 42453,
+      "maxAlpha": 254,
+      "hasAlpha": true
+    },
+    {
+      "name": "Storm Forge",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 598390,
+      "solid": 920292,
+      "partial": 54182,
+      "maxAlpha": 254,
+      "hasAlpha": true
+    }
+  ],
+  "versionAssets": [
+    {
+      "id": "temple_1",
+      "name": "Temple I",
+      "width": 1774,
+      "height": 887,
+      "transparent": 923426,
+      "solid": 611332,
+      "hasAlpha": true
+    },
+    {
+      "id": "temple_2",
+      "name": "Temple II",
+      "width": 1774,
+      "height": 887,
+      "transparent": 618315,
+      "solid": 899221,
+      "hasAlpha": true
+    },
+    {
+      "id": "sanctum_1",
+      "name": "Sanctum I",
+      "width": 1354,
+      "height": 1162,
+      "transparent": 1102903,
+      "solid": 442554,
+      "hasAlpha": true
+    },
+    {
+      "id": "sanctum_2",
+      "name": "Sanctum II",
+      "width": 1354,
+      "height": 1162,
+      "transparent": 1019327,
+      "solid": 518080,
+      "hasAlpha": true
+    },
+    {
+      "id": "sanctum_3",
+      "name": "Sanctum III",
+      "width": 1354,
+      "height": 1162,
+      "transparent": 921277,
+      "solid": 596689,
+      "hasAlpha": true
+    },
+    {
+      "id": "watchtower",
+      "name": "Watchtower",
+      "width": 1310,
+      "height": 1201,
+      "transparent": 957718,
+      "solid": 554952,
+      "hasAlpha": true
+    },
+    {
+      "id": "village_hall",
+      "name": "Village Hall",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 1258119,
+      "solid": 293785,
+      "hasAlpha": true
+    },
+    {
+      "id": "town_hall",
+      "name": "Town Hall",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 1017058,
+      "solid": 530949,
+      "hasAlpha": true
+    },
+    {
+      "id": "city_hall",
+      "name": "City Hall",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 891745,
+      "solid": 654458,
+      "hasAlpha": true
+    },
+    {
+      "id": "capitol",
+      "name": "Capitol",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 767778,
+      "solid": 768438,
+      "hasAlpha": true
+    },
+    {
+      "id": "tavern",
+      "name": "Tavern",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 724848,
+      "solid": 805179,
+      "hasAlpha": true
+    },
+    {
+      "id": "artifact_merchant",
+      "name": "Artifact Merchant",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 741050,
+      "solid": 800654,
+      "hasAlpha": true
+    },
+    {
+      "id": "market",
+      "name": "Marketplace",
+      "width": 1774,
+      "height": 887,
+      "transparent": 667264,
+      "solid": 852398,
+      "hasAlpha": true
+    },
+    {
+      "id": "training_academy",
+      "name": "Training Academy",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 674292,
+      "solid": 843011,
+      "hasAlpha": true
+    },
+    {
+      "id": "workshop",
+      "name": "Workshop",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 807493,
+      "solid": 734842,
+      "hasAlpha": true
+    },
+    {
+      "id": "supply_depot",
+      "name": "Resource Depot",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 823933,
+      "solid": 695312,
+      "hasAlpha": true
+    },
+    {
+      "id": "fort",
+      "name": "Fort",
+      "width": 2135,
+      "height": 736,
+      "transparent": 916716,
+      "solid": 623709,
+      "hasAlpha": true
+    },
+    {
+      "id": "citadel",
+      "name": "Citadel",
+      "width": 2135,
+      "height": 736,
+      "transparent": 735128,
+      "solid": 804859,
+      "hasAlpha": true
+    },
+    {
+      "id": "castle",
+      "name": "Castle",
+      "width": 2135,
+      "height": 736,
+      "transparent": 641992,
+      "solid": 882374,
+      "hasAlpha": true
+    },
+    {
+      "id": "barracks",
+      "name": "Barracks",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 798838,
+      "solid": 735891,
+      "hasAlpha": true
+    },
+    {
+      "id": "barracks_up",
+      "name": "Veteran Barracks",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 592747,
+      "solid": 934247,
+      "hasAlpha": true
+    },
+    {
+      "id": "peltast_range",
+      "name": "Peltast Range",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 831399,
+      "solid": 697160,
+      "hasAlpha": true
+    },
+    {
+      "id": "peltast_range_up",
+      "name": "Veteran Range",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 669689,
+      "solid": 856645,
+      "hasAlpha": true
+    },
+    {
+      "id": "griffin_aerie",
+      "name": "Griffin Aerie",
+      "width": 1223,
+      "height": 1286,
+      "transparent": 911965,
+      "solid": 624404,
+      "hasAlpha": true
+    },
+    {
+      "id": "griffin_aerie_up",
+      "name": "Windcrest Aerie",
+      "width": 1223,
+      "height": 1286,
+      "transparent": 805304,
+      "solid": 722041,
+      "hasAlpha": true
+    },
+    {
+      "id": "training_court",
+      "name": "Training Court",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 867334,
+      "solid": 662019,
+      "hasAlpha": true
+    },
+    {
+      "id": "training_court_up",
+      "name": "Companion Court",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 758738,
+      "solid": 775358,
+      "hasAlpha": true
+    },
+    {
+      "id": "adept_house",
+      "name": "House of Adepts",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 871306,
+      "solid": 660861,
+      "hasAlpha": true
+    },
+    {
+      "id": "adept_house_up",
+      "name": "House of Seers",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 774038,
+      "solid": 757111,
+      "hasAlpha": true
+    },
+    {
+      "id": "labyrinth",
+      "name": "Labyrinth",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 724083,
+      "solid": 799741,
+      "hasAlpha": true
+    },
+    {
+      "id": "labyrinth_up",
+      "name": "Warden Labyrinth",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 648560,
+      "solid": 881851,
+      "hasAlpha": true
+    },
+    {
+      "id": "thunder_quarry",
+      "name": "Thunder Quarry",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 620626,
+      "solid": 922240,
+      "hasAlpha": true
+    },
+    {
+      "id": "thunder_quarry_up",
+      "name": "Storm Forge",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 598390,
+      "solid": 920292,
+      "hasAlpha": true
+    }
+  ],
+  "checks": [
+    "33 unique catalog versions load",
+    "transparent backgrounds for all versions",
+    "all 33 version selectors",
+    "base and maximum presets",
+    "hide/show all",
+    "resize",
+    "export JSON",
+    "reset",
+    "concept toggle",
+    "no JavaScript errors"
+  ]
+}

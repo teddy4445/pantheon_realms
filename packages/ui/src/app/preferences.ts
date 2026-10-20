@@ -6,7 +6,7 @@ import type { PreferencesStore } from '@pr/platform';
 import { setAdaptiveResolution, setGraphicsQuality } from '@pr/presentation/core';
 import { applyInterfaceCursors } from '../assets/cursors';
 
-export const PREFERENCES_SCHEMA_VERSION = 4;
+export const PREFERENCES_SCHEMA_VERSION = 5;
 
 export type AnimSpeed = 'instant' | 'fast' | 'normal';
 export type BattleSpeed = '0.5' | '1' | '1.5' | '2' | 'instant';
@@ -70,7 +70,7 @@ export const DEFAULT_PREFERENCES: Preferences = {
   schemaVersion: PREFERENCES_SCHEMA_VERSION,
   adventureAnimation: 'normal',
   battleSpeed: '1',
-  enemyMovement: 'fast',
+  enemyMovement: 'normal',
   confirmEndDayWithMovement: true,
   combatLogDetail: 'standard',
   tutorialHints: true,
@@ -134,6 +134,7 @@ export function sanitizePreferences(raw: unknown): Preferences {
   // Schema 4 (1.1.0 battle interface, concept 08): the old default "Count and health" becomes "Count" once
   // (health on hover and for the active stack); "Count and health" stays available as the persistent option.
   if ((typeof r.schemaVersion === 'number' ? r.schemaVersion : 0) < 4 && out.unitLabels === 'both') out.unitLabels = 'count';
+  if ((typeof r.schemaVersion === 'number' ? r.schemaVersion : 0) < 5) out.enemyMovement = 'normal';
   out.schemaVersion = PREFERENCES_SCHEMA_VERSION;
   out.uiScale = Math.min(1.6, Math.max(0.8, out.uiScale as number));
   if (!['low', 'medium', 'high'].includes(out.graphicsQuality as string)) out.graphicsQuality = DEFAULT_PREFERENCES.graphicsQuality;

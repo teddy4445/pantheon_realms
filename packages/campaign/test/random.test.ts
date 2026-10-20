@@ -355,7 +355,8 @@ describe('random skirmish matches', () => {
     const { match } = createGeneratedMatch(catalog, g, { matchId: 'test:random3' });
     expect(match.customMission?.id).toBe(g.mission.id);
     expect(match.scenario.features).toEqual({ expandedContent: true, weeklyEvents: true, interventions: true, heroSpecialties: true, neutralReactions: true, climateRules: true, aiTemperaments: true, cityDedicationsV1: true, scoutingIntelV1: true, targetableCatapultV1: true, recruitmentCaravansV1: true, navalMovementV1: true });
-    const end = playOut(match);
+    // Personalized escorts change conquest timing; still require a finite completed match.
+    const end = playOut(match, 120);
     expect(end.outcome.status).not.toBe('running');
     expect(end.outcome.winnerIds?.length).toBe(1);
     const winner = end.outcome.winnerIds![0]!;

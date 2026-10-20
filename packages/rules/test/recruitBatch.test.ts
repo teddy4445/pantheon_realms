@@ -8,6 +8,8 @@ const ALEXIOS = { kind: 'hero', heroId: 'alexios' } as const;
 /** Asterion with three dwellings (Hoplites and Griffins upgraded, Peltasts base) and a week's creatures. */
 function town(gold = 50_000): GameDriver {
   const d = GameDriver.mission(M01);
+  d.hero().army.slots[0]!.count = 20;
+  d.hero().army.slots[1]!.count = 8;
   const t = d.town('asterion');
   t.buildings.dwelling_t1 = 2;
   t.buildings.dwelling_t2 = 1;

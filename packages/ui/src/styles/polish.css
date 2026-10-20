@@ -1,0 +1,43 @@
+/* Encyclopedia and world setup: shared gold, ink and parchment materials. */
+.codex-page .codex-favored { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: .65rem; margin: .65rem 0 .2rem; padding-top: .65rem; border-top: 1px solid #a67d3a66; }
+.codex-favored__god { display: flex; align-items: center; gap: .7rem; }
+.codex-favored__god > span { display: grid; gap: .15rem; line-height: 1.25; }
+.codex-favored__god strong { font-family: var(--font-heading); font-size: 1.05rem; color: #523516; }
+.codex-favored__god > span > span { color: #65481d; font-size: .95rem; }
+.codex-page .codex-frame .specialty { align-items: flex-start; gap: .8rem; padding: .85rem; margin: .8rem 0; border: 1px solid #a68043; border-left: 3px solid #967033; border-radius: 3px 12px 12px 3px; background: linear-gradient(120deg, #f9e9bb99, #e3c68a44); box-shadow: inset 0 0 0 3px #fff5d34d, 0 3px 8px #58370f14; }
+.codex-page .codex-frame .specialty__name { margin-bottom: .3rem; font-family: var(--font-heading); color: #654014; font-size: 1.15rem; }
+.codex-page .codex-frame .specialty .small { line-height: 1.45; }
+.world-options.random-setup__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; align-items: stretch; padding: .25rem .2rem 1rem; }
+.world-options > .setting-block { min-width: 0; margin: 0; padding: 1.15rem; border: 1px solid #b58b4f80; border-radius: 8px; background: radial-gradient(ellipse at top left, #34566d55, transparent 70%), linear-gradient(140deg, #102335eb, #081421ed); box-shadow: inset 0 0 0 3px #07121c77, 0 5px 12px #0004; }
+.world-options .setting-block__label { display: flex; align-items: center; gap: .75rem; margin-bottom: 1rem; font-size: 1.08rem; color: #f2d69a; }
+.world-options__icon { width: 2.8rem; height: 2.8rem; flex: none; display: grid; place-items: center; border-radius: 50%; border: 1px solid #b99458; background: radial-gradient(circle, #3a4e60, #081321 75%); box-shadow: 0 2px 6px #0008, inset 0 0 0 3px #ccaa5530; }
+.world-options__icon svg { width: 1.8rem; height: 1.8rem; }
+.world-options .setting-block__details { color: #c8bea5; line-height: 1.5; margin-top: .75rem; }
+.world-options .row { align-items: flex-start; }
+.world-options .row .toggle { flex: none; margin-top: .2rem; }
+.world-options .row .small { line-height: 1.45; }
+.world-options > .setting-block:has([aria-label="Revealed map"]) { grid-column: span 2; }
+.world-options .segmented { display: flex; width: 100%; }
+.world-options .segmented > button { flex: 1; padding-inline: .65rem; }
+@media (max-width: 1400px) { .world-options.random-setup__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 680px) { .world-options.random-setup__grid { grid-template-columns: minmax(0, 1fr); } .world-options > .setting-block:has([aria-label="Revealed map"]) { grid-column: auto; } }
+.town-evolution__previous { position: absolute; inset: 0; z-index: 0; background: center / cover no-repeat; pointer-events: none; }
+.town-evolution__previous.is-revealing { animation: town-painting-reveal 1.8s ease-in-out both; }
+.town-evolution { position: absolute; inset: 0; z-index: 45; pointer-events: none; overflow: hidden; }
+.town-evolution__light { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 65%, #ffdc8d80, #f3cd5533 35%, transparent 75%); mix-blend-mode: screen; animation: town-golden-dawn 2.2s ease-out both; }
+.town-evolution__title { position: absolute; top: 13%; left: 50%; transform: translateX(-50%); width: max-content; max-width: 90%; text-align: center; padding: .8rem 2rem; border-block: 1px solid #e8c67d; background: linear-gradient(90deg, transparent, #102133ed 15%, #102133ed 85%, transparent); text-shadow: 0 2px 3px #000; animation: town-upgrade-title 2.2s ease both; }
+.town-evolution__title span { display: block; color: #f5d793; font-family: var(--font-heading); font-size: 1.4rem; }
+.town-evolution__title strong { display: block; color: #eee2c7; font-size: .95rem; font-weight: 400; margin-top: .25rem; }
+@keyframes town-painting-reveal { from { opacity: 1; } to { opacity: 0; } }
+@keyframes town-golden-dawn { 0% { opacity: 0; transform: scale(.8); } 35% { opacity: 1; } 100% { opacity: 0; transform: scale(1.15); } }
+@keyframes town-upgrade-title { 0% { opacity: 0; translate: 0 8px; } 20%, 75% { opacity: 1; translate: 0 0; } 100% { opacity: 0; translate: 0 -5px; } }
+@media (prefers-reduced-motion: reduce) { .town-evolution, .town-evolution__previous { display: none; } }
+
+/* A hidden invocation window: command vocabulary stays outside the game UI. */
+.oracle { text-align:center; padding:.5rem 1rem; background:radial-gradient(ellipse at top, #8a6a2733, transparent 65%); }
+.oracle__sigil { color:#edcf85; font-size:3rem; text-shadow:0 0 25px #e5b641; }
+.oracle label { display:block; font:small-caps 1.2rem Georgia,serif; letter-spacing:.15em; color:#edcf85; margin:.5rem 0 1.5rem; }
+.oracle__entry { display:flex; gap:.75rem; }
+.oracle__entry input { min-width:0; flex:1; padding:.8rem 1rem; color:#fff1cd; background:#07131f; border:1px solid #b39755; border-radius:4px; font-size:1.1rem; }
+.oracle__entry input:focus-visible { outline:2px solid #f0d68f; outline-offset:3px; }
+.oracle p { min-height:1.5rem; color:#e5ce99; }

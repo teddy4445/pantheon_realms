@@ -1,3 +1,4 @@
+import { heroStartingArmy } from './startingArmies';
 /**
  * Adventure-map sites added 2026-10-02 (owner request; PROPOSED values, placed by
  * the random-map generator): learning stones, spell shrines, skill trainers,
@@ -21,7 +22,7 @@ import { effectiveAttributes, maxSpellTierLearnable } from '../resolvers/heroes'
 import { heroAt, inMap, missionSite, siteAt, terrainAt } from '../resolvers/world';
 import { reject, type RejectionCode, type Tx } from '../engine/tx';
 import { clampMovement, grant, spend } from './economy';
-import { createRecruitedHero, grantExperience, HIRE_STARTING_TROOPS } from './heroes';
+import { createRecruitedHero, grantExperience } from './heroes';
 import { grantReward } from './quests';
 import { bumpTotal } from './stats';
 import { worldWeek } from './services';
@@ -98,14 +99,6 @@ export function visitWorldSite(tx: Tx, hero: HeroState, def: SiteDefinition, st:
 // Prison
 // ---------------------------------------------------------------------------
 
-/** Tier-1 base creature of a pantheon's town (the freed hero's escort). */
-function pantheonTierOneBase(catalog: ContentCatalog, pantheonId: string): string | null {
-  const archetypeId = catalog.pantheons[pantheonId]?.townArchetypeId;
-  const archetype = archetypeId ? catalog.townArchetypes[archetypeId] : undefined;
-  const t1 = archetype?.slots.find((s) => s.kind === 'dwelling' && s.tier === 1);
-  const family = t1 ? catalog.buildings[t1.chain[0] ?? '']?.dwelling?.familyId : undefined;
-  return family ? (catalog.families[family]?.baseCreatureId ?? null) : null;
-}
 
 /** The first free passable neighbour of `c` (canonical order) where a freed hero can stand. */
 export function freeSpotNear(catalog: ContentCatalog, state: MatchState, c: HexCoord): HexCoord | null {
@@ -131,9 +124,9 @@ function freePrisoner(tx: Tx, hero: HeroState, def: SiteDefinition, k: Kind<'pri
   }
   const spot = freeSpotNear(catalog, state, def.coord);
   if (!spot) return refuse(tx, def.id, hero.id, `There is no room beside ${def.name} for ${prisoner.name} to stand — clear a neighbouring tile`);
-  const escort = pantheonTierOneBase(catalog, prisoner.pantheonId);
+  const escort = heroStartingArmy(catalog, prisoner.id);
   const slots: HeroState['army']['slots'] = Array.from({ length: tx.profile.armySlots }, (_, i) =>
-    i === 0 && escort ? { stackId: tx.nextId('stack'), creatureId: escort, count: HIRE_STARTING_TROOPS } : null,
+    escort[i] ? { ...escort[i]!, stackId: tx.nextId('stack') } : null,
   );
   const freed = createRecruitedHero(tx, prisoner.id, hero.ownerId, spot, slots);
   freed.movementPoints = 0;

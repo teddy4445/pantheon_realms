@@ -12,6 +12,7 @@ import {
   cellsWithin,
   cellIndex,
   createHeroState,
+  heroStartingArmy,
   createTownState,
   getMapTemplate,
   getMission,
@@ -193,7 +194,7 @@ function heroFromSetup(
     spellbook: base.spellbook,
     knownSpellIds: base.knownSpellIds,
     position,
-    army: setup.army,
+    army: carry ? setup.army : heroStartingArmy(catalog, setup.definitionId, setup.army),
   });
   hero.equipment = { ...(base.equipment as HeroState['equipment']) };
   hero.backpack = base.backpack.map((a) => ({ ...a }));

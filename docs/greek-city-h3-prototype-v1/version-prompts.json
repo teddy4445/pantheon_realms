@@ -1,0 +1,217 @@
+{
+  "mode": "built-in image_gen",
+  "jobs": [
+    {
+      "slot": "civic_hall",
+      "level": 1,
+      "id": "village_hall",
+      "name": "Village Hall",
+      "reference": "C:\\Users\\Teddy Lazebnik\\Desktop\\pantheon_realms\\docs\\greek-city-h3-prototype-v1\\buildings\\civic_hall.png",
+      "file": "buildings/civic_hall.l1.png",
+      "prompt": "Use case: precise-object-edit. Input is the MAXIMUM-LEVEL Greek city building asset, serving as edit target and style reference. Generate its earlier construction version: Village Hall, level 1. A very modest single-story limestone council house, four plain wooden or stone porch columns, simple terracotta pitched roof, one small blue pennant. Remove the palace wings, large staircase, sculpture, gold and elaborate colonnades. Keep the central entrance and same ground anchor. Preserve the exact elevated frontal-oblique camera, warm upper-left lighting, realistic painted/pre-rendered Heroes III inspired style, limestone and restrained blue/terracotta palette. Retain the SAME CANVAS aspect ratio, bottom-center ground anchor and comparable scale of doors and masonry. Do not zoom in or enlarge the simpler building to fill the space left by removed upper stories; leave transparent space there. This must visibly read as an earlier version of the same site. Show one complete standalone structure, no neighboring city or background. Actual transparent alpha background, preserve transparent surroundings. No text, labels, UI, checkerboard or colored backdrop. No damage, ruins, scaffolding or construction work: it is a finished lower-level building."
+    },
+    {
+      "slot": "civic_hall",
+      "level": 2,
+      "id": "town_hall",
+      "name": "Town Hall",
+      "reference": "C:\\Users\\Teddy Lazebnik\\Desktop\\pantheon_realms\\docs\\greek-city-h3-prototype-v1\\buildings\\civic_hall.png",
+      "file": "buildings/civic_hall.l2.png",
+      "prompt": "Use case: precise-object-edit. Input is the MAXIMUM-LEVEL Greek city building asset, serving as edit target and style reference. Generate its earlier construction version: Town Hall, level 2. A medium civic council hall with six plain columns, terracotta roof and modest side chamber, short stone steps and two small blue banners. Clearly grander than a village house but no sprawling wings, rooftop statues or gold ornament. Preserve the exact elevated frontal-oblique camera, warm upper-left lighting, realistic painted/pre-rendered Heroes III inspired style, limestone and restrained blue/terracotta palette. Retain the SAME CANVAS aspect ratio, bottom-center ground anchor and comparable scale of doors and masonry. Do not zoom in or enlarge the simpler building to fill the space left by removed upper stories; leave transparent space there. This must visibly read as an earlier version of the same site. Show one complete standalone structure, no neighboring city or background. Actual transparent alpha background, preserve transparent surroundings. No text, labels, UI, checkerboard or colored backdrop. No damage, ruins, scaffolding or construction work: it is a finished lower-level building."
+    },
+    {
+      "slot": "civic_hall",
+      "level": 3,
+      "id": "city_hall",
+      "name": "City Hall",
+      "reference": "C:\\Users\\Teddy Lazebnik\\Desktop\\pantheon_realms\\docs\\greek-city-h3-prototype-v1\\buildings\\civic_hall.png",
+      "file": "buildings/civic_hall.l3.png",
+      "prompt": "Use case: precise-object-edit. Input is the MAXIMUM-LEVEL Greek city building asset, serving as edit target and style reference. Generate its earlier construction version: City Hall, level 3. An impressive two-story civic hall with a classical portico and two modest side wings, blue banners and carved stone pediment. Less grand than the reference Capitol: remove roof statues, gold trim and outermost annexes, simplify the monumental staircase. Preserve the exact elevated frontal-oblique camera, warm upper-left lighting, realistic painted/pre-rendered Heroes III inspired style, limestone and restrained blue/terracotta palette. Retain the SAME CANVAS aspect ratio, bottom-center ground anchor and comparable scale of doors and masonry. Do not zoom in or enlarge the simpler building to fill the space left by removed upper stories; leave transparent space there. This must visibly read as an earlier version of the same site. Show one complete standalone structure, no neighboring city or background. Actual transparent alpha background, preserve transparent surroundings. No text, labels, UI, checkerboard or colored backdrop. No damage, ruins, scaffolding or construction work: it is a finished lower-level building."
+    },
+    {
+      "slot": "mage_guild",
+      "level": 1,
+      "id": "sanctum_1",
+      "name": "Sanctum I",
+      "reference": "C:\\Users\\Teddy Lazebnik\\Desktop\\pantheon_realms\\docs\\greek-city-h3-prototype-v1\\buildings\\mage_guild.png",
+      "file": "buildings/mage_guild.l1.png",
+      "prompt": "Use case: precise-object-edit. Input is the MAXIMUM-LEVEL Greek city building asset, serving as edit target and style reference. Generate its earlier construction version: Sanctum I, level 1. Only the lower round sanctuary with a simple blue dome, plain columns and small glowing blue window. Remove the entire upper tower, floating crystal and tall spires. Preserve round foundation, front door and stairs. Preserve the exact elevated frontal-oblique camera, warm upper-left lighting, realistic painted/pre-rendered Heroes III inspired style, limestone and restrained blue/terracotta palette. Retain the SAME CANVAS aspect ratio, bottom-center ground anchor and comparable scale of doors and masonry. Do not zoom in or enlarge the simpler building to fill the space left by removed upper stories; leave transparent space there. This must visibly read as an earlier version of the same site. Show one complete standalone structure, no neighboring city or background. Actual transparent alpha background, preserve transparent surroundings. No text, labels, UI, checkerboard or colored backdrop. No damage, ruins, scaffolding or construction work: it is a finished lower-level building."
+    },
+    {
+      "slot": "mage_guild",
+      "level": 2,
+      "id": "sanctum_2",
+      "name": "Sanctum II",
+      "reference": "C:\\Users\\Teddy Lazebnik\\Desktop\\pantheon_realms\\docs\\greek-city-h3-prototype-v1\\buildings\\mage_guild.png",
+      "file": "buildings/mage_guild.l2.png",
+      "prompt": "Use case: precise-object-edit. Input is the MAXIMUM-LEVEL Greek city building asset, serving as edit target and style reference. Generate its earlier construction version: Sanctum II, level 2. Intermediate sanctuary: retain lower domed chamber and add a shorter single upper observation lantern and small cyan crystal. Remove highest crown and side pinnacles, reduce gold sculpture. Clearly taller than stage I but shorter than reference stage III. Preserve the exact elevated frontal-oblique camera, warm upper-left lighting, realistic painted/pre-rendered Heroes III inspired style, limestone and restrained blue/terracotta palette. Retain the SAME CANVAS aspect ratio, bottom-center ground anchor and comparable scale of doors and masonry. Do not zoom in or enlarge the simpler building to fill the space left by removed upper stories; leave transparent space there. This must visibly read as an earlier version of the same site. Show one complete standalone structure, no neighboring city or background. Actual transparent alpha background, preserve transparent surroundings. No text, labels, UI, checkerboard or colored backdrop. No damage, ruins, scaffolding or construction work: it is a finished lower-level building."
+    },
+    {
+      "slot": "pantheon_temple",
+      "level": 1,
+      "id": "temple_1",
+      "name": "Temple I",
+      "reference": "C:\\Users\\Teddy Lazebnik\\Desktop\\pantheon_realms\\docs\\greek-city-h3-prototype-v1\\buildings\\pantheon_temple.png",
+      "file": "buildings/pantheon_temple.l1.png",
+      "prompt": "Use case: precise-object-edit. Input is the MAXIMUM-LEVEL Greek city building asset, serving as edit target and style reference. Generate its earlier construction version: Temple I, level 1. An earlier smaller six-column classical temple on this same rocky terrace, plain pediment and terracotta roof, modest interior stone statue. Remove grand gold statues, monumental side towers and elaborate garden terraces. Retain the central processional stair and same placement. Preserve the exact elevated frontal-oblique camera, warm upper-left lighting, realistic painted/pre-rendered Heroes III inspired style, limestone and restrained blue/terracotta palette. Retain the SAME CANVAS aspect ratio, bottom-center ground anchor and comparable scale of doors and masonry. Do not zoom in or enlarge the simpler building to fill the space left by removed upper stories; leave transparent space there. This must visibly read as an earlier version of the same site. Show one complete standalone structure, no neighboring city or background. Actual transparent alpha background, preserve transparent surroundings. No text, labels, UI, checkerboard or colored backdrop. No damage, ruins, scaffolding or construction work: it is a finished lower-level building."
+    },
+    {
+      "slot": "fortifications",
+      "level": 1,
+      "id": "fort",
+      "name": "Fort",
+      "reference": "C:\\Users\\Teddy Lazebnik\\Desktop\\pantheon_realms\\docs\\greek-city-h3-prototype-v1\\buildings\\fortifications.png",
+      "file": "buildings/fortifications.l1.png",
+      "prompt": "Use case: precise-object-edit. Input is the MAXIMUM-LEVEL Greek city building asset, serving as edit target and style reference. Generate its earlier construction version: Fort, level 1. Early fort: low rough-limestone perimeter wall wings, a simple wooden double gate and two squat stone guard posts. Preserve full wall footprint, ground line, gate center and approach. Remove tall towers, warrior statues, decorative blue banners, gold and large braziers. This is a complete working fort, not a ruin. Preserve the exact elevated frontal-oblique camera, warm upper-left lighting, realistic painted/pre-rendered Heroes III inspired style, limestone and restrained blue/terracotta palette. Retain the SAME CANVAS aspect ratio, bottom-center ground anchor and comparable scale of doors and masonry. Do not zoom in or enlarge the simpler building to fill the space left by removed upper stories; leave transparent space there. This must visibly read as an earlier version of the same site. Show one complete standalone structure, no neighboring city or background. Actual transparent alpha background, preserve transparent surroundings. No text, labels, UI, checkerboard or colored backdrop. No damage, ruins, scaffolding or construction work: it is a finished lower-level building."
+    },
+    {
+      "slot": "fortifications",
+      "level": 2,
+      "id": "citadel",
+      "name": "Citadel",
+      "reference": "C:\\Users\\Teddy Lazebnik\\Desktop\\pantheon_realms\\docs\\greek-city-h3-prototype-v1\\buildings\\fortifications.png",
+      "file": "buildings/fortifications.l2.png",
+      "prompt": "Use case: precise-object-edit. Input is the MAXIMUM-LEVEL Greek city building asset, serving as edit target and style reference. Generate its earlier construction version: Citadel, level 2. Intermediate citadel: stronger stone wall wings, medium-height square gate towers, wooden reinforced gate, small blue banners and a shallow defensive ditch crossed by the approach. Preserve wall endpoints, gate location and ground anchor. Remove giant warrior statues and gold details; towers lower and less elaborate than final castle. Preserve the exact elevated frontal-oblique camera, warm upper-left lighting, realistic painted/pre-rendered Heroes III inspired style, limestone and restrained blue/terracotta palette. Retain the SAME CANVAS aspect ratio, bottom-center ground anchor and comparable scale of doors and masonry. Do not zoom in or enlarge the simpler building to fill the space left by removed upper stories; leave transparent space there. This must visibly read as an earlier version of the same site. Show one complete standalone structure, no neighboring city or background. Actual transparent alpha background, preserve transparent surroundings. No text, labels, UI, checkerboard or colored backdrop. No damage, ruins, scaffolding or construction work: it is a finished lower-level building."
+    },
+    {
+      "slot": "dwelling_t1",
+      "level": 1,
+      "id": "barracks",
+      "name": "Barracks",
+      "reference": "C:\\Users\\Teddy Lazebnik\\Desktop\\pantheon_realms\\docs\\greek-city-h3-prototype-v1\\buildings\\dwelling_t1.png",
+      "file": "buildings/dwelling_t1.l1.png",
+      "prompt": "Use case: precise-object-edit. Input is the MAXIMUM-LEVEL Greek city building asset, serving as edit target and style reference. Generate its earlier construction version: Barracks, level 1. Early Hoplite barracks: modest stone barrack buildings around a sandy training courtyard, low perimeter walls and shield racks. Remove tall corner towers, statues, large banners and grand arched entrance. Same courtyard orientation and front entrance, simpler wooden door and small blue pennant. Preserve the exact elevated frontal-oblique camera, warm upper-left lighting, realistic painted/pre-rendered Heroes III inspired style, limestone and restrained blue/terracotta palette. Retain the SAME CANVAS aspect ratio, bottom-center ground anchor and comparable scale of doors and masonry. Do not zoom in or enlarge the simpler building to fill the space left by removed upper stories; leave transparent space there. This must visibly read as an earlier version of the same site. Show one complete standalone structure, no neighboring city or background. Actual transparent alpha background, preserve transparent surroundings. No text, labels, UI, checkerboard or colored backdrop. No damage, ruins, scaffolding or construction work: it is a finished lower-level building."
+    },
+    {
+      "slot": "dwelling_t2",
+      "level": 1,
+      "id": "peltast_range",
+      "name": "Peltast Range",
+      "reference": "C:\\Users\\Teddy Lazebnik\\Desktop\\pantheon_realms\\docs\\greek-city-h3-prototype-v1\\buildings\\dwelling_t2.png",
+      "file": "buildings/dwelling_t2.l1.png",
+      "prompt": "Use case: precise-object-edit. Input is the MAXIMUM-LEVEL Greek city building asset, serving as edit target and style reference. Generate its earlier construction version: Peltast Range, level 1. Basic open sandy javelin training range, wooden fence, straw targets, spear racks, small linen canopy and modest low stone rear shelter. Remove monumental colonnades, statues and elaborate blue roofs. Same courtyard orientation. Soldiers, if shown, throw javelins, not bows. Preserve the exact elevated frontal-oblique camera, warm upper-left lighting, realistic painted/pre-rendered Heroes III inspired style, limestone and restrained blue/terracotta palette. Retain the SAME CANVAS aspect ratio, bottom-center ground anchor and comparable scale of doors and masonry. Do not zoom in or enlarge the simpler building to fill the space left by removed upper stories; leave transparent space there. This must visibly read as an earlier version of the same site. Show one complete standalone structure, no neighboring city or background. Actual transparent alpha background, preserve transparent surroundings. No text, labels, UI, checkerboard or colored backdrop. No damage, ruins, scaffolding or construction work: it is a finished lower-level building."
+    },
+    {
+      "slot": "dwelling_t3",
+      "level": 1,
+      "id": "griffin_aerie",
+      "name": "Griffin Aerie",
+      "reference": "C:\\Users\\Teddy Lazebnik\\Desktop\\pantheon_realms\\docs\\greek-city-h3-prototype-v1\\buildings\\dwelling_t3.png",
+      "file": "buildings/dwelling_t3.l1.png",
+      "prompt": "Use case: precise-object-edit. Input is the MAXIMUM-LEVEL Greek city building asset, serving as edit target and style reference. Generate its earlier construction version: Griffin Aerie, level 1. Earlier natural aerie: the same rocky outcrop with one smaller tawny griffin, wings folded, and one simple twig nest. Remove other griffins and any ornate fantasy crests. Lower, simpler nest platform, preserve base rock silhouette and camera. Preserve the exact elevated frontal-oblique camera, warm upper-left lighting, realistic painted/pre-rendered Heroes III inspired style, limestone and restrained blue/terracotta palette. Retain the SAME CANVAS aspect ratio, bottom-center ground anchor and comparable scale of doors and masonry. Do not zoom in or enlarge the simpler building to fill the space left by removed upper stories; leave transparent space there. This must visibly read as an earlier version of the same site. Show one complete standalone structure, no neighboring city or background. Actual transparent alpha background, preserve transparent surroundings. No text, labels, UI, checkerboard or colored backdrop. No damage, ruins, scaffolding or construction work: it is a finished lower-level building."
+    },
+    {
+      "slot": "dwelling_t4",
+      "level": 1,
+      "id": "training_court",
+      "name": "Training Court",
+      "reference": "C:\\Users\\Teddy Lazebnik\\Desktop\\pantheon_realms\\docs\\greek-city-h3-prototype-v1\\buildings\\dwelling_t4.png",
+      "file": "buildings/dwelling_t4.l1.png",
+      "prompt": "Use case: precise-object-edit. Input is the MAXIMUM-LEVEL Greek city building asset, serving as edit target and style reference. Generate its earlier construction version: Training Court, level 1. Basic cavalry practice enclosure: wooden rail fence around sand, simple terracotta stable shed and two ordinary horses. Remove the entire ornate temple and statues; replace its footprint with modest tack shelter and hay. Keep enclosure orientation, front entrance and base anchor. Preserve the exact elevated frontal-oblique camera, warm upper-left lighting, realistic painted/pre-rendered Heroes III inspired style, limestone and restrained blue/terracotta palette. Retain the SAME CANVAS aspect ratio, bottom-center ground anchor and comparable scale of doors and masonry. Do not zoom in or enlarge the simpler building to fill the space left by removed upper stories; leave transparent space there. This must visibly read as an earlier version of the same site. Show one complete standalone structure, no neighboring city or background. Actual transparent alpha background, preserve transparent surroundings. No text, labels, UI, checkerboard or colored backdrop. No damage, ruins, scaffolding or construction work: it is a finished lower-level building."
+    },
+    {
+      "slot": "dwelling_t5",
+      "level": 1,
+      "id": "adept_house",
+      "name": "House of Adepts",
+      "reference": "C:\\Users\\Teddy Lazebnik\\Desktop\\pantheon_realms\\docs\\greek-city-h3-prototype-v1\\buildings\\dwelling_t5.png",
+      "file": "buildings/dwelling_t5.l1.png",
+      "prompt": "Use case: precise-object-edit. Input is the MAXIMUM-LEVEL Greek city building asset, serving as edit target and style reference. Generate its earlier construction version: House of Adepts, level 1. Modest scholarly sanctuary: small four-column limestone house, simple terracotta roof, scroll shelves visible inside and a small plain stone altar. Remove huge golden goddess statue, lavish banners, gold trim and grand stair tiers. Same entry axis, camera and ground anchor. Preserve the exact elevated frontal-oblique camera, warm upper-left lighting, realistic painted/pre-rendered Heroes III inspired style, limestone and restrained blue/terracotta palette. Retain the SAME CANVAS aspect ratio, bottom-center ground anchor and comparable scale of doors and masonry. Do not zoom in or enlarge the simpler building to fill the space left by removed upper stories; leave transparent space there. This must visibly read as an earlier version of the same site. Show one complete standalone structure, no neighboring city or background. Actual transparent alpha background, preserve transparent surroundings. No text, labels, UI, checkerboard or colored backdrop. No damage, ruins, scaffolding or construction work: it is a finished lower-level building."
+    },
+    {
+      "slot": "dwelling_t6",
+      "level": 1,
+      "id": "labyrinth",
+      "name": "Labyrinth",
+      "reference": "C:\\Users\\Teddy Lazebnik\\Desktop\\pantheon_realms\\docs\\greek-city-h3-prototype-v1\\buildings\\dwelling_t6.png",
+      "file": "buildings/dwelling_t6.l1.png",
+      "prompt": "Use case: precise-object-edit. Input is the MAXIMUM-LEVEL Greek city building asset, serving as edit target and style reference. Generate its earlier construction version: Labyrinth, level 1. Early labyrinth: lower rough stone maze walls and a simple dark stone doorway built into rock, subtle horn carving over door. Remove giant Minotaur guardian statues, elaborate carved facade and tall manicured hedge maze. Retain recognizable maze layout and same base footprint. Preserve the exact elevated frontal-oblique camera, warm upper-left lighting, realistic painted/pre-rendered Heroes III inspired style, limestone and restrained blue/terracotta palette. Retain the SAME CANVAS aspect ratio, bottom-center ground anchor and comparable scale of doors and masonry. Do not zoom in or enlarge the simpler building to fill the space left by removed upper stories; leave transparent space there. This must visibly read as an earlier version of the same site. Show one complete standalone structure, no neighboring city or background. Actual transparent alpha background, preserve transparent surroundings. No text, labels, UI, checkerboard or colored backdrop. No damage, ruins, scaffolding or construction work: it is a finished lower-level building."
+    },
+    {
+      "slot": "dwelling_t7",
+      "level": 1,
+      "id": "thunder_quarry",
+      "name": "Thunder Quarry",
+      "reference": "C:\\Users\\Teddy Lazebnik\\Desktop\\pantheon_realms\\docs\\greek-city-h3-prototype-v1\\buildings\\dwelling_t7.png",
+      "file": "buildings/dwelling_t7.l1.png",
+      "prompt": "Use case: precise-object-edit. Input is the MAXIMUM-LEVEL Greek city building asset, serving as edit target and style reference. Generate its earlier construction version: Thunder Quarry, level 1. Earlier cyclopean quarry: stepped limestone excavation, huge cut blocks, one wooden crane, tools and a small rough work shed. Remove the developed roofed furnace building, chimney, most machinery and bright lightning effects. Retain the rockface and same footprint, a faint blue mineral seam only. Preserve the exact elevated frontal-oblique camera, warm upper-left lighting, realistic painted/pre-rendered Heroes III inspired style, limestone and restrained blue/terracotta palette. Retain the SAME CANVAS aspect ratio, bottom-center ground anchor and comparable scale of doors and masonry. Do not zoom in or enlarge the simpler building to fill the space left by removed upper stories; leave transparent space there. This must visibly read as an earlier version of the same site. Show one complete standalone structure, no neighboring city or background. Actual transparent alpha background, preserve transparent surroundings. No text, labels, UI, checkerboard or colored backdrop. No damage, ruins, scaffolding or construction work: it is a finished lower-level building."
+    }
+  ],
+  "results": [
+    {
+      "id": "village_hall",
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-c6e8c175-227f-4f47-b61f-5a380d553ac6.png",
+      "file": "buildings/civic_hall.l1.png"
+    },
+    {
+      "id": "town_hall",
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-73e70a37-b6c2-4731-807c-d057343f4905.png",
+      "file": "buildings/civic_hall.l2.png"
+    },
+    {
+      "id": "sanctum_1",
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-e9fc92d7-eba1-444c-89a0-1111dcb25d22.png",
+      "file": "buildings/mage_guild.l1.png"
+    },
+    {
+      "id": "sanctum_2",
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-a2c58bdf-d1a9-494c-8c1d-5658d2af486f.png",
+      "file": "buildings/mage_guild.l2.png"
+    },
+    {
+      "id": "city_hall",
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-2a8fb8e7-2cbe-477e-a1b0-71b30cffa2c8.png",
+      "file": "buildings/civic_hall.l3.png"
+    },
+    {
+      "id": "temple_1",
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-127788b8-cf4c-43f1-aa7b-8d37af9d3360.png",
+      "file": "buildings/pantheon_temple.l1.png"
+    },
+    {
+      "id": "fort",
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-00ae0790-098a-4de3-8b3f-f65e0e66ce56.png",
+      "file": "buildings/fortifications.l1.png"
+    },
+    {
+      "id": "peltast_range",
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-a4c31f2d-f3e9-453c-9042-cb5b05cb99ab.png",
+      "file": "buildings/dwelling_t2.l1.png"
+    },
+    {
+      "id": "citadel",
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-104f1879-f856-44ca-9312-b4863df23efe.png",
+      "file": "buildings/fortifications.l2.png"
+    },
+    {
+      "id": "barracks",
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-6912e047-c671-428a-9841-1af9bc98a54e.png",
+      "file": "buildings/dwelling_t1.l1.png"
+    },
+    {
+      "id": "griffin_aerie",
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-f097e535-acf4-4898-b000-9937d85cfd0a.png",
+      "file": "buildings/dwelling_t3.l1.png"
+    },
+    {
+      "id": "training_court",
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-84a85780-f428-4106-9883-b5d14eb03289.png",
+      "file": "buildings/dwelling_t4.l1.png"
+    },
+    {
+      "id": "adept_house",
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-b621f2f4-7cb4-4e7a-bd0c-ec99582a71bf.png",
+      "file": "buildings/dwelling_t5.l1.png"
+    },
+    {
+      "id": "labyrinth",
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-69bab690-e1ef-42cd-be94-441cc21239fe.png",
+      "file": "buildings/dwelling_t6.l1.png"
+    },
+    {
+      "id": "thunder_quarry",
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-0b0a674d-53a7-49f2-97be-b16b7ea4ace0.png",
+      "file": "buildings/dwelling_t7.l1.png"
+    }
+  ]
+}

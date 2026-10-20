@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pantheon Realms — Single Battle</title>
+<link rel="stylesheet" href="preview.css">
+</head>
+<body>
+<header><div><div class="eyebrow">PANTHEON REALMS</div><h1 id="title">New Game</h1></div><nav id="navigation"></nav></header>
+<main>
+<section id="menu"><div class="modes" id="modes"></div></section>
+<section id="editor" hidden>
+<div class="steps" id="steps"></div>
+<div class="setup">
+<aside class="panel army-panel" id="left"></aside>
+<section class="panel arena">
+<div class="arena-heading"><h2 id="arena-title">Battlefield</h2><button id="reroll" class="icon-button" title="Generate another battlefield" aria-label="Generate another battlefield"></button></div>
+<div class="map" id="map"></div>
+<div class="legend"><span><i class="dot"></i>Attacker</span><span><i class="dot red"></i>Defender</span></div>
+<div id="settings"></div>
+<div class="seed-row"><label for="seed" id="seed-label"></label><input id="seed" value="ASTERION-42" aria-label="Battlefield seed"><button class="icon-button" id="new-seed" title="Random seed" aria-label="Random seed"></button></div>
+</section>
+<aside class="panel army-panel" id="right"></aside>
+</div>
+<footer class="bottom"><button class="quiet" id="back"></button><span class="valid" id="valid"></span><button class="primary" id="deploy"></button></footer>
+</section>
+<div class="prototype">DESIGN PREVIEW</div>
+</main>
+<dialog id="picker"><div class="dialog-heading"><h2>Creatures</h2><button class="icon-button" id="close-picker" title="Close" aria-label="Close"></button></div><div id="creature-options"></div></dialog>
+<dialog id="notice"><p id="notice-text"></p><button class="quiet" onclick="document.getElementById('notice').close()">OK</button></dialog>
+<script src="preview.js"></script><script src="board-preview.js"></script><script>show(['land','siege','naval'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'menu');</script>
+</body></html>

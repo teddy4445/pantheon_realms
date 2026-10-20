@@ -134,7 +134,7 @@ const OBSTACLE_COUNT: Record<BattlefieldArchetype, [number, number]> = {
   single_ship_sea_encounter_v2: [0, 0],
 };
 
-function connected(battle: BattleState, blocked: Set<string>): boolean {
+export function connected(battle: BattleState, blocked: Set<string>): boolean {
   // A two-hex walker anchored at col 1 must reach col >= cols - 2 on some row.
   const ok = (c: BattleCell) =>
     footprintCells(c, 2, 1).every((x) => x.col >= 0 && x.col < battle.cols && !blocked.has(cellKey(x)));
@@ -155,7 +155,7 @@ function connected(battle: BattleState, blocked: Set<string>): boolean {
   return false;
 }
 
-function generateObstacles(tx: Tx, battle: BattleState): BattleCell[] {
+export function generateObstacles(tx: Tx, battle: BattleState): BattleCell[] {
   const rng = tx.rng('layout');
   const [lo, hi] = OBSTACLE_COUNT[battle.archetype];
   const count = rng.nextRange(lo, hi);

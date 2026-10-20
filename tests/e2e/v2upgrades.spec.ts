@@ -425,9 +425,8 @@ test('encyclopedia: both forms of each of the six families with their portraits,
     await expect(cb.locator('img')).toHaveAttribute('src', new RegExp(`campaign-v2/portrait-${b}\\.png$`));
     await expect(cu.locator('img')).toHaveAttribute('src', new RegExp(`battle-fx-neutral-upgrades-v1/portrait-${u}\\.png$`));
     await expect(cu).toContainText(String(catalog.creatures[u]!.stats!.attack));
-    await expect(page.getByTestId(`codex-facts-${b}`)).toContainText('Habitat');
-    await expect(page.getByTestId(`codex-facts-${b}`)).toContainText('Hiring');
-    await expect(page.getByTestId(`codex-forms-${b}`)).toContainText(`train there into ${catalog.creatures[u]!.pluralName}`);
+    await expect(page.getByTestId(`codex-facts-${b}`)).toHaveCount(0);
+    await expect(page.getByTestId(`codex-forms-${b}`)).toHaveCount(0);
   }
   await page.getByTestId('codex-family-pegasus').scrollIntoViewIfNeeded();
   await shoot(

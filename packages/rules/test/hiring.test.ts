@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { GameDriver } from '@pr/testing';
-import { HIRE_STARTING_TROOPS, heroHiredThisWeek, hireCandidates, hireOptions, quoteHireHero, townGate, weekOf, type MatchState } from '../src';
+import { heroStartingArmy, heroHiredThisWeek, hireCandidates, hireOptions, quoteHireHero, townGate, weekOf, type MatchState } from '../src';
 
 const aiTurn = (s: MatchState) => !!s.battle?.activeStackId && s.battle.sides[s.battle.stacks[s.battle.activeStackId]!.side].controller === 'ai';
 
@@ -32,7 +32,7 @@ describe('hero hiring (Tavern)', () => {
     expect(d.player.wallet.gold).toBe(gold - d.catalog.rulesProfile.heroHireCost);
     const hired = Object.values(d.state.heroes).find((h) => h.definitionId === candidates[0]);
     // design/02: 10 of the town's tier-1 base creature (Hoplites for Greek).
-    expect(hired?.army.slots[0]).toMatchObject({ creatureId: 'hoplite', count: HIRE_STARTING_TROOPS });
+    expect(hired?.army.slots.filter(Boolean).map(s => ({ creatureId: s!.creatureId, count: s!.count }))).toEqual(heroStartingArmy(d.catalog, candidates[0]!));
     expect(hired?.movementPoints).toBeGreaterThan(0);
     expect(hireCandidates(d.catalog, d.state, town.id)).not.toContain(candidates[0]);
   });
@@ -87,3 +87,4 @@ describe('hero hiring (Tavern)', () => {
     expect(quoteHireHero(d.catalog, d.state, playerId, town.id, second!).code).not.toBe('already_done');
   });
 });
+

@@ -1,0 +1,15 @@
+Pantheon Realms 1.7.2 — Validation
+
+TypeScript checks passed; package boundaries passed.
+Unit/integration suite: 164 files passed; 1,514 tests passed; 1 skipped.
+Browser acceptance: Oracle commands, direct wall and keep firing, keyboard structure targeting, visible enemy walking passed.
+Packaged Windows app: own prgame origin, isolated renderer, desktop bridge, New Game screen and v1.7.2 checked.
+Installer: installer/Pantheon-Realms-Setup-1.7.2-x64.exe
+Size: 1,417,453,421 bytes
+SHA-256: E9A25749CFD9660290E43FE42A28727E6F2383F8F95659A6EE6BB4C505A9D36D
+The copied installer hash matches the packaged original.
+
+Single Battle is a proposed mode with mockups and a development plan. It is not advertised as a playable mode in this build.
+Personal starting armies apply to fresh scenario leaders, new hires and freed prisoners. Existing saves/returning heroes retain their armies; authored hostile encounters remain authored.
+Enemy movement defaults to normal speed, including migration from older preferences. Reduced motion and later deliberate speed choices remain available.
+Cheats operate during the owner's adventure turn; see ../cheats.txt for the private command reference.

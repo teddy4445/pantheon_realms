@@ -7,6 +7,8 @@ const M01 = 'three_beacons_m01';
 describe('construction (ECO-01..04)', () => {
   it('builds immediately, once per town per day, with full cost', () => {
     const d = GameDriver.mission(M01);
+    d.hero().army.slots[0]!.count = 20;
+    d.hero().army.slots[1]!.count = 8;
     const goldBefore = d.player.wallet.gold;
     d.do({ kind: 'BuildStructure', townId: 'asterion', buildingId: 'market' });
     expect(d.player.wallet.gold).toBe(goldBefore - 500);
@@ -19,6 +21,8 @@ describe('construction (ECO-01..04)', () => {
 
   it('explains scope and planned locations honestly', () => {
     const d = GameDriver.mission(M01);
+    d.hero().army.slots[0]!.count = 20;
+    d.hero().army.slots[1]!.count = 8;
     const q = quoteConstruction(d.catalog, d.state, 'player', 'asterion', 'sanctum_1');
     expect(q.state).toBe('not_in_scope');
     expect(q.reason).toBe('Not available in this demo mission');
@@ -32,6 +36,8 @@ describe('construction (ECO-01..04)', () => {
 
   it('Town Hall replaces Village Hall income (1,000 total, not 1,500) from the next dawn', () => {
     const d = GameDriver.mission(M01);
+    d.hero().army.slots[0]!.count = 20;
+    d.hero().army.slots[1]!.count = 8;
     expect(townDailyIncome(d.catalog, d.town('asterion')).gold).toBe(500);
     d.do({ kind: 'BuildStructure', townId: 'asterion', buildingId: 'town_hall' });
     expect(townDailyIncome(d.catalog, d.town('asterion')).gold).toBe(1000);
@@ -54,6 +60,8 @@ describe('construction (ECO-01..04)', () => {
 describe('population and growth (ECO-05..08)', () => {
   it('grants base growth once on first dwelling construction; the upgrade adds none', () => {
     const d = GameDriver.mission(M01);
+    d.hero().army.slots[0]!.count = 20;
+    d.hero().army.slots[1]!.count = 8;
     d.do({ kind: 'BuildStructure', townId: 'asterion', buildingId: 'peltast_range' });
     expect(d.town('asterion').population.peltast).toBe(9);
     d.endDay();
@@ -63,6 +71,8 @@ describe('population and growth (ECO-05..08)', () => {
 
   it('applies weekly growth exactly once at day 8', () => {
     const d = GameDriver.mission(M01);
+    d.hero().army.slots[0]!.count = 20;
+    d.hero().army.slots[1]!.count = 8;
     for (let i = 0; i < 6; i++) d.endDay();
     expect(d.state.day).toBe(7);
     expect(d.town('asterion').population.hoplite).toBe(14);
@@ -83,6 +93,8 @@ describe('population and growth (ECO-05..08)', () => {
 describe('recruitment, training and transfers (ARM-01..04)', () => {
   it('recruits into the visiting hero from the shared family pool', () => {
     const d = GameDriver.mission(M01);
+    d.hero().army.slots[0]!.count = 20;
+    d.hero().army.slots[1]!.count = 8;
     d.do({ kind: 'RecruitUnits', townId: 'asterion', creatureId: 'hoplite', quantity: 8, destination: { kind: 'hero', heroId: 'alexios' } });
     expect(d.hero().army.slots[0]!.count).toBe(28);
     expect(d.town('asterion').population.hoplite).toBe(6);
@@ -92,6 +104,8 @@ describe('recruitment, training and transfers (ARM-01..04)', () => {
 
   it('rejects recruiting to a remote hero (ARM-01) but allows the garrison', () => {
     const d = GameDriver.mission(M01);
+    d.hero().army.slots[0]!.count = 20;
+    d.hero().army.slots[1]!.count = 8;
     d.do({ kind: 'MoveHero', heroId: 'alexios', destination: { q: 5, r: 7 } });
     const r = d.reject({ kind: 'RecruitUnits', townId: 'asterion', creatureId: 'hoplite', quantity: 2, destination: { kind: 'hero', heroId: 'alexios' } });
     expect(r.code).toBe('not_present');
@@ -101,6 +115,8 @@ describe('recruitment, training and transfers (ARM-01..04)', () => {
 
   it('charges only the price difference to train troops (12 Hoplites = 180 Gold)', () => {
     const d = GameDriver.mission(M01);
+    d.hero().army.slots[0]!.count = 20;
+    d.hero().army.slots[1]!.count = 8;
     d.do({ kind: 'BuildStructure', townId: 'asterion', buildingId: 'barracks_up' });
     const gold = d.player.wallet.gold;
     d.do({ kind: 'UpgradeStack', townId: 'asterion', army: { kind: 'hero', heroId: 'alexios' }, slot: 0, quantity: 12 });
@@ -114,6 +130,8 @@ describe('recruitment, training and transfers (ARM-01..04)', () => {
 
   it('rejects a partial upgrade with no free slot (ARM-03) without spending', () => {
     const d = GameDriver.mission(M01);
+    d.hero().army.slots[0]!.count = 20;
+    d.hero().army.slots[1]!.count = 8;
     d.do({ kind: 'BuildStructure', townId: 'asterion', buildingId: 'barracks_up' });
     const hero = d.state.heroes.alexios!;
     for (let i = 2; i < 7; i++) hero.army.slots[i] = { stackId: `x${i}`, creatureId: 'peltast', count: 0 + 1 };
@@ -127,6 +145,8 @@ describe('recruitment, training and transfers (ARM-01..04)', () => {
 
   it('conserves counts through split, merge and swap (ARM-04)', () => {
     const d = GameDriver.mission(M01);
+    d.hero().army.slots[0]!.count = 20;
+    d.hero().army.slots[1]!.count = 8;
     const total = () =>
       d.hero().army.slots.reduce((n, s) => n + (s?.count ?? 0), 0) + d.town('asterion').garrison.slots.reduce((n, s) => n + (s?.count ?? 0), 0);
     const t0 = total();
@@ -142,6 +162,8 @@ describe('recruitment, training and transfers (ARM-01..04)', () => {
 
   it('never leaves a traveling hero without troops', () => {
     const d = GameDriver.mission(M01);
+    d.hero().army.slots[0]!.count = 20;
+    d.hero().army.slots[1]!.count = 8;
     const hero = { kind: 'hero' as const, heroId: 'alexios' };
     const garrison = { kind: 'garrison' as const, townId: 'asterion' };
     d.do({ kind: 'TransferStack', from: hero, fromSlot: 1, to: garrison, toSlot: 1, quantity: 8 });
@@ -152,6 +174,8 @@ describe('recruitment, training and transfers (ARM-01..04)', () => {
 describe('market (ECO-10)', () => {
   it('has no profitable sell-buy cycle and never trades Favor', () => {
     const d = GameDriver.mission(M01);
+    d.hero().army.slots[0]!.count = 20;
+    d.hero().army.slots[1]!.count = 8;
     d.do({ kind: 'BuildStructure', townId: 'asterion', buildingId: 'market' });
     const gold = d.player.wallet.gold;
     d.do({ kind: 'TradeResources', townId: 'asterion', sell: 'stone', buy: 'gold', amount: 2 });
@@ -166,6 +190,8 @@ describe('market (ECO-10)', () => {
 describe('command pipeline', () => {
   it('rejects duplicate command IDs and stale revisions without changing state', async () => {
     const d = GameDriver.mission(M01);
+    d.hero().army.slots[0]!.count = 20;
+    d.hero().army.slots[1]!.count = 8;
     const { processCommand } = await import('../src');
     const cmd = d.command({ kind: 'BuildStructure', townId: 'asterion', buildingId: 'market' });
     const r1 = processCommand({ catalog: d.catalog }, d.state, cmd);

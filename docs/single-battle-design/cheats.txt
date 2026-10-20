@@ -1,0 +1,20 @@
+PANTHEON REALMS — PRIVATE CHEAT REFERENCE
+
+During your own adventure turn (adventure map, town or hero screen), press the backtick key (`), type a phrase, then press Enter or Send. Escape closes the window. Resolve any pending level-up first. Commands are case-insensitive and ignore extra spaces. Effects persist in saves; they apply only to the acting player's empire, never opponents.
+
+blessed by the gods
+  Adds 10,000 gold, 50 wood, 50 stone, 25 crystals and 25 favor.
+hermes wings
+  Sets every active owned hero's remaining movement to 10,000 for the current day. Normal dawn movement resets still apply.
+atlantis
+  Raises every building slot in every owned town to its maximum level, including all dwellings. Newly opened dwellings receive their initial population. Existing population is retained.
+I am a monster
+  Fills every owned town's garrison with one week of all seven native creature tiers. Uses upgraded forms where their upgraded dwelling exists, otherwise base forms. Adds to existing identical creature stacks, combining duplicates; replaces all other garrison creatures. Does not consume recruiting pools or resources. Repeating it adds another week.
+eyes of olympus
+  Explores the entire map. Terrain and remembered sites become known; it does not give live sight of enemy armies.
+ambrosia
+  Restores every active owned hero's mana to their current maximum.
+age of heroes
+  Upgrades every owned active hero's and town garrison's creatures to their upgraded form, preserving counts. Creatures with no upgrade remain unchanged.
+
+The extra phrases are original themed commands inspired by the resource, reveal and empowerment cheats found in Age of Empires / Age of Mythology. This list is an external owner reference; no list, autocomplete or command examples are shown in the game.

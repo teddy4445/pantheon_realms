@@ -31,6 +31,7 @@ import type { EquipSlot } from '../definitions/pantheons';
 export type RecruitDestination = { kind: 'garrison' } | { kind: 'hero'; heroId: HeroId };
 
 export type CommandPayload =
+  | { kind: 'InvokeCheat'; effect: import('../systems/cheats').CheatEffect }
   | { kind: 'EndTurn' }
   | { kind: 'SelectCoalitionSeat'; playerId: PlayerId }
   | {

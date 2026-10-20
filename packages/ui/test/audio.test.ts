@@ -151,7 +151,7 @@ describe('audio preferences', () => {
     expect(p.interfaceVolume).toBe(35);
     expect(p.combatVolume).toBe(35);
     expect(p.masterVolume).toBe(70);
-    expect(p.schemaVersion).toBe(4);
+    expect(p.schemaVersion).toBe(5);
     expect((p as unknown as Record<string, unknown>).effectsVolume).toBeUndefined();
   });
   it('schema 3: map tile lines move to the pointer only (an old "always" becomes "hover"; a later choice is kept)', () => {

@@ -1,3 +1,4 @@
+import { SingleBattleScreen } from '../screens/SingleBattle';
 /**
  * App shell: screen router with return context, overlay (dialog) stack, toasts,
  * the persistent 2D canvas host, and context-aware keyboard shortcuts.
@@ -34,6 +35,7 @@ import { CostList } from '../components/game';
 
 const SCREENS: Record<ScreenId, ComponentType> = {
   'main-menu': MainMenuScreen,
+  'single-battle': SingleBattleScreen,
   'game-mode': GameModeScreen,
   'scenario-select': ScenarioSelectScreen,
   'pantheon-select': PantheonSelectScreen,
@@ -56,7 +58,7 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   'map-editor': MapEditorScreen,
 };
 
-const IN_GAME_BACKABLE: ScreenId[] = ['hero', 'town', 'recruitment', 'pantheon', 'journal', 'encyclopedia', 'settings', 'unit-detail', 'game-mode', 'scenario-select', 'pantheon-select', 'random-setup', 'map-setup', 'high-scores'];
+const IN_GAME_BACKABLE: ScreenId[] = ['single-battle', 'hero', 'town', 'recruitment', 'pantheon', 'journal', 'encyclopedia', 'settings', 'unit-detail', 'game-mode', 'scenario-select', 'pantheon-select', 'random-setup', 'map-setup', 'high-scores'];
 
 /** Mandatory flow overlays: Escape does not dismiss them. */
 const STICKY_OVERLAYS = new Set(['mission-failed', 'debrief', 'campaign-complete', 'game-over', 'handoff']);
@@ -74,6 +76,11 @@ function useGlobalKeys(store: AppStore) {
       if (store.story.length > 0) return;
       const top = store.overlays[store.overlays.length - 1];
       const screen = store.screen.id;
+      if ((e.code === 'Backquote' || e.key === '`') && !e.ctrlKey && !e.metaKey && !e.altKey && !top && store.session && ['adventure', 'town', 'hero'].includes(screen)) {
+        e.preventDefault();
+        store.openOverlay({ kind: 'cheat' });
+        return;
+      }
       if (e.key === 'F1') {
         e.preventDefault();
         if (top?.kind !== 'shortcuts' && top?.kind !== 'handoff') store.openOverlay({ kind: 'shortcuts' });
@@ -121,7 +128,7 @@ function Router() {
   const store = useStore();
   const entry = store.screen;
   const Screen = SCREENS[entry.id];
-  const needsSession = !['main-menu', 'game-mode', 'scenario-select', 'pantheon-select', 'encyclopedia', 'settings', 'unit-detail', 'random-setup', 'map-setup', 'high-scores', 'map-editor'].includes(entry.id);
+  const needsSession = !['single-battle', 'main-menu', 'game-mode', 'scenario-select', 'pantheon-select', 'encyclopedia', 'settings', 'unit-detail', 'random-setup', 'map-setup', 'high-scores', 'map-editor'].includes(entry.id);
   if (needsSession && !store.session) {
     return <MainMenuScreen />;
   }

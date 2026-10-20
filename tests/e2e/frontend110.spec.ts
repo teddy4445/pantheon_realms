@@ -1,3 +1,4 @@
+import { RANDOM_MAP_TYPES } from '@pr/session';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test, type Page } from '@playwright/test';
@@ -52,7 +53,7 @@ async function footerVisible(page: Page): Promise<void> {
   expect(box && box.y >= 0 && box.y + box.height <= vp.height + 1, 'footer inside the window').toBe(true);
 }
 
-test('title hall and New Game: the Records link, the live version, four illustrated modes from the catalog', async ({ page }) => {
+test('title hall and New Game: the Records link, the live version, five illustrated modes from the catalog', async ({ page }) => {
   const errors = errorsOf(page);
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
   // The menu's opening painting: one of the twelve, or the kit's title background (it supplements them);
@@ -76,16 +77,17 @@ test('title hall and New Game: the Records link, the live version, four illustra
 
   await page.getByTestId('menu-new').click();
   await waitFor(page, (s) => s.screen === 'game-mode', 'new game');
-  const modes = ['campaign', 'skirmish', 'random', 'editor'];
+  const modes = ['campaign', 'skirmish', 'random', 'single', 'editor'];
   for (const m of modes) await expect(page.getByTestId(`mode-${m}`)).toBeVisible();
-  await expect(page.locator('.fe-modes > button')).toHaveCount(4);
+  await expect(page.locator('.fe-modes > button')).toHaveCount(5);
   // Real names and catalog-driven copy (seven campaigns across six pantheons since 2026-10-14, nine layouts), no fixed Greek/Norse list.
   await expect(page.getByTestId('mode-campaign')).toContainText('Campaign');
-  await expect(page.getByTestId('mode-campaign')).toContainText(/7 story campaigns across 6 pantheons/);
-  await expect(page.getByTestId('mode-random')).toContainText(`${RANDOM_TYPES.length} layouts`);
+  const campaignCount = Object.values(GameDriver.mission('skirmish_twin_harbors').catalog.campaigns).filter(c => c.status === 'playable').length;
+  await expect(page.getByTestId('mode-campaign')).toHaveAttribute('title', new RegExp(`${campaignCount} story campaigns across 6 pantheons`));
+  await expect(page.getByTestId('mode-random')).toHaveAttribute('title', new RegExp(`${RANDOM_MAP_TYPES.length} layouts`));
   await expect(page.getByTestId('mode-campaign')).not.toContainText(/Greek and Norse/);
   const art = await picturesDecoded(page, '.fe-modes');
-  expect(art.total).toBe(4);
+  expect(art.total).toBe(5);
   expect(art.broken).toEqual([]);
   // The neutral shell (not a Greek frame) and the title-hall backdrop.
   await expect(page.locator('.fe-shell')).toHaveAttribute('data-backdrop', 'title-hall');

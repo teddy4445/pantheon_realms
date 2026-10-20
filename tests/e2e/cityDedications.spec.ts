@@ -521,12 +521,14 @@ test('Encyclopedia: in a city-dedication game the god page shows both parts; out
   await page.getByRole('tab', { name: 'Gods' }).click();
   await page.getByTestId('codex-filter-greek').click();
   const demeter = page.getByTestId('codex-god-demeter');
-  await expect(demeter.getByTestId('codex-god-city-demeter')).toContainText('In new games: city dedication');
+  await expect(demeter.getByTestId('codex-god-city-demeter')).toContainText('City dedication');
   await expect(demeter).toContainText(f0Demeter());
   await demeter.scrollIntoViewIfNeeded();
   await shot(page, 'encyclopedia-outside');
   await page.getByRole('tab', { name: 'Bestiary' }).click();
-  await expect(page.getByTestId('codex-favored-hoplite')).toContainText('In new games, cities honoring Athena or Demeter gain extra Hoplites');
+  await expect(page.getByTestId('codex-favored-hoplite')).toContainText('Athena');
+  await expect(page.getByTestId('codex-favored-hoplite')).toContainText('Demeter');
+  await expect(page.getByTestId('codex-favored-hoplite').locator('.codex-favored__god')).toHaveText(['Athena+2 each week', 'Demeter+2 each week']);
   await expect(page.getByTestId('codex-favored-hoplite')).not.toContainText(/locked|requires/i);
   // In a game with city dedications.
   const f = dedicationFixture('codex', { pantheon: 'greek', day: 3 });

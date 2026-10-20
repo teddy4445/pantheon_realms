@@ -1,0 +1,4 @@
+(node:23792) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+PASS: packaged 1.7.2 loads its own assets, desktop bridge and New Game.
+v1.7.2 · Desktop build

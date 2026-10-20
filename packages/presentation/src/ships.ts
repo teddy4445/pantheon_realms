@@ -484,7 +484,7 @@ export class ShipLayer {
         if (e.locked === 0) e.snapIn = 2;
       } else if (e.locked === 0 && e.snapIn === 0) this.place(e, v.coord);
       if (e.locked === 0 && (e.motion === 'idle' || e.motion === 'boarding') && e.motion !== (v.boarding ? 'boarding' : 'idle')) this.setMotion(e, v.boarding ? 'boarding' : 'idle');
-      e.root.visible = v.shown;
+      if (e.locked === 0) e.root.visible = v.shown;
       this.lastLook.set(v.id, { coord: v.coord, heading: e.heading, color: v.color, occupied: v.occupied });
     }
     for (const [id, e] of this.ships) {
@@ -559,13 +559,13 @@ export class ShipLayer {
   // ------------------------------------------------------------------ playback (committed events; never changes state)
 
   /** The ship follows its hero's committed sea route (`ShipMoved`), sailing hex to hex. */
-  async playMove(shipId: string, path: readonly HexCoord[], speed: number, follow: boolean): Promise<void> {
+  async playMove(shipId: string, path: readonly HexCoord[], speed: number, follow: boolean, visibleAt?: (coord: HexCoord) => boolean): Promise<void> {
     const e = this.ships.get(shipId);
     if (!e || path.length === 0) return;
     const end = path[path.length - 1]!;
     const start = end.q === e.coord.q && end.r === e.coord.r ? e.prevCoord : e.coord;
     if (start.q === end.q && start.r === end.r) return;
-    await this.sail(e, start, path, speed, follow);
+    await this.sail(e, start, path, speed, follow, visibleAt);
   }
 
   /**
@@ -595,7 +595,7 @@ export class ShipLayer {
     await this.sail(e, from, [to], speed, follow);
   }
 
-  private async sail(e: ShipEntry, start: HexCoord, path: readonly HexCoord[], speed: number, follow: boolean): Promise<void> {
+  private async sail(e: ShipEntry, start: HexCoord, path: readonly HexCoord[], speed: number, follow: boolean, visibleAt?: (coord: HexCoord) => boolean): Promise<void> {
     e.locked += 1;
     e.snapIn = 0;
     this.host.tweens.speed = speed;
@@ -604,15 +604,19 @@ export class ShipLayer {
       let from = start;
       this.place(e, from);
       for (const step of path) {
+        const shown = !visibleAt || visibleAt(from) || visibleAt(step);
+        e.root.visible = shown;
+        this.host.tweens.speed = shown ? speed : 0;
         this.turnToward(e, from, step);
         const a = this.ground(from);
         const b = this.ground(step);
         await this.host.tweens.tween(
           SHIP_STEP_MS,
           (t) => {
+            if (visibleAt) e.root.visible = visibleAt(t < 0.5 ? from : step);
             e.root.position.set(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t);
             e.root.zIndex = e.root.y;
-            if (follow) this.host.follow(e.root.x, e.root.y);
+            if (follow && e.root.visible) this.host.follow(e.root.x, e.root.y);
           },
           linear,
         );
@@ -623,6 +627,7 @@ export class ShipLayer {
       if (e.locked === 0 && !e.root.destroyed) {
         this.place(e, e.coord);
         this.setMotion(e, e.view.boarding ? 'boarding' : 'idle');
+        e.root.visible = e.view.shown;
       }
     }
   }

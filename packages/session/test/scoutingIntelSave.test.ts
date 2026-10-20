@@ -20,6 +20,8 @@ function session(matchId: string): GameSession {
   m.heroes['alexios']!.position = at(15);
   m.heroes['alexios']!.movementPoints = 5000;
   m.heroes['rival_odysseus']!.position = at(22);
+  m.heroes['rival_odysseus']!.army.slots[0]!.count = 20;
+  m.heroes['rival_odysseus']!.army.slots[1]!.count = 8;
   return s;
 }
 

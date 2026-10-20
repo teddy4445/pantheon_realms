@@ -1,3 +1,4 @@
+import { heroStartingArmy } from '@pr/rules';
 import { describe, expect, it } from 'vitest';
 import { GameDriver } from '@pr/testing';
 import { axialDistance, builtBuildingIds, canonicalStateHash, deepClone, footprintDistance, legalActions, processCommand, stackCells, type GameCommand, type HexCoord } from '@pr/rules';
@@ -314,7 +315,7 @@ describe.each(Object.keys(LEADER))('%s skirmish (content, not code)', (pid) => {
     const other = p.heroIds.find((h) => h !== d.state.heroes[leader]!.definitionId)!;
     d.do({ kind: 'HireHero', townId: town.id, heroDefinitionId: other });
     const hired = Object.values(d.state.heroes).find((h) => h.definitionId === other)!;
-    expect(hired.army.slots[0]).toMatchObject({ creatureId: t1.baseCreatureId, count: 10 });
+    expect(hired.army.slots[0]).toMatchObject(heroStartingArmy(d.catalog, other)[0]!);
     // Let the Greek AI play a few days against it; every command goes through the processor.
     for (let i = 0; i < 3 && d.state.outcome.status === 'running'; i++) d.endDay();
     expect(d.state.day).toBeGreaterThan(1);

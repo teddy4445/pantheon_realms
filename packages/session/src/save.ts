@@ -1,3 +1,4 @@
+import { singleBattleIssues } from '@pr/rules';
 /**
  * SaveSnapshot / SaveEnvelope: versioned plain-data persistence of the
  * authoritative state (production/01 §9).
@@ -135,7 +136,7 @@ export function checkEnvelope(catalog: ContentCatalog, raw: unknown): SaveCompat
   if (v.contentVersion !== catalog.versions.contentVersion) {
     return { status: 'incompatible', reason: `Saved with content ${v.contentVersion}; this build uses ${catalog.versions.contentVersion}` };
   }
-  if (!scenarioMission(catalog, e.snapshot.match)) return { status: 'incompatible', reason: 'The saved scenario is not part of this build' };
+  if (!e.snapshot.match.standalone && !scenarioMission(catalog, e.snapshot.match)) return { status: 'incompatible', reason: 'The saved scenario is not part of this build' };
   // Hero ships (navalMovementV1): a hero on land or aboard exactly one ship, one ship per tile (absent = none).
   const ships = shipInvariantIssues(catalog, e.snapshot.match);
   if (ships.length > 0) return { status: 'corrupt', reason: `The ships are inconsistent: ${ships[0]}` };
@@ -146,7 +147,12 @@ export function checkEnvelope(catalog: ContentCatalog, raw: unknown): SaveCompat
   // Naval-only maps (naval random templates): the travel rule travels with the generated mission; a save
   // that turned ships off, persisted portals as on or holds a portal, ferry or sluice is refused, never repaired.
   const mission = scenarioMission(catalog, e.snapshot.match)!;
-  const naval = navalPolicyIssues(mission, e.snapshot.match.scenario.features);
+  if (e.snapshot.match.standalone) {
+    const errors = singleBattleIssues(catalog, e.snapshot.match.standalone.spec);
+    if (errors.length) return { status: 'corrupt', reason: errors[0]! };
+    if (Object.keys(e.snapshot.match.heroes).length || Object.keys(e.snapshot.match.towns).length || e.snapshot.campaign || Object.values(e.snapshot.match.battle?.sides ?? {}).some(s => s.commander)) return { status: 'corrupt', reason: 'Single Battle cannot contain campaign actors.' };
+  }
+  const naval = mission ? navalPolicyIssues(mission, e.snapshot.match.scenario.features) : [];
   if (naval.length > 0) return { status: 'corrupt', reason: `The naval travel rule is broken: ${naval[0]}` };
   return { status: 'ok' };
 }

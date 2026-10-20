@@ -660,7 +660,7 @@ export interface BattleStackState {
 
 export interface BattleEncounterRef {
   /** `naval_boarding` (navalMovementV1): an occupied ship boards a hostile occupied ship (`attackerShipId`, `defenderShipId`). */
-  kind: 'site_guard' | 'hero' | 'town_siege' | 'caravan_intercept' | 'naval_boarding' | 'wreck_expedition';
+  kind: 'site_guard' | 'hero' | 'town_siege' | 'caravan_intercept' | 'naval_boarding' | 'wreck_expedition' | 'standalone';
   /**
    * naval_boarding only: the two ships (`destination` is the defender ship's water tile, the contested hex).
    * wreck_expedition (sea-sites kit): a hero aboard `attackerShipId` fights the raiders moored alongside the
@@ -765,6 +765,7 @@ export interface BattleFieldState {
   spent?: string[];
 }
 export interface BattleState {
+  standalone?: boolean;
   shadowChoice?: { stackId: BattleStackId; from: BattleCell; options: BattleCell[]; resume?: { stackId: BattleStackId; allowMorale: boolean } };
   spellFields?: BattleFieldState[];
 
@@ -954,6 +955,7 @@ export interface ScenarioRuntimeInfo {
 }
 
 export interface MatchState {
+  standalone?: { damage?: Record<BattleSideId, number>; spec: import('../systems/battle/singleBattle').SingleBattleSpec; commands: import('../commands/commands').GameCommand[] };
   /** Explicit campaign coalition: native ownership and gods, one shared treasury and day. */
   coalition?: { playerIds: PlayerId[]; treasury: ResourceBundle };
   kind: 'match';

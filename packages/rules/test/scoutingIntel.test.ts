@@ -67,11 +67,12 @@ function setup(o: Setup = {}): GameDriver {
   features(d, { weeklyEvents: false, scoutingIntelV1: o.intel !== false });
   for (const fog of Object.values(d.state.fog)) fog.explored = fog.explored.map(() => 1);
   const me = d.state.heroes[HERO]!;
+  me.army = { slots: slots([['hoplite',20],['peltast',8]]) };
   me.position = at(o.me ?? 16);
   me.skills = o.scouting ? [{ skillId: 'scouting', rank: o.scouting }] : [];
   const foe = d.state.heroes[ENEMY]!;
   foe.position = at(o.foe ?? 30);
-  if (o.army) foe.army = { slots: slots(o.army) };
+  foe.army = { slots: slots(o.army ?? [['hoplite',20],['peltast',8]]) };
   return d;
 }
 

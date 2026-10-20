@@ -6,7 +6,7 @@
  * design/03 tree: every one of the 18 locations keeps the Greek chain length,
  * costs, prerequisite structure and effects, with the pantheon's own names and
  * creatures substituted. Gods mirror the Greek structure (a patron with no
- * bonus, an exclusive first-minor choice unlocked by Temple II for 20 Favor —
+ * bonus, an exclusive first-minor choice unlocked by Temple I for 20 Favor —
  * the Ares/Athena mirrors plus two gods added 2026-10-02).
  * Hero classes mirror the three existing classes' numbers under local names.
  *
@@ -248,7 +248,7 @@ export function buildPantheonKit(spec: PantheonKitSpec): PantheonContent {
       case 'mage_guild':
         return ['Tier-1 spells; sells spellbooks (500 Gold).', 'Tier-2 spells.', 'Tier-3 spells (Wisdom required to learn).'][lvl - 1]!;
       case 'pantheon_temple':
-        return ['1 Favor per day.', '2 Favor per day in total; enables a minor-god commitment.'][lvl - 1]!;
+        return ['1 Favor per day; unlocks the first minor-god choice.', '2 Favor per day in total; required for the second minor-god choice.'][lvl - 1]!;
       case 'fortifications':
         return ['Perimeter walls and gate; military prerequisite.', '1.5× base weekly growth; keep and moat.', '2× base weekly growth; stronger walls and towers.'][lvl - 1]!;
       case 'training_academy':
@@ -356,7 +356,7 @@ export function buildPantheonKit(spec: PantheonKitSpec): PantheonContent {
       domain: m.domain,
       role: 'minor',
       exclusivityGroup: 'first_minor',
-      requirements: [{ type: 'has_building', buildingId: idFor('pantheon_temple', 2) }],
+      requirements: [{ type: 'has_building', buildingId: idFor('pantheon_temple', 1) }],
       favorCost: 20,
       benefits:
         m.mirrors === 'attack'
@@ -387,7 +387,7 @@ export function buildPantheonKit(spec: PantheonKitSpec): PantheonContent {
         benefits: g.blessing.benefits,
         benefitSummary: g.blessing.benefitSummary,
         portraitAssetId: `god.${p}.${slug(g.name)}.portrait`,
-        templeId: idFor('pantheon_temple', 2),
+        templeId: idFor('pantheon_temple', 1),
       }),
     ),
     ...spec.secondMinors.map((g) =>

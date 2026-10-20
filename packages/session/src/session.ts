@@ -1,3 +1,5 @@
+import { validateSingleBattleReplay, type SingleBattleReplay } from './singleBattle';
+import { createSingleBattle, type SingleBattleSpec } from '@pr/rules';
 /**
  * GameSession: the single runtime host around one authoritative MatchState.
  *
@@ -72,6 +74,9 @@ export type DispatchResult = { readonly ok: true; readonly events: readonly Game
 let sessionSerial = 0;
 
 export class GameSession {
+  private replayTape: SingleBattleReplay | null = null;
+  private replayCursor = 0;
+  get isReplay(): boolean { return this.replayTape !== null; }
   private _state: MatchState;
   private _campaign: CampaignState | null;
   /** Each human player's planned journeys (presentation intent, saved with the match; never a rule). */
@@ -121,6 +126,17 @@ export class GameSession {
   ): GameSession {
     const { match } = createGeneratedMatch(catalog, generated, { matchId, ...opts });
     return new GameSession(catalog, match, null);
+  }
+
+  static newSingleBattle(catalog: ContentCatalog, spec: SingleBattleSpec): GameSession {
+    return new GameSession(catalog, createSingleBattle(catalog, spec), null);
+  }
+
+  static fromBattleReplay(catalog: ContentCatalog, value: unknown): GameSession {
+    const replay = validateSingleBattleReplay(catalog, value);
+    const session = GameSession.newSingleBattle(catalog, replay.spec);
+    session.replayTape = replay;
+    return session;
   }
 
   static fromSnapshot(catalog: ContentCatalog, snapshot: SaveSnapshot): GameSession {
@@ -240,6 +256,7 @@ export class GameSession {
     }
     const base = { ...payload, commandId: this.nextCommandId(), expectedRevision: before.revision, actorPlayerId: actor };
     const command = (automated ? { ...base, automated: true } : base) as GameCommand;
+    if (this.isReplay) return { ok: false, rejection: { code: 'illegal_action', message: 'Replay is read-only' } };
     const res = processCommand({ catalog: this.catalog }, before, command);
     if (!res.ok) return { ok: false, rejection: res.rejection };
     this._state = res.state;
@@ -281,6 +298,7 @@ export class GameSession {
   }
 
   isHumanTurn(): boolean {
+    if (this.isReplay) return false;
     const s = this._state;
     if (s.outcome.status !== 'running') return false;
     if (s.battle) return !isAiControlledBattleTurn(s);
@@ -289,14 +307,25 @@ export class GameSession {
 
   /** True when the game is waiting on an AI actor (an AI turn or an AI battle side). */
   needsAI(): boolean {
+    if (this.replayTape) return this.replayCursor < this.replayTape.commands.length;
     const s = this._state;
     if (s.outcome.status !== 'running') return false;
     if (s.battle) return isAiControlledBattleTurn(s);
+    if (s.standalone) return false;
     return s.players[s.activePlayerId]?.controller === 'ai';
   }
 
   /** Perform exactly one AI command through the normal processor. */
   stepAI(): DispatchResult {
+    if (this.replayTape) {
+      const c = this.replayTape.commands[this.replayCursor];
+      if (!c) return { ok: false, rejection: { code: 'illegal_action', message: 'Replay finished' } };
+      const res = processCommand({ catalog: this.catalog }, this._state, c);
+      if (!res.ok) return res;
+      this.replayCursor++; this._state = res.state;
+      this.publish(res.events, 'ai');
+      return { ok: true, events: res.events };
+    }
     const s = this._state;
     if (!this.needsAI()) return { ok: false, rejection: { code: 'not_your_turn', message: 'No AI action pending' } };
     let result;

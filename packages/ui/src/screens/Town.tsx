@@ -10,6 +10,7 @@
  * pop-up beside that building with icon actions; the garrison and the visiting
  * hero's army are centred below with a divider between them.
  */
+import { TownHallTransition } from '../components/TownHallTransition';
 import { caravansOn } from '../app/caravans';
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type DragEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import {
@@ -18,7 +19,7 @@ import {
   activeBuildingInSlot,
   hireOptions,
   specialtiesEnabled,
-  HIRE_STARTING_TROOPS,
+  heroStartingArmy,
   townTierOneBase,
   quoteConstruction,
   quoteHireHero,
@@ -449,13 +450,13 @@ function TavernModal({ town, onClose }: { town: TownState; onClose: () => void }
     const cls = catalog.heroClasses[def.classId];
     const attrs = returning?.attributes ?? cls?.startingAttributes;
     const survivors = returning ? returning.army.slots.filter((x): x is NonNullable<typeof x> => !!x && x.count > 0) : [];
-    const party: { creatureId: string; count: number }[] = returning ? (survivors.length ? survivors : escort ? [{ creatureId: escort, count: 1 }] : []) : escort ? [{ creatureId: escort, count: HIRE_STARTING_TROOPS }] : [];
+    const party: { creatureId: string; count: number }[] = returning ? (survivors.length ? survivors : escort ? [{ creatureId: escort, count: 1 }] : []) : heroStartingArmy(catalog, id);
     const hire = () =>
       store.confirm(
         `Hire ${def.name}?`,
         returning
           ? `${def.name} returns with ${survivors.length ? 'the troops that survived the surrender' : `one of the ${escortName}`} and no movement left today.`
-          : `${def.name} joins with ${HIRE_STARTING_TROOPS} ${escortName} and full movement.`,
+          : `${def.name} joins with ${party.map(s => `${s.count} ${catalog.creatures[s.creatureId]?.pluralName ?? s.creatureId}`).join(', ')} and full movement.`,
         'Hire',
         () => {
           if (!store.dispatch({ kind: 'HireHero', townId: town.id, heroDefinitionId: id })) {
@@ -1353,6 +1354,7 @@ export function TownScreen() {
             if (e.target === e.currentTarget) setSlot(null);
           }}
         >
+          <TownHallTransition key={town.id} url={bg.url ?? ''} level={town.buildings['civic_hall'] ?? 0} calm={reducedMotion(store.prefs)} />
           {slots.map((s) => {
             const art = slotArtId(catalog, town, s);
             const plan = plans.get(s.id)!;

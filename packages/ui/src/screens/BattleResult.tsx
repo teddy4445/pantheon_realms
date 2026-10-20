@@ -1,3 +1,4 @@
+import { SingleBattleResultScreen } from './SingleBattleResult';
 /**
  * S12 Battle Result. Shows the committed BattleResultRecord: casualties,
  * experience (with visible caps), rewards granted exactly once by the rules,
@@ -19,6 +20,11 @@ import { ResultSplash } from '../components/moments';
 import { resultSplashArt } from '../assets/momentArt';
 
 export function BattleResultScreen() {
+  const store = useStore();
+  return store.session?.state.standalone ? <SingleBattleResultScreen /> : <AdventureBattleResultScreen />;
+}
+
+function AdventureBattleResultScreen() {
   const store = useStore();
   const catalog = store.catalog;
   const state = store.session!.state;

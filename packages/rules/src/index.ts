@@ -108,3 +108,10 @@ export * from './systems/libraryReports';
 export * from './systems/libraryCourier';
 export * from './systems/librarySignals';
 export * from './systems/coalition';
+
+export * from './systems/startingArmies';
+export type { CheatEffect } from './systems/cheats';
+
+export * from './systems/battle/singleBattle';
+
+export { boardZone } from './systems/battle/board';

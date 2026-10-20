@@ -45,7 +45,7 @@ import {
   questHutProgress,
   quoteNeutralReaction,
   worldWeek,
-  dayOfWeek, heroInTown, townGate, HIRE_STARTING_TROOPS,
+  dayOfWeek, heroInTown, townGate, heroStartingArmy,
   navalEnabled,
 } from '@pr/rules';
 import type { AIObservation } from './observation';
@@ -114,17 +114,24 @@ type Slot = { creatureId: string; count: number } | null | undefined;
 const plainOf = (catalog: ContentCatalog, slots: readonly Slot[]) => armyStrength(catalog, slots.filter((x): x is NonNullable<Slot> => !!x && x.count > 0).map((x) => ({ creatureId: x.creatureId, count: x.count })));
 
 /**
- * The army of a hero fresh from a rival's Tavern (its town's tier-1 escort, public
+ * The army of a hero fresh from a rival's Tavern (its personal escort, public
  * rules data): the cheapest raider that could walk into one of our towns. The
  * strongest such escort among the rival empires.
  */
+const escortPriors = new WeakMap<ContentCatalog, Map<string, number>>();
 function raiderPrior(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId): number {
   let best = 0;
+  let priors = escortPriors.get(catalog);
+  if (!priors) { priors = new Map(); escortPriors.set(catalog, priors); }
   for (const [id, p] of Object.entries(belief.players)) {
     if (id === playerId || p.eliminated) continue;
-    const fam = catalog.pantheons[p.pantheonId]?.roster[0];
-    const creatureId = fam ? catalog.families[fam.familyId]?.baseCreatureId : undefined;
-    if (creatureId) best = Math.max(best, armyStrength(catalog, [{ creatureId, count: HIRE_STARTING_TROOPS }]));
+    let prior = priors.get(p.pantheonId);
+    if (prior === undefined) {
+      const escorts = (catalog.pantheons[p.pantheonId]?.heroIds ?? []).map(heroId => armyStrength(catalog, heroStartingArmy(catalog, heroId)));
+      prior = escorts.length ? Math.min(...escorts) : 0;
+      priors.set(p.pantheonId, prior);
+    }
+    best = Math.max(best, prior);
   }
   return best;
 }
@@ -789,3 +796,4 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
   out.push({ kind: 'EndTurn' });
   return out;
 }
+

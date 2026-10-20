@@ -1885,7 +1885,7 @@ export class AdventureSceneController implements SceneController {
       e.shown = v.shown;
       e.embarked = !!v.embarked;
       // Aboard a ship the mounted avatar is hidden (the ship flies the hero's flag), except while it fades.
-      e.root.visible = v.shown && (!e.embarked || e.fading);
+      if (e.locked === 0) e.root.visible = v.shown && (!e.embarked || e.fading);
       this.syncAura(e, v.monster ? null : (v.aura ?? null));
       if (v.selected) this.selectedHero = v.id;
     }
@@ -2026,7 +2026,7 @@ export class AdventureSceneController implements SceneController {
         this.placeCaravan(e, v.coord, e.sharesTile);
       }
       e.shown = v.shown;
-      e.root.visible = v.shown;
+      if (e.locked === 0) e.root.visible = v.shown;
       e.halt.visible = !!v.held;
     }
     for (const [id, e] of this.caravans) {
@@ -2069,7 +2069,7 @@ export class AdventureSceneController implements SceneController {
             e.root.zIndex = e.root.y;
             // Two small jolts per hex: the wheels over the road, not a gait.
             if (bob) e.pose.y = -Math.abs(Math.sin(t * Math.PI * 2)) * R * 0.05;
-            if (follow) this.camGoal = { x: e.root.x, y: e.root.y };
+            if (follow && e.root.visible) this.camGoal = { x: e.root.x, y: e.root.y };
           },
           linear,
         );
@@ -2107,8 +2107,8 @@ export class AdventureSceneController implements SceneController {
   // ------------------------------------------------------------------ hero ships (navalMovementV1)
 
   /** Playback of a committed `ShipMoved` (never changes state): the hull sails the committed sea route. */
-  playShipMove(shipId: string, path: readonly HexCoord[], speed: number, follow: boolean): Promise<void> {
-    return this.shipLayer.playMove(shipId, path, speed, follow);
+  playShipMove(shipId: string, path: readonly HexCoord[], speed: number, follow: boolean, visibleAt?: (coord: HexCoord) => boolean): Promise<void> {
+    return this.shipLayer.playMove(shipId, path, speed, follow, visibleAt);
   }
 
   /** A boarding battle's loser withdrew (`ShipWithdrawn`): its hull sails to the new hex. */
@@ -2198,7 +2198,7 @@ export class AdventureSceneController implements SceneController {
    * avatar walks hex to hex facing its direction (walk strip, or a light step bob
    * while only a still exists) and returns to idle when it stops.
    */
-  async playHeroMove(heroId: string, path: readonly HexCoord[], speed: number, follow: boolean, teleportTo?: HexCoord, trail = false): Promise<void> {
+  async playHeroMove(heroId: string, path: readonly HexCoord[], speed: number, follow: boolean, teleportTo?: HexCoord, trail = false, visibleAt?: (coord: HexCoord) => boolean): Promise<void> {
     const e = this.heroes.get(heroId);
     if (!e || path.length === 0) {
       this.releaseArrival(heroId);
@@ -2219,6 +2219,9 @@ export class AdventureSceneController implements SceneController {
       // The route stays on the ground ahead of the hero and is cleared tile by tile as it walks.
       if (trail && speed > 0) this.drawTrail(path);
       for (const [n, step] of path.entries()) {
+        const shown = !visibleAt || visibleAt(from) || visibleAt(step);
+        e.root.visible = shown && !e.embarked;
+        this.tweens.speed = shown ? speed : 0;
         const a = this.hexCenter(from);
         const b = this.hexCenter(step);
         this.faceToward(e, b.x - a.x, b.y - a.y);
@@ -2228,10 +2231,11 @@ export class AdventureSceneController implements SceneController {
         await this.tweens.tween(
           STEP_MS,
           (t) => {
+            if (visibleAt) e.root.visible = visibleAt(t < 0.5 ? from : step) && !e.embarked;
             e.root.position.set(base.x + dx * t, base.y + dy * t);
             e.root.zIndex = e.root.y + 1;
             if (bob) e.figure.pose.y = -Math.abs(Math.sin(t * Math.PI)) * R * 0.1;
-            if (follow) this.camGoal = { x: e.root.x, y: e.root.y };
+            if (follow && e.root.visible) this.camGoal = { x: e.root.x, y: e.root.y };
           },
           linear,
         );
@@ -2251,6 +2255,7 @@ export class AdventureSceneController implements SceneController {
         this.placeHero(e, e.coord);
         if (e.clip === 'walk') this.setClip(e, 'idle');
         e.figure.pose.y = 0;
+        e.root.visible = e.shown && !e.embarked;
         this.releaseArrival(heroId);
       }
     }

@@ -1,0 +1,25 @@
+[WebServer] (node:17304) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] [PLUGIN_TIMINGS] JavaScript callbacks ran for 6.4s of this 7.2s build (89%).
+[WebServer] The slowest callbacks, timed inside each callback (the wait before a callback starts is excluded, the time it awaits is included):
+[WebServer]   - plugin vite:prepare-out-dir renderStart (82%, 5.9s, 1 call)
+[WebServer] Additional callback time came from the callbacks below and from callbacks under 1s.
+[WebServer] 1 callback is listed without a time. Its calls overlapped, so the time inside one call includes work from other calls. To find its cost, profile the build with `node --cpu-prof`:
+[WebServer]   - plugin vite:css transform (29 calls)
+[WebServer] See https://rolldown.rs/reference/InputOptions.checks#bundlertimings for more details.
+[WebServer] 
+[WebServer] (node:13148) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 4 tests using 1 worker
+
+(node:19392) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:19392) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\ownerFixes.spec.ts:6:1 › hidden Oracle applies all commands and leaves enemy armies and towns alone (16.8s)
+  ok 2 tests\e2e\siegeCatapult.spec.ts:118:42 › one click fires at wall_2 without the side panel (15.9s)
+  ok 3 tests\e2e\siegeCatapult.spec.ts:118:42 › one click fires at keep without the side panel (20.4s)
+  ok 4 tests\e2e\siegeCatapult.spec.ts:145:1 › keyboard can fire directly through the accessible structure strip (13.0s)
+
+  4 passed (1.5m)

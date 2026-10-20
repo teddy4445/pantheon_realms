@@ -2013,7 +2013,7 @@ export class BattleSceneController implements SceneController {
   private structureLabel(st: SiegeStructureView, hp: number): void {
     if (hp <= 0) return;
     const top = this.structureTop(st);
-    const t = new Text({ text: `${st.kind[0]!.toUpperCase()}${st.kind.slice(1)} ${hp}/${st.maxHp}`, style: { fontFamily: 'Inter, sans-serif', fontSize: 12, fontWeight: '700', fill: '#f5e4b7', stroke: { color: '#1a1208', width: 3 } } });
+    const t = new Text({ text: `${st.kind[0]!.toUpperCase()}${st.kind.slice(1)} `, style: { fontFamily: 'Inter, sans-serif', fontSize: 12, fontWeight: '700', fill: '#f5e4b7', stroke: { color: '#1a1208', width: 3 } } });
     t.visible = hp < st.maxHp;
     t.anchor.set(0.5, 1);
     t.position.set(top.x, top.y - 4);

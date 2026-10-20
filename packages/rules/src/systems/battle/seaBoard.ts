@@ -171,7 +171,7 @@ export function battlePlacementIssues(catalog: ContentCatalog, state: Pick<Match
   if (battle.board?.sea || battle.board?.shipSide) {
     const ship = battle.board.shipSide;
     if (!rules || (ship !== 'attacker' && ship !== 'defender')) issues.push('The sea battle has no ship side');
-    else if (!battle.encounter.sourceShipId) issues.push('The sea battle names no ship');
+    else if (!battle.standalone && !battle.encounter.sourceShipId) issues.push('The sea battle names no ship');
     else {
       for (const side of ['attacker', 'defender'] as const) {
         const why = seaArmyProblem(catalog, rules, side === ship, sideStacks(battle, side, false).map((s) => s.creatureId));

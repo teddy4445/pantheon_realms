@@ -1,3 +1,4 @@
+import { CheatConsole } from './CheatConsole';
 /**
  * Modal flows: pause, save/load, confirmation, mission briefing/debrief,
  * mission failed, campaign complete, help, army exchange, pre-battle
@@ -88,10 +89,10 @@ function PauseMenu() {
         <MenuButton icon="journal" label="Journal" onClick={() => { store.closeOverlay(); store.goto('journal'); }} disabled={!session || inBattle} disabledReason={inBattle ? 'Not during battle' : undefined} />
         <MenuButton
           icon="newgame"
-          label="Restart Mission"
+          label={session?.state.standalone ? "Rematch" : "Restart Mission"}
           disabled={!session}
           onClick={() =>
-            store.confirm('Restart this mission?', 'The mission restarts from its recorded starting state. Progress in this attempt is lost unless saved.', 'Restart', () => {
+            session?.state.standalone ? store.confirm('Restart this battle?', 'Restore both armies and the battlefield to their starting state?', 'Rematch', () => store.startSingleBattle(session.state.standalone!.spec)) : store.confirm('Restart this mission?', 'The mission restarts from its recorded starting state. Progress in this attempt is lost unless saved.', 'Restart', () => {
               store.closeAllOverlays();
               session!.restartMission();
               store.resetTo('adventure');
@@ -99,6 +100,7 @@ function PauseMenu() {
             }, { danger: true })
           }
         />
+        {session?.state.standalone ? <MenuButton icon="settings" label="Edit battle setup" onClick={() => store.confirm("Edit setup?", "Leave this battle and return to its original setup. Save first to keep the fight in progress.", "Edit setup", () => store.editSingleBattle())} /> : null}
         <MenuButton icon="back" label="Main Menu" onClick={() => store.confirm('Return to the main menu?', 'Unsaved progress since the last save or autosave will be lost.', 'Main Menu', () => toMainMenu(store), { danger: true })} />
       </nav>
     </Modal>
@@ -136,7 +138,7 @@ function SaveLoadDialog({ mode: initialMode }: { mode: 'save' | 'load' }) {
   const session = store.session;
   const canSave = !!session && mode === 'save';
   const byId = new Map((slots ?? []).map((s) => [s.id, s]));
-  const defaultName = session ? `${scenarioMission(store.catalog, session.state)?.name ?? 'Game'} — Day ${session.state.day}` : '';
+  const defaultName = session ? session.state.standalone ? `${session.state.scenario.name} — Round ${session.state.battle?.round ?? session.state.lastBattleResult?.rounds ?? 0}` : `${scenarioMission(store.catalog, session.state)?.name ?? 'Game'} — Day ${session.state.day}` : '';
   const doSave = async (id: string) => {
     if (!session) return;
     const label = name.trim() || defaultName;
@@ -328,12 +330,12 @@ function SaveLoadDialog({ mode: initialMode }: { mode: 'save' | 'load' }) {
                             Day {sel.metadata.day} — week {sel.metadata.week}, day {sel.metadata.dayOfWeek}
                           </dd>
                         </div>
-                        <div>
+                        {sel.metadata.heroName ? <div>
                           <dt>Hero</dt>
                           <dd>
                             {sel.metadata.heroName}, level {sel.metadata.heroLevel}
                           </dd>
-                        </div>
+                        </div> : null}
                         <div>
                           <dt>Pantheon</dt>
                           <dd>{sel.metadata.pantheonName}</dd>
@@ -1456,6 +1458,7 @@ export function OverlayLayer() {
   const top = store.overlays[store.overlays.length - 1];
   if (!top) return null;
   switch (top.kind) {
+    case 'cheat': return <CheatConsole />;
     case 'pause':
       return <PauseMenu />;
     case 'save-load':

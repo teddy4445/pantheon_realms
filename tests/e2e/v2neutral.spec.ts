@@ -394,7 +394,7 @@ test('story choice: an option that needs evidence wears the evidence icon and sa
 // Encyclopedia and unit page
 // ---------------------------------------------------------------------------
 
-test('encyclopedia: the six neutrals in the Neutral section with their kit portraits, habitat and hiring; the unit page shows both forms', async ({ page }) => {
+test('encyclopedia: the six neutrals in the Neutral section with their kit portraits and compact stats; the unit page shows both forms', async ({ page }) => {
   await page.setViewportSize(SIZES[0]);
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
   await page.getByTestId('menu-encyclopedia').click();
@@ -403,12 +403,12 @@ test('encyclopedia: the six neutrals in the Neutral section with their kit portr
     const card = page.getByTestId(`codex-${id}`);
     await expect(card).toContainText('Base form');
     await expect(card.locator('img')).toHaveAttribute('src', new RegExp(`campaign-v2/portrait-${id}\\.png$`));
-    await expect(page.getByTestId(`codex-facts-${id}`)).toContainText('Hiring');
+    await expect(page.getByTestId(`codex-facts-${id}`)).toHaveCount(0);
   }
   // Two-form neutral families keep both forms.
   await expect(page.getByTestId('codex-centaur')).toContainText('Base form');
   await expect(page.getByTestId('codex-centaur_sentinel')).toContainText('Upgraded form');
-  await expect(page.getByTestId('codex-facts-root_runner')).toContainText('Hired at hiring sites in The Winter Oath (3 chapters) and The Silver Branch (1 chapter)');
+  await expect(page.getByTestId('codex-facts-root_runner')).toHaveCount(0);
   await page.getByTestId('codex-family-pegasus').scrollIntoViewIfNeeded();
   await shoot(page, 'codex-neutral', async () => {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);

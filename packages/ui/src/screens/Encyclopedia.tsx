@@ -32,7 +32,7 @@
  *
  * City dedications (app 1.5.0): a god's card lists its three city benefits and its empire
  * blessing for the rules mode — in a game with city dedications the blessing without the
- * replaced economy; outside a game the classic text plus the city profile "in new games";
+ * replaced economy; outside a game the classic text plus the city dedication profile;
  * in a legacy game the classic text only. A favored family's panel names the gods whose
  * dedication adds to its stock (never as a lock: it is recruited as usual).
  */
@@ -51,9 +51,7 @@ import { AbilityBadge, SetBadge } from '../components/badges';
 import { heroStory } from '../app/view';
 import { neutralFacts } from '../app/neutralCodex';
 import { isSeaFamily, seaFamilies } from '../app/seaCreatures';
-import { SeaBestiary } from '../components/seaCreatures';
-import { reducedMotion } from '../app/preferences';
-import { blessingMode, empireBlessing, godName, godsFavoringFamily, type BlessingMode } from '../app/dedication';
+import { blessingMode, empireBlessing, godName, godsFavoringFamily, growthRateText, type BlessingMode } from '../app/dedication';
 import { GodCityLines, GodDedicationSections } from '../components/dedication';
 
 type Tab = 'creatures' | 'gods' | 'heroes' | 'town' | 'spells' | 'skills' | 'artifacts' | 'abilities';
@@ -176,14 +174,15 @@ function CreatureTierPanel({ catalog, tier, familyId }: { catalog: ContentCatalo
   const mode = blessingMode(store.session?.state);
   if (!fam) return null;
   const favoring = mode === 'legacy' ? [] : godsFavoringFamily(catalog, fam.id);
-  // An expansion neutral (campaign expansion 2026-10-15): its habitat and where it is hired; both forms side by side
-  // since the neutral upgrades of 2026-10-15 (one card across the panel only for a single-form family).
+  // Neutral families use the same compact comparison; single-form families fill the row.
+
   const facts = neutralFacts(catalog, fam.baseCreatureId);
+  const sea = isSeaFamily(fam);
   return (
     <div className="bestiary-tier codex-frame" data-eq="tier" data-testid={`codex-family-${fam.id}`}>
       <div className="bestiary-tier__head">
         <span className="tier-badge">T{tier as CreatureTier}</span> {fam.name} family
-        <span className="codex-meta">{facts ? ` · up to ${fam.baseGrowth} a week at each hiring site` : ` · growth ${fam.baseGrowth}/week`}</span>
+        <span className="codex-meta">{sea ? ' · met at sea' : ` · growth ${fam.baseGrowth}/week`}</span>
       </div>
       <div className={`bestiary-tier__pair ${facts?.singleForm ? 'ncx-pair--single' : ''}`}>
         {familyForms(fam).map((cid, i, forms) => {
@@ -214,32 +213,13 @@ function CreatureTierPanel({ catalog, tier, familyId }: { catalog: ContentCatalo
         })}
       </div>
       {favoring.length ? (
-        <p className="codex-favored small" data-testid={`codex-favored-${fam.id}`}>
-          <span className="codex-favored__gods" aria-hidden="true">
-            {favoring.map((g) => (
-              <GodPortrait key={g} catalog={catalog} godId={g} size="1.6rem" />
-            ))}
-          </span>
-          <span>
-            {mode === 'outside' ? 'In new games, cities' : 'Cities'} honoring {favoring.map((g) => godName(catalog, g)).join(' or ')} gain extra {fam.name} each week for their shared pool; they are recruited as usual everywhere their dwelling stands.
-          </span>
-        </p>
-      ) : null}
-      {facts ? (
-        <div className="ncx-facts" data-testid={`codex-facts-${fam.baseCreatureId}`}>
-          {facts.habitat ? (
-            <p className="ncx-fact">
-              <span className="ncx-fact__k">Habitat</span> {facts.habitat}
-            </p>
-          ) : null}
-          <p className="ncx-fact">
-            <span className="ncx-fact__k">Hiring</span> {facts.hiring.text}
-          </p>
-          {facts.forms ? (
-            <p className="ncx-fact" data-testid={`codex-forms-${fam.baseCreatureId}`}>
-              <span className="ncx-fact__k">Forms</span> {facts.forms}
-            </p>
-          ) : null}
+        <div className="codex-favored" data-testid={`codex-favored-${fam.id}`}>
+          {favoring.map((g) => (
+            <div className="codex-favored__god" key={g}>
+              <GodPortrait catalog={catalog} godId={g} size="3.4rem" />
+              <span><strong>{godName(catalog, g)}</strong><span>{growthRateText(catalog.cityDedicationProfiles![g]!.weeklyGrowthQuarters)}</span></span>
+            </div>
+          ))}
         </div>
       ) : null}
     </div>
@@ -247,7 +227,6 @@ function CreatureTierPanel({ catalog, tier, familyId }: { catalog: ContentCatalo
 }
 
 function Bestiary({ catalog, show }: { catalog: ContentCatalog; show: Show }) {
-  const store = useStore();
   // Sea creatures (2026-10-17) have their own section: they guard no site and sell at no camp.
   const neutral = Object.values(catalog.families)
     .filter((f) => f.classification === 'neutral' && !isSeaFamily(f) && show(`fam:${f.id}`))
@@ -285,7 +264,16 @@ function Bestiary({ catalog, show }: { catalog: ContentCatalog; show: Show }) {
           </div>
         </section>
       ) : null}
-      <SeaBestiary catalog={catalog} families={seaFamilies(catalog).filter((f) => show(`fam:${f.id}`))} calm={reducedMotion(store.prefs)} onOpen={(creatureId) => store.goto('unit-detail', { creatureId })} />
+      {seaFamilies(catalog).some((f) => show(`fam:${f.id}`)) ? (
+        <section className="codex-pantheon codex-pantheon--neutral" data-testid="codex-pantheon-sea">
+          <SectionTitle>Sea creatures</SectionTitle>
+          <div className="bestiary">
+            {seaFamilies(catalog).filter((f) => show(`fam:${f.id}`)).map((f) => (
+              <CreatureTierPanel key={f.id} catalog={catalog} tier={f.tier} familyId={f.id} />
+            ))}
+          </div>
+        </section>
+      ) : null}
     </>
   );
 }
@@ -299,8 +287,8 @@ function GodCodexBlessing({ catalog, god, mode }: { catalog: ContentCatalog; god
     <>
       {god.benefitSummary.length ? <GodBenefits catalog={catalog} god={god} /> : null}
       {mode === 'outside' && hasProfile ? (
-        <section className="ded-god__part codex-newgames" aria-label="City dedication in new games" data-testid={`codex-god-city-${god.id}`}>
-          <h4 className="ded-god__title">In new games: city dedication</h4>
+        <section className="ded-god__part codex-newgames" aria-label="City dedication" data-testid={`codex-god-city-${god.id}`}>
+          <h4 className="ded-god__title">City dedication</h4>
           <GodCityLines catalog={catalog} godId={god.id} />
           <p className="ded-god__note small">Needs Temple II · chosen per city{replaced ? ' · replaces its direct income or growth' : ''}</p>
         </section>
