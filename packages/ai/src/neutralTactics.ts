@@ -177,5 +177,15 @@ export function neutralAbilityChoices(catalog: ContentCatalog, battle: BattleSta
         break;
     }
   }
+  // Combine independently scored legal targets for the upgraded dragons.
+  for(const ab of actions.abilities){
+    if((ab.maxTargets??1)<=1 && !ab.allTargets) continue;
+    const choices=out.filter(c=>c.payload.kind==='BattleUseAbility' && c.payload.abilityId===ab.abilityId).sort((a,b)=>b.score-a.score||a.key.localeCompare(b.key));
+    const picked=choices.slice(0,ab.allTargets?choices.length:ab.maxTargets);
+    const first=picked[0];
+    if(!first || first.payload.kind!=='BattleUseAbility' || picked.length<2) continue;
+    const additional=picked.slice(1).flatMap(c=>c.payload.kind==='BattleUseAbility'?[c.payload.targetId]:[]);
+    out.push({score:picked.reduce((sum,c)=>sum+c.score,0),key:first.key+':group',payload:{...first.payload,...(!ab.allTargets?{additionalTargetIds:additional}:{})}});
+  }
   return out;
 }

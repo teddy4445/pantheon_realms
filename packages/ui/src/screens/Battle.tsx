@@ -91,7 +91,7 @@ type Mode =
   | { kind: 'formation'; interventionId: string; targetId: string }
   | { kind: 'field'; spellId: string; cells: BattleCell[] }
   | { kind: 'spatial'; spellId: string; targetId: string }
-  | { kind: 'ability'; abilityId: string }
+  | { kind: 'ability'; abilityId: string; selectedIds?: readonly string[] }
   | { kind: 'structure' }
   /** Choosing a divine intervention (battle miracles, paid in Favor). */
   | { kind: 'miracles' }
@@ -609,7 +609,7 @@ export function BattleScreen() {
     }
     if (mode.kind === 'ability') {
       const ab = legal.abilities.find((x) => x.abilityId === mode.abilityId);
-      if (occ && ab?.targets.includes(occ.id)) act({ kind: 'BattleUseAbility', stackId: legal.stackId, abilityId: mode.abilityId, targetId: occ.id });
+      if (occ && ab?.targets.includes(occ.id)) chooseAbilityTarget(occ.id);
       else store.toast('Choose a highlighted target', 'error');
       return;
     }
@@ -783,6 +783,15 @@ export function BattleScreen() {
   // definition and the rules' legal actions (app/battleAbilities.ts); the targets come from the rules.
   const abilities: AbilityAction[] = la ? abilityActions(catalog, battle, la) : [];
   const aiming = mode.kind === 'ability' ? (abilities.find((a) => a.abilityId === mode.abilityId) ?? null) : null;
+  function chooseAbilityTarget(targetId: string) {
+    if(!la || mode.kind!=='ability') return;
+    const ab=la.abilities.find(a=>a.abilityId===mode.abilityId);
+    if(!ab?.targets.includes(targetId)) return;
+    if((ab.maxTargets??1)>1){
+      const ids=mode.selectedIds??[];
+      setMode({...mode,selectedIds:ids.includes(targetId)?ids.filter(id=>id!==targetId):ids.length<(ab.maxTargets??1)?[...ids,targetId]:ids});
+    } else act({kind:'BattleUseAbility',stackId:la.stackId,abilityId:mode.abilityId,targetId});
+  }
   const pickAbility = (a: AbilityAction) => {
     if (!la) return;
     if (!a.available) {
@@ -1051,13 +1060,18 @@ export function BattleScreen() {
           catalog={catalog}
           battle={battle}
           action={aiming}
+          selectedIds={mode.kind==='ability' ? mode.selectedIds??[] : []}
+          onConfirm={() => {
+            const ids=mode.kind==='ability'?mode.selectedIds??[]:[];
+            if(ids[0]) act({kind:'BattleUseAbility',stackId:la.stackId,abilityId:aiming.abilityId,targetId:ids[0],additionalTargetIds:ids.slice(1)});
+          }}
           cardRef={abilityCard}
           // Away from its targets: an ally-only ability's card stands on the enemy's side of the screen.
           dock={aiming.targets.every((t) => battle.stacks[t]?.side === la.side) === (orient.leftSide === la.side) ? 'right' : 'left'}
           onHover={(cell) => setHover(cell ? { cell, offset: { x: 0, y: 0 } } : null)}
           onChoose={(targetId) => {
             setHover(null);
-            act({ kind: 'BattleUseAbility', stackId: la.stackId, abilityId: aiming.abilityId, targetId });
+            chooseAbilityTarget(targetId);
           }}
         />
       ) : null}
@@ -1376,6 +1390,8 @@ function AbilityCard({
   dock,
   onHover,
   onChoose,
+  selectedIds,
+  onConfirm,
 }: {
   catalog: ContentCatalog;
   battle: NonNullable<MatchState['battle']>;
@@ -1385,6 +1401,8 @@ function AbilityCard({
   dock: 'left' | 'right';
   onHover: (cell: BattleCell | null) => void;
   onChoose: (targetId: string) => void;
+  selectedIds: readonly string[];
+  onConfirm: () => void;
 }) {
   const badge = resolveAsset(action.icon).url;
   const seen = new Map<string, number>();
@@ -1427,6 +1445,8 @@ function AbilityCard({
               className="bv2-target"
               data-ability-target={id}
               data-testid={`battle-ability-target-${id}`}
+              aria-pressed={action.maxTargets>1 ? selectedIds.includes(id) : undefined}
+              disabled={action.maxTargets>1 && selectedIds.length>=action.maxTargets && !selectedIds.includes(id)}
               aria-label={`${action.name} on ${label}`}
               onMouseEnter={() => onHover(t.anchor)}
               onMouseLeave={() => onHover(null)}
@@ -1440,6 +1460,7 @@ function AbilityCard({
           );
         })}
       </div>
+      {action.maxTargets>1 ? <Button variant="primary" disabled={!selectedIds.length} onClick={onConfirm} data-testid="battle-ability-confirm">Use {action.name} · {selectedIds.length}/{action.maxTargets} selected</Button> : null}
       <p className="bv2-ability-card__hint faint small">Click a highlighted stack on the battlefield or choose one here · Esc cancels.</p>
     </section>
   );

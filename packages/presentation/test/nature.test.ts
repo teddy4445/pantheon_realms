@@ -6,7 +6,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import type { WorldMapDefinition } from '@pr/rules';
-import { LOW_DRESSING, NATURE_POLICY as policy, battleObstacleId, classifyWater, makeNatureSelector, natureHash, planNatureScenery, type NatureItem } from '../src/nature';
+import { LOW_DRESSING, NATURE_POLICY as policy, MAP_NATURE_POLICY, battleObstacleId, classifyWater, makeNatureSelector, natureHash, planNatureScenery, type NatureItem } from '../src/nature';
 
 /** A synthetic map: rows of terrain codes (p plains, f forest, r rough, s marsh, m mountain, w water, v void). */
 function mapOf(rows: string[], biome: WorldMapDefinition['biome'], roads: string[] = [], seed = 7): WorldMapDefinition {
@@ -57,7 +57,7 @@ const seaMap = (biome: WorldMapDefinition['biome']) => {
   return mapOf(rows, biome);
 };
 
-const assetOf = (id: string) => policy.assets.find((a) => a.id === id);
+const assetOf = (id: string) => MAP_NATURE_POLICY.assets.find((a) => a.id === id);
 
 describe('the reference selector, ported (delivery tools/test-selector.mjs)', () => {
   it('passes the delivery’s checks', () => {
@@ -158,15 +158,16 @@ describe('the map plan', () => {
       expect(plan.supported).toBe(true);
       expect(plan.items.length).toBeGreaterThan(50);
       for (const it of plan.items) {
-        const a = assetOf(it.id)!;
+        const a = MAP_NATURE_POLICY.assets.find(a => a.id === it.id && (it.kind === 'water' || a.climate === climate))!;
         expect(a, it.id).toBeTruthy();
         if (it.kind === 'water') expect(['freshwater', policy.seaProfiles[climate]]).toContain(a.climate);
         else expect(a.climate, it.id).toBe(climate);
       }
-      // Every mountain tile carries one of the climate's three mountains.
+      // Every mountain tile carries one of the climate's original or added mountains.
       const m = plan.items.filter((i) => i.kind === 'mountain');
       expect(m.length).toBe(5 * 24);
-      expect(new Set(ids(m)).size).toBe(3);
+      expect(new Set(ids(m)).size).toBeGreaterThanOrEqual(5);
+      expect(new Set(ids(m)).size).toBeLessThanOrEqual(MAP_NATURE_POLICY.assets.filter(a=>a.climate===climate&&a.role==='mountain').length);
     }
   });
 
@@ -213,7 +214,7 @@ describe('the map plan', () => {
       const plan = planNatureScenery(seaMap(climate));
       const shore = plan.items.filter((i) => i.kind === 'edge' && plan.water.componentOf[i.tile]! < 0);
       for (const it of shore) {
-        const a = assetOf(it.id)!;
+        const a = MAP_NATURE_POLICY.assets.find(a => a.id === it.id && a.climate === climate)!;
         // Clumps on the land next to the sea: salt-tolerant wet plants or the climate's rocky clumps.
         if (a.role === 'wet_edge') expect(a.saltwaterBankAllowed, it.id).toBe(true);
       }

@@ -268,7 +268,7 @@ function dispatch(tx: Tx, c: GameCommand): void {
     case 'BattleActivateArtifact':
       return commitActivateArtifact(tx, c.artifactId, c.targetId, c.statusSourceId);
     case 'BattleUseAbility':
-      return commitBattleAbility(tx, c.stackId, c.abilityId, c.targetId);
+      return commitBattleAbility(tx, c.stackId, c.abilityId, c.targetId, c.additionalTargetIds);
     case 'BattleAttackStructure':
       return commitBattleAttackStructure(tx, c.stackId, c.structureId);
     case 'BattleSelectDefenders':

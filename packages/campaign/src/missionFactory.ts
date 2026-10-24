@@ -1,3 +1,4 @@
+import { installLandmarks, installRestorationTemples } from '@pr/rules';
 import { restoreRegionalState, type RegionalSnapshot } from './regionalState';
 /**
  * MissionRuntimeFactory: builds the starting MatchState of a scenario from its
@@ -546,6 +547,8 @@ function buildMissionMatch(
   shareCoalitionFog(state);
   ensureStats(state);
   recordDayStats(catalog, state, (id) => projectedIncome({ catalog, state }, id));
+  installLandmarks(catalog, state);
+  installRestorationTemples(catalog, state);
   return { match: state, decor: gen.decor, entryHash: hashValue(state) };
 }
 

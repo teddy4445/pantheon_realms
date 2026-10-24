@@ -1,0 +1,160 @@
+{
+  "assets": {
+    "town.greek.support.pantheon_temple.l1": {
+      "file": "greek-city-h3-v1/buildings/pantheon_temple.l1.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.support.pantheon_temple.l2": {
+      "file": "greek-city-h3-v1/buildings/pantheon_temple.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.support.mage_guild.l1": {
+      "file": "greek-city-h3-v1/buildings/mage_guild.l1.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.support.mage_guild.l2": {
+      "file": "greek-city-h3-v1/buildings/mage_guild.l2.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.support.mage_guild.l3": {
+      "file": "greek-city-h3-v1/buildings/mage_guild.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.support.watchtower.l1": {
+      "file": "greek-city-h3-v1/buildings/watchtower.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.support.civic_hall.l1": {
+      "file": "greek-city-h3-v1/buildings/civic_hall.l1.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.support.civic_hall.l2": {
+      "file": "greek-city-h3-v1/buildings/civic_hall.l2.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.support.civic_hall.l3": {
+      "file": "greek-city-h3-v1/buildings/civic_hall.l3.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.support.civic_hall.l4": {
+      "file": "greek-city-h3-v1/buildings/civic_hall.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.support.tavern.l1": {
+      "file": "greek-city-h3-v1/buildings/tavern.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.support.artifact_merchant.l1": {
+      "file": "greek-city-h3-v1/buildings/artifact_merchant.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.support.marketplace.l1": {
+      "file": "greek-city-h3-v1/buildings/marketplace.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.support.training_academy.l1": {
+      "file": "greek-city-h3-v1/buildings/training_academy.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.support.workshop.l1": {
+      "file": "greek-city-h3-v1/buildings/workshop.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.support.resource_depot.l1": {
+      "file": "greek-city-h3-v1/buildings/resource_depot.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.support.fortifications.l1": {
+      "file": "greek-city-h3-v1/buildings/fortifications.l1.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.support.fortifications.l2": {
+      "file": "greek-city-h3-v1/buildings/fortifications.l2.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.support.fortifications.l3": {
+      "file": "greek-city-h3-v1/buildings/fortifications.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.dwelling.tier1.base": {
+      "file": "greek-city-h3-v1/buildings/dwelling_t1.l1.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.dwelling.tier1.upgraded": {
+      "file": "greek-city-h3-v1/buildings/dwelling_t1.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.dwelling.tier2.base": {
+      "file": "greek-city-h3-v1/buildings/dwelling_t2.l1.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.dwelling.tier2.upgraded": {
+      "file": "greek-city-h3-v1/buildings/dwelling_t2.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.dwelling.tier3.base": {
+      "file": "greek-city-h3-v1/buildings/dwelling_t3.l1.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.dwelling.tier3.upgraded": {
+      "file": "greek-city-h3-v1/buildings/dwelling_t3.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.dwelling.tier4.base": {
+      "file": "greek-city-h3-v1/buildings/dwelling_t4.l1.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.dwelling.tier4.upgraded": {
+      "file": "greek-city-h3-v1/buildings/dwelling_t4.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.dwelling.tier5.base": {
+      "file": "greek-city-h3-v1/buildings/dwelling_t5.l1.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.dwelling.tier5.upgraded": {
+      "file": "greek-city-h3-v1/buildings/dwelling_t5.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.dwelling.tier6.base": {
+      "file": "greek-city-h3-v1/buildings/dwelling_t6.l1.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.dwelling.tier6.upgraded": {
+      "file": "greek-city-h3-v1/buildings/dwelling_t6.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.dwelling.tier7.base": {
+      "file": "greek-city-h3-v1/buildings/dwelling_t7.l1.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.dwelling.tier7.upgraded": {
+      "file": "greek-city-h3-v1/buildings/dwelling_t7.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.background.l1": {
+      "file": "greek-city-h3-v1/background.l1.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.background.l2": {
+      "file": "greek-city-h3-v1/background.l2.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.background.l3": {
+      "file": "greek-city-h3-v1/background.l3.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.background.l4": {
+      "file": "greek-city-h3-v1/background.l4.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.background": {
+      "file": "greek-city-h3-v1/background.l1.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    },
+    "town.greek.background.damaged": {
+      "file": "greek-city-h3-v1/background.damaged.png",
+      "provenance": "Greek polis art prototype, generated with built-in image_gen; source and prompts in docs/greek-city-h3-prototype-v1."
+    }
+  }
+}

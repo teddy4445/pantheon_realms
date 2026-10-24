@@ -1,0 +1,8 @@
+{
+  "assets": {
+    "icon.ui.caravan": {
+      "file": "city-icons-v1/caravan-128.webp",
+      "provenance": "Painted caravan icon generated with built-in ImageGen, 2026-10-23; master in assets-source/ui/city-icons-v1/caravan.png."
+    }
+  }
+}

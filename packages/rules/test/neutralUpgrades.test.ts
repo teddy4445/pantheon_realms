@@ -511,3 +511,33 @@ describe('town training never reaches a neutral family', () => {
     }
   });
 });
+
+it.each([
+  ['neutral_rain_dragon','neutral_celestial_rain_dragon'],
+  ['neutral_zilant','neutral_crowned_zilant'],
+  ['neutral_cuelebre','neutral_ancient_cuelebre'],
+])('dragon lair %s hires both forms, trains for 1300 Gold and 1 Crystal, and refills one shared weekly recruit', (base,up) => {
+  const {d,site}=grove([[base,1],['norse_draugr',10],null,null,null,null,null]);
+  const original=d.catalog.missions['winter_oath_v2_m02']!;
+  const camp:SiteDefinition={...site,id:'dragon-lair',kind:{type:'creature_camp',creatureId:base,initialStock:1,weeklyGrowth:1,restock:'weekly'},guard:{army:[{creatureId:base,count:2}],reward:{},battlefield:'grove',label:'Lair guardians'}};
+  d.state.customMission={...original,sites:[...original.sites,camp]};
+  d.state.world.sites[camp.id]={siteId:camp.id,owner:null,cleared:false,claimed:false,activated:false,visitedBy:[],open:false,guard:null};
+  Object.assign(d.player.wallet,{gold:20000,crystal:20});
+  expect(campSiteForms(d.catalog,camp)).toEqual([base,up]);
+  expect(d.reject({kind:'RecruitFromCamp',heroId:'hervor',siteId:camp.id,creatureId:up,quantity:1}).message).toMatch(/guards/);
+  d.state.world.sites[camp.id]!.cleared=true;
+  const quote=quoteCampTraining(d.catalog,d.state,'player','hervor',camp.id,base,1);
+  expect(quote.legal).toBe(true);
+  expect(quote.unitCost).toMatchObject({gold:1300,crystal:1});
+  d.do({kind:'TrainAtCamp',heroId:'hervor',siteId:camp.id,fromCreatureId:base,quantity:1});
+  expect(d.hero('hervor').army.slots[0]).toMatchObject({creatureId:up,count:1});
+  expect(campStock(d.catalog,d.state,camp.id)).toBe(1);
+  d.do({kind:'RecruitFromCamp',heroId:'hervor',siteId:camp.id,creatureId:up,quantity:1});
+  expect(d.player.wallet).toMatchObject({gold:20000-1300-d.catalog.creatures[up]!.cost!.gold,crystal:20-1-d.catalog.creatures[up]!.cost!.crystal});
+  expect(campStock(d.catalog,d.state,camp.id)).toBe(0);
+  expect(d.reject({kind:'RecruitFromCamp',heroId:'hervor',siteId:camp.id,creatureId:base,quantity:1}).code).toBe('no_population');
+  for(let i=0;i<40 && d.state.day<8;i++) d.do({kind:'EndTurn'},d.state.activePlayerId);
+  expect(campStock(d.catalog,d.state,camp.id)).toBe(1);
+  for(let i=0;i<40 && d.state.day<15;i++) d.do({kind:'EndTurn'},d.state.activePlayerId);
+  expect(campStock(d.catalog,d.state,camp.id)).toBe(1);
+});

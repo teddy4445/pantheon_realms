@@ -14,6 +14,8 @@
  * nothing here names a pantheon.
  */
 import {
+  restorationTemple,
+  RESTORATION_PANTHEONS,
   axialDistance,
   CUSTOM_MAP_FORMAT,
   CUSTOM_MAP_VERSION,
@@ -92,6 +94,8 @@ export interface CustomSiteKindInfo {
 }
 
 export const CUSTOM_SITE_KINDS: readonly CustomSiteKindInfo[] = [
+  { id: 'restoration_shrine', label: 'Ruined Shrine (small)', summary: 'Restore for 8 Favor; choose supplies, creatures or a spell. Set its pantheon in the site panel.', guardable: false, palette: 'landmark' },
+  { id: 'restoration_temple', label: 'Ruined Temple (large)', summary: 'Restore for 20 Favor; choose a greater gift. Set its pantheon in the site panel.', guardable: false, palette: 'landmark' },
   { id: 'town', label: 'Town', summary: 'An empire’s home town (one per empire), or an unowned town any empire may take.', guardable: false },
   { id: 'sawmill', label: 'Sawmill', summary: '+2 Wood per day to its owner.', guardable: true },
   { id: 'quarry', label: 'Quarry', summary: '+2 Stone per day to its owner.', guardable: true },
@@ -354,6 +358,7 @@ export function validateCustomMap(catalog: ContentCatalog, doc: CustomMapDocumen
     seen.set(k, s.id);
     if (s.kind === 'town' && s.owner !== undefined && (s.owner < 0 || s.owner >= doc.players.length)) err(`${label} belongs to no empire ${s.owner + 1}.`, s.id);
     if (s.kind === 'town' && s.owner === undefined && s.pantheon && s.pantheon !== 'nearest' && s.pantheon !== 'other' && !catalog.skirmishKits[s.pantheon]) err(`${label}: ${s.pantheon} towns cannot be played in a skirmish.`, s.id);
+    if ((s.kind === 'restoration_shrine' || s.kind === 'restoration_temple') && s.pantheon && !RESTORATION_PANTHEONS.some(p => p === s.pantheon)) err(`${label}: choose one of the six temple pantheons.`, s.id);
     if (s.guard && !catalog.creatures[s.guard.creatureId]) err(`${label}: unknown guard creature ${s.guard.creatureId}.`, s.id);
     if (s.kind === 'monster' && !s.guard) err(`${label} has no army.`, s.id);
     if (s.kind === 'creature_camp' && (!s.creatureId || !catalog.creatures[s.creatureId])) err(`${label} sells no creature.`, s.id);
@@ -826,6 +831,12 @@ export function compileCustomMap(catalog: ContentCatalog, authored: CustomMapDoc
     const guard = guardOf(s);
     const named = (name: string) => s.name || name;
     switch (s.kind) {
+      case 'restoration_shrine':
+      case 'restoration_temple': {
+        const temple = restorationTemple(catalog, s.pantheon ?? doc.players[0]!.pantheonId, s.kind === 'restoration_shrine' ? 'small' : 'large', coord, s.id);
+        sites.push({ ...temple, name: named(temple.name) });
+        break;
+      }
       case 'town': {
         if (s.owner === undefined) {
           const townId = freeIds.get(s.id);

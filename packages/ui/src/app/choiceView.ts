@@ -17,6 +17,7 @@
  */
 import {
   missionSite,
+  landmarkVisit,
   quoteMapEvent,
   resources,
   scenarioMission,
@@ -210,7 +211,8 @@ export function choiceView(catalog: ContentCatalog, state: MatchState, playerId:
   const mission = scenarioMission(catalog, state);
   const hero = state.heroes[heroId];
   const wallet = resources(state.players[playerId]?.wallet ?? {});
-  const committed = !!state.world.sites[siteId]?.claimed;
+  const visit = kind.landmark ? landmarkVisit(catalog, state, heroId, siteId) : null;
+  const committed = !!state.world.sites[siteId]?.claimed || !!visit;
   const guarded = !!def.guard && !state.world.sites[siteId]?.cleared;
   const heroDef = hero ? catalog.heroes[hero.definitionId] : undefined;
   const speaker: DialogueLine | null = hero ? { speaker: hero.name, portraitAssetId: hero.portraitAssetId || heroDef?.portraitAssetId || `hero.${hero.definitionId}.portrait`, text: '' } : null;
@@ -258,7 +260,7 @@ export function choiceView(catalog: ContentCatalog, state: MatchState, playerId:
 
   let chosen: ChoiceView['chosen'] = null;
   if (committed) {
-    const i = state.world.sites[siteId]?.chosenOption ?? choiceMadeInSession(state.matchId, siteId) ?? chosenByFlags(state, kind.options);
+    const i = visit?.option ?? state.world.sites[siteId]?.chosenOption ?? choiceMadeInSession(state.matchId, siteId) ?? chosenByFlags(state, kind.options);
     const o = i !== null ? kind.options[i] : undefined;
     if (o && i !== null) chosen = { index: i, label: o.label, summary: o.summary };
   }

@@ -33,7 +33,7 @@ import { Button, Chip, Modal, QuantitySelector, SectionTitle } from '../componen
 import { CreaturePortrait, Emblem, SpeakerPortrait, briefingArt } from '../components/art';
 import { ArmyStrip, CostList } from '../components/game';
 import { AbilityBadge } from '../components/badges';
-import { resolveAsset } from '../assets/manifest';
+import { resolveAsset, templeBanner } from '../assets/manifest';
 import { campForm, campQuantity, neutralRecruitView, rememberCampForm, rememberCampQuantity, type NeutralRecruitView } from '../app/neutralRecruit';
 import { choiceView, noteChoiceDeferred, noteChoiceMade, type ChoiceOptionView, type ChoiceRecord } from '../app/choiceView';
 import { Icon, RESOURCE_ICON } from '../assets/icons';
@@ -474,8 +474,15 @@ export function MapEventDialog({ heroId, siteId }: { heroId: string; siteId: str
   const hero = state.heroes[heroId];
   const wallet = state.players[playerId]?.wallet;
   const header = encounterHeader(catalog, state, 'map_event', siteId);
+  const landmarkPicture = kind.landmark || kind.restoration ? pickSiteSprite(siteSpriteCandidates(def, state.world.sites[siteId]), 'map_event') : null;
+  const sanctuaryBanner=kind.restoration ? templeBanner(kind.restoration.pantheonId) : null;
   // Each option's offer as reward items, from the event's own definition.
-  const offerItems = kind.options.map((o) => (o.reward ? rewardPreviewItems(catalog, o.reward, hero?.name ?? 'your hero') : []));
+  const offerItems = kind.options.map((o) => {
+    const items = o.reward ? rewardPreviewItems(catalog, o.reward, hero?.name ?? 'your hero') : [];
+    const spell = o.teachSpellId ? catalog.spells[o.teachSpellId] : null;
+    if (spell) items.push({ kind: 'spell', key: `spell:${spell.id}`, iconId: spell.iconAssetId ?? 'icon.action.spell', amount: '', label: spell.name, note: `Learned by ${hero?.name ?? 'your hero'} · tier ${spell.tier}` });
+    return items;
+  });
   const options: ChoiceOption<number>[] = v.options.map((o) => ({
     value: o.index,
     title: (
@@ -503,10 +510,16 @@ export function MapEventDialog({ heroId, siteId }: { heroId: string; siteId: str
       // gained is read from this command's committed result (a receipt; Continue never runs it again). An option
       // that gives something closes into the reward tray; one that only records a decision stays open and shows it.
       const option = kind.options[selected]!;
-      const tray = offerItems[selected]!.length > 0;
+      if (option.landmarkAction === 'battle') {
+        const rejected = store.dispatch({ kind: 'ResolveMapEvent', heroId, siteId, optionIndex: selected });
+        if (rejected) return false;
+        store.closeOverlay();
+        return true;
+      }
+      const tray = offerItems[selected]!.length > 0 || !!option.landmarkAction;
       const rejected = store.claimReward(
         { kind: 'ResolveMapEvent', heroId, siteId, optionIndex: selected },
-        { title: option.label, source: kind.title, heroId, ...(tray ? { closeKind: 'map-event' as const } : {}), major: true, nothing: `${option.label}: ${option.summary}` },
+        { title: kind.restoration ? `${kind.title} restored` : option.label, source: kind.title, heroId, ...(tray ? { closeKind: 'map-event' as const } : {}), major: true, nothing: `${option.label}: ${option.summary}` },
       );
       if (rejected) return false;
       noteChoiceMade(state.matchId, siteId, selected);
@@ -518,7 +531,7 @@ export function MapEventDialog({ heroId, siteId }: { heroId: string; siteId: str
     <Modal
       title={kind.title}
       onClose={leave}
-      width="46rem"
+      width={kind.restoration ? '64rem' : '46rem'}
       testId="map-event"
       surface="parchment"
       theme={playerTheme(store, hero?.ownerId)}
@@ -530,7 +543,7 @@ export function MapEventDialog({ heroId, siteId }: { heroId: string; siteId: str
         ) : (
           <>
             <Button variant="primary" disabled={selected === null || pending} disabledReason={selected === null ? (anyLegal ? 'Choose an option first' : 'No option is possible now') : null} onClick={confirm} data-testid="event-confirm">
-              Confirm
+              {kind.restoration ? 'Restore sanctuary' : 'Confirm'}
               {selectedCost ? <CostList cost={selectedCost} wallet={wallet} /> : null}
             </Button>
             <Button onClick={leave} data-testid="event-later">
@@ -540,15 +553,16 @@ export function MapEventDialog({ heroId, siteId }: { heroId: string; siteId: str
         )
       }
     >
-      <div className="ch" data-testid="choice" data-state={v.committed ? 'committed' : v.repeat ? 'repeat' : 'open'}>
-        {header ? <GuiArtHeader url={header.url} alt={header.alt} wide /> : null}
+      <div className={`ch${kind.restoration ? ' ch--restoration' : ''}`} data-testid="choice" data-state={v.committed ? 'committed' : v.repeat ? 'repeat' : 'open'}>
+        {header && !kind.landmark && !kind.restoration ? <GuiArtHeader url={header.url} alt={header.alt} wide /> : null}
+        {landmarkPicture?.def ? <figure className="gui-art-header gui-art-header--wide" data-testid={sanctuaryBanner ? 'temple-banner' : undefined} style={{ background: sanctuaryBanner ? `linear-gradient(90deg,rgba(12,19,14,.12),transparent,rgba(12,19,14,.12)), url("${sanctuaryBanner}") center 55% / cover` : 'radial-gradient(ellipse at 50% 65%, #aca16a 0%, #4a5c46 48%, #202a27 100%)' }}><img src={spriteUrl(landmarkPicture.def.file)} alt={def.name} style={{ height: '12rem', width: '100%', objectFit: 'contain', padding: '.5rem', filter: sanctuaryBanner ? 'drop-shadow(0 2px 3px #1a2017)' : undefined }} /></figure> : null}
         <div className="ch-scene">
           {v.speaker ? <SpeakerPortrait catalog={catalog} line={v.speaker} size="3.4rem" /> : null}
           <div className="ch-scene__text">
             <span className="ch-where" data-testid="event-location">
               {v.speaker ? <strong>{v.speaker.speaker}</strong> : null} at {v.location}
             </span>
-            {v.repeat ? (
+            {kind.restoration ? <span className="ch-once">{v.committed ? 'Restored permanently. The chosen gift has already been received.' : 'Choose one gift. Favor is spent only when you confirm. Each sanctuary can be restored once for all heroes.'}</span> : kind.landmark && kind.landmark !== 'ruins' ? (<span className="ch-once">{v.committed ? 'This hero has received a gift this week. Return next week.' : kind.landmark === 'waterfall' ? 'Restore mana once per hero each week. Resting here is free.' : 'One gift per hero each week. A blessing lasts until the next battle; blessings do not stack.'}</span>) : v.repeat ? (
               <span className="ch-repeat" data-testid="event-repeat">
                 You came back: nothing was decided or paid last time, and the offer still stands.
               </span>

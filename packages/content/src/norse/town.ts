@@ -12,6 +12,7 @@
  * (x = building center, y = baseline where it meets its terrace).
  */
 import type { BuildingDefinition, BuildingSlotDefinition, EffectDefinition, RequirementDefinition, ResourceCost, TownArchetypeDefinition } from '@pr/rules';
+import { withH3CityArt } from '../townArt/h3City';
 
 const has = (buildingId: string): RequirementDefinition => ({ type: 'has_building', buildingId });
 const covenant = (familyId: string): RequirementDefinition => ({ type: 'town_has_covenant', familyId });
@@ -118,7 +119,7 @@ const slot = (
   extra: Partial<BuildingSlotDefinition> = {},
 ): BuildingSlotDefinition => ({ id, kind, label, chain, placement, ...extra });
 
-export const NORSE_TOWN: TownArchetypeDefinition = {
+export const NORSE_TOWN: TownArchetypeDefinition = withH3CityArt({
   id: 'norse_hold',
   pantheonId: N,
   name: 'Norse Hold',
@@ -145,4 +146,4 @@ export const NORSE_TOWN: TownArchetypeDefinition = {
     slot('dwelling_t6', 'dwelling', 'Tier 6 — Jotunn Camp', ['norse_jotunn_camp', 'norse_jotunn_camp_up'], { x: 11, y: 47, width: 12, height: 12, layer: 4 }, { tier: 6 }),
     slot('dwelling_t7', 'dwelling', 'Tier 7 — Serpent Lair', ['norse_serpent_lair', 'norse_serpent_lair_up'], { x: 88, y: 93, width: 14, height: 14, layer: 8 }, { tier: 7 }),
   ],
-};
+});

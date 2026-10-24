@@ -78,7 +78,7 @@ describe('divine interventions', () => {
     for (const p of pantheons) {
       const d = GameDriver.mission(p === 'greek' ? 'skirmish_twin_harbors' : `skirmish_twin_harbors_${p}_vs_greek`);
       const list = interventionsFor(d.catalog, d.state, 'player');
-      expect(list.length).toBe(9);
+      expect(list.length).toBe(11);
       for (const m of list) {
         const base = d.catalog.interventions[m.id]!;
         if (base.pantheonIds) expect(base.pantheonIds).toEqual([p]);

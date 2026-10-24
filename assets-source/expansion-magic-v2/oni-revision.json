@@ -1,0 +1,4 @@
+{
+  "id": "exp_japanese_oni_flame",
+  "prompt": "Production edit of this exact eight-pose sprite sheet: preserve all eight Oni Flame animation poses and the richly painted art. Keep the exact FOUR columns and TWO rows on a true transparent background. Each mask and each breath of fire must fit COMPLETELY within the middle 65% of its own equal square cell; add generous transparent gutters so no flame from one pose enters another pose. Restore the full breathing flames, do not crop their tips. Keep a consistent scale and ground-contact position across poses. Remove all tiny remnants of adjacent frames at cell edges. No text, no borders, no new subjects, no background."
+}

@@ -1,3 +1,6 @@
+import { landmarkVisit } from './landmarks';
+import { maxMana, maxSpellTierLearnable } from '../resolvers/heroes';
+import { startBattle } from './battle/factory';
 import { allied } from './coalition';
 /**
  * WorldFeatures (proposed this build): weekly events, neutral creature camps,
@@ -16,7 +19,7 @@ import type { MapEventOptionDefinition, SiteDefinition } from '../definitions/wo
 import type { MatchState } from '../state/match';
 import { placementSlot } from '../resolvers/army';
 import { missionSite } from '../resolvers/world';
-import { scenarioMission } from '../resolvers/scenario';
+import { scenarioMission, scopeAllowed } from '../resolvers/scenario';
 import { reject, type RejectionCode, type Tx } from '../engine/tx';
 import { clampMovement, spend } from './economy';
 import { grantReward } from './quests';
@@ -410,15 +413,26 @@ export function quoteMapEvent(catalog: ContentCatalog, state: MatchState, player
   if (!def || !st || def.kind.type !== 'map_event') return fail('not_found', 'Nothing happens here');
   if (!hero || hero.ownerId !== playerId || hero.status !== 'active') return fail('not_owner', 'Not your hero');
   if (!hexEquals(hero.position, def.coord)) return fail('not_present', `${hero.name} must stand at ${def.name}`);
-  if (st.claimed) return fail('already_done', 'This event has already happened');
+  if (st.claimed) return fail('already_done', def.kind.restoration ? 'This sanctuary has already been restored. Its gift has been claimed.' : 'This event has already happened');
+  if (def.kind.landmark && landmarkVisit(catalog, state, heroId, siteId)) return fail('already_done', 'Already visited by this hero this week. Return next week.');
+  if (def.kind.landmark === 'waterfall' && hero.mana >= maxMana(catalog, state, hero)) return fail('already_done', 'Your mana is already full; the water remains available.');
+  if (option?.landmarkAction && option.landmarkAction !== 'battle' && hero.landmarkBlessing) return fail('already_done', 'A landmark blessing is already prepared for your next battle.');
   if (def.guard && !st.cleared) return fail('missing_requirement', 'Its guards still hold the site');
   if (state.pendingDecisions.some((d) => d.heroId === heroId)) return fail('decision_pending', 'Resolve the pending level-up first');
   if (!option) return fail('invalid_command', 'Choose one of the options');
+  if (def.kind.landmark === 'tree' && option.reward.questXp && state.scenario.xpCap !== null && hero.xp >= state.scenario.xpCap) return fail('already_done', 'This hero has reached the scenario experience cap.');
   if (option.requiresFlags?.some((f) => !state.mission.flags[f])) return fail('missing_requirement', 'You do not yet have what this choice needs');
   const wallet = state.players[playerId]?.wallet ?? resources();
   if (option.cost && !canAfford(wallet, resources(option.cost))) return fail('insufficient_resources', 'Not enough resources');
   const recipient = option.rewardHeroId ? state.heroes[option.rewardHeroId] : hero;
   if (!recipient || recipient.status !== 'active' || !allied(state, recipient.ownerId, playerId)) return fail('not_owner', 'The reserve recipient must be an active allied hero');
+  if (option.teachSpellId) {
+    const spell = catalog.spells[option.teachSpellId];
+    if (!spell || spell.implementationStatus !== 'implemented' || !scopeAllowed(state, spell.scope)) return fail('missing_requirement', 'This spell is not available in this scenario');
+    if (!recipient.spellbook) return fail('missing_requirement', `${recipient.name} needs a spellbook to study here`);
+    if (recipient.knownSpellIds.includes(spell.id)) return fail('already_done', `${recipient.name} already knows ${spell.name}. Choose another gift.`);
+    if (spell.tier > maxSpellTierLearnable(catalog, recipient)) return fail('missing_requirement', `${spell.name} is tier ${spell.tier}; this hero needs more Wisdom`);
+  }
   for (const c of option.reward.creatures ?? []) {
     if (placementSlot(recipient.army, c.creatureId) === null) return fail('no_capacity', `${hero.name} has no free slot for ${catalog.creatures[c.creatureId]?.pluralName ?? c.creatureId}`);
   }
@@ -430,10 +444,29 @@ export function commitResolveMapEvent(tx: Tx, heroId: HeroId, siteId: SiteId, op
   if (!q.legal || !q.option) reject(q.code ?? 'illegal_action', q.reason ?? 'Cannot do that');
   const def = missionSite(tx.catalog, tx.state, siteId)!;
   if (q.option.cost) spend(tx, tx.actorId, resources(q.option.cost), def.name);
-  tx.state.world.sites[siteId]!.claimed = true;
-  tx.state.world.sites[siteId]!.chosenOption = optionIndex;
+  const st = tx.state.world.sites[siteId]!;
+  const landmark = def.kind.type === 'map_event' ? def.kind.landmark : undefined;
+  if (q.option.landmarkAction === 'battle') {
+    st.cleared = false;
+    startBattle(tx, { attackerHeroId: heroId, kind: 'site_guard', siteId, defenderHeroId: null, destination: def.coord });
+    return;
+  }
+  if (landmark && landmark !== 'ruins') {
+    (st.landmarkVisits ??= {})[heroId] = { week: worldWeek(tx.state, tx.profile.daysPerWeek), option: optionIndex };
+  } else st.claimed = true;
+  if (landmark === 'ruins') { st.cleared = true; st.guard = null; }
+  if (q.option.landmarkAction === 'courage' || q.option.landmarkAction === 'protection') {
+    tx.state.heroes[heroId]!.landmarkBlessing = { kind: q.option.landmarkAction, source: def.name };
+  }
+  st.chosenOption = optionIndex;
+  if (def.kind.type === 'map_event' && def.kind.restoration) st.open = true;
+  if (q.option.teachSpellId) {
+    const recipient = tx.state.heroes[q.option.rewardHeroId ?? heroId]!;
+    recipient.knownSpellIds.push(q.option.teachSpellId);
+    tx.emit({ kind: 'SpellsLearned', heroId: recipient.id, spellIds: [q.option.teachSpellId] });
+  }
   tx.emit({ kind: 'MapEventResolved', siteId, heroId, optionIndex, label: q.option.label });
-  grantReward(tx, tx.actorId, q.option.rewardHeroId ?? heroId, q.option.reward, `event:${siteId}`, def.name);
+  grantReward(tx, tx.actorId, q.option.rewardHeroId ?? heroId, q.option.reward, `event:${siteId}${landmark && landmark !== 'ruins' ? `:${heroId}:${worldWeek(tx.state, tx.profile.daysPerWeek)}` : ''}`, def.name);
   // An authored resolution (campaign v2): named guards stand down — no battle, no simulation.
   for (const id of q.option.clearsSiteIds ?? []) {
     const st = tx.state.world.sites[id];
@@ -474,4 +507,20 @@ export function liveCampReservation(state: MatchState, siteId: SiteId) {
 export function availableCampStock(catalog: ContentCatalog, state: MatchState, siteId: SiteId, heroId: HeroId): number {
   const total = campStock(catalog, state, siteId), r = liveCampReservation(state, siteId);
   return Math.max(0, total - (r && r.heroId !== heroId ? r.quantity : 0));
+}
+
+/** Living opposition grows 12% each week; cleared sites never respawn. */
+export function growWorldOpposition(tx: Tx, week: number): void {
+  if (week <= 1 || !tx.applyOnce(`opposition_growth:${week}`)) return;
+  const grow = (stacks: readonly ({ count: number } | null)[]) => {
+    for (const stack of stacks) if (stack && stack.count > 0) stack.count += Math.max(1, Math.floor(stack.count * 0.12));
+  };
+  for (const site of Object.values(tx.state.world.sites)) if (!site.cleared && site.guard) grow(site.guard);
+  for (const hero of Object.values(tx.state.heroes)) {
+    const owner = tx.state.players[hero.ownerId];
+    if (hero.status === 'active' && (owner?.controller === 'ai' || owner?.role === 'scripted_hostile')) grow(hero.army.slots);
+  }
+  for (const town of Object.values(tx.state.towns)) {
+    if (town.ownerId === null || tx.state.players[town.ownerId]?.controller === 'ai') grow(town.garrison.slots);
+  }
 }

@@ -1,0 +1,8174 @@
+{
+  "version": 1,
+  "status": "review-only-not-integrated",
+  "creatures": {
+    "neutral_rain_dragon": {
+      "status": "final",
+      "reviewApproved": false,
+      "provenance": "Built-in image_gen; prepared for review only. See design/*.json.",
+      "facing": "right",
+      "pixelsPerHex": 86.46,
+      "animations": {
+        "idle": {
+          "file": "assets/neutral_rain_dragon/0.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 2,
+          "loop": true,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                255.33333333333334
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                254.91666666666669
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                254.91666666666669
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                266.1666666666667
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                266.1666666666667
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                266.1666666666667
+              ],
+              "sourceScale": 1
+            }
+          ],
+          "status": "final"
+        },
+        "move": {
+          "file": "assets/neutral_rain_dragon/0.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": true,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                254.5
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                254.5
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                254.5
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.75
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.33333333333334
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.33333333333334
+              ],
+              "sourceScale": 1
+            }
+          ],
+          "status": "final"
+        },
+        "attack": {
+          "file": "assets/neutral_rain_dragon/1.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 6,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                245.33333333333331
+              ],
+              "sourceScale": 1.014464
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                245.33333333333331
+              ],
+              "sourceScale": 1.014464
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                245.33333333333331
+              ],
+              "sourceScale": 1.014464
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                245.33333333333331
+              ],
+              "sourceScale": 1.014464
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                245.33333333333331
+              ],
+              "sourceScale": 1.014464
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                245.75
+              ],
+              "sourceScale": 1.014464
+            }
+          ],
+          "status": "final"
+        },
+        "hit": {
+          "file": "assets/neutral_rain_dragon/1.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 6,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.91666666666666
+              ],
+              "sourceScale": 1.014464
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                245.33333333333331
+              ],
+              "sourceScale": 1.014464
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.91666666666666
+              ],
+              "sourceScale": 1.014464
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1.014464
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1.014464
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1.014464
+            }
+          ],
+          "status": "final"
+        },
+        "defend": {
+          "file": "assets/neutral_rain_dragon/2.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                245.33333333333331
+              ],
+              "sourceScale": 1.023562331838565
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                245.75
+              ],
+              "sourceScale": 1.023562331838565
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                245.33333333333331
+              ],
+              "sourceScale": 1.023562331838565
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                246.58333333333331
+              ],
+              "sourceScale": 1.023562331838565
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                247
+              ],
+              "sourceScale": 1.023562331838565
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                247
+              ],
+              "sourceScale": 1.023562331838565
+            }
+          ],
+          "status": "final"
+        },
+        "victory": {
+          "file": "assets/neutral_rain_dragon/2.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                247
+              ],
+              "sourceScale": 1.023562331838565
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                247
+              ],
+              "sourceScale": 1.023562331838565
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                247.41666666666669
+              ],
+              "sourceScale": 1.023562331838565
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                237.83333333333331
+              ],
+              "sourceScale": 1.023562331838565
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                237.41666666666666
+              ],
+              "sourceScale": 1.023562331838565
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                238.25
+              ],
+              "sourceScale": 1.023562331838565
+            }
+          ],
+          "status": "final"
+        },
+        "shoot": {
+          "file": "assets/neutral_rain_dragon/3.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 6,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.91666666666666
+              ],
+              "sourceScale": 1.100021204819277
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.91666666666666
+              ],
+              "sourceScale": 1.100021204819277
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.5
+              ],
+              "sourceScale": 1.100021204819277
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.91666666666666
+              ],
+              "sourceScale": 1.100021204819277
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.91666666666666
+              ],
+              "sourceScale": 1.100021204819277
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.91666666666666
+              ],
+              "sourceScale": 1.100021204819277
+            }
+          ],
+          "status": "final"
+        },
+        "cast": {
+          "file": "assets/neutral_rain_dragon/3.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.91666666666666
+              ],
+              "sourceScale": 1.100021204819277
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.91666666666666
+              ],
+              "sourceScale": 1.100021204819277
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.91666666666666
+              ],
+              "sourceScale": 1.100021204819277
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.16666666666666
+              ],
+              "sourceScale": 1.100021204819277
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.16666666666666
+              ],
+              "sourceScale": 1.100021204819277
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.16666666666666
+              ],
+              "sourceScale": 1.100021204819277
+            }
+          ],
+          "status": "final"
+        },
+        "takeoff": {
+          "file": "assets/neutral_rain_dragon/4.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.3
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.3
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.3
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.3
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.3
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.3
+            }
+          ],
+          "status": "final"
+        },
+        "fly": {
+          "file": "assets/neutral_rain_dragon/4.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": true,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.3
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.3
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.3
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.3
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.3
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.3
+            }
+          ],
+          "status": "final"
+        },
+        "landing": {
+          "file": "assets/neutral_rain_dragon/5.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.009975221238938
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.009975221238938
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.009975221238938
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.009975221238938
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.009975221238938
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.009975221238938
+            }
+          ],
+          "status": "final"
+        },
+        "ability": {
+          "file": "assets/neutral_rain_dragon/5.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.91666666666666
+              ],
+              "sourceScale": 1.009975221238938
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.91666666666666
+              ],
+              "sourceScale": 1.009975221238938
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.91666666666666
+              ],
+              "sourceScale": 1.009975221238938
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                238.66666666666669
+              ],
+              "sourceScale": 1.009975221238938
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.5
+              ],
+              "sourceScale": 1.009975221238938
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.5
+              ],
+              "sourceScale": 1.009975221238938
+            }
+          ],
+          "status": "final"
+        },
+        "death": {
+          "file": "assets/neutral_rain_dragon/6.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.7
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                307.83333333333337
+              ],
+              "sourceScale": 0.89161875
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                308.25
+              ],
+              "sourceScale": 0.89161875
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                307.83333333333337
+              ],
+              "sourceScale": 0.89161875
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                274.08333333333337
+              ],
+              "sourceScale": 0.89161875
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                274.5
+              ],
+              "sourceScale": 0.89161875
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                274.5
+              ],
+              "sourceScale": 0.89161875
+            }
+          ],
+          "status": "final"
+        }
+      },
+      "portraits": {
+        "small": "assets/neutral_rain_dragon/portrait-64.webp",
+        "large": "assets/neutral_rain_dragon/portrait-320.webp"
+      },
+      "events": {
+        "attackContactFrame": 2,
+        "shoot": {
+          "releaseFrame": 3,
+          "sourcePoint": "mouth",
+          "socket": [
+            0.84,
+            0.4
+          ]
+        },
+        "hover": {
+          "idleHex": 0,
+          "travelHex": 0.55
+        },
+        "death": {
+          "holdLastFrame": true,
+          "onWater": "sink-fade",
+          "sinkHex": 0.5,
+          "fadeMs": 700
+        }
+      }
+    },
+    "neutral_celestial_rain_dragon": {
+      "status": "final",
+      "reviewApproved": false,
+      "provenance": "Built-in image_gen; prepared for review only. See design/*.json.",
+      "facing": "right",
+      "pixelsPerHex": 88.35,
+      "animations": {
+        "idle": {
+          "file": "assets/neutral_celestial_rain_dragon/0.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 2,
+          "loop": true,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                250.75
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                250.33333333333331
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                250.33333333333331
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                253.66666666666669
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                254.08333333333331
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                254.08333333333331
+              ],
+              "sourceScale": 1
+            }
+          ],
+          "status": "final"
+        },
+        "move": {
+          "file": "assets/neutral_celestial_rain_dragon/0.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": true,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                251.58333333333334
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                252.41666666666666
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                252.41666666666666
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.83333333333331
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.83333333333331
+              ],
+              "sourceScale": 1
+            }
+          ],
+          "status": "final"
+        },
+        "attack": {
+          "file": "assets/neutral_celestial_rain_dragon/1.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 6,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1.1518222222222223
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.83333333333331
+              ],
+              "sourceScale": 1.1518222222222223
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1.1518222222222223
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.83333333333331
+              ],
+              "sourceScale": 1.1518222222222223
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.1518222222222223
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.66666666666669
+              ],
+              "sourceScale": 1.1518222222222223
+            }
+          ],
+          "status": "final"
+        },
+        "hit": {
+          "file": "assets/neutral_celestial_rain_dragon/1.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 6,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1.1518222222222223
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.91666666666669
+              ],
+              "sourceScale": 1.1518222222222223
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.16666666666666
+              ],
+              "sourceScale": 1.1518222222222223
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                238.66666666666669
+              ],
+              "sourceScale": 1.1518222222222223
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.08333333333331
+              ],
+              "sourceScale": 1.1518222222222223
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.75
+              ],
+              "sourceScale": 1.1518222222222223
+            }
+          ],
+          "status": "final"
+        },
+        "defend": {
+          "file": "assets/neutral_celestial_rain_dragon/2.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.0032
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.83333333333331
+              ],
+              "sourceScale": 1.0032
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.83333333333331
+              ],
+              "sourceScale": 1.0032
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.58333333333331
+              ],
+              "sourceScale": 1.0032
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.58333333333331
+              ],
+              "sourceScale": 1.0032
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1.0032
+            }
+          ],
+          "status": "final"
+        },
+        "victory": {
+          "file": "assets/neutral_celestial_rain_dragon/2.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.0032
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.0032
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.0032
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.91666666666669
+              ],
+              "sourceScale": 1.0032
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.91666666666669
+              ],
+              "sourceScale": 1.0032
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.91666666666669
+              ],
+              "sourceScale": 1.0032
+            }
+          ],
+          "status": "final"
+        },
+        "shoot": {
+          "file": "assets/neutral_celestial_rain_dragon/3.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 6,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.75
+              ],
+              "sourceScale": 1.1809822784810127
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.16666666666666
+              ],
+              "sourceScale": 1.1809822784810127
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.91666666666669
+              ],
+              "sourceScale": 1.1809822784810127
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242
+              ],
+              "sourceScale": 1.1809822784810127
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.75
+              ],
+              "sourceScale": 1.1809822784810127
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.75
+              ],
+              "sourceScale": 1.1809822784810127
+            }
+          ],
+          "status": "final"
+        },
+        "cast": {
+          "file": "assets/neutral_celestial_rain_dragon/3.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.75
+              ],
+              "sourceScale": 1.1809822784810127
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.58333333333331
+              ],
+              "sourceScale": 1.1809822784810127
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.58333333333331
+              ],
+              "sourceScale": 1.1809822784810127
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.58333333333331
+              ],
+              "sourceScale": 1.1809822784810127
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.16666666666666
+              ],
+              "sourceScale": 1.1809822784810127
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.75
+              ],
+              "sourceScale": 1.1809822784810127
+            }
+          ],
+          "status": "final"
+        },
+        "takeoff": {
+          "file": "assets/neutral_celestial_rain_dragon/4.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9520163265306123
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9520163265306123
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9520163265306123
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9520163265306123
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9520163265306123
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9520163265306123
+            }
+          ],
+          "status": "final"
+        },
+        "fly": {
+          "file": "assets/neutral_celestial_rain_dragon/4.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": true,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9520163265306123
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9520163265306123
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9520163265306123
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9520163265306123
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9520163265306123
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9520163265306123
+            }
+          ],
+          "status": "final"
+        },
+        "landing": {
+          "file": "assets/neutral_celestial_rain_dragon/5.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.0053620689655174
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.0053620689655174
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.0053620689655174
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.0053620689655174
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.0053620689655174
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.0053620689655174
+            }
+          ],
+          "status": "final"
+        },
+        "ability": {
+          "file": "assets/neutral_celestial_rain_dragon/5.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                253.25
+              ],
+              "sourceScale": 1.0053620689655174
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                254.08333333333331
+              ],
+              "sourceScale": 1.0053620689655174
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                254.5
+              ],
+              "sourceScale": 1.0053620689655174
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.58333333333331
+              ],
+              "sourceScale": 1.0053620689655174
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.58333333333331
+              ],
+              "sourceScale": 1.0053620689655174
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.16666666666666
+              ],
+              "sourceScale": 1.0053620689655174
+            }
+          ],
+          "status": "final"
+        },
+        "death": {
+          "file": "assets/neutral_celestial_rain_dragon/6.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.7
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                303.6666666666667
+              ],
+              "sourceScale": 0.9182834645669292
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                304.5
+              ],
+              "sourceScale": 0.9182834645669292
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                303.6666666666667
+              ],
+              "sourceScale": 0.9182834645669292
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                271.16666666666663
+              ],
+              "sourceScale": 0.9182834645669292
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                271.16666666666663
+              ],
+              "sourceScale": 0.9182834645669292
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                271.16666666666663
+              ],
+              "sourceScale": 0.9182834645669292
+            }
+          ],
+          "status": "final"
+        }
+      },
+      "portraits": {
+        "small": "assets/neutral_celestial_rain_dragon/portrait-64.webp",
+        "large": "assets/neutral_celestial_rain_dragon/portrait-320.webp"
+      },
+      "events": {
+        "attackContactFrame": 2,
+        "shoot": {
+          "releaseFrame": 3,
+          "sourcePoint": "mouth",
+          "socket": [
+            0.84,
+            0.4
+          ]
+        },
+        "hover": {
+          "idleHex": 0,
+          "travelHex": 0.55
+        },
+        "death": {
+          "holdLastFrame": true,
+          "onWater": "sink-fade",
+          "sinkHex": 0.5,
+          "fadeMs": 700
+        }
+      }
+    },
+    "neutral_zilant": {
+      "status": "final",
+      "reviewApproved": false,
+      "provenance": "Built-in image_gen; prepared for review only. See design/*.json.",
+      "facing": "right",
+      "pixelsPerHex": 65.72,
+      "animations": {
+        "idle": {
+          "file": "assets/neutral_zilant/0.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 2,
+          "loop": true,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.58333333333331
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.58333333333331
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1
+            }
+          ],
+          "status": "final"
+        },
+        "move": {
+          "file": "assets/neutral_zilant/0.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": true,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.16666666666666
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.16666666666666
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.58333333333331
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                238.25
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                238.25
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                237.83333333333331
+              ],
+              "sourceScale": 1
+            }
+          ],
+          "status": "final"
+        },
+        "attack": {
+          "file": "assets/neutral_zilant/1.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 6,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.130298371335505
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242
+              ],
+              "sourceScale": 1.130298371335505
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.130298371335505
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.130298371335505
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.66666666666669
+              ],
+              "sourceScale": 1.130298371335505
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.5
+              ],
+              "sourceScale": 1.130298371335505
+            }
+          ],
+          "status": "final"
+        },
+        "hit": {
+          "file": "assets/neutral_zilant/1.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 6,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.130298371335505
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242
+              ],
+              "sourceScale": 1.130298371335505
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.83333333333331
+              ],
+              "sourceScale": 1.130298371335505
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.130298371335505
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.130298371335505
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.83333333333331
+              ],
+              "sourceScale": 1.130298371335505
+            }
+          ],
+          "status": "final"
+        },
+        "defend": {
+          "file": "assets/neutral_zilant/2.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.0611669724770643
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.5
+              ],
+              "sourceScale": 1.0611669724770643
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.0611669724770643
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242
+              ],
+              "sourceScale": 1.0611669724770643
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.58333333333331
+              ],
+              "sourceScale": 1.0611669724770643
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.58333333333331
+              ],
+              "sourceScale": 1.0611669724770643
+            }
+          ],
+          "status": "final"
+        },
+        "victory": {
+          "file": "assets/neutral_zilant/2.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1.0611669724770643
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1.0611669724770643
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.0611669724770643
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.08333333333331
+              ],
+              "sourceScale": 1.0611669724770643
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                238.25
+              ],
+              "sourceScale": 1.0611669724770643
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.08333333333331
+              ],
+              "sourceScale": 1.0611669724770643
+            }
+          ],
+          "status": "final"
+        },
+        "shoot": {
+          "file": "assets/neutral_zilant/3.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 6,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.83333333333331
+              ],
+              "sourceScale": 1.0236035398230088
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.0236035398230088
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.83333333333331
+              ],
+              "sourceScale": 1.0236035398230088
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.16666666666666
+              ],
+              "sourceScale": 1.0236035398230088
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.16666666666666
+              ],
+              "sourceScale": 1.0236035398230088
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.16666666666666
+              ],
+              "sourceScale": 1.0236035398230088
+            }
+          ],
+          "status": "final"
+        },
+        "cast": {
+          "file": "assets/neutral_zilant/3.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242
+              ],
+              "sourceScale": 1.0236035398230088
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242
+              ],
+              "sourceScale": 1.0236035398230088
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242
+              ],
+              "sourceScale": 1.0236035398230088
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.91666666666669
+              ],
+              "sourceScale": 1.0236035398230088
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.5
+              ],
+              "sourceScale": 1.0236035398230088
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.91666666666669
+              ],
+              "sourceScale": 1.0236035398230088
+            }
+          ],
+          "status": "final"
+        },
+        "takeoff": {
+          "file": "assets/neutral_zilant/4.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.8525837837837837
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.8525837837837837
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.8525837837837837
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.8525837837837837
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.8525837837837837
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.8525837837837837
+            }
+          ],
+          "status": "final"
+        },
+        "fly": {
+          "file": "assets/neutral_zilant/4.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": true,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.8525837837837837
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.8525837837837837
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.8525837837837837
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.8525837837837837
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.8525837837837837
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.8525837837837837
+            }
+          ],
+          "status": "final"
+        },
+        "landing": {
+          "file": "assets/neutral_zilant/5.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.7593032822757112
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.7593032822757112
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.7593032822757112
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.7593032822757112
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.7593032822757112
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.7593032822757112
+            }
+          ],
+          "status": "final"
+        },
+        "ability": {
+          "file": "assets/neutral_zilant/5.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 0.7593032822757112
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 0.7593032822757112
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 0.7593032822757112
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                237.41666666666666
+              ],
+              "sourceScale": 0.7593032822757112
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                237.41666666666666
+              ],
+              "sourceScale": 0.7593032822757112
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                237
+              ],
+              "sourceScale": 0.7593032822757112
+            }
+          ],
+          "status": "final"
+        },
+        "death": {
+          "file": "assets/neutral_zilant/6.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.7
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                313.6666666666667
+              ],
+              "sourceScale": 0.7199203319502075
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                314.0833333333333
+              ],
+              "sourceScale": 0.7199203319502075
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                314.0833333333333
+              ],
+              "sourceScale": 0.7199203319502075
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                267
+              ],
+              "sourceScale": 0.7199203319502075
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                267
+              ],
+              "sourceScale": 0.7199203319502075
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                262.4166666666667
+              ],
+              "sourceScale": 0.7199203319502075
+            }
+          ],
+          "status": "final"
+        }
+      },
+      "portraits": {
+        "small": "assets/neutral_zilant/portrait-64.webp",
+        "large": "assets/neutral_zilant/portrait-320.webp"
+      },
+      "events": {
+        "attackContactFrame": 2,
+        "shoot": {
+          "releaseFrame": 3,
+          "sourcePoint": "mouth",
+          "socket": [
+            0.84,
+            0.4
+          ]
+        },
+        "hover": {
+          "idleHex": 0,
+          "travelHex": 0.55
+        },
+        "death": {
+          "holdLastFrame": true,
+          "onWater": "sink-fade",
+          "sinkHex": 0.5,
+          "fadeMs": 700
+        }
+      }
+    },
+    "neutral_crowned_zilant": {
+      "status": "final",
+      "reviewApproved": false,
+      "provenance": "Built-in image_gen; prepared for review only. See design/*.json.",
+      "facing": "right",
+      "pixelsPerHex": 75.95,
+      "animations": {
+        "idle": {
+          "file": "assets/neutral_crowned_zilant/0.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 2,
+          "loop": true,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.5
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.5
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.91666666666666
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.5
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.5
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1
+            }
+          ],
+          "status": "final"
+        },
+        "move": {
+          "file": "assets/neutral_crowned_zilant/0.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": true,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.5
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.91666666666669
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.33333333333334
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                237.83333333333331
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                237.83333333333331
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                237.83333333333331
+              ],
+              "sourceScale": 1
+            }
+          ],
+          "status": "final"
+        },
+        "attack": {
+          "file": "assets/neutral_crowned_zilant/1.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 6,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.0126666666666668
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1.0126666666666668
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242
+              ],
+              "sourceScale": 1.0126666666666668
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.83333333333331
+              ],
+              "sourceScale": 1.0126666666666668
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.0126666666666668
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.66666666666669
+              ],
+              "sourceScale": 1.0126666666666668
+            }
+          ],
+          "status": "final"
+        },
+        "hit": {
+          "file": "assets/neutral_crowned_zilant/1.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 6,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242
+              ],
+              "sourceScale": 1.0126666666666668
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.58333333333331
+              ],
+              "sourceScale": 1.0126666666666668
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.58333333333331
+              ],
+              "sourceScale": 1.0126666666666668
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                237.83333333333331
+              ],
+              "sourceScale": 1.0126666666666668
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                238.25
+              ],
+              "sourceScale": 1.0126666666666668
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                238.25
+              ],
+              "sourceScale": 1.0126666666666668
+            }
+          ],
+          "status": "final"
+        },
+        "defend": {
+          "file": "assets/neutral_crowned_zilant/2.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.0152303797468356
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.66666666666669
+              ],
+              "sourceScale": 1.0152303797468356
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.0152303797468356
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.83333333333331
+              ],
+              "sourceScale": 1.0152303797468356
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1.0152303797468356
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1.0152303797468356
+            }
+          ],
+          "status": "final"
+        },
+        "victory": {
+          "file": "assets/neutral_crowned_zilant/2.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1.0152303797468356
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.66666666666669
+              ],
+              "sourceScale": 1.0152303797468356
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.66666666666669
+              ],
+              "sourceScale": 1.0152303797468356
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                238.66666666666669
+              ],
+              "sourceScale": 1.0152303797468356
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                238.66666666666669
+              ],
+              "sourceScale": 1.0152303797468356
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                238.66666666666669
+              ],
+              "sourceScale": 1.0152303797468356
+            }
+          ],
+          "status": "final"
+        },
+        "shoot": {
+          "file": "assets/neutral_crowned_zilant/3.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 6,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.0722352941176472
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.0722352941176472
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.5
+              ],
+              "sourceScale": 1.0722352941176472
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.5
+              ],
+              "sourceScale": 1.0722352941176472
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.5
+              ],
+              "sourceScale": 1.0722352941176472
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.5
+              ],
+              "sourceScale": 1.0722352941176472
+            }
+          ],
+          "status": "final"
+        },
+        "cast": {
+          "file": "assets/neutral_crowned_zilant/3.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.0722352941176472
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.0722352941176472
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.83333333333331
+              ],
+              "sourceScale": 1.0722352941176472
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.33333333333334
+              ],
+              "sourceScale": 1.0722352941176472
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.91666666666669
+              ],
+              "sourceScale": 1.0722352941176472
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.91666666666669
+              ],
+              "sourceScale": 1.0722352941176472
+            }
+          ],
+          "status": "final"
+        },
+        "takeoff": {
+          "file": "assets/neutral_crowned_zilant/4.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2006467065868267
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2006467065868267
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2006467065868267
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2006467065868267
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2006467065868267
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2006467065868267
+            }
+          ],
+          "status": "final"
+        },
+        "fly": {
+          "file": "assets/neutral_crowned_zilant/4.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": true,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2006467065868267
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2006467065868267
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2006467065868267
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2006467065868267
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2006467065868267
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2006467065868267
+            }
+          ],
+          "status": "final"
+        },
+        "landing": {
+          "file": "assets/neutral_crowned_zilant/5.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9114000000000001
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9114000000000001
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9114000000000001
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9114000000000001
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9114000000000001
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9114000000000001
+            }
+          ],
+          "status": "final"
+        },
+        "ability": {
+          "file": "assets/neutral_crowned_zilant/5.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242
+              ],
+              "sourceScale": 0.9114000000000001
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.66666666666669
+              ],
+              "sourceScale": 0.9114000000000001
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 0.9114000000000001
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                238.25
+              ],
+              "sourceScale": 0.9114000000000001
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                238.25
+              ],
+              "sourceScale": 0.9114000000000001
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                238.25
+              ],
+              "sourceScale": 0.9114000000000001
+            }
+          ],
+          "status": "final"
+        },
+        "death": {
+          "file": "assets/neutral_crowned_zilant/6.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.7
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                316.16666666666663
+              ],
+              "sourceScale": 0.7972485089463223
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                317.4166666666667
+              ],
+              "sourceScale": 0.7972485089463223
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                317.4166666666667
+              ],
+              "sourceScale": 0.7972485089463223
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                259.91666666666663
+              ],
+              "sourceScale": 0.7972485089463223
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                258.6666666666667
+              ],
+              "sourceScale": 0.7972485089463223
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                258.25
+              ],
+              "sourceScale": 0.7972485089463223
+            }
+          ],
+          "status": "final"
+        }
+      },
+      "portraits": {
+        "small": "assets/neutral_crowned_zilant/portrait-64.webp",
+        "large": "assets/neutral_crowned_zilant/portrait-320.webp"
+      },
+      "events": {
+        "attackContactFrame": 2,
+        "shoot": {
+          "releaseFrame": 3,
+          "sourcePoint": "mouth",
+          "socket": [
+            0.84,
+            0.4
+          ]
+        },
+        "hover": {
+          "idleHex": 0,
+          "travelHex": 0.55
+        },
+        "death": {
+          "holdLastFrame": true,
+          "onWater": "sink-fade",
+          "sinkHex": 0.5,
+          "fadeMs": 700
+        }
+      }
+    },
+    "neutral_cuelebre": {
+      "status": "final",
+      "reviewApproved": false,
+      "provenance": "Built-in image_gen; prepared for review only. See design/*.json.",
+      "facing": "right",
+      "pixelsPerHex": 73.11,
+      "animations": {
+        "idle": {
+          "file": "assets/neutral_cuelebre/0.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 2,
+          "loop": true,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                247.41666666666669
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                247.83333333333334
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                248.66666666666666
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                249.5
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                249.91666666666669
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                246.58333333333331
+              ],
+              "sourceScale": 1
+            }
+          ],
+          "status": "final"
+        },
+        "move": {
+          "file": "assets/neutral_cuelebre/0.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": true,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.66666666666669
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                248.25
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                245.33333333333331
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.5
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                238.25
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.33333333333334
+              ],
+              "sourceScale": 1
+            }
+          ],
+          "status": "final"
+        },
+        "attack": {
+          "file": "assets/neutral_cuelebre/1.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 6,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                246.16666666666669
+              ],
+              "sourceScale": 1.1060767908309457
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                246.16666666666669
+              ],
+              "sourceScale": 1.1060767908309457
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                245.75
+              ],
+              "sourceScale": 1.1060767908309457
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                247
+              ],
+              "sourceScale": 1.1060767908309457
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                246.58333333333331
+              ],
+              "sourceScale": 1.1060767908309457
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                247.41666666666669
+              ],
+              "sourceScale": 1.1060767908309457
+            }
+          ],
+          "status": "final"
+        },
+        "hit": {
+          "file": "assets/neutral_cuelebre/1.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 6,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                245.75
+              ],
+              "sourceScale": 1.1060767908309457
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.91666666666666
+              ],
+              "sourceScale": 1.1060767908309457
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                246.58333333333331
+              ],
+              "sourceScale": 1.1060767908309457
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.1060767908309457
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.1060767908309457
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.1060767908309457
+            }
+          ],
+          "status": "final"
+        },
+        "defend": {
+          "file": "assets/neutral_cuelebre/2.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                245.75
+              ],
+              "sourceScale": 1.0349083109919572
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                246.16666666666669
+              ],
+              "sourceScale": 1.0349083109919572
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.91666666666666
+              ],
+              "sourceScale": 1.0349083109919572
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.0349083109919572
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.0349083109919572
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.66666666666669
+              ],
+              "sourceScale": 1.0349083109919572
+            }
+          ],
+          "status": "final"
+        },
+        "victory": {
+          "file": "assets/neutral_cuelebre/2.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.0349083109919572
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.66666666666669
+              ],
+              "sourceScale": 1.0349083109919572
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.66666666666669
+              ],
+              "sourceScale": 1.0349083109919572
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242
+              ],
+              "sourceScale": 1.0349083109919572
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1.0349083109919572
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1.0349083109919572
+            }
+          ],
+          "status": "final"
+        },
+        "shoot": {
+          "file": "assets/neutral_cuelebre/3.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 6,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6125
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                249.1270718232044
+              ],
+              "sourceScale": 1.0136630222841227
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                249.1270718232044
+              ],
+              "sourceScale": 1.0136630222841227
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                249.1270718232044
+              ],
+              "sourceScale": 1.0136630222841227
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                251.55801104972377
+              ],
+              "sourceScale": 1.0136630222841227
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                252
+              ],
+              "sourceScale": 1.0136630222841227
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                249.79005524861878
+              ],
+              "sourceScale": 1.0136630222841227
+            }
+          ],
+          "status": "final"
+        },
+        "cast": {
+          "file": "assets/neutral_cuelebre/3.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6125
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                250.8950276243094
+              ],
+              "sourceScale": 1.0136630222841227
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                250.45303867403317
+              ],
+              "sourceScale": 1.0136630222841227
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                250.8950276243094
+              ],
+              "sourceScale": 1.0136630222841227
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                248.46408839779008
+              ],
+              "sourceScale": 1.0136630222841227
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                249.34806629834256
+              ],
+              "sourceScale": 1.0136630222841227
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                248.90607734806628
+              ],
+              "sourceScale": 1.0136630222841227
+            }
+          ],
+          "status": "final"
+        },
+        "takeoff": {
+          "file": "assets/neutral_cuelebre/4.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.0722800000000001
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.0722800000000001
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.0722800000000001
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.0722800000000001
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.0722800000000001
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.0722800000000001
+            }
+          ],
+          "status": "final"
+        },
+        "fly": {
+          "file": "assets/neutral_cuelebre/4.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": true,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.0722800000000001
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.0722800000000001
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.0722800000000001
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.0722800000000001
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.0722800000000001
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.0722800000000001
+            }
+          ],
+          "status": "final"
+        },
+        "landing": {
+          "file": "assets/neutral_cuelebre/5.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6125
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                235.20000000000002
+              ],
+              "sourceScale": 0.7759168976545844
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                235.20000000000002
+              ],
+              "sourceScale": 0.7759168976545844
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                235.20000000000002
+              ],
+              "sourceScale": 0.7759168976545844
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                235.20000000000002
+              ],
+              "sourceScale": 0.7759168976545844
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                235.20000000000002
+              ],
+              "sourceScale": 0.7759168976545844
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                235.20000000000002
+              ],
+              "sourceScale": 0.7759168976545844
+            }
+          ],
+          "status": "final"
+        },
+        "ability": {
+          "file": "assets/neutral_cuelebre/5.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6125
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                246.47513812154696
+              ],
+              "sourceScale": 0.7759168976545844
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                246.9171270718232
+              ],
+              "sourceScale": 0.7759168976545844
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                246.9171270718232
+              ],
+              "sourceScale": 0.7759168976545844
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.60220994475137
+              ],
+              "sourceScale": 0.7759168976545844
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.60220994475137
+              ],
+              "sourceScale": 0.7759168976545844
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.60220994475137
+              ],
+              "sourceScale": 0.7759168976545844
+            }
+          ],
+          "status": "final"
+        },
+        "death": {
+          "file": "assets/neutral_cuelebre/6.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.7
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                311.58333333333337
+              ],
+              "sourceScale": 0.7959191752577321
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                315.33333333333337
+              ],
+              "sourceScale": 0.7959191752577321
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                317.8333333333333
+              ],
+              "sourceScale": 0.7959191752577321
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                271.16666666666663
+              ],
+              "sourceScale": 0.7959191752577321
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                271.16666666666663
+              ],
+              "sourceScale": 0.7959191752577321
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                267.8333333333333
+              ],
+              "sourceScale": 0.7959191752577321
+            }
+          ],
+          "status": "final"
+        }
+      },
+      "portraits": {
+        "small": "assets/neutral_cuelebre/portrait-64.webp",
+        "large": "assets/neutral_cuelebre/portrait-320.webp"
+      },
+      "events": {
+        "attackContactFrame": 2,
+        "shoot": {
+          "releaseFrame": 3,
+          "sourcePoint": "mouth",
+          "socket": [
+            0.84,
+            0.4
+          ]
+        },
+        "hover": {
+          "idleHex": 0,
+          "travelHex": 0.55
+        },
+        "death": {
+          "holdLastFrame": true,
+          "onWater": "sink-fade",
+          "sinkHex": 0.5,
+          "fadeMs": 700
+        }
+      }
+    },
+    "neutral_ancient_cuelebre": {
+      "status": "final",
+      "reviewApproved": false,
+      "provenance": "Built-in image_gen; prepared for review only. See design/*.json.",
+      "facing": "right",
+      "pixelsPerHex": 84.75,
+      "animations": {
+        "idle": {
+          "file": "assets/neutral_ancient_cuelebre/0.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 2,
+          "loop": true,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                249.91666666666669
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                250.75
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                249.91666666666669
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                252
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                250.75
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                251.58333333333334
+              ],
+              "sourceScale": 1
+            }
+          ],
+          "status": "final"
+        },
+        "move": {
+          "file": "assets/neutral_ancient_cuelebre/0.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": true,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                248.25
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                251.16666666666669
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                252
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.16666666666666
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242
+              ],
+              "sourceScale": 1
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1
+            }
+          ],
+          "status": "final"
+        },
+        "attack": {
+          "file": "assets/neutral_ancient_cuelebre/1.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 6,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                246.16666666666669
+              ],
+              "sourceScale": 1.0834866828087168
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                246.58333333333331
+              ],
+              "sourceScale": 1.0834866828087168
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                246.58333333333331
+              ],
+              "sourceScale": 1.0834866828087168
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                245.75
+              ],
+              "sourceScale": 1.0834866828087168
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.91666666666666
+              ],
+              "sourceScale": 1.0834866828087168
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.0834866828087168
+            }
+          ],
+          "status": "final"
+        },
+        "hit": {
+          "file": "assets/neutral_ancient_cuelebre/1.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 6,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.0834866828087168
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.5
+              ],
+              "sourceScale": 1.0834866828087168
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.0834866828087168
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.16666666666666
+              ],
+              "sourceScale": 1.0834866828087168
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.16666666666666
+              ],
+              "sourceScale": 1.0834866828087168
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.33333333333334
+              ],
+              "sourceScale": 1.0834866828087168
+            }
+          ],
+          "status": "final"
+        },
+        "defend": {
+          "file": "assets/neutral_ancient_cuelebre/2.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.75
+              ],
+              "sourceScale": 1.0146938775510206
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.16666666666666
+              ],
+              "sourceScale": 1.0146938775510206
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.58333333333331
+              ],
+              "sourceScale": 1.0146938775510206
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.16666666666666
+              ],
+              "sourceScale": 1.0146938775510206
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.75
+              ],
+              "sourceScale": 1.0146938775510206
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.33333333333334
+              ],
+              "sourceScale": 1.0146938775510206
+            }
+          ],
+          "status": "final"
+        },
+        "victory": {
+          "file": "assets/neutral_ancient_cuelebre/2.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.0146938775510206
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.91666666666666
+              ],
+              "sourceScale": 1.0146938775510206
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.0146938775510206
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                238.66666666666669
+              ],
+              "sourceScale": 1.0146938775510206
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                237
+              ],
+              "sourceScale": 1.0146938775510206
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                238.25
+              ],
+              "sourceScale": 1.0146938775510206
+            }
+          ],
+          "status": "final"
+        },
+        "shoot": {
+          "file": "assets/neutral_ancient_cuelebre/3.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 6,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242.41666666666669
+              ],
+              "sourceScale": 1.0914146341463415
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.0914146341463415
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.5
+              ],
+              "sourceScale": 1.0914146341463415
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.16666666666666
+              ],
+              "sourceScale": 1.0914146341463415
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.58333333333331
+              ],
+              "sourceScale": 1.0914146341463415
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                242
+              ],
+              "sourceScale": 1.0914146341463415
+            }
+          ],
+          "status": "final"
+        },
+        "cast": {
+          "file": "assets/neutral_ancient_cuelebre/3.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                243.25
+              ],
+              "sourceScale": 1.0914146341463415
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.0914146341463415
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                244.08333333333334
+              ],
+              "sourceScale": 1.0914146341463415
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.33333333333334
+              ],
+              "sourceScale": 1.0914146341463415
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.33333333333334
+              ],
+              "sourceScale": 1.0914146341463415
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.33333333333334
+              ],
+              "sourceScale": 1.0914146341463415
+            }
+          ],
+          "status": "final"
+        },
+        "takeoff": {
+          "file": "assets/neutral_ancient_cuelebre/4.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2226229508196722
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2226229508196722
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2226229508196722
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2226229508196722
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2226229508196722
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2226229508196722
+            }
+          ],
+          "status": "final"
+        },
+        "fly": {
+          "file": "assets/neutral_ancient_cuelebre/4.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": true,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2226229508196722
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2226229508196722
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2226229508196722
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2226229508196722
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2226229508196722
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 1.2226229508196722
+            }
+          ],
+          "status": "final"
+        },
+        "landing": {
+          "file": "assets/neutral_ancient_cuelebre/5.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9003621730382295
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9003621730382295
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9003621730382295
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9003621730382295
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9003621730382295
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                230.39999999999998
+              ],
+              "sourceScale": 0.9003621730382295
+            }
+          ],
+          "status": "final"
+        },
+        "ability": {
+          "file": "assets/neutral_ancient_cuelebre/5.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 5,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.6
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.91666666666669
+              ],
+              "sourceScale": 0.9003621730382295
+            },
+            {
+              "rect": [
+                384,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                241.58333333333331
+              ],
+              "sourceScale": 0.9003621730382295
+            },
+            {
+              "rect": [
+                768,
+                768,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                240.33333333333334
+              ],
+              "sourceScale": 0.9003621730382295
+            },
+            {
+              "rect": [
+                0,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.08333333333331
+              ],
+              "sourceScale": 0.9003621730382295
+            },
+            {
+              "rect": [
+                384,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                238.66666666666669
+              ],
+              "sourceScale": 0.9003621730382295
+            },
+            {
+              "rect": [
+                768,
+                1152,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                239.5
+              ],
+              "sourceScale": 0.9003621730382295
+            }
+          ],
+          "status": "final"
+        },
+        "death": {
+          "file": "assets/neutral_ancient_cuelebre/6.webp",
+          "frames": 6,
+          "frameWidth": 384,
+          "frameHeight": 384,
+          "fps": 4,
+          "loop": false,
+          "anchor": [
+            0.5,
+            0.7
+          ],
+          "regions": [
+            {
+              "rect": [
+                0,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                317.8333333333333
+              ],
+              "sourceScale": 0.8475
+            },
+            {
+              "rect": [
+                384,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                315.75
+              ],
+              "sourceScale": 0.8475
+            },
+            {
+              "rect": [
+                768,
+                0,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                316.16666666666663
+              ],
+              "sourceScale": 0.8475
+            },
+            {
+              "rect": [
+                0,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                274.5
+              ],
+              "sourceScale": 0.8475
+            },
+            {
+              "rect": [
+                384,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                266.1666666666667
+              ],
+              "sourceScale": 0.8475
+            },
+            {
+              "rect": [
+                768,
+                384,
+                384,
+                384
+              ],
+              "anchor": [
+                192,
+                266.1666666666667
+              ],
+              "sourceScale": 0.8475
+            }
+          ],
+          "status": "final"
+        }
+      },
+      "portraits": {
+        "small": "assets/neutral_ancient_cuelebre/portrait-64.webp",
+        "large": "assets/neutral_ancient_cuelebre/portrait-320.webp"
+      },
+      "events": {
+        "attackContactFrame": 2,
+        "shoot": {
+          "releaseFrame": 3,
+          "sourcePoint": "mouth",
+          "socket": [
+            0.84,
+            0.4
+          ]
+        },
+        "hover": {
+          "idleHex": 0,
+          "travelHex": 0.55
+        },
+        "death": {
+          "holdLastFrame": true,
+          "onWater": "sink-fade",
+          "sinkHex": 0.5,
+          "fadeMs": 700
+        }
+      }
+    }
+  },
+  "effects": {
+    "neutral_rain_dragon": {
+      "file": "assets/neutral_rain_dragon/special-fx.webp",
+      "frames": 8,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "regions": [
+        {
+          "rect": [
+            0,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            384,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            768,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            1152,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            0,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            384,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            768,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            1152,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        }
+      ],
+      "anchor": [
+        0.5,
+        0.7
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "neutral_celestial_rain_dragon": {
+      "file": "assets/neutral_celestial_rain_dragon/special-fx.webp",
+      "frames": 8,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "regions": [
+        {
+          "rect": [
+            0,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            384,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            768,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            1152,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            0,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            384,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            768,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            1152,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        }
+      ],
+      "anchor": [
+        0.5,
+        0.7
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "neutral_zilant": {
+      "file": "assets/neutral_zilant/special-fx.webp",
+      "frames": 8,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "regions": [
+        {
+          "rect": [
+            0,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            384,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            768,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            1152,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            0,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            384,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            768,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            1152,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        }
+      ],
+      "anchor": [
+        0.5,
+        0.7
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "neutral_crowned_zilant": {
+      "file": "assets/neutral_crowned_zilant/special-fx.webp",
+      "frames": 8,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "regions": [
+        {
+          "rect": [
+            0,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            384,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            768,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            1152,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            0,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            384,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            768,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            1152,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        }
+      ],
+      "anchor": [
+        0.5,
+        0.7
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "neutral_cuelebre": {
+      "file": "assets/neutral_cuelebre/special-fx.webp",
+      "frames": 8,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "regions": [
+        {
+          "rect": [
+            0,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            384,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            768,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            1152,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            0,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            384,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            768,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            1152,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        }
+      ],
+      "anchor": [
+        0.5,
+        0.7
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "neutral_ancient_cuelebre": {
+      "file": "assets/neutral_ancient_cuelebre/special-fx.webp",
+      "frames": 8,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "regions": [
+        {
+          "rect": [
+            0,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            384,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            768,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            1152,
+            0,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            0,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            384,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            768,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        },
+        {
+          "rect": [
+            1152,
+            384,
+            384,
+            384
+          ],
+          "anchor": [
+            192,
+            268.79999999999995
+          ],
+          "sourceScale": 1
+        }
+      ],
+      "anchor": [
+        0.5,
+        0.7
+      ],
+      "fps": 8,
+      "loop": false
+    }
+  }
+}

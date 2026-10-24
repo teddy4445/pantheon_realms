@@ -178,13 +178,13 @@ export type AbilityRule =
    * melee or ranged creature-damage event (the reduction rounded down) before the start of the
    * user's next activation. Spells, structures and the environment are unaffected; copies do not stack.
    */
-  | { readonly type: 'sheltering_wings'; readonly reductionPercent: number; readonly usesPerBattle: number }
+  | { readonly type: 'sheltering_wings'; readonly reductionPercent: number; readonly usesPerBattle: number; readonly range?: number; readonly maxTargets?: number; readonly livingOnly?: boolean; readonly includeSelf?: boolean }
   /**
    * Distract (active): one visible hostile living stack within `range` hexes (clear line) has its
    * next otherwise-legal retaliation suppressed until the start of the user's next activation;
    * the suppressed retaliation counts as one used. No damage, move or stun; copies do not stack.
    */
-  | { readonly type: 'distract'; readonly range: number; readonly usesPerBattle: number }
+  | { readonly type: 'distract'; readonly range: number; readonly usesPerBattle: number; readonly maxTargets?: number; readonly mindEffect?: boolean }
   /**
    * Long Reach (passive attack option): besides adjacent melee, a melee strike at exactly
    * `distance` hexes along a straight line whose middle cell is clear of stacks, obstacles and
@@ -204,7 +204,7 @@ export type AbilityRule =
    * user gains +`defenseBonus` Defense and is immune to one forced pull, both until the start of
    * the user's next activation. Copies do not stack.
    */
-  | { readonly type: 'reed_guard'; readonly defenseBonus: number; readonly usesPerBattle: number }
+  | { readonly type: 'reed_guard'; readonly defenseBonus: number; readonly usesPerBattle: number; readonly allAdjacent?: boolean; readonly livingOnly?: boolean }
   /**
    * Tail Snare (active): a visible hostile living one-hex stack at exactly `distance` hexes along a
    * clear straight line is pulled one hex toward the user when that cell is empty, on the board

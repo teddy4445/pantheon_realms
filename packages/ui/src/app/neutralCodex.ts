@@ -78,7 +78,12 @@ export function hiringSource(catalog: ContentCatalog, creatureId: string): Hirin
   const list = where.length > 1 ? `${where.slice(0, -1).join(', ')} and ${where[where.length - 1]}` : (where[0] ?? '');
   const parts: string[] = [];
   if (places.length) parts.push(`Hired at ${kinds} in ${list}`);
-  if (editorSite) parts.push(`${places.length ? 'on' : 'On'} editor maps at a ${editorSite}`);
+  const creature = catalog.creatures[creatureId];
+  const family = creature && catalog.families[creature.familyId];
+  if (family?.classification === 'neutral' && creature?.tier === 7 && NEUTRAL_V2_HABITATS[family.baseCreatureId]) {
+    parts.push('Hired by any pantheon at guarded dragon lairs on random maps with “New neutral creatures” enabled (one dragon per lair each week)');
+  }
+  if (editorSite) parts.push(`${parts.length ? 'on' : 'On'} editor maps at a ${editorSite}`);
   const text = parts.length ? `${parts.join('; ')}.` : 'Not hired anywhere yet.';
   return { places, campaigns, siteKinds, editorSite, text };
 }

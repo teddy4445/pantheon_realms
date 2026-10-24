@@ -1,0 +1,56 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "id": "neutral_rain_dragon",
+      "states": 13,
+      "poses": 78,
+      "effectFrames": 8,
+      "smallImages": 8
+    },
+    {
+      "id": "neutral_celestial_rain_dragon",
+      "states": 13,
+      "poses": 78,
+      "effectFrames": 8,
+      "smallImages": 8
+    },
+    {
+      "id": "neutral_zilant",
+      "states": 13,
+      "poses": 78,
+      "effectFrames": 8,
+      "smallImages": 8
+    },
+    {
+      "id": "neutral_crowned_zilant",
+      "states": 13,
+      "poses": 78,
+      "effectFrames": 8,
+      "smallImages": 8
+    },
+    {
+      "id": "neutral_cuelebre",
+      "states": 13,
+      "poses": 78,
+      "effectFrames": 8,
+      "smallImages": 8
+    },
+    {
+      "id": "neutral_ancient_cuelebre",
+      "states": 13,
+      "poses": 78,
+      "effectFrames": 8,
+      "smallImages": 8
+    }
+  ],
+  "totals": {
+    "forms": 6,
+    "animations": 78,
+    "creaturePoses": 468,
+    "effectPoses": 48,
+    "smallImages": 48,
+    "assetFiles": 102
+  },
+  "note": "Structural validation only. Artwork and animation still require human review; balance is unplaytested."
+}

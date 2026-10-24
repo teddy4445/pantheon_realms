@@ -22,7 +22,7 @@ import { grant } from './economy';
 import { learnSpellsAtTown } from './heroes';
 import { refreshTownShops } from './services';
 import { playerEffects } from '../resolvers/effects';
-import { advanceRelics, restockCamps, startWeeklyEvent } from './world';
+import { advanceRelics, restockCamps, startWeeklyEvent, growWorldOpposition } from './world';
 import { recordDayStats } from './stats';
 import { applyCityDevotionGrowth, beginCityDedicationWeek, grantCityGifts } from './dedicationSystem';
 import { processCaravanTurnStart } from './caravans';
@@ -164,6 +164,7 @@ export function processDawn(tx: Tx): void {
       refreshTownShops(tx, town);
     }
     restockCamps(tx, week);
+    growWorldOpposition(tx, week);
     processSeedGrowth(tx, week);
   }
 

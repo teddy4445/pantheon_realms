@@ -1,0 +1,148 @@
+{
+  "decor": {
+    "landmark.statue-greek": {
+      "file": "map-landmarks-v1/statue-greek.webp",
+      "width": 420,
+      "height": 460,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.9347826086956522
+      ],
+      "status": "final",
+      "provenance": "Built-in imagegen; source and prompt in docs/map-landmarks-v1."
+    },
+    "landmark.statue-norse": {
+      "file": "map-landmarks-v1/statue-norse.webp",
+      "width": 420,
+      "height": 460,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.9347826086956522
+      ],
+      "status": "final",
+      "provenance": "Built-in imagegen; source and prompt in docs/map-landmarks-v1."
+    },
+    "landmark.statue-egyptian": {
+      "file": "map-landmarks-v1/statue-egyptian.webp",
+      "width": 420,
+      "height": 460,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.9347826086956522
+      ],
+      "status": "final",
+      "provenance": "Built-in imagegen; source and prompt in docs/map-landmarks-v1."
+    },
+    "landmark.statue-japanese": {
+      "file": "map-landmarks-v1/statue-japanese.webp",
+      "width": 420,
+      "height": 460,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.9347826086956522
+      ],
+      "status": "final",
+      "provenance": "Built-in imagegen; source and prompt in docs/map-landmarks-v1."
+    },
+    "landmark.statue-celtic": {
+      "file": "map-landmarks-v1/statue-celtic.webp",
+      "width": 420,
+      "height": 460,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.9347826086956522
+      ],
+      "status": "final",
+      "provenance": "Built-in imagegen; source and prompt in docs/map-landmarks-v1."
+    },
+    "landmark.statue-mesoamerican": {
+      "file": "map-landmarks-v1/statue-mesoamerican.webp",
+      "width": 420,
+      "height": 460,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.9347826086956522
+      ],
+      "status": "final",
+      "provenance": "Built-in imagegen; source and prompt in docs/map-landmarks-v1."
+    },
+    "landmark.ruins-marble": {
+      "file": "map-landmarks-v1/ruins-marble.webp",
+      "width": 420,
+      "height": 460,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.9347826086956522
+      ],
+      "status": "final",
+      "provenance": "Built-in imagegen; source and prompt in docs/map-landmarks-v1."
+    },
+    "landmark.ruins-sandstone": {
+      "file": "map-landmarks-v1/ruins-sandstone.webp",
+      "width": 420,
+      "height": 460,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.9347826086956522
+      ],
+      "status": "final",
+      "provenance": "Built-in imagegen; source and prompt in docs/map-landmarks-v1."
+    },
+    "landmark.waterfall-temperate": {
+      "file": "map-landmarks-v1/waterfall-temperate.webp",
+      "width": 420,
+      "height": 460,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.9347826086956522
+      ],
+      "status": "final",
+      "provenance": "Built-in imagegen; source and prompt in docs/map-landmarks-v1."
+    },
+    "landmark.waterfall-tropical": {
+      "file": "map-landmarks-v1/waterfall-tropical.webp",
+      "width": 420,
+      "height": 460,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.9347826086956522
+      ],
+      "status": "final",
+      "provenance": "Built-in imagegen; source and prompt in docs/map-landmarks-v1."
+    },
+    "landmark.tree-sacred-oak": {
+      "file": "map-landmarks-v1/tree-sacred-oak.webp",
+      "width": 420,
+      "height": 460,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.9347826086956522
+      ],
+      "status": "final",
+      "provenance": "Built-in imagegen; source and prompt in docs/map-landmarks-v1."
+    },
+    "landmark.tree-sacred-blossom": {
+      "file": "map-landmarks-v1/tree-sacred-blossom.webp",
+      "width": 420,
+      "height": 460,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.9347826086956522
+      ],
+      "status": "final",
+      "provenance": "Built-in imagegen; source and prompt in docs/map-landmarks-v1."
+    }
+  }
+}

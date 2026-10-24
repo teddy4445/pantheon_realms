@@ -85,6 +85,8 @@ export interface SpriteStrip {
   readonly frameHeight: number;
   /** Frames per second at normal speed. */
   readonly fps: number;
+  /** Optional authored pose holds; the same clock drives contact/release cues. */
+  readonly frameDurationsMs?: readonly number[];
   readonly loop: boolean;
   /** Anchor inside a frame as fractions of its width and height. */
   readonly anchor: readonly [number, number];
@@ -370,17 +372,23 @@ export function siteSprite(kind: string, variant?: string | null): StaticSpriteD
  * creature camp's hiring-site picture (`map.site.neutral_dwelling.<creatureId>`,
  * which exists only for creatures that have one). Never keyed by a site ID; the
  * view draws the first one the manifest has, else the kind's picture
- * (`pickSiteSprite`).
+ * (`pickSiteSprite`). Towns append their civic-hall development stage after
+ * explicit story art; the pantheon's original sprite remains the fallback.
  */
-export function siteSpriteCandidates(def: Pick<SiteDefinition, 'kind' | 'art'>, state?: { readonly open?: boolean } | null): string[] {
+export function siteSpriteCandidates(def: Pick<SiteDefinition, 'kind' | 'art'>, state?: { readonly open?: boolean; readonly claimed?: boolean } | null, town?: { readonly pantheonId: string; readonly buildings: Readonly<Record<string, number>> }): string[] {
   const out: string[] = [];
   const k = def.kind;
+  if (k.type === 'map_event' && k.restoration) out.push(`map.site.temple.${k.restoration.pantheonId}.${k.restoration.size}.${state?.claimed ? 'built' : 'ruined'}`);
   if (k.type === 'sluice') {
     const s = state?.open ? 'open' : 'closed';
     if (def.art) out.push(`map.site.${def.art}.${s}`);
     out.push(`map.site.sluice.${s}`);
   }
   if (def.art) out.push(`map.site.${def.art}`);
+  if (k.type === 'town' && town) {
+    const level = Math.max(1, Math.min(4, Math.floor(town.buildings.civic_hall ?? 1) || 1));
+    out.push(`map.site.town.${town.pantheonId}.l${level}`);
+  }
   if (k.type === 'portal' && k.ferry) out.push('map.site.ferry');
   if (k.type === 'creature_camp') out.push(`map.site.neutral_dwelling.${k.creatureId}`);
   return [...new Set(out)];

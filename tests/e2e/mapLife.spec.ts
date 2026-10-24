@@ -1,0 +1,56 @@
+import { mkdirSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
+import { test, expect, type Page } from '@playwright/test';
+import { createEnvelope, serializeEnvelope } from '@pr/session';
+import { dedicationFixture } from './dedicationFixtures';
+import { importAndLoad } from './fixtures';
+import { waitFor } from './helpers';
+import { usePrefs } from './momentFixtures';
+
+const out = path.resolve('docs/map-life-v1');
+const scenery = (page: Page) => page.evaluate(() => (globalThis as any).__prScenery().map);
+test('resource animation, coastal dressing and reduced motion', async ({ page }) => {
+  test.setTimeout(180_000);
+  mkdirSync(out, { recursive: true });
+  const f = dedicationFixture('Living map showcase', { pantheon: 'greek', buildings: { civic_hall: 3 } });
+  // A small lake beside this test town exercises decorative docks as well as river shores.
+  const map = f.state.world.map;
+  const cells = map.terrain.split('');
+  const town = f.state.towns[f.townId]!;
+  for (const [dq, dr] of [[0, -1], [1, -1], [1, -2]]) cells[(town.coord.r + dr!) * map.width + town.coord.q + dq!] = 'w';
+  f.state.world.map = { ...map, terrain: cells.join('') };
+  const file = path.join(out, 'living-map.prsave.json');
+  writeFileSync(file, serializeEnvelope(createEnvelope(f.catalog, { match: f.state, campaign: null }, { id: 'manual-1', kind: 'manual', name: 'Living map showcase', savedAt: new Date(0).toISOString() })));
+  const errors: string[] = [];
+  page.on('pageerror', e => errors.push(e.message));
+  await usePrefs(page, {});
+  await page.goto('/?e2e');
+  await importAndLoad(page, file);
+  await waitFor(page, s => s.screen === 'adventure' && !s.busy && !s.overlays.length, 'map');
+  await expect.poll(async () => (await scenery(page))?.resourceLife?.length ?? 0).toBeGreaterThan(4);
+  const first = await scenery(page);
+  expect(new Set(first.resourceLife.map((x: any) => x.kind))).toEqual(new Set(['windmill', 'sawmill', 'gold_mine', 'quarry', 'crystal_deposit']));
+  expect(first.coastLife.shores).toBeGreaterThan(0);
+  expect(first.coastLife.docks).toBeGreaterThan(0);
+  expect(first.coastLife.reeds).toBeGreaterThan(0);
+  expect(first.coastLife.birds).toBeGreaterThan(0);
+  await expect.poll(async () => (await scenery(page)).coastLife.phase).toBeGreaterThan(first.coastLife.phase);
+  await expect.poll(async () => (await scenery(page)).sites.filter((s: any) => s.life && s.loaded).length, { timeout: 60_000 }).toBeGreaterThan(4);
+  await page.screenshot({ path: path.join(out, 'living-map.png') });
+  // Center the nearest windmill and zoom in through the real camera input.
+  const windmill = f.state.customMission!.sites.find(s => s.kind.type === 'windmill' && s.coord.q === 19)!;
+  const center = await page.evaluate(c => (globalThis as any).__prProject('adventure', c.q, c.r), windmill.coord);
+  await page.mouse.move(center.x, center.y);
+  await page.mouse.wheel(0, -500);
+  await page.waitForTimeout(1000);
+  await expect.poll(async () => (await scenery(page)).resourceLife.some((s: any) => s.kind === 'windmill' && s.visible && s.phase > 0)).toBe(true);
+  await page.screenshot({ path: path.join(out, 'windmill-close.png') });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.waitForTimeout(500);
+  const calm = await scenery(page);
+  await page.waitForTimeout(800);
+  const still = await scenery(page);
+  expect(still.coastLife.phase).toBe(calm.coastLife.phase);
+  expect(still.resourceLife.map((s: any) => s.phase)).toEqual(calm.resourceLife.map((s: any) => s.phase));
+  expect(errors).toEqual([]);
+});

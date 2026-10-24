@@ -32,6 +32,7 @@ import { GREEK_BUILDINGS, GREEK_TOWN } from './greek/town';
 import { HERO_CLASSES } from './common/heroesMagic';
 import { firstMinorGod, secondMinorGod } from './common/gods';
 import { SIGNATURES } from './common/signatures';
+import { withH3CityArt } from './townArt/h3City';
 
 export const slug = (name: string): string =>
   name
@@ -296,14 +297,14 @@ export function buildPantheonKit(spec: PantheonKitSpec): PantheonContent {
     };
   });
 
-  const town: TownArchetypeDefinition = {
+  const town: TownArchetypeDefinition = withH3CityArt({
     id: spec.town.archetypeId,
     pantheonId: p,
     name: spec.town.name,
     backgroundAssetId: `town.${p}.background`,
     ...(spec.town.hudAnchor ? { hudAnchor: spec.town.hudAnchor } : {}),
     slots,
-  };
+  });
 
   // --- Creatures (dwelling IDs follow the mirrored tree) ---
   const familySpecs: FamilySpec[] = spec.families.map((f) => ({

@@ -1,0 +1,5 @@
+{
+  "mode": "built-in image_gen",
+  "prompt": "Use case: precise-object-edit. Edit this Greek coastal town background into its war-damaged state for the game's existing campaign recovery mechanic. Keep EXACT same 3:2 canvas, camera, horizon, coastline, cliff shapes, terrace heights, paths, stairs and all open building footprints. Add localized scorched bushes, cracked retaining walls, scattered rubble along the roadsides and roof damage to the few small incidental houses. Subdued dusty colors but still the same warm sunlight and readable terrain. No smoke obscuring buildings, no major buildings, no towers, temples or gatehouse, no text, no UI. This is a background plate underneath independent building layers.",
+  "source": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-ed639d75-f770-4e60-8f52-8f6e7ec2ce34.png"
+}

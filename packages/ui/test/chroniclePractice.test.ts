@@ -141,3 +141,16 @@ describe('inspection over a dialog', () => {
     expect(store.overlays.map((o) => o.kind)).toEqual(['camp']);
   });
 });
+
+it('keeps a dedicated campaign checkpoint after a non-final chapter for New Game replay',async()=>{
+ const platform=memoryPlatform();
+ const store=new AppStore(catalog,platform);
+ store.loadSnapshot(chapterOneWon('three_beacons'));
+ await (store as unknown as {recordResults:()=>Promise<void>}).recordResults();
+ const slots=await store.saves.list();
+ const progress=slots.find(s=>s.id.startsWith('campaign-three_beacons-'));
+ expect(progress?.envelope?.snapshot.campaign?.completions.some(c=>c.missionId==='three_beacons_v2_m01')).toBe(true);
+ const reloaded=new AppStore(catalog,platform);
+ reloaded.loadSnapshot(progress!.envelope!.snapshot);
+ expect(reloaded.startPracticeReplay('three_beacons_v2_m01')).toBeNull();
+});

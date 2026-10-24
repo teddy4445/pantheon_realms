@@ -1,0 +1,488 @@
+[
+  {
+    "id": "exp_greek_aegis_shard",
+    "name": "Aegis Shard",
+    "pantheon": "greek",
+    "element": "lightning",
+    "tier": 1,
+    "miracle": false,
+    "index": 0
+  },
+  {
+    "id": "exp_greek_olympian_spark",
+    "name": "Olympian Spark",
+    "pantheon": "greek",
+    "element": "lightning",
+    "tier": 1,
+    "miracle": false,
+    "index": 1
+  },
+  {
+    "id": "exp_greek_trident_surge",
+    "name": "Trident Surge",
+    "pantheon": "greek",
+    "element": "lightning",
+    "tier": 2,
+    "miracle": false,
+    "index": 2
+  },
+  {
+    "id": "exp_greek_gorgon_gaze",
+    "name": "Gorgon Gaze",
+    "pantheon": "greek",
+    "element": "lightning",
+    "tier": 2,
+    "miracle": false,
+    "index": 3
+  },
+  {
+    "id": "exp_greek_titan_javelin",
+    "name": "Titan Javelin",
+    "pantheon": "greek",
+    "element": "lightning",
+    "tier": 3,
+    "miracle": false,
+    "index": 4
+  },
+  {
+    "id": "exp_greek_olympian_tempest",
+    "name": "Olympian Tempest",
+    "pantheon": "greek",
+    "element": "lightning",
+    "tier": 3,
+    "miracle": false,
+    "index": 5
+  },
+  {
+    "id": "exp_greek_judgment_of_olympus",
+    "name": "Judgment of Olympus",
+    "pantheon": "greek",
+    "element": "lightning",
+    "tier": 1,
+    "miracle": true,
+    "index": 0
+  },
+  {
+    "id": "exp_greek_sea_kings_wrath",
+    "name": "Sea Kings Wrath",
+    "pantheon": "greek",
+    "element": "lightning",
+    "tier": 1,
+    "miracle": true,
+    "index": 1
+  },
+  {
+    "id": "exp_norse_rime_needle",
+    "name": "Rime Needle",
+    "pantheon": "norse",
+    "element": "cold",
+    "tier": 1,
+    "miracle": false,
+    "index": 0
+  },
+  {
+    "id": "exp_norse_raven_talon",
+    "name": "Raven Talon",
+    "pantheon": "norse",
+    "element": "cold",
+    "tier": 1,
+    "miracle": false,
+    "index": 1
+  },
+  {
+    "id": "exp_norse_glacier_fang",
+    "name": "Glacier Fang",
+    "pantheon": "norse",
+    "element": "cold",
+    "tier": 2,
+    "miracle": false,
+    "index": 2
+  },
+  {
+    "id": "exp_norse_rune_shatter",
+    "name": "Rune Shatter",
+    "pantheon": "norse",
+    "element": "cold",
+    "tier": 2,
+    "miracle": false,
+    "index": 3
+  },
+  {
+    "id": "exp_norse_fenrir_bite",
+    "name": "Fenrir Bite",
+    "pantheon": "norse",
+    "element": "cold",
+    "tier": 3,
+    "miracle": false,
+    "index": 4
+  },
+  {
+    "id": "exp_norse_winter_sundering",
+    "name": "Winter Sundering",
+    "pantheon": "norse",
+    "element": "cold",
+    "tier": 3,
+    "miracle": false,
+    "index": 5
+  },
+  {
+    "id": "exp_norse_ragnarok_hammer",
+    "name": "Ragnarok Hammer",
+    "pantheon": "norse",
+    "element": "cold",
+    "tier": 1,
+    "miracle": true,
+    "index": 0
+  },
+  {
+    "id": "exp_norse_fimbulwinter",
+    "name": "Fimbulwinter",
+    "pantheon": "norse",
+    "element": "cold",
+    "tier": 1,
+    "miracle": true,
+    "index": 1
+  },
+  {
+    "id": "exp_egyptian_sun_needle",
+    "name": "Sun Needle",
+    "pantheon": "egyptian",
+    "element": "solar",
+    "tier": 1,
+    "miracle": false,
+    "index": 0
+  },
+  {
+    "id": "exp_egyptian_scarab_sting",
+    "name": "Scarab Sting",
+    "pantheon": "egyptian",
+    "element": "solar",
+    "tier": 1,
+    "miracle": false,
+    "index": 1
+  },
+  {
+    "id": "exp_egyptian_desert_glass",
+    "name": "Desert Glass",
+    "pantheon": "egyptian",
+    "element": "solar",
+    "tier": 2,
+    "miracle": false,
+    "index": 2
+  },
+  {
+    "id": "exp_egyptian_cobra_crown",
+    "name": "Cobra Crown",
+    "pantheon": "egyptian",
+    "element": "solar",
+    "tier": 2,
+    "miracle": false,
+    "index": 3
+  },
+  {
+    "id": "exp_egyptian_solar_lance",
+    "name": "Solar Lance",
+    "pantheon": "egyptian",
+    "element": "solar",
+    "tier": 3,
+    "miracle": false,
+    "index": 4
+  },
+  {
+    "id": "exp_egyptian_pyramid_nova",
+    "name": "Pyramid Nova",
+    "pantheon": "egyptian",
+    "element": "solar",
+    "tier": 3,
+    "miracle": false,
+    "index": 5
+  },
+  {
+    "id": "exp_egyptian_judgment_of_anubis",
+    "name": "Judgment of Anubis",
+    "pantheon": "egyptian",
+    "element": "solar",
+    "tier": 1,
+    "miracle": true,
+    "index": 0
+  },
+  {
+    "id": "exp_egyptian_ra_ascendant",
+    "name": "Ra Ascendant",
+    "pantheon": "egyptian",
+    "element": "solar",
+    "tier": 1,
+    "miracle": true,
+    "index": 1
+  },
+  {
+    "id": "exp_japanese_fox_ember",
+    "name": "Fox Ember",
+    "pantheon": "japanese",
+    "element": "fire",
+    "tier": 1,
+    "miracle": false,
+    "index": 0
+  },
+  {
+    "id": "exp_japanese_paper_blade",
+    "name": "Paper Blade",
+    "pantheon": "japanese",
+    "element": "fire",
+    "tier": 1,
+    "miracle": false,
+    "index": 1
+  },
+  {
+    "id": "exp_japanese_oni_flame",
+    "name": "Oni Flame",
+    "pantheon": "japanese",
+    "element": "fire",
+    "tier": 2,
+    "miracle": false,
+    "index": 2
+  },
+  {
+    "id": "exp_japanese_mirror_shatter",
+    "name": "Mirror Shatter",
+    "pantheon": "japanese",
+    "element": "fire",
+    "tier": 2,
+    "miracle": false,
+    "index": 3
+  },
+  {
+    "id": "exp_japanese_dragon_comet",
+    "name": "Dragon Comet",
+    "pantheon": "japanese",
+    "element": "fire",
+    "tier": 3,
+    "miracle": false,
+    "index": 4
+  },
+  {
+    "id": "exp_japanese_thousand_lanterns",
+    "name": "Thousand Lanterns",
+    "pantheon": "japanese",
+    "element": "fire",
+    "tier": 3,
+    "miracle": false,
+    "index": 5
+  },
+  {
+    "id": "exp_japanese_raijins_verdict",
+    "name": "Raijins Verdict",
+    "pantheon": "japanese",
+    "element": "fire",
+    "tier": 1,
+    "miracle": true,
+    "index": 0
+  },
+  {
+    "id": "exp_japanese_amaterasus_dawn",
+    "name": "Amaterasus Dawn",
+    "pantheon": "japanese",
+    "element": "fire",
+    "tier": 1,
+    "miracle": true,
+    "index": 1
+  },
+  {
+    "id": "exp_celtic_briar_dart",
+    "name": "Briar Dart",
+    "pantheon": "celtic",
+    "element": "nature",
+    "tier": 1,
+    "miracle": false,
+    "index": 0
+  },
+  {
+    "id": "exp_celtic_wisp_sting",
+    "name": "Wisp Sting",
+    "pantheon": "celtic",
+    "element": "nature",
+    "tier": 1,
+    "miracle": false,
+    "index": 1
+  },
+  {
+    "id": "exp_celtic_oak_spear",
+    "name": "Oak Spear",
+    "pantheon": "celtic",
+    "element": "nature",
+    "tier": 2,
+    "miracle": false,
+    "index": 2
+  },
+  {
+    "id": "exp_celtic_thorn_spiral",
+    "name": "Thorn Spiral",
+    "pantheon": "celtic",
+    "element": "nature",
+    "tier": 2,
+    "miracle": false,
+    "index": 3
+  },
+  {
+    "id": "exp_celtic_moon_hunt",
+    "name": "Moon Hunt",
+    "pantheon": "celtic",
+    "element": "nature",
+    "tier": 3,
+    "miracle": false,
+    "index": 4
+  },
+  {
+    "id": "exp_celtic_wildwood_reckoning",
+    "name": "Wildwood Reckoning",
+    "pantheon": "celtic",
+    "element": "nature",
+    "tier": 3,
+    "miracle": false,
+    "index": 5
+  },
+  {
+    "id": "exp_celtic_morrigans_flight",
+    "name": "Morrigans Flight",
+    "pantheon": "celtic",
+    "element": "nature",
+    "tier": 1,
+    "miracle": true,
+    "index": 0
+  },
+  {
+    "id": "exp_celtic_lughs_judgment",
+    "name": "Lughs Judgment",
+    "pantheon": "celtic",
+    "element": "nature",
+    "tier": 1,
+    "miracle": true,
+    "index": 1
+  },
+  {
+    "id": "exp_mesoamerican_jade_fang",
+    "name": "Jade Fang",
+    "pantheon": "mesoamerican",
+    "element": "arcane",
+    "tier": 1,
+    "miracle": false,
+    "index": 0
+  },
+  {
+    "id": "exp_mesoamerican_obsidian_splinter",
+    "name": "Obsidian Splinter",
+    "pantheon": "mesoamerican",
+    "element": "arcane",
+    "tier": 1,
+    "miracle": false,
+    "index": 1
+  },
+  {
+    "id": "exp_mesoamerican_serpent_coil",
+    "name": "Serpent Coil",
+    "pantheon": "mesoamerican",
+    "element": "arcane",
+    "tier": 2,
+    "miracle": false,
+    "index": 2
+  },
+  {
+    "id": "exp_mesoamerican_jaguar_eclipse",
+    "name": "Jaguar Eclipse",
+    "pantheon": "mesoamerican",
+    "element": "arcane",
+    "tier": 2,
+    "miracle": false,
+    "index": 3
+  },
+  {
+    "id": "exp_mesoamerican_star_calendar",
+    "name": "Star Calendar",
+    "pantheon": "mesoamerican",
+    "element": "arcane",
+    "tier": 3,
+    "miracle": false,
+    "index": 4
+  },
+  {
+    "id": "exp_mesoamerican_volcanic_crown",
+    "name": "Volcanic Crown",
+    "pantheon": "mesoamerican",
+    "element": "arcane",
+    "tier": 3,
+    "miracle": false,
+    "index": 5
+  },
+  {
+    "id": "exp_mesoamerican_feathered_serpent_descent",
+    "name": "Feathered Serpent Descent",
+    "pantheon": "mesoamerican",
+    "element": "arcane",
+    "tier": 1,
+    "miracle": true,
+    "index": 0
+  },
+  {
+    "id": "exp_mesoamerican_heart_of_the_sun",
+    "name": "Heart of the Sun",
+    "pantheon": "mesoamerican",
+    "element": "arcane",
+    "tier": 1,
+    "miracle": true,
+    "index": 1
+  },
+  {
+    "id": "exp_shared_arcane_needle",
+    "name": "Arcane Needle",
+    "pantheon": "shared",
+    "element": "arcane",
+    "tier": 1,
+    "miracle": false,
+    "index": 0
+  },
+  {
+    "id": "exp_shared_searing_cinder",
+    "name": "Searing Cinder",
+    "pantheon": "shared",
+    "element": "arcane",
+    "tier": 1,
+    "miracle": false,
+    "index": 1
+  },
+  {
+    "id": "exp_shared_crystal_lance",
+    "name": "Crystal Lance",
+    "pantheon": "shared",
+    "element": "arcane",
+    "tier": 2,
+    "miracle": false,
+    "index": 2
+  },
+  {
+    "id": "exp_shared_gravity_bloom",
+    "name": "Gravity Bloom",
+    "pantheon": "shared",
+    "element": "arcane",
+    "tier": 2,
+    "miracle": false,
+    "index": 3
+  },
+  {
+    "id": "exp_shared_astral_execution",
+    "name": "Astral Execution",
+    "pantheon": "shared",
+    "element": "arcane",
+    "tier": 3,
+    "miracle": false,
+    "index": 4
+  },
+  {
+    "id": "exp_shared_comet_convergence",
+    "name": "Comet Convergence",
+    "pantheon": "shared",
+    "element": "arcane",
+    "tier": 3,
+    "miracle": false,
+    "index": 5
+  }
+]

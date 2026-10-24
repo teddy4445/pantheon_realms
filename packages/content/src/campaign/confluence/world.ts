@@ -45,6 +45,8 @@ const paint: PaintOp[] = [
   // Fixed bridges keep the mainland loop; they do not connect the Accord Isle.
   { t: 'plains', cells: [[43, 8], [44, 8], [45, 8], [24, 62], [25, 62], [26, 62], [33, 64], [34, 64], [35, 64], [41, 64], [42, 64], [43, 64]] },
   { t: 'plains', cells: CONFLUENCE_REGIONS.flatMap((r) => [CONFLUENCE_TOWNS[r].at, CONFLUENCE_TOWNS[r].gate]) },
+  // A clear shore beside each hull joins the town gate; never require entering the town footprint.
+  { t: 'plains', cells: CONFLUENCE_REGIONS.flatMap(r => { const h=CONFLUENCE_TOWNS[r]; return [[h.at[0]-1,h.at[1]+1],[h.at[0],h.at[1]+1],[h.at[0]+1,h.at[1]+1]] as XY[]; }) },
   { t: 'water', cells: CONFLUENCE_REGIONS.map((r) => CONFLUENCE_TOWNS[r].landing) },
 ];
 export const CONFLUENCE_MASTER = compileRegionMap({

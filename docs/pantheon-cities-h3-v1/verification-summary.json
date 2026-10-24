@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-20",
+  "pantheons": ["norse", "egyptian", "japanese", "celtic", "mesoamerican"],
+  "buildingVersions": 165,
+  "developmentBackgrounds": 20,
+  "recoveryBackgrounds": 5,
+  "fullCityConcepts": 5,
+  "runtimeAssetBindingsIncludingAliases": 195,
+  "checks": {
+    "allSpriteTransparencyAndPreviewControls": "passed",
+    "townArtUnitTests": "10 passed",
+    "typecheck": "passed",
+    "packageBoundaries": "passed",
+    "productionBuild": "passed",
+    "inGameStagesAndRecovery": "25 passed: 5 Norse checks, then 20 checks for the other four cultures after refreshing the development server",
+    "pointerAndKeyboardAccess": "all 18 locations in every fully developed city",
+    "viewportReview": ["1600x900", "1280x720"],
+    "visualReview": "All five assembled cities, all 165 building variants, 20 backgrounds and final in-game small-window screenshots inspected",
+    "diffWhitespace": "passed"
+  },
+  "notes": [
+    "The first browser run exposed stale development-server code for the kit-built city placements. The server was restarted and all affected checks passed.",
+    "The original JSON layout import was changed to a generated TypeScript module for compatibility with the native browser-test runner.",
+    "All final art was generated with the built-in image_gen tool."
+  ]
+}

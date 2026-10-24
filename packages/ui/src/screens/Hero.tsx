@@ -447,6 +447,7 @@ export function HeroScreen() {
                 <span className="faint small">{pantheonId ? catalog.pantheons[pantheonId]?.name : ''}</span>
               </div>
               {def?.title ? <div className="faint small">{def.title}</div> : null}
+              {hero.landmarkBlessing ? <Chip tone="ok">{hero.landmarkBlessing.source}: +2 {hero.landmarkBlessing.kind === 'courage' ? 'Attack' : 'Defense'} · next battle</Chip> : null}
             </div>
           </div>
           {specialtiesEnabled(state) ? <SpecialtyLine catalog={catalog} definitionId={hero.definitionId} size="1.9rem" /> : null}

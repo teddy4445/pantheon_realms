@@ -162,6 +162,7 @@ export function resolveBattle(tx: Tx, battle: BattleState, winner: BattleSideId,
     if (site && def) {
       if (winner === 'attacker') {
         site.cleared = true;
+        if (def.kind.type === 'map_event' && def.kind.landmark === 'ruins') { site.claimed = true; site.chosenOption = 0; }
         site.guard = null;
         if (attackerHero) site.clearedBy = attackerHero.ownerId;
         const reward = def.guard?.reward;

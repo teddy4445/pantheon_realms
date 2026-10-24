@@ -53,7 +53,7 @@ export function commitLaunchShip(tx: Tx, townId: TownId, waterCoord: HexCoord): 
   tx.emit({ kind: 'ShipLaunched', shipId, townId, playerId: tx.actorId, coord: { q: waterCoord.q, r: waterCoord.r }, facing, cost: q.cost });
 }
 
-/** EmbarkHero: the hero steps from the shore onto the adjacent empty ship (claiming a neutral one) and uses all its movement. */
+/** EmbarkHero: the hero steps from the shore onto the adjacent empty ship (claiming a neutral one) and uses one ordinary movement step. */
 export function commitEmbarkHero(tx: Tx, heroId: HeroId, shipId: ShipId): void {
   const hero = tx.state.heroes[heroId];
   if (!hero || hero.ownerId !== tx.actorId) reject('not_owner', 'Not your hero');
@@ -73,7 +73,7 @@ export function commitEmbarkHero(tx: Tx, heroId: HeroId, shipId: ShipId): void {
   revealAround(tx, hero.ownerId, [hero.position], heroVisionRadius(tx.catalog, hero, tx.state));
 }
 
-/** DisembarkHero: the hero steps onto the adjacent vacant shore, leaving the empty owned hull, and uses all its movement. */
+/** DisembarkHero: the hero steps onto the adjacent vacant shore, leaving the empty owned hull, and uses one ordinary movement step. */
 export function commitDisembarkHero(tx: Tx, heroId: HeroId, landCoord: HexCoord): void {
   const hero = tx.state.heroes[heroId];
   if (!hero || hero.ownerId !== tx.actorId) reject('not_owner', 'Not your hero');

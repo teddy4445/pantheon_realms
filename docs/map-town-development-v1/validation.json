@@ -1,0 +1,110 @@
+[
+  {
+    "id": "map.site.town.greek.l1",
+    "transparentFraction": 0.7404764085071313,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254
+  },
+  {
+    "id": "map.site.town.greek.l2",
+    "transparentFraction": 0.6793571575742313,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254
+  },
+  {
+    "id": "map.site.town.greek.l3",
+    "transparentFraction": 0.4799315237492019,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254
+  },
+  {
+    "id": "map.site.town.norse.l1",
+    "transparentFraction": 0.5872022923773113,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254
+  },
+  {
+    "id": "map.site.town.norse.l2",
+    "transparentFraction": 0.5283551963859191,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254
+  },
+  {
+    "id": "map.site.town.norse.l3",
+    "transparentFraction": 0.5546633547766764,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254
+  },
+  {
+    "id": "map.site.town.egyptian.l1",
+    "transparentFraction": 0.6328037361782011,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254
+  },
+  {
+    "id": "map.site.town.egyptian.l2",
+    "transparentFraction": 0.6180865568299464,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254
+  },
+  {
+    "id": "map.site.town.egyptian.l3",
+    "transparentFraction": 0.4598051784528743,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254
+  },
+  {
+    "id": "map.site.town.japanese.l1",
+    "transparentFraction": 0.7538155414634891,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254
+  },
+  {
+    "id": "map.site.town.japanese.l2",
+    "transparentFraction": 0.6445352543312755,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254
+  },
+  {
+    "id": "map.site.town.japanese.l3",
+    "transparentFraction": 0.5098529999058833,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254
+  },
+  {
+    "id": "map.site.town.celtic.l1",
+    "transparentFraction": 0.6714837877643216,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254
+  },
+  {
+    "id": "map.site.town.celtic.l2",
+    "transparentFraction": 0.5448923890122581,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254
+  },
+  {
+    "id": "map.site.town.celtic.l3",
+    "transparentFraction": 0.49031806353639645,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254
+  },
+  {
+    "id": "map.site.town.mesoamerican.l1",
+    "transparentFraction": 0.6350580852595459,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254
+  },
+  {
+    "id": "map.site.town.mesoamerican.l2",
+    "transparentFraction": 0.6835917726751269,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254
+  },
+  {
+    "id": "map.site.town.mesoamerican.l3",
+    "transparentFraction": 0.4156377423186791,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254
+  }
+]

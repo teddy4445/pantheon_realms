@@ -1,0 +1,494 @@
+{
+  "name": "Mesoamerican Temple City — Heroes III inspired city",
+  "version": 1,
+  "aspectRatio": "3:2",
+  "background": "background.l1.png",
+  "reference": "full-city.png",
+  "anchor": "center-bottom",
+  "totalVersions": 33,
+  "buildings": [
+    {
+      "id": "civic_hall",
+      "name": "Civic Hall",
+      "x": 57,
+      "y": 36,
+      "width": 23,
+      "layer": 4,
+      "file": "buildings/civic_hall.l4.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "mesoamerican_civic_hall_l1",
+          "name": "Calpulli House",
+          "level": 1,
+          "artAssetId": "town.mesoamerican.support.civic_hall.l1",
+          "file": "buildings/civic_hall.l1.png"
+        },
+        {
+          "id": "mesoamerican_civic_hall_l2",
+          "name": "Tecpan",
+          "level": 2,
+          "artAssetId": "town.mesoamerican.support.civic_hall.l2",
+          "file": "buildings/civic_hall.l2.png"
+        },
+        {
+          "id": "mesoamerican_civic_hall_l3",
+          "name": "Great Palace",
+          "level": 3,
+          "artAssetId": "town.mesoamerican.support.civic_hall.l3",
+          "file": "buildings/civic_hall.l3.png"
+        },
+        {
+          "id": "mesoamerican_civic_hall_l4",
+          "name": "Palace of the Sun",
+          "level": 4,
+          "artAssetId": "town.mesoamerican.support.civic_hall.l4",
+          "file": "buildings/civic_hall.l4.png"
+        }
+      ],
+      "versionId": "mesoamerican_civic_hall_l4",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "pantheon_temple",
+      "name": "Pantheon Temple (Pyramid)",
+      "x": 48,
+      "y": 26,
+      "width": 31,
+      "layer": 2,
+      "file": "buildings/pantheon_temple.l2.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "mesoamerican_pantheon_temple_l1",
+          "name": "Temple Pyramid",
+          "level": 1,
+          "artAssetId": "town.mesoamerican.support.pantheon_temple.l1",
+          "file": "buildings/pantheon_temple.l1.png"
+        },
+        {
+          "id": "mesoamerican_pantheon_temple_l2",
+          "name": "Great Pyramid",
+          "level": 2,
+          "artAssetId": "town.mesoamerican.support.pantheon_temple.l2",
+          "file": "buildings/pantheon_temple.l2.png"
+        }
+      ],
+      "versionId": "mesoamerican_pantheon_temple_l2",
+      "frameAspectRatio": 2
+    },
+    {
+      "id": "mage_guild",
+      "name": "House of the Codex",
+      "x": 74,
+      "y": 23,
+      "width": 13,
+      "layer": 3,
+      "file": "buildings/mage_guild.l3.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "mesoamerican_mage_guild_l1",
+          "name": "House of the Codex I",
+          "level": 1,
+          "artAssetId": "town.mesoamerican.support.mage_guild.l1",
+          "file": "buildings/mage_guild.l1.png"
+        },
+        {
+          "id": "mesoamerican_mage_guild_l2",
+          "name": "House of the Codex II",
+          "level": 2,
+          "artAssetId": "town.mesoamerican.support.mage_guild.l2",
+          "file": "buildings/mage_guild.l2.png"
+        },
+        {
+          "id": "mesoamerican_mage_guild_l3",
+          "name": "House of the Codex III",
+          "level": 3,
+          "artAssetId": "town.mesoamerican.support.mage_guild.l3",
+          "file": "buildings/mage_guild.l3.png"
+        }
+      ],
+      "versionId": "mesoamerican_mage_guild_l3",
+      "frameAspectRatio": 1.1652323580034423
+    },
+    {
+      "id": "watchtower",
+      "name": "Watchtower / Observatory",
+      "x": 92,
+      "y": 19,
+      "width": 9,
+      "layer": 2,
+      "file": "buildings/watchtower.l1.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "mesoamerican_watchtower_l1",
+          "name": "Observatory",
+          "level": 1,
+          "artAssetId": "town.mesoamerican.support.watchtower.l1",
+          "file": "buildings/watchtower.l1.png"
+        }
+      ],
+      "versionId": "mesoamerican_watchtower_l1",
+      "frameAspectRatio": 1.0907577019150707
+    },
+    {
+      "id": "artifact_merchant",
+      "name": "Artifact Merchant",
+      "x": 67,
+      "y": 47,
+      "width": 18,
+      "layer": 5,
+      "file": "buildings/artifact_merchant.l1.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "mesoamerican_artifact_merchant_l1",
+          "name": "Jade Merchant",
+          "level": 1,
+          "artAssetId": "town.mesoamerican.support.artifact_merchant.l1",
+          "file": "buildings/artifact_merchant.l1.png"
+        }
+      ],
+      "versionId": "mesoamerican_artifact_merchant_l1",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "tavern",
+      "name": "Traveller’s House / Heroes’ Lodge",
+      "x": 42,
+      "y": 44,
+      "width": 20,
+      "layer": 5,
+      "file": "buildings/tavern.l1.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "mesoamerican_tavern_l1",
+          "name": "Traveller's House",
+          "level": 1,
+          "artAssetId": "town.mesoamerican.support.tavern.l1",
+          "file": "buildings/tavern.l1.png"
+        }
+      ],
+      "versionId": "mesoamerican_tavern_l1",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "marketplace",
+      "name": "Tianguis Market",
+      "x": 55,
+      "y": 57,
+      "width": 23,
+      "layer": 6,
+      "file": "buildings/marketplace.l1.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "mesoamerican_marketplace_l1",
+          "name": "Tianguis Market",
+          "level": 1,
+          "artAssetId": "town.mesoamerican.support.marketplace.l1",
+          "file": "buildings/marketplace.l1.png"
+        }
+      ],
+      "versionId": "mesoamerican_marketplace_l1",
+      "frameAspectRatio": 2
+    },
+    {
+      "id": "training_academy",
+      "name": "Training Academy",
+      "x": 86,
+      "y": 62,
+      "width": 21,
+      "layer": 7,
+      "file": "buildings/training_academy.l1.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "mesoamerican_training_academy_l1",
+          "name": "Warrior House",
+          "level": 1,
+          "artAssetId": "town.mesoamerican.support.training_academy.l1",
+          "file": "buildings/training_academy.l1.png"
+        }
+      ],
+      "versionId": "mesoamerican_training_academy_l1",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "workshop",
+      "name": "Workshop",
+      "x": 28,
+      "y": 68,
+      "width": 16,
+      "layer": 8,
+      "file": "buildings/workshop.l1.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "mesoamerican_workshop_l1",
+          "name": "Workshop",
+          "level": 1,
+          "artAssetId": "town.mesoamerican.support.workshop.l1",
+          "file": "buildings/workshop.l1.png"
+        }
+      ],
+      "versionId": "mesoamerican_workshop_l1",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "resource_depot",
+      "name": "Storehouse",
+      "x": 43,
+      "y": 69,
+      "width": 17,
+      "layer": 8,
+      "file": "buildings/resource_depot.l1.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "mesoamerican_resource_depot_l1",
+          "name": "Storehouse",
+          "level": 1,
+          "artAssetId": "town.mesoamerican.support.resource_depot.l1",
+          "file": "buildings/resource_depot.l1.png"
+        }
+      ],
+      "versionId": "mesoamerican_resource_depot_l1",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "fortifications",
+      "name": "Fortifications / Gatehouse",
+      "x": 63,
+      "y": 100,
+      "width": 66,
+      "layer": 12,
+      "file": "buildings/fortifications.l3.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "mesoamerican_fortifications_l1",
+          "name": "Stone Walls",
+          "level": 1,
+          "artAssetId": "town.mesoamerican.support.fortifications.l1",
+          "file": "buildings/fortifications.l1.png"
+        },
+        {
+          "id": "mesoamerican_fortifications_l2",
+          "name": "Fortified Precinct",
+          "level": 2,
+          "artAssetId": "town.mesoamerican.support.fortifications.l2",
+          "file": "buildings/fortifications.l2.png"
+        },
+        {
+          "id": "mesoamerican_fortifications_l3",
+          "name": "Great Precinct",
+          "level": 3,
+          "artAssetId": "town.mesoamerican.support.fortifications.l3",
+          "file": "buildings/fortifications.l3.png"
+        }
+      ],
+      "versionId": "mesoamerican_fortifications_l3",
+      "frameAspectRatio": 2.900815217391304
+    },
+    {
+      "id": "dwelling_t1",
+      "name": "Tier 1 — Serpent Nest",
+      "x": 65,
+      "y": 73,
+      "width": 20,
+      "layer": 9,
+      "file": "buildings/dwelling_t1.l2.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "mesoamerican_dwelling_t1_l1",
+          "name": "Serpent Nest",
+          "level": 1,
+          "artAssetId": "town.mesoamerican.dwelling.tier1.base",
+          "file": "buildings/dwelling_t1.l1.png"
+        },
+        {
+          "id": "mesoamerican_dwelling_t1_l2",
+          "name": "Celestial Nest",
+          "level": 2,
+          "artAssetId": "town.mesoamerican.dwelling.tier1.upgraded",
+          "file": "buildings/dwelling_t1.l2.png"
+        }
+      ],
+      "versionId": "mesoamerican_dwelling_t1_l2",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "dwelling_t2",
+      "name": "Tier 2 — Jaguar Prowl",
+      "x": 87,
+      "y": 73,
+      "width": 18,
+      "layer": 10,
+      "file": "buildings/dwelling_t2.l2.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "mesoamerican_dwelling_t2_l1",
+          "name": "Jaguar Prowl",
+          "level": 1,
+          "artAssetId": "town.mesoamerican.dwelling.tier2.base",
+          "file": "buildings/dwelling_t2.l1.png"
+        },
+        {
+          "id": "mesoamerican_dwelling_t2_l2",
+          "name": "Sun Jaguar Temple",
+          "level": 2,
+          "artAssetId": "town.mesoamerican.dwelling.tier2.upgraded",
+          "file": "buildings/dwelling_t2.l2.png"
+        }
+      ],
+      "versionId": "mesoamerican_dwelling_t2_l2",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "dwelling_t3",
+      "name": "Tier 3 — Eagle Aerie",
+      "x": 92.5,
+      "y": 45,
+      "width": 11,
+      "layer": 5,
+      "file": "buildings/dwelling_t3.l2.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "mesoamerican_dwelling_t3_l1",
+          "name": "Eagle Aerie",
+          "level": 1,
+          "artAssetId": "town.mesoamerican.dwelling.tier3.base",
+          "file": "buildings/dwelling_t3.l1.png"
+        },
+        {
+          "id": "mesoamerican_dwelling_t3_l2",
+          "name": "Solar Eagle House",
+          "level": 2,
+          "artAssetId": "town.mesoamerican.dwelling.tier3.upgraded",
+          "file": "buildings/dwelling_t3.l2.png"
+        }
+      ],
+      "versionId": "mesoamerican_dwelling_t3_l2",
+      "frameAspectRatio": 0.9510108864696734
+    },
+    {
+      "id": "dwelling_t4",
+      "name": "Tier 4 — Cenote Pool",
+      "x": 27,
+      "y": 39,
+      "width": 17,
+      "layer": 4,
+      "file": "buildings/dwelling_t4.l2.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "mesoamerican_dwelling_t4_l1",
+          "name": "Cenote Pool",
+          "level": 1,
+          "artAssetId": "town.mesoamerican.dwelling.tier4.base",
+          "file": "buildings/dwelling_t4.l1.png"
+        },
+        {
+          "id": "mesoamerican_dwelling_t4_l2",
+          "name": "Temple Cenote",
+          "level": 2,
+          "artAssetId": "town.mesoamerican.dwelling.tier4.upgraded",
+          "file": "buildings/dwelling_t4.l2.png"
+        }
+      ],
+      "versionId": "mesoamerican_dwelling_t4_l2",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "dwelling_t5",
+      "name": "Tier 5 — Bat Cave",
+      "x": 14,
+      "y": 40,
+      "width": 13,
+      "layer": 4,
+      "file": "buildings/dwelling_t5.l2.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "mesoamerican_dwelling_t5_l1",
+          "name": "Bat Cave",
+          "level": 1,
+          "artAssetId": "town.mesoamerican.dwelling.tier5.base",
+          "file": "buildings/dwelling_t5.l1.png"
+        },
+        {
+          "id": "mesoamerican_dwelling_t5_l2",
+          "name": "Blood Moon Cave",
+          "level": 2,
+          "artAssetId": "town.mesoamerican.dwelling.tier5.upgraded",
+          "file": "buildings/dwelling_t5.l2.png"
+        }
+      ],
+      "versionId": "mesoamerican_dwelling_t5_l2",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "dwelling_t6",
+      "name": "Tier 6 — Fire Serpent Sanctum",
+      "x": 84,
+      "y": 47,
+      "width": 15,
+      "layer": 5,
+      "file": "buildings/dwelling_t6.l2.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "mesoamerican_dwelling_t6_l1",
+          "name": "Fire Serpent Sanctum",
+          "level": 1,
+          "artAssetId": "town.mesoamerican.dwelling.tier6.base",
+          "file": "buildings/dwelling_t6.l1.png"
+        },
+        {
+          "id": "mesoamerican_dwelling_t6_l2",
+          "name": "Divine Sanctum",
+          "level": 2,
+          "artAssetId": "town.mesoamerican.dwelling.tier6.upgraded",
+          "file": "buildings/dwelling_t6.l2.png"
+        }
+      ],
+      "versionId": "mesoamerican_dwelling_t6_l2",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "dwelling_t7",
+      "name": "Tier 7 — Colossus Quarry",
+      "x": 12,
+      "y": 74,
+      "width": 24,
+      "layer": 7,
+      "file": "buildings/dwelling_t7.l2.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "mesoamerican_dwelling_t7_l1",
+          "name": "Colossus Quarry",
+          "level": 1,
+          "artAssetId": "town.mesoamerican.dwelling.tier7.base",
+          "file": "buildings/dwelling_t7.l1.png"
+        },
+        {
+          "id": "mesoamerican_dwelling_t7_l2",
+          "name": "Sun Colossus Altar",
+          "level": 2,
+          "artAssetId": "town.mesoamerican.dwelling.tier7.upgraded",
+          "file": "buildings/dwelling_t7.l2.png"
+        }
+      ],
+      "versionId": "mesoamerican_dwelling_t7_l2",
+      "frameAspectRatio": 1.5
+    }
+  ]
+}

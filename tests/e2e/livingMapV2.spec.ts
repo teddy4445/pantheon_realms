@@ -1,0 +1,33 @@
+import { test,expect } from '@playwright/test';
+import {mkdirSync,writeFileSync} from 'node:fs';
+import path from 'node:path';
+import {createEnvelope,serializeEnvelope} from '@pr/session';
+import {dedicationFixture} from './dedicationFixtures';
+import {usePrefs} from './momentFixtures';
+import {importAndLoad} from './fixtures';
+import {waitFor} from './helpers';
+const out=path.resolve('docs/living-map-v2');mkdirSync(out,{recursive:true});
+test('new map ambience uses visible sites, pauses under reduced motion, and resumes',async({page})=>{
+  const f=dedicationFixture('Living map v2',{pantheon:'greek'});
+  const file=path.join(out,'living-map.prsave.json');
+  writeFileSync(file,serializeEnvelope(createEnvelope(f.catalog,{match:f.state,campaign:null},{id:'manual-1',kind:'manual',name:'Living map v2',savedAt:new Date(0).toISOString()})));
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+  await usePrefs(page,{});await page.goto('/?e2e');await importAndLoad(page,file);
+  await waitFor(page,s=>s.screen==='adventure'&&!s.busy&&!s.overlays.length,'map');
+  const read=()=>page.evaluate(()=>(globalThis as any).__prScenery()?.map?.ambientSites as {id:string;effects:string[];particles:number;phase:number;visible:boolean}[] ?? []);
+  await expect.poll(async()=>(await read()).filter(s=>s.visible&&s.phase>0).length,{timeout:60000}).toBeGreaterThan(0);
+  const first=await read();expect(new Set(first.flatMap(s=>s.effects)).size).toBeGreaterThanOrEqual(10);
+  expect(first.filter(s=>s.visible).reduce((sum,s)=>sum+s.particles,0)).toBeLessThanOrEqual(240);
+  const active=first.find(s=>s.visible)!;
+  await expect.poll(async()=>(await read()).find(s=>s.id===active.id)!.phase).toBeGreaterThan(active.phase);
+  await page.screenshot({path:path.join(out,'map-overview.png')});
+  // Inspect at closer gameplay scale, with the same bounded pools.
+  await page.mouse.move(680,470);await page.mouse.wheel(0,-350);await page.waitForTimeout(500);
+  await page.screenshot({path:path.join(out,'map-detail.png')});
+  await page.emulateMedia({reducedMotion:'reduce'});
+  await expect.poll(async()=>(await read()).some(s=>s.visible)).toBe(false);
+  const calm=await read();await page.waitForTimeout(400);expect(await read()).toEqual(calm);
+  await page.emulateMedia({reducedMotion:'no-preference'});
+  await expect.poll(async()=>(await read()).some(s=>s.visible)).toBe(true);
+  expect(errors).toEqual([]);
+});

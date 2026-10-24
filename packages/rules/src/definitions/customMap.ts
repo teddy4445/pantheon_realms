@@ -46,6 +46,8 @@ export type CustomSiteKind =
   | 'sluice'
   | 'ferry'
   | 'supply_depot'
+  | 'restoration_shrine'
+  | 'restoration_temple'
   // Added 2026-10-18 (sea-sites kit; optional, older documents never hold them): a capturable coastal
   // lookout on land, floating salvage and a shipwreck on water.
   | 'coastal_watchtower'

@@ -14,6 +14,10 @@
  */
 import {
   visibleLibrarySignals,
+  landmarkVisit,
+  maxMana,
+  canAfford,
+  resources,
   seedTownOptions,
   axialDistance,
   axialNeighbors,
@@ -304,6 +308,14 @@ export function heroTargets(catalog: ContentCatalog, belief: MatchState, playerI
         break;
       }
       case 'map_event':
+        if (def.kind.landmark) {
+          if (landmarkVisit(catalog, belief, hero.id, def.id)) break;
+          if (def.kind.landmark === 'waterfall' && hero.mana >= maxMana(catalog, belief, hero)) break;
+          if (def.kind.landmark === 'statue' && hero.landmarkBlessing) break;
+          if (!def.kind.options.some(o => (!o.cost || canAfford(belief.players[playerId]!.wallet, resources(o.cost))) &&
+            (!o.landmarkAction || o.landmarkAction === 'battle' || !hero.landmarkBlessing) &&
+            (!o.reward.questXp || belief.scenario.xpCap === null || hero.xp < belief.scenario.xpCap))) break;
+        }
         if (!st.claimed) out.push({ coord: def.coord, value: 900, encounter: false, label: def.name });
         break;
       case 'portal':

@@ -115,3 +115,7 @@ export type { CheatEffect } from './systems/cheats';
 export * from './systems/battle/singleBattle';
 
 export { boardZone } from './systems/battle/board';
+
+export * from './systems/landmarkPlan';
+export * from './systems/landmarks';
+export * from './systems/restorationTemples';

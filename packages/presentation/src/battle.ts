@@ -1,3 +1,6 @@
+import { segmentProgress } from './animationTiming';
+import { dragonAbilityRecipe } from './neutralDragonArt';
+import { playPaintedMagic } from './paintedMagic';
 /**
  * BattleSceneController (S11): the tactical battle in 2D —
  *
@@ -41,7 +44,6 @@ import {
   missileFor,
   missileTransform,
   profileForCreature,
-  releaseDelayMs,
   releasePoint,
   regionReleaseSocket,
   releaseSocket,
@@ -1037,9 +1039,8 @@ export class BattleSceneController implements SceneController {
       const def: StaticSpriteDefinition | null = natureDef ?? all[kind] ?? neutral;
       const { x, y } = this.cellXY(c);
       const root = new Container();
-      root.position.set(x, y + RB * S * 0.35);
+      root.position.set(x, y + RB * S * 0.12);
       root.zIndex = root.y;
-      if (graphicsProfile().shadows) root.addChild(groundShadow(HEX_W * 0.42, HEX_W * 0.16, 0.34));
       if (def) {
         let size = 1;
         if (natureDef) {
@@ -1047,7 +1048,13 @@ export class BattleSceneController implements SceneController {
           size = (NATURE_OBSTACLE_WIDTH[role] ?? 1) / Math.max(0.05, natureDef.width / natureDef.pixelsPerHex);
           size *= 0.94 + 0.12 * ((tileNoise(c.col, c.row) + 1) / 2);
         }
-        const s = stillSprite(def, HEX_W, size);
+        // Keep the painted footprint within its blocking cell and register the
+        // bottom of the trimmed art to the same point as its contact shadow.
+        size = Math.min(size, .82 * def.pixelsPerHex / def.width);
+        const width = def.width * HEX_W / def.pixelsPerHex * size;
+        if (graphicsProfile().shadows) root.addChild(groundShadow(width * .44, Math.min(HEX_W * .09, width * .14), .4));
+        root.addChild(new Graphics().ellipse(0, 0, width * .28, Math.min(3, width * .055)).fill({color:0x332b20,alpha:.24}));
+        const s = stillSprite({...def, anchor:[.5,.98]}, HEX_W, size);
         // Generic stills alternate sides; the climate's paintings stay as painted (their light).
         if (!natureDef && (c.col + c.row) % 2 === 1) s.scale.x *= -1;
         root.addChild(s);
@@ -1563,7 +1570,7 @@ export class BattleSceneController implements SceneController {
     root.addChild(base);
     const aura = new StatusAura(RB, S);
     root.addChild(aura.back);
-    const figure = new SpriteFigure({ set: creatureSprites(v.creatureId), hexWidth: HEX_W, accent: colorOf(v.accent) });
+    const figure = new SpriteFigure({ set: creatureSprites(v.creatureId), phaseKey: v.id, hexWidth: HEX_W, accent: colorOf(v.accent) });
     figure.mirror = v.facing === -1;
     // A shooter's missile and impact load with the stack, so its first shot never waits for them.
     this.preloadMissile(profileForCreature(spriteManifest().projectileProfiles, v.creatureId)?.profile);
@@ -2125,7 +2132,7 @@ export class BattleSceneController implements SceneController {
       frames,
       delivered,
     });
-    const delay = strip && f.status === 'ready' ? releaseDelayMs({ frames, fps: strip.fps }, minMs, socket.frame) : LEGACY_RELEASE_MS;
+    const delay = strip && f.status === 'ready' ? f.frameDelay(anim, socket.frame, minMs) : LEGACY_RELEASE_MS;
     return { delay, socket };
   }
 
@@ -2456,7 +2463,7 @@ export class BattleSceneController implements SceneController {
       } else if (ev.kind === 'BattleAbilityUsed') {
         // The user and its target keep their old look (marks, auras) until the ability lands.
         lockOnce(this.stacks.get(ev.stackId));
-        lockOnce(this.stacks.get(ev.targetId));
+        for(const id of ev.targetIds??[ev.targetId]) lockOnce(this.stacks.get(id));
       }
     }
     if (structures) {
@@ -2542,9 +2549,18 @@ export class BattleSceneController implements SceneController {
     const reach = (own ? 0.16 : 0.34) * HEX_W;
     const lunge = name === 'attack' ? reach : -0.06 * HEX_W;
     const strip = f.playOnce(name, this.tweens, { minMs: 560 * k });
-    await this.tweens.tween(200 * k, (t) => (f.pose.x = dir * lunge * t));
-    await this.tweens.tween(140 * k, () => undefined, easeOut);
-    await this.tweens.tween(220 * k, (t) => (f.pose.x = dir * lunge * (1 - t)));
+    if (name === 'attack' && own) {
+      const contact = f.frameDelay('attack', f.contactFrame(), 560*k);
+      const duration = f.duration('attack', 560*k);
+      await this.tweens.tween(contact*.45, t => f.pose.x = -dir*lunge*.18*t);
+      await this.tweens.tween(contact*.55, t => f.pose.x = dir*lunge*(-.18+1.18*t), easeOut);
+      await this.tweens.wait(45*k);
+      await this.tweens.tween(Math.max(0,duration-contact-45*k), t => f.pose.x = dir*lunge*(1-t));
+    } else {
+      await this.tweens.tween(200 * k, (t) => (f.pose.x = dir * lunge * t));
+      await this.tweens.tween(140 * k, () => undefined, easeOut);
+      await this.tweens.tween(220 * k, (t) => (f.pose.x = dir * lunge * (1 - t)));
+    }
     await strip;
     f.pose.x = 0;
   }
@@ -2686,21 +2702,27 @@ export class BattleSceneController implements SceneController {
           if (f.has('landing')) await f.playOnce('landing', this.tweens);
         } else {
           f.setLoop('move');
+          f.beginTravel();
+          let travelled = 0;
           const bob = !f.has('move');
-          for (const c of ev.path) {
+          for (const [stepIndex, c] of ev.path.entries()) {
             const to = this.groupPosition(c, v.footprint, v.facing);
             const f0 = { ...from };
             await this.tweens.tween(
               170,
               (t) => {
-                e.root.position.set(f0.x + (to.x - f0.x) * t, f0.y + (to.y - f0.y) * t);
+                const progress = segmentProgress(t, stepIndex, ev.path.length);
+                e.root.position.set(f0.x + (to.x - f0.x) * progress, f0.y + (to.y - f0.y) * progress);
+                f.travelTo(travelled + Math.hypot(to.x-f0.x,to.y-f0.y)*progress);
                 e.root.zIndex = e.root.y;
                 if (bob) f.pose.y = -Math.abs(Math.sin(t * Math.PI)) * RB * 0.12;
               },
               linear,
             );
+            travelled += Math.hypot(to.x-f0.x,to.y-f0.y);
             from = to;
           }
+          f.endTravel();
           f.pose.y = 0;
         }
         e.shownAnchor = last;
@@ -2768,11 +2790,11 @@ export class BattleSceneController implements SceneController {
           // A melee blow (a shooter's too) flies nothing.
           this.cue('swing');
           const k = retaliation ? 0.85 : 1;
-          const contact = a.figure.set?.events?.attackContactFrame;
+          const contact = a.figure.contactFrame();
           const attackStrip = a.figure.set?.animations['attack'];
           if (contact !== undefined && attackStrip && a.figure.status === 'ready') {
             // A delivered set lands its blow at its contact frame, once, while the strike plays on (cross-rail lunges included).
-            const delay = releaseDelayMs({ frames: stripFrameCount(attackStrip), fps: attackStrip.fps }, 560 * k, contact);
+            const delay = a.figure.frameDelay('attack', contact, 560 * k);
             const landing = (async () => {
               await this.tweens.wait(delay);
               if (this.disposed) return;
@@ -3145,15 +3167,21 @@ export class BattleSceneController implements SceneController {
       : Promise.resolve();
     const land = (async () => {
       await this.tweens.wait(300);
-      if (fx.look) {
-        void this.painter.impact(fx.look, this.targetOf(t));
+      const recipe=dragonAbilityRecipe(ev.abilityId);
+      await Promise.all((ev.targetIds??[ev.targetId]).map(async id=>{
+        const victim=this.stacks.get(id)??t;
+      if(recipe) {
+        await playPaintedMagic(recipe,this.targetOf(victim),this.fx,this.tweens,RB);
+      } else if (fx.look) {
+        void this.painter.impact(fx.look, this.targetOf(victim));
         if (!fx.hostile) this.cue('bless', undefined, fx.look.sound);
-      } else if (fx.hostile) void this.painter.flash(this.chestOf(t), 0xb48cff, 0.8);
-      else void this.effect('ward', { x: t.root.x, y: t.root.y }, { flash: 0x9fe8ff });
-      const head = this.headOf(t);
+      } else if (fx.hostile) void this.painter.flash(this.chestOf(victim), 0xb48cff, 0.8);
+      else void this.effect('ward', { x: victim.root.x, y: victim.root.y }, { flash: 0x9fe8ff });
+      const head = this.headOf(victim);
       void this.floatText(other ? head : { x: head.x, y: head.y - RB * 0.62 }, fx.effect, fx.hostile ? '#d7b0ff' : '#9fe8ff', speed);
       // Its marks (and aura) show once it lands.
-      this.applyAura(t);
+      this.applyAura(victim);
+      }));
     })();
     await Promise.all([pose, step, land]);
     f.mirror = u.view.facing === -1;
@@ -3197,6 +3225,7 @@ export class BattleSceneController implements SceneController {
     const id = `fx.spell.${ev.spellId}`;
     this.logFx(id);
     this.painter.preload(id);
+    await this.painter.ready(look);
     if (ev.cells?.length) {
       const from = this.casterPoint(ev.side);
       await this.painter.cast(look, from, `${id}.cast`);
@@ -3221,7 +3250,7 @@ export class BattleSceneController implements SceneController {
       await this.tweens.wait(i * gap);
       if (look.travel === 'sky') await this.painter.travel(look, from, this.chestOf(v), `${id}.travel`);
       const hit = this.painter.impact(look, this.targetOf(v), `${id}.impact`);
-      await this.tweens.wait(200);
+      await this.tweens.wait(this.painter.impactContactMs(look, 200));
       let text: string | null = null;
       let color = '#f5e4b7';
       let icon: string | undefined;
@@ -3253,6 +3282,7 @@ export class BattleSceneController implements SceneController {
     const id = `fx.spell.${ev.spellId}`;
     this.logFx(id);
     this.painter.preload(id);
+    await this.painter.ready(look);
     const at = this.enginePoint();
     const w = this.engineVisibleWidth();
     const engineTarget: FxTarget = { x: at.x, y: at.y, height: w * 0.5, width: 2, facing: this.engineFacing() };
@@ -3272,7 +3302,7 @@ export class BattleSceneController implements SceneController {
         (async () => {
           await this.tweens.wait((i + 1) * 70);
           const hit = this.painter.impact(look, this.targetOf(v), `${id}.impact`);
-          await this.tweens.wait(200);
+          await this.tweens.wait(this.painter.impactContactMs(look, 200));
           this.revealBadge(v);
           if (per !== null) void this.floatText(this.headOf(v), `−${per}`, '#9cc4ff', speed, SPELL_HURT_ICON[look.school]);
           await this.sufferBlow(v, !v.view.alive);
@@ -3290,25 +3320,27 @@ export class BattleSceneController implements SceneController {
     this.pendingHeal = null;
     if (!m) return;
     const look = m.look;
+    const damage = ev.damage ?? m.damage;
     const id = `fx.miracle.${ev.interventionId}`;
     this.logFx(id);
     this.painter.preload(id);
+    await this.painter.ready(look);
     const victims = this.miracleVictims(m, ev.targetStackId);
     const dir = m.side === 'attacker' ? 1 : -1;
     const healed = heal && heal.side === m.side ? heal.healed : 0;
     const screen = this.painter.screenFx(look.screen, look.school, this.screenDir(dir), `${id}.screen`);
     await this.tweens.wait(look.screen === 'none' ? 0 : 280);
-    this.cue(healed > 0 ? 'heal' : m.damage ? 'spell' : 'bless', undefined, look.sound);
+    this.cue(healed > 0 ? 'heal' : damage ? 'spell' : 'bless', undefined, look.sound);
     const react = async (v: StackEntry, i: number) => {
       await this.tweens.wait(i * 110);
       if (look.travel === 'sky') await this.painter.travel(look, { x: v.root.x, y: v.root.y - RB * 8 }, this.chestOf(v), `${id}.travel`);
       const hit = this.painter.impact(look, this.targetOf(v), `${id}.impact`);
-      await this.tweens.wait(220);
+      await this.tweens.wait(this.painter.impactContactMs(look, 220));
       // The miracle's own icon (Brief 13) stands before its word; the count changes as it lands.
       const icon = `icon.intervention.${ev.interventionId}`;
       this.revealBadge(v);
-      if (m.damage) {
-        void this.floatText(this.headOf(v), `−${m.damage}`, '#ff8a70', speed, icon);
+      if (damage) {
+        void this.floatText(this.headOf(v), `−${damage}`, '#ff8a70', speed, icon);
         await this.sufferBlow(v, !v.view.alive);
       } else if (i === 0) {
         const text = healed > 0 ? `+${healed} HP` : m.label;
@@ -3480,8 +3512,8 @@ export class BattleSceneController implements SceneController {
     return { time: this.time, inFlight: this.missiles.size, effects: this.fx.destroyed ? 0 : this.fx.children.length, shots: this.shotLog.map((r) => ({ ...r, impactFrames: [...r.impactFrames], cues: [...r.cues] })) };
   }
 
-  stackDebug(): Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; marks: string[]; deaths: number; hits: number; label: string; labelAt: number; scale: number; lift: number; hover: number }> {
-    const out: Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; marks: string[]; deaths: number; hits: number; label: string; labelAt: number; scale: number; lift: number; hover: number }> = {};
+  stackDebug(): Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; marks: string[]; deaths: number; hits: number; label: string; labelAt: number; scale: number; lift: number; hover: number; motion: ReturnType<SpriteFigure['motionDebug']> }> {
+    const out: Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; marks: string[]; deaths: number; hits: number; label: string; labelAt: number; scale: number; lift: number; hover: number; motion: ReturnType<SpriteFigure['motionDebug']> }> = {};
     for (const [id, e] of this.stacks) {
       const at = this.toPage(e.root.position);
       out[id] = {
@@ -3491,6 +3523,7 @@ export class BattleSceneController implements SceneController {
         // As seen on screen (facing left), also on a mirrored board.
         mirrored: e.figure.pose.scale.x < 0 !== this.mirrored,
         drawn: e.figure.current?.drawn ?? null,
+        motion: e.figure.motionDebug(),
         status: e.figure.set?.status ?? null,
         sprite: e.figure.status,
         down: e.down,
@@ -3545,7 +3578,7 @@ export class BattleSceneController implements SceneController {
       e.badge.zIndex = e.root.y;
       e.badge.renderable = e.root.visible;
       if (e.down) continue;
-      if (motion || e.locked > 0) e.figure.tick(dt);
+      e.figure.tick(dt, this.tweens.frozen ? 0 : e.locked > 0 ? (this.tweens.speed > 0 ? 1 / this.tweens.speed : 0) : motion && !this.calm ? 1 : 0, motion && !this.calm && !this.tweens.frozen);
       if (e.locked === 0 && e.auraDelay > 0 && --e.auraDelay === 0) this.applyAura(e);
       if (e.shownStatuses.length > 0) {
         this.refreshAura(e);

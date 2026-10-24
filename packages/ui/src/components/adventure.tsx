@@ -327,12 +327,14 @@ export function CreatureStage({
   }
   if (!strip) return <div className={`recruit-stage ak-creature-stage ${className}`} role="img" aria-label={name} />;
   const style = {
+    ['--idle-animation' as string]: strip.frames === 6 ? 'recruit-idle-six' : 'recruit-idle',
+    ['--idle-phase' as string]: `-${(Array.from(creatureId).reduce((s,c)=>s+c.charCodeAt(0),0)%97)/30}s`,
     ['--fw' as string]: strip.frameWidth,
     ['--fh' as string]: strip.frameHeight,
     ['--frames' as string]: strip.frames,
     ['--ax' as string]: strip.anchor[0],
     ['--ay' as string]: strip.anchor[1],
-    ['--dur' as string]: `${(strip.frames / Math.max(1, strip.fps)).toFixed(2)}s`,
+    ['--dur' as string]: `${(strip.frames / Math.max(1, strip.fps) / .32).toFixed(2)}s`,
     backgroundImage: `url("${strip.url}")`,
   } as CSSProperties;
   return (

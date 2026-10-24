@@ -170,7 +170,7 @@ export type GameEventPayload =
     }
   /** `targetEngineId`: cast at the siege engine (`targetId` then repeats the engine's ID, not a stack). */
   | { kind: 'BattleSpellCast'; side: BattleSideId; spellId: SpellId; targetId: BattleStackId; damage: number; healed: number; targetEngineId?: string; cells?: BattleCell[] }
-  | { kind: 'BattleAbilityUsed'; stackId: BattleStackId; abilityId: string; targetId: BattleStackId; removedStatus?: string }
+  | { kind: 'BattleAbilityUsed'; stackId: BattleStackId; abilityId: string; targetId: BattleStackId; targetIds?: readonly BattleStackId[]; removedStatus?: string }
   /** Campaign v2: an announced deadline started (its deadline day is saved). */
   | { kind: 'TimerStarted'; timerId: string; label: string; deadlineDay: number }
   | { kind: 'TimerResolved'; timerId: string; met: boolean }
@@ -232,7 +232,7 @@ export type GameEventPayload =
   | { kind: 'AttributeGained'; heroId: HeroId; attribute: HeroAttribute; amount: number }
   | { kind: 'WeeklyEventStarted'; week: number; eventId: string | null }
   | { kind: 'DivineGiftReceived'; playerId: PlayerId; townId: TownId; giftId: string; heroId: HeroId | null; favor: number; artifactId: ArtifactId | null; xp: number; recruits: number }
-  | { kind: 'InterventionInvoked'; playerId: PlayerId; interventionId: string; targetTownId: TownId | null; targetStackId: BattleStackId | null }
+  | { kind: 'InterventionInvoked'; damage?: number; playerId: PlayerId; interventionId: string; targetTownId: TownId | null; targetStackId: BattleStackId | null }
   | { kind: 'BattleStacksHealed'; side: BattleSideId; healed: number }
   | { kind: 'StoryScene'; sceneId: string }
   | { kind: 'RelicHeld'; siteId: SiteId; playerId: PlayerId; days: number; needed: number }

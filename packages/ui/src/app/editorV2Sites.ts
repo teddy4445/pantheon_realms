@@ -57,8 +57,11 @@ export function neutralPalette(catalog: ContentCatalog): NeutralPaletteEntry[] {
 }
 
 /** The kind (and picture variant) of the compiled site, enough to pick the adventure map's picture. */
-function compiledLook(s: Pick<CustomSite, 'kind' | 'creatureId' | 'startsOpen'>, open?: boolean): { def: Pick<SiteDefinition, 'kind' | 'art'>; state: { open: boolean } | null; archetype: string } | null {
+function compiledLook(s: Pick<CustomSite, 'kind' | 'creatureId' | 'startsOpen' | 'pantheon'>, open?: boolean): { def: Pick<SiteDefinition, 'kind' | 'art'>; state: { open: boolean } | null; archetype: string } | null {
   switch (s.kind) {
+    case 'restoration_shrine':
+    case 'restoration_temple':
+      return { def: { kind: { type: 'map_event', restoration: { pantheonId: s.pantheon ?? 'greek', size: s.kind === 'restoration_shrine' ? 'small' : 'large' }, title: '', text: '', options: [] } }, state: null, archetype: 'map_event' };
     case 'neutral_dwelling':
       return { def: { kind: { type: 'creature_camp', creatureId: s.creatureId ?? '', weeklyGrowth: 0, initialStock: 0, restock: 'weekly' }, art: `neutral_dwelling.${s.creatureId ?? ''}` }, state: null, archetype: 'camp' };
     case 'sluice': {
@@ -78,14 +81,14 @@ function compiledLook(s: Pick<CustomSite, 'kind' | 'creatureId' | 'startsOpen'>,
  * The map picture of a campaign-expansion site as the adventure map draws it (a
  * sluice in its start state, or `open` when given); null for other kinds.
  */
-export function v2SiteSprite(s: Pick<CustomSite, 'kind' | 'creatureId' | 'startsOpen'>, open?: boolean): StaticSpriteDefinition | null {
+export function v2SiteSprite(s: Pick<CustomSite, 'kind' | 'creatureId' | 'startsOpen' | 'pantheon'>, open?: boolean): StaticSpriteDefinition | null {
   const look = compiledLook(s, open);
   if (!look) return null;
   return pickSiteSprite(siteSpriteCandidates(look.def, look.state), look.archetype).def;
 }
 
 /** URL of that picture (palette buttons and the site panel). */
-export function v2SiteSpriteUrl(s: Pick<CustomSite, 'kind' | 'creatureId' | 'startsOpen'>, open?: boolean): string | null {
+export function v2SiteSpriteUrl(s: Pick<CustomSite, 'kind' | 'creatureId' | 'startsOpen' | 'pantheon'>, open?: boolean): string | null {
   const def = v2SiteSprite(s, open);
   return def ? spriteUrl(def.file) : null;
 }

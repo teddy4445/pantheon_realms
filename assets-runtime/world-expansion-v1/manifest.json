@@ -1,0 +1,439 @@
+{
+  "sites": {
+    "map.site.temple.celtic.large.built": {
+      "file": "world-expansion-v1/temple-celtic-large-built.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.celtic.large.ruined": {
+      "file": "world-expansion-v1/temple-celtic-large-ruined.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.celtic.small.built": {
+      "file": "world-expansion-v1/temple-celtic-small-built.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.celtic.small.ruined": {
+      "file": "world-expansion-v1/temple-celtic-small-ruined.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.egyptian.large.built": {
+      "file": "world-expansion-v1/temple-egyptian-large-built.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.egyptian.large.ruined": {
+      "file": "world-expansion-v1/temple-egyptian-large-ruined.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.egyptian.small.built": {
+      "file": "world-expansion-v1/temple-egyptian-small-built.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.egyptian.small.ruined": {
+      "file": "world-expansion-v1/temple-egyptian-small-ruined.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.greek.large.built": {
+      "file": "world-expansion-v1/temple-greek-large-built.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.greek.large.ruined": {
+      "file": "world-expansion-v1/temple-greek-large-ruined.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.greek.small.built": {
+      "file": "world-expansion-v1/temple-greek-small-built.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.greek.small.ruined": {
+      "file": "world-expansion-v1/temple-greek-small-ruined.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.japanese.large.built": {
+      "file": "world-expansion-v1/temple-japanese-large-built.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.japanese.large.ruined": {
+      "file": "world-expansion-v1/temple-japanese-large-ruined.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.japanese.small.built": {
+      "file": "world-expansion-v1/temple-japanese-small-built.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.japanese.small.ruined": {
+      "file": "world-expansion-v1/temple-japanese-small-ruined.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.mesoamerican.large.built": {
+      "file": "world-expansion-v1/temple-mesoamerican-large-built.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.mesoamerican.large.ruined": {
+      "file": "world-expansion-v1/temple-mesoamerican-large-ruined.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.mesoamerican.small.built": {
+      "file": "world-expansion-v1/temple-mesoamerican-small-built.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.mesoamerican.small.ruined": {
+      "file": "world-expansion-v1/temple-mesoamerican-small-ruined.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.norse.large.built": {
+      "file": "world-expansion-v1/temple-norse-large-built.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.norse.large.ruined": {
+      "file": "world-expansion-v1/temple-norse-large-ruined.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.norse.small.built": {
+      "file": "world-expansion-v1/temple-norse-small-built.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "map.site.temple.norse.small.ruined": {
+      "file": "world-expansion-v1/temple-norse-small-ruined.webp",
+      "width": 512,
+      "height": 512,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    }
+  },
+  "decor": {
+    "scenery.deadwood-ferns": {
+      "file": "world-expansion-v1/deadwood-ferns.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "scenery.flowers-meadow": {
+      "file": "world-expansion-v1/flowers-meadow.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "scenery.mountain-alpine": {
+      "file": "world-expansion-v1/mountain-alpine.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 250,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "scenery.mountain-basalt": {
+      "file": "world-expansion-v1/mountain-basalt.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 250,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "scenery.mountain-sandstone": {
+      "file": "world-expansion-v1/mountain-sandstone.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 250,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "scenery.rocks-granite": {
+      "file": "world-expansion-v1/rocks-granite.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "scenery.rocks-moss": {
+      "file": "world-expansion-v1/rocks-moss.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "scenery.rocks-obsidian": {
+      "file": "world-expansion-v1/rocks-obsidian.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "scenery.tree-blossom": {
+      "file": "world-expansion-v1/tree-blossom.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "scenery.tree-cedar": {
+      "file": "world-expansion-v1/tree-cedar.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "scenery.tree-oak": {
+      "file": "world-expansion-v1/tree-oak.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    },
+    "scenery.tree-palm": {
+      "file": "world-expansion-v1/tree-palm.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.91
+      ],
+      "status": "final",
+      "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+    }
+  },
+  "provenance": "Built-in ImageGen, October 2026. Prompts and catalog in docs/restoration-temples-v1."
+}

@@ -1,0 +1,30 @@
+{
+  "cover.webp": {
+    "source": "../pantheon_realms_website/images/new/hero-six-realms.png",
+    "kind": "promotional artwork"
+  },
+  "logo.webp": {
+    "source": "../pantheon_realms_website/images/full-logo.webp",
+    "kind": "promotional artwork"
+  },
+  "adventure.webp": {
+    "source": "docs/world-polish-v2/in-game/greek-map.png",
+    "kind": "in-game screenshot"
+  },
+  "city.webp": {
+    "source": "docs/greek-city-h3-prototype-v1/in-game/stage-4.png",
+    "kind": "in-game screenshot"
+  },
+  "dragons.webp": {
+    "source": "docs/neutral-dragons-integration-v1/battle-dragons.png",
+    "kind": "in-game screenshot"
+  },
+  "temple.webp": {
+    "source": "docs/world-polish-v2/in-game/egyptian-temple.png",
+    "kind": "in-game screenshot"
+  },
+  "battle-setup.webp": {
+    "source": "docs/single-battle-icons-v1/land-setup.png",
+    "kind": "in-game screenshot"
+  }
+}

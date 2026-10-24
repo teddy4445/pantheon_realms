@@ -1,0 +1,104 @@
+
+> pantheon-realms@1.0.0 test
+> vitest run --reporter=dot
+
+
+ RUN  v5.0.2 C:/Users/Teddy Lazebnik/Desktop/pantheon_realms
+
+stderr | packages/audio/test/audio.test.ts > AudioDirector > reports files that fail to decode and stays silent for them
+[audio] audio/music_menu.ogg could not be loaded or decoded — staying silent for it (cannot decode)
+
+stderr | packages/audio/test/audio.test.ts > AudioDirector > streams a music playlist track after track, crossfading near each end and wrapping around
+[audio] audio/music_battle.ogg could not be loaded or decoded — staying silent for it (Failed to parse URL from /audio/music_battle.ogg)
+
+stderr | packages/audio/test/audio.test.ts > AudioDirector > skips a playlist track that fails, goes silent when every track fails, and retries a refused start on unlock
+[audio] music/a.ogg could not be streamed — skipping to the next track
+[audio] music/b.ogg could not be streamed — skipping to the next track
+
+····················································································································································································································································································································································································x···················································x······x·······················································································································································································x································································································x···························································stdout | packages/campaign/test/winterOath.test.ts > The Winter Oath — headless campaign journey > plays all seven missions with carryover, to either ending
+M01 before rune: day 2, L1 290xp, wallet {"gold":4140,"wood":15,"stone":16,"crystal":2,"favor":0} — norse_draugr×5, norse_deathless_draugr×27
+M02 before rune: day 3, L2 1648xp, wallet {"gold":8520,"wood":15,"stone":20,"crystal":5,"favor":10} — norse_draugr×24, norse_deathless_draugr×10, norse_frost_wolf×9
+M03 before rune: day 6, L4 3627xp, wallet {"gold":9110,"wood":5,"stone":10,"crystal":3,"favor":15} — norse_draugr×20, norse_deathless_draugr×17, norse_frost_wolf×3, norse_battle_valkyrie×2
+M04 before well: day 4, L6 6311xp, wallet {"gold":12040,"wood":20,"stone":19,"crystal":8,"favor":19} — norse_deathless_draugr×36, norse_frost_troll×4, norse_battle_valkyrie×3, norse_lindworm×3
+M05 Hvitstrand taken on day 5; Ulfhild active at 5,9 with norse_deathless_draugr×50, norse_fenrir_wolf×23, norse_valkyrie×5, norse_frost_troll×2, norse_battle_valkyrie×4
+M05 before stone: day 5, L7 8448xp, wallet {"gold":19800,"wood":30,"stone":35,"crystal":14,"favor":3} — norse_deathless_draugr×40, norse_fenrir_wolf×14, norse_ancient_frost_troll×5, norse_battle_valkyrie×4, norse_lindworm×2
+M06 before horn: day 5, L8 11700xp, wallet {"gold":25000,"wood":20,"stone":25,"crystal":11,"favor":33} — norse_deathless_draugr×44, norse_battle_valkyrie×2, norse_storm_lindworm×3, norse_jotunn×2
+M07 entry: Arms of the Einherjar pieces worn 4
+M07 before the Jarl: day 2, L9 12680xp, wallet {"gold":23150,"wood":30,"stone":29,"crystal":18,"favor":27} — norse_deathless_draugr×48, norse_fenrir_wolf×17, norse_ancient_frost_troll×8, norse_battle_valkyrie×8, norse_storm_lindworm×4, norse_jotunn×2
+M07 before seal: day 3, L9 14271xp, wallet {"gold":27900,"wood":30,"stone":29,"crystal":18,"favor":29} — norse_deathless_draugr×46, norse_ancient_frost_troll×1, norse_battle_valkyrie×8, norse_storm_lindworm×4, norse_jotunn×2
+
+······x·x···stdout | packages/mapgen/test/navalTemplates.test.ts > naval templates: seed sweep (covering matrix) > shattered_crown for 2 empires: 12 seeds through victory × treasure × wealth × guards all pass
+[naval sweep] shattered_crown 2p: 12/12 passed, reference-shape fallback 0, rejected candidates per map 1.25 (worst 5), 491 ms per map
+
+·······················x········stdout | packages/campaign/test/arcCampaigns.test.ts > The Silent Oracle — headless campaign journey > plays all seven missions with carryover
+silent_oracle
+M01: day 2, L1 350xp — veteran_hoplite×28, peltast×5
+M02: day 3, L2 1963xp — hoplite×18, peltast×16
+M03: day 6, L4 4067xp — hoplite×20, veteran_hoplite×17, peltast×8, veteran_peltast×4, companion_cavalry×4
+M04: day 4, L6 6946xp — veteran_hoplite×29, veteran_peltast×10, companion_cavalry×3, temple_adept×3
+M05 Pyrgos taken on day 5; rival hero active
+M05: day 5, L7 8549xp — veteran_hoplite×40, veteran_peltast×14, windcrest_griffin×4, companion_cavalry×4, temple_adept×2
+M06: day 4, L8 11804xp — veteran_hoplite×43, veteran_peltast×16, companion_cavalry×6, temple_seer×3, minotaur×2
+M07 before the boss: day 2, L9 12664xp — veteran_hoplite×48, veteran_peltast×18, windcrest_griffin×7, companion_cavalry×8, temple_seer×4, minotaur×2
+M07 before the seal: day 3, L9 14281xp — veteran_hoplite×45, veteran_peltast×13, companion_cavalry×7, temple_seer×2, minotaur×2
+
+········································stdout | packages/mapgen/test/navalTemplates.test.ts > naval templates: seed sweep (covering matrix) > shattered_crown for 3 empires: 12 seeds through victory × treasure × wealth × guards all pass
+[naval sweep] shattered_crown 3p: 12/12 passed, reference-shape fallback 0, rejected candidates per map 1.25 (worst 5), 1197 ms per map
+
+··························stdout | packages/campaign/test/arcCampaigns.test.ts > The Twelfth Hour — headless campaign journey > plays all seven missions with carryover
+twelfth_hour
+M01: day 2, L1 362xp — egyptian_solar_scarab×25, egyptian_jackal_guardian×7, egyptian_sacred_scarab×4
+M02: day 3, L2 1716xp — egyptian_sacred_scarab×24, egyptian_solar_scarab×12, egyptian_jackal_guardian×12
+M03: day 6, L4 3804xp — egyptian_sacred_scarab×18, egyptian_solar_scarab×18, egyptian_jackal_guardian×8, egyptian_anubian_warden×4, egyptian_great_sphinx×2
+M04: day 5, L6 6536xp — egyptian_solar_scarab×36, egyptian_anubian_warden×12, egyptian_ushabti×3, egyptian_great_sphinx×3, egyptian_crocodile_beast×3
+M05 Per-Wadjet taken on day 5; rival hero active
+M05: day 5, L7 8495xp — egyptian_solar_scarab×40, egyptian_anubian_warden×10, egyptian_royal_ushabti×5, egyptian_great_sphinx×4, egyptian_crocodile_beast×3
+M06: day 5, L8 11589xp — egyptian_solar_scarab×44, egyptian_anubian_warden×16, egyptian_royal_ushabti×5, egyptian_great_sphinx×6, egyptian_sobek_warbeast×3, egyptian_bennu×1
+M07 before the boss: day 2, L9 12625xp — egyptian_solar_scarab×48, egyptian_anubian_warden×18, egyptian_royal_ushabti×8, egyptian_great_sphinx×8, egyptian_sobek_warbeast×4, egyptian_bennu×2
+M07 before the seal: day 4, L9 14109xp — egyptian_solar_scarab×48, egyptian_anubian_warden×11, egyptian_royal_ushabti×7, egyptian_great_sphinx×8, egyptian_sobek_warbeast×4, egyptian_bennu×2
+
+········stdout | packages/campaign/test/arcCampaigns.test.ts > The Lantern Road — headless campaign journey > plays all seven missions with carryover
+lantern_road
+M01: day 2, L1 280xp — japanese_nine_tailed_kitsune×28, japanese_kappa×4
+M02: day 3, L2 1634xp — japanese_kitsune×20, japanese_nine_tailed_kitsune×3, japanese_kappa×15
+M03: day 6, L4 3598xp — japanese_kitsune×20, japanese_nine_tailed_kitsune×18, japanese_kappa×8, japanese_river_elder_kappa×3, japanese_oni_warlord×2
+M04: day 4, L6 6352xp — japanese_nine_tailed_kitsune×35, japanese_river_elder_kappa×10, japanese_oni_warlord×3, japanese_jorogumo×3
+M05 Iron Castle taken on day 5; rival hero active
+M05: day 5, L7 8503xp — japanese_nine_tailed_kitsune×40, japanese_river_elder_kappa×14, japanese_great_tengu×5, japanese_oni_warlord×3, japanese_jorogumo×3
+M06: day 6, L8 11508xp — japanese_nine_tailed_kitsune×42, japanese_river_elder_kappa×7, japanese_oni_warlord×2, japanese_queen_jorogumo×3, japanese_kirin×2
+M07 before the boss: day 2, L9 12595xp — japanese_nine_tailed_kitsune×48, japanese_river_elder_kappa×18, japanese_great_tengu×8, japanese_oni_warlord×8, japanese_queen_jorogumo×4, japanese_kirin×2
+M07 before the seal: day 4, L9 14043xp — japanese_nine_tailed_kitsune×40, japanese_river_elder_kappa×9, japanese_oni_warlord×5, japanese_queen_jorogumo×3, japanese_kirin×2
+
+····x·················stdout | packages/mapgen/test/navalTemplates.test.ts > naval templates: seed sweep (covering matrix) > shattered_crown for 6 empires: 12 seeds through victory × treasure × wealth × guards all pass
+[naval sweep] shattered_crown 6p: 12/12 passed, reference-shape fallback 0, rejected candidates per map 1.25 (worst 3), 4203 ms per map
+
+·································································x······stdout | packages/mapgen/test/navalTemplates.test.ts > naval templates: seed sweep (covering matrix) > serpent_straits for 2 empires: 12 seeds through victory × treasure × wealth × guards all pass
+[naval sweep] serpent_straits 2p: 12/12 passed, reference-shape fallback 0, rejected candidates per map 0.42 (worst 2), 689 ms per map
+
+···········stdout | packages/campaign/test/arcCampaigns.test.ts > The Silver Branch — headless campaign journey > plays all seven missions with carryover
+silver_branch
+M01: day 2, L1 280xp — celtic_elder_pooka×27, celtic_cu_sith×5, celtic_pooka×4
+M02: day 2, L2 1634xp — celtic_pooka×24, celtic_elder_pooka×12, celtic_cu_sith×10
+M03: day 6, L4 3598xp — celtic_pooka×20, celtic_elder_pooka×18, celtic_cu_sith×5, celtic_great_cu_sith×4, celtic_battle_banshee×2
+M04: day 5, L6 6364xp — celtic_elder_pooka×36, celtic_great_cu_sith×8, celtic_kelpie×2, celtic_battle_banshee×3, celtic_selkie×3
+M05 Dún Fiachra taken on day 5; rival hero active
+M05: day 5, L7 8425xp — celtic_elder_pooka×40, celtic_great_cu_sith×14, celtic_dread_kelpie×5, celtic_battle_banshee×3, celtic_selkie×3
+M06: day 6, L8 11534xp — celtic_elder_pooka×40, celtic_great_cu_sith×1, celtic_battle_banshee×6, celtic_storm_selkie×3, celtic_horned_stag_spirit×2
+M07 before the boss: day 2, L9 12607xp — celtic_elder_pooka×48, celtic_great_cu_sith×18, celtic_dread_kelpie×8, celtic_battle_banshee×8, celtic_storm_selkie×4, celtic_horned_stag_spirit×2
+M07 before the seal: day 4, L9 14077xp — celtic_elder_pooka×48, celtic_great_cu_sith×1, celtic_dread_kelpie×5, celtic_battle_banshee×8, celtic_storm_selkie×4, celtic_horned_stag_spirit×2
+
+·········x··················stdout | packages/campaign/test/arcCampaigns.test.ts > The New Fire — headless campaign journey > plays all seven missions with carryover
+new_fire
+M01: day 2, L1 280xp — mesoamerican_celestial_feathered_serpent×29, mesoamerican_jaguar_spirit×4, mesoamerican_feathered_serpent×4
+M02: day 3, L2 1616xp — mesoamerican_feathered_serpent×24, mesoamerican_celestial_feathered_serpent×10, mesoamerican_jaguar_spirit×10
+M03: day 6, L4 3580xp — mesoamerican_feathered_serpent×20, mesoamerican_celestial_feathered_serpent×17, mesoamerican_jaguar_spirit×8, mesoamerican_sun_jaguar×1, mesoamerican_temple_crocodile×2
+M04: day 4, L6 6320xp — mesoamerican_celestial_feathered_serpent×35, mesoamerican_sun_jaguar×3, mesoamerican_eagle_warrior_spirit×4, mesoamerican_temple_crocodile×3, mesoamerican_camazotz×3
+M05 Itzcalli taken on day 3; rival hero active
+M05: day 3, L7 8438xp — mesoamerican_celestial_feathered_serpent×40, mesoamerican_sun_jaguar×14, mesoamerican_solar_eagle_warrior×4, mesoamerican_temple_crocodile×4, mesoamerican_camazotz×3
+M06: day 5, L8 11614xp — mesoamerican_celestial_feathered_serpent×41, mesoamerican_solar_eagle_warrior×6, mesoamerican_temple_crocodile×3, mesoamerican_xiuhcoatl×2
+M07 before the boss: day 2, L9 12637xp — mesoamerican_celestial_feathered_serpent×48, mesoamerican_sun_jaguar×18, mesoamerican_solar_eagle_warrior×8, mesoamerican_temple_crocodile×8, mesoamerican_blood_moon_camazotz×4, mesoamerican_xiuhcoatl×2
+M07 before the seal: day 3, L9 14119xp — mesoamerican_celestial_feathered_serpent×40, mesoamerican_sun_jaguar×1, mesoamerican_solar_eagle_warrior×8, mesoamerican_temple_crocodile×8, mesoamerican_blood_moon_camazotz×1, mesoamerican_xiuhcoatl×2
+
+································································stdout | packages/mapgen/test/navalTemplates.test.ts > naval templates: seed sweep (covering matrix) > unowned towns (own / other / both) and neutral hiring sites, 4 seeds per setting and seat count
+[naval sweep] unowned towns and neutral sites: 60/60 passed
+

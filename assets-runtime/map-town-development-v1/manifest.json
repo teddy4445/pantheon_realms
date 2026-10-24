@@ -1,0 +1,292 @@
+{
+  "sites": {
+    "map.site.town.greek.l1": {
+      "file": "map-town-development-v1/greek.l1.webp",
+      "width": 240,
+      "height": 224,
+      "anchor": [
+        0.5,
+        0.875
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "provenance": "Built-in imagegen; transparent source in docs/map-town-development-v1. Normalized for map placement."
+    },
+    "map.site.town.greek.l2": {
+      "file": "map-town-development-v1/greek.l2.webp",
+      "width": 240,
+      "height": 224,
+      "anchor": [
+        0.5,
+        0.875
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "provenance": "Built-in imagegen; transparent source in docs/map-town-development-v1. Normalized for map placement."
+    },
+    "map.site.town.greek.l3": {
+      "file": "map-town-development-v1/greek.l3.webp",
+      "width": 240,
+      "height": 224,
+      "anchor": [
+        0.5,
+        0.875
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "provenance": "Built-in imagegen; transparent source in docs/map-town-development-v1. Normalized for map placement."
+    },
+    "map.site.town.greek.l4": {
+      "file": "sprites/final/sites/map.site.town.greek.webp",
+      "anchor": [
+        0.5035,
+        0.9136
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "width": 219,
+      "height": 189,
+      "provenance": "Existing mature map town retained as development level 4."
+    },
+    "map.site.town.norse.l1": {
+      "file": "map-town-development-v1/norse.l1.webp",
+      "width": 240,
+      "height": 224,
+      "anchor": [
+        0.5,
+        0.875
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "provenance": "Built-in imagegen; transparent source in docs/map-town-development-v1. Normalized for map placement."
+    },
+    "map.site.town.norse.l2": {
+      "file": "map-town-development-v1/norse.l2.webp",
+      "width": 240,
+      "height": 224,
+      "anchor": [
+        0.5,
+        0.875
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "provenance": "Built-in imagegen; transparent source in docs/map-town-development-v1. Normalized for map placement."
+    },
+    "map.site.town.norse.l3": {
+      "file": "map-town-development-v1/norse.l3.webp",
+      "width": 240,
+      "height": 224,
+      "anchor": [
+        0.5,
+        0.875
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "provenance": "Built-in imagegen; transparent source in docs/map-town-development-v1. Normalized for map placement."
+    },
+    "map.site.town.norse.l4": {
+      "file": "sprites/final/sites/map.site.town.norse.webp",
+      "anchor": [
+        0.5011,
+        0.9148
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "width": 218,
+      "height": 193,
+      "provenance": "Existing mature map town retained as development level 4."
+    },
+    "map.site.town.egyptian.l1": {
+      "file": "map-town-development-v1/egyptian.l1.webp",
+      "width": 240,
+      "height": 224,
+      "anchor": [
+        0.5,
+        0.875
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "provenance": "Built-in imagegen; transparent source in docs/map-town-development-v1. Normalized for map placement."
+    },
+    "map.site.town.egyptian.l2": {
+      "file": "map-town-development-v1/egyptian.l2.webp",
+      "width": 240,
+      "height": 224,
+      "anchor": [
+        0.5,
+        0.875
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "provenance": "Built-in imagegen; transparent source in docs/map-town-development-v1. Normalized for map placement."
+    },
+    "map.site.town.egyptian.l3": {
+      "file": "map-town-development-v1/egyptian.l3.webp",
+      "width": 240,
+      "height": 224,
+      "anchor": [
+        0.5,
+        0.875
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "provenance": "Built-in imagegen; transparent source in docs/map-town-development-v1. Normalized for map placement."
+    },
+    "map.site.town.egyptian.l4": {
+      "file": "sprites/final/sites/map.site.town.egyptian.webp",
+      "anchor": [
+        0.4922,
+        0.9144
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "width": 221,
+      "height": 189,
+      "provenance": "Existing mature map town retained as development level 4."
+    },
+    "map.site.town.japanese.l1": {
+      "file": "map-town-development-v1/japanese.l1.webp",
+      "width": 240,
+      "height": 224,
+      "anchor": [
+        0.5,
+        0.875
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "provenance": "Built-in imagegen; transparent source in docs/map-town-development-v1. Normalized for map placement."
+    },
+    "map.site.town.japanese.l2": {
+      "file": "map-town-development-v1/japanese.l2.webp",
+      "width": 240,
+      "height": 224,
+      "anchor": [
+        0.5,
+        0.875
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "provenance": "Built-in imagegen; transparent source in docs/map-town-development-v1. Normalized for map placement."
+    },
+    "map.site.town.japanese.l3": {
+      "file": "map-town-development-v1/japanese.l3.webp",
+      "width": 240,
+      "height": 224,
+      "anchor": [
+        0.5,
+        0.875
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "provenance": "Built-in imagegen; transparent source in docs/map-town-development-v1. Normalized for map placement."
+    },
+    "map.site.town.japanese.l4": {
+      "file": "sprites/final/sites/map.site.town.japanese.webp",
+      "anchor": [
+        0.5199,
+        0.915
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "width": 226,
+      "height": 195,
+      "provenance": "Existing mature map town retained as development level 4."
+    },
+    "map.site.town.celtic.l1": {
+      "file": "map-town-development-v1/celtic.l1.webp",
+      "width": 240,
+      "height": 224,
+      "anchor": [
+        0.5,
+        0.875
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "provenance": "Built-in imagegen; transparent source in docs/map-town-development-v1. Normalized for map placement."
+    },
+    "map.site.town.celtic.l2": {
+      "file": "map-town-development-v1/celtic.l2.webp",
+      "width": 240,
+      "height": 224,
+      "anchor": [
+        0.5,
+        0.875
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "provenance": "Built-in imagegen; transparent source in docs/map-town-development-v1. Normalized for map placement."
+    },
+    "map.site.town.celtic.l3": {
+      "file": "map-town-development-v1/celtic.l3.webp",
+      "width": 240,
+      "height": 224,
+      "anchor": [
+        0.5,
+        0.875
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "provenance": "Built-in imagegen; transparent source in docs/map-town-development-v1. Normalized for map placement."
+    },
+    "map.site.town.celtic.l4": {
+      "file": "sprites/final/sites/map.site.town.celtic.webp",
+      "anchor": [
+        0.5012,
+        0.9127
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "width": 216,
+      "height": 196,
+      "provenance": "Existing mature map town retained as development level 4."
+    },
+    "map.site.town.mesoamerican.l1": {
+      "file": "map-town-development-v1/mesoamerican.l1.webp",
+      "width": 240,
+      "height": 224,
+      "anchor": [
+        0.5,
+        0.875
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "provenance": "Built-in imagegen; transparent source in docs/map-town-development-v1. Normalized for map placement."
+    },
+    "map.site.town.mesoamerican.l2": {
+      "file": "map-town-development-v1/mesoamerican.l2.webp",
+      "width": 240,
+      "height": 224,
+      "anchor": [
+        0.5,
+        0.875
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "provenance": "Built-in imagegen; transparent source in docs/map-town-development-v1. Normalized for map placement."
+    },
+    "map.site.town.mesoamerican.l3": {
+      "file": "map-town-development-v1/mesoamerican.l3.webp",
+      "width": 240,
+      "height": 224,
+      "anchor": [
+        0.5,
+        0.875
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "provenance": "Built-in imagegen; transparent source in docs/map-town-development-v1. Normalized for map placement."
+    },
+    "map.site.town.mesoamerican.l4": {
+      "file": "sprites/final/sites/map.site.town.mesoamerican.webp",
+      "anchor": [
+        0.4966,
+        0.9147
+      ],
+      "pixelsPerHex": 140,
+      "status": "final",
+      "width": 217,
+      "height": 194,
+      "provenance": "Existing mature map town retained as development level 4."
+    }
+  }
+}

@@ -1,3 +1,11 @@
+# Current asset workflow
+
+Start with [asset credits](ASSET_CREDITS.md) for provenance and [extending the game](docs/development/EXTENDING.md) for registration steps. Current packs include painted magic, neutral dragons, six layered city scenes, town-development map art, landmarks, restoration temples and world-polish scenery. The UI merges multiple manifests in an intentional precedence order; inspect packages/ui/src/assets/manifest.ts before replacing an asset ID.
+
+Desktop packaging creates optimized derivatives in its renderer copy; it does not overwrite source art. See the [performance guide](docs/development/PERFORMANCE.md). The [documentation tools](tools/docs/README.md) create lightweight screenshots and sync current city artwork to the separate website.
+
+The detailed contracts and historical production recipes follow. Pack folder version names describe art deliveries, not the application version.
+
 # Asset Pipeline — 2D sprites, painted art, icons and sound
 
 _For artists and for whoever brings art into the game. Engine side:

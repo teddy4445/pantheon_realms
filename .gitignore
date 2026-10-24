@@ -2,6 +2,7 @@
 node_modules/
 dist/
 apps/desktop/renderer/
+apps/desktop/.asset-cache/
 apps/desktop/release/
 test-results/
 playwright-report/
@@ -34,3 +35,5 @@ installer/*
 *.exe
 *.exe.part*
 Claude outputs/
+
+/docs/greek-city-h3-prototype-v1.zip

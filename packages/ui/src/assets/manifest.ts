@@ -1,3 +1,4 @@
+import expansionMagicIcons from '../../../../assets-runtime/expansion-magic-v2/icons.json';
 /**
  * AssetManifest: stable asset IDs -> runtime files.
  *
@@ -28,10 +29,24 @@ import expeditionManifest from '../../../../assets-runtime/expedition-v1/manifes
 import navalRandomManifest from '../../../../assets-runtime/naval-random-v1/manifest.json';
 import seaSitesManifest from '../../../../assets-runtime/sea-sites-v1/manifest.json';
 import seaCreaturesManifest from '../../../../assets-runtime/sea-creatures-v1/manifest.json';
+import greekTownArt from '../../../../assets-runtime/greek-city-h3-v1/manifest.json';
+import pantheonTownArt from '../../../../assets-runtime/pantheon-cities-h3-v1/manifest.json';
+import mapTownArt from '../../../../assets-runtime/map-town-development-v1/manifest.json';
+import mapLifeArt from '../../../../assets-runtime/map-life-v1/manifest.json';
+import landmarkArt from '../../../../assets-runtime/map-landmarks-v1/manifest.json';
+import dragonArt from '../../../../assets-runtime/neutral-dragons-v1/manifest.json';
+import cityIcons from '../../../../assets-runtime/city-icons-v1/manifest.json';
+import worldExpansion from '../../../../assets-runtime/world-expansion-v1/manifest.json';
+import worldPolish from '../../../../assets-runtime/world-polish-v2/manifest.json';
 import { expansionArt, twinSiteSprites, type AtlasRegion } from './expansionArt';
 import { registerEnvironmentArt, registerRouteArt, registerSpriteManifest, type EnvironmentArt, type RouteMarkerId, type SeaSiteArt, type SpriteManifest } from '@pr/presentation/core';
 
 export type AssetStatus = 'final' | 'placeholder' | 'procedural';
+
+export function templeBanner(pantheon:string):string|null {
+  const entry=(worldPolish.banners as Record<string,{file:string}>)[pantheon];
+  return entry ? `./${entry.file}` : null;
+}
 
 export interface AssetRecord {
   readonly id: string;
@@ -53,7 +68,7 @@ const PLACEHOLDERS: ManifestFile['assets'] = { ...(placeholderManifest as Manife
  * its asset ID into assets-source/icons/final/ and run `npm run icons:import`
  * (writes assets-runtime/ui/final-manifest.json). See `npm run icons:catalog`.
  */
-const FINAL: Record<string, { file: string; provenance: string }> = { ...(finalArtManifest as unknown as { assets: Record<string, { file: string; provenance: string }> }).assets };
+const FINAL: Record<string, { file: string; provenance: string }> = { ...(finalArtManifest as unknown as { assets: Record<string, { file: string; provenance: string }> }).assets, ...greekTownArt.assets, ...pantheonTownArt.assets, ...cityIcons.assets };
 
 /**
  * Painted story art (ASSET_PIPELINE.md §13): dialogue busts, campaign covers and
@@ -492,6 +507,10 @@ export function seaCreatureArt(id: string): { id: string; url: string; width: nu
 const cache = new Map<string, AssetRecord>();
 
 export function resolveAsset(id: string): AssetRecord {
+  const dragon = (dragonArt.assets as Record<string, {file:string}>)[id];
+  if (dragon) return { id, status: 'final', url: `./${dragon.file}`, provenance: dragonArt.provenance };
+  const magic = (expansionMagicIcons as Record<string, string>)[id];
+  if (magic) return { id, status: 'final', url: `./${magic}`, provenance: 'Painted magic icons generated with built-in imagegen, October 2026' };
   const hit = cache.get(id);
   if (hit) return hit;
   const expansion = expansionArt(id);
@@ -661,10 +680,12 @@ function safeEntries<T>(rec: Record<string, unknown> | undefined): Record<string
 registerSpriteManifest(
   {
     ...(spriteManifestFile as unknown as SpriteManifest),
+    decor: { ...(spriteManifestFile as unknown as SpriteManifest).decor, ...safeEntries<SpriteManifest['decor'][string]>(landmarkArt.decor), ...safeEntries<SpriteManifest['decor'][string]>(worldExpansion.decor), ...safeEntries<SpriteManifest['decor'][string]>(worldPolish.decor) },
     creatures: {
       ...(spriteManifestFile as unknown as SpriteManifest).creatures,
       ...safeEntries<SpriteManifest['creatures'][string]>(CAMPAIGN_V2.creatures),
       ...safeEntries<SpriteManifest['creatures'][string]>(BATTLE_FX.creatures),
+      ...safeEntries<SpriteManifest['creatures'][string]>(dragonArt.creatures),
     },
     projectiles: { ...(spriteManifestFile as unknown as SpriteManifest).projectiles, ...safeEntries<SpriteManifest['projectiles'][string]>(BATTLE_FX.projectiles) },
     effects: { ...(spriteManifestFile as unknown as SpriteManifest).effects, ...safeEntries<SpriteManifest['effects'][string]>(BATTLE_FX.effects) },
@@ -672,7 +693,7 @@ registerSpriteManifest(
       ...((spriteManifestFile as unknown as SpriteManifest).projectileProfiles ?? {}),
       ...safeEntries<NonNullable<SpriteManifest['projectileProfiles']>[string]>(BATTLE_FX.projectileProfiles),
     },
-    sites: { ...(spriteManifestFile as unknown as SpriteManifest).sites, ...safeEntries<SpriteManifest['sites'][string]>(CAMPAIGN_V2.sites), ...twinSiteSprites },
+    sites: { ...safeEntries<SpriteManifest['sites'][string]>(Object.fromEntries(Object.entries(landmarkArt.decor).map(([id, art]) => [`map.site.${id}`, art]))), ...(spriteManifestFile as unknown as SpriteManifest).sites, ...safeEntries<SpriteManifest['sites'][string]>(CAMPAIGN_V2.sites), ...twinSiteSprites, ...safeEntries<SpriteManifest['sites'][string]>(mapTownArt.sites), ...safeEntries<SpriteManifest['sites'][string]>(mapLifeArt.sites), ...safeEntries<SpriteManifest['sites'][string]>(dragonArt.sites), ...safeEntries<SpriteManifest['sites'][string]>(worldExpansion.sites) },
     siege: { ...(spriteManifestFile as unknown as SpriteManifest).siege, ...SIEGE_V2.siege, ...GATE_V3.siege },
     mapTokens: safeEntries<NonNullable<SpriteManifest['mapTokens']>[string]>(EXPEDITION.mapTokens),
   },
@@ -704,6 +725,8 @@ export interface StageStrip extends IdleStrip {
 }
 
 export function creatureStageStrip(creatureId: string): StageStrip | null {
+  const dragon = (dragonArt.recruitment as unknown as Record<string, Omit<StageStrip,'url'> & {file:string}>)[creatureId];
+  if (dragon) return {...dragon, url:`./${dragon.file}`};
   const c = ROUTE_KIT.creatures?.[creatureId];
   if (c && safeFile(c.file) && c.frames > 0 && c.frameWidth > 0 && c.frameHeight > 0 && c.visibleUnion?.length === 4) {
     const v = c.visibleUnion;
@@ -723,6 +746,8 @@ export function creatureStageStrip(creatureId: string): StageStrip | null {
 }
 
 export function creatureIdleStrip(creatureId: string): IdleStrip | null {
+  const dragon = (dragonArt.recruitment as unknown as Record<string, Omit<IdleStrip, 'url'> & { file: string }>)[creatureId];
+  if (dragon) return { ...dragon, url: `./${dragon.file}` };
   const set = (spriteManifestFile as unknown as SpriteManifest).creatures[creatureId];
   const idle = set?.animations?.idle as { file?: string; frames?: number; frameWidth?: number; frameHeight?: number; fps?: number; anchor?: readonly [number, number] } | undefined;
   if (!idle?.file || !idle.frames || !idle.frameWidth || !idle.frameHeight) return null;

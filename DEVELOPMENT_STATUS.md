@@ -1,3 +1,13 @@
+# Current snapshot — 2026-10-24
+
+The application remains **1.0.0**. The validated catalog contains six playable pantheons, nine campaigns with 51 current chapters, 65 creature families / 130 forms, 136 spells and 38 interventions. Availability varies by scenario. Current code includes the dragon families, painted magic expansion, visitable landmarks, restoration temples, city development art and expanded living-map scenery. Balance still needs human playtesting.
+
+The latest Windows release artifact was built on 2026-10-23: **849,739,984 bytes**. See [performance evidence](docs/performance-20261023/README.txt), the [content snapshot](docs/development/content-snapshot.json), and the [new contributor handbook](docs/development/README.md). Documentation and the separate website were refreshed on 2026-10-24; this refresh does not constitute a new game build or a public deployment.
+
+## Historical development entries
+
+The dated entries below record what was true when written. Old chapter counts, preparation status and proposed delivery plans can be superseded by the current catalog.
+
 # Local continuation acceptance — 1.7.0 (19 October 2026)
 
 This section supersedes the cloud 1.6.0 “Remaining” list below where explicitly noted. The source checkout is still uncommitted. Implementation and application acceptance are complete for this continuation. Numerical balance remains subject to the playtesting limits below.

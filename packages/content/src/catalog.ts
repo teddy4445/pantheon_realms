@@ -1,3 +1,4 @@
+import { EXPANSION_SPELLS, EXPANSION_MIRACLES } from './common/expansionMagic';
 import { buildConfluenceCampaigns } from './campaign/confluence/campaigns';
 /**
  * ContentLoader + ContentRegistry: assembles all definitions into one indexed,
@@ -16,6 +17,7 @@ import { GREEK_FAMILY_SPECS, buildFamilies } from './greek/creatures';
 import { GREEK_LORE } from './greek/lore';
 import { NEUTRAL_FAMILY_SPECS, NEUTRAL_LORE } from './common/neutrals';
 import { NEUTRAL_V2_ABILITIES, NEUTRAL_V2_FAMILY_SPECS, NEUTRAL_V2_LORE } from './common/neutralsV2';
+import { DRAGON_ABILITIES, DRAGON_FAMILY_SPECS, DRAGON_LORE } from './common/neutralDragons';
 import { SEA_ABILITIES, SEA_FAMILY_SPECS, SEA_LORE } from './common/seaCreatures';
 import { GREEK_BUILDINGS, GREEK_TOWN } from './greek/town';
 import { GREEK_GODS, GREEK_HEROES, GREEK_PANTHEON } from './greek/pantheon';
@@ -69,17 +71,21 @@ function index<T extends { id: string }>(items: readonly T[], kind: string): Rec
 /** Pantheons built from compact specs by the shared kit (proposed values). */
 export const KIT_SPECS = [EGYPTIAN_SPEC, JAPANESE_SPEC, CELTIC_SPEC, MESOAMERICAN_SPEC] as const;
 
+/** Assemble and deeply freeze a fresh catalog without running its validators.
+ * Production consumers should use loadCatalog(), which validates and caches it.
+ * App release versions and the compatibility identifiers above are independent. */
 export function buildCatalog(): ContentCatalog {
   const greek = buildFamilies(GREEK_FAMILY_SPECS);
   const norse = buildNorseFamilies();
   const neutral = buildFamilies(NEUTRAL_FAMILY_SPECS, { source: 'proposed-this-build', note: 'Neutral roster (owner request 2026-10-02); proposed values, unplaytested' });
   // Six single-form neutrals of the campaign expansion (handoff 2026-10-15; kit starting values, unplaytested).
   const neutralV2 = buildFamilies(NEUTRAL_V2_FAMILY_SPECS, { source: 'proposed-this-build', note: 'Campaign expansion kit 2026-10-15, neutral-content.json; candidate values, unplaytested' });
+  const dragons = buildFamilies(DRAGON_FAMILY_SPECS, { source: 'proposed-this-build', note: 'Owner-approved neutral dragon kit, October 2026; balance values unplaytested' });
   const kits = KIT_SPECS.map(buildPantheonKit);
   const pantheons = [GREEK_PANTHEON, NORSE_PANTHEON, ...kits.map((k) => k.pantheon)];
   // Five neutral sea families met only in sea encounters (sea-creature delivery 2026-10-17; proposed values, unplaytested).
   const sea = buildFamilies(SEA_FAMILY_SPECS, { source: 'proposed-this-build', note: 'Sea-creature delivery 2026-10-17 (design/sea-creature-roster.json: movement, footprint, range); statistics, prices and growth proposed, unplaytested' });
-  const creatureList = [...greek.creatures, ...norse.creatures, ...kits.flatMap((k) => k.creatures), ...neutral.creatures, ...neutralV2.creatures, ...sea.creatures];
+  const creatureList = [...greek.creatures, ...norse.creatures, ...kits.flatMap((k) => k.creatures), ...neutral.creatures, ...neutralV2.creatures, ...sea.creatures, ...dragons.creatures];
   // Authored biological tags for life/mind rules; never inferred by the rules from artwork.
   const traitFamilies: Readonly<Record<string, readonly ('undead' | 'construct' | 'mind_immune')[]>> = {
     norse_draugr: ['undead', 'mind_immune'], clay_golem: ['construct', 'mind_immune'],
@@ -94,8 +100,8 @@ export function buildCatalog(): ContentCatalog {
   // Campaign content v2 (handoff 2026-10-15): chapters built from the v1 missions' economy and cast.
   const v1Missions = [...THREE_BEACONS_MISSIONS, ...WINTER_OATH_MISSIONS, ...arc.missions];
   const v2 = buildCampaignsV2(Object.fromEntries(v1Missions.map((m) => [m.id, m])), (id) => creatureIndex[id]);
-  const familyIndex = index([...greek.families, ...norse.families, ...kits.flatMap((k) => k.families), ...neutral.families, ...neutralV2.families, ...sea.families], 'family');
-  const spellIndex = index(withSpellSemantics(withLore([...SPELLS, ...EXPANDED_SPELLS, ...ARCANA_SPELLS, ...MYTHIC_LIBRARY_SPELLS])), 'spell');
+  const familyIndex = index([...greek.families, ...norse.families, ...kits.flatMap((k) => k.families), ...neutral.families, ...neutralV2.families, ...sea.families, ...dragons.families], 'family');
+  const spellIndex = index(withSpellSemantics(withLore([...SPELLS, ...EXPANDED_SPELLS, ...ARCANA_SPELLS, ...EXPANSION_SPELLS, ...MYTHIC_LIBRARY_SPELLS])), 'spell');
   const godList = [...GREEK_GODS, ...NORSE_GODS, ...kits.flatMap((k) => k.gods)];
   const heroList = withSpecialties([...GREEK_HEROES, ...NORSE_HEROES, ...kits.flatMap((k) => k.heroes), ...ARC_CAMPAIGN_HEROES], { families: familyIndex, creatures: creatureIndex, spells: spellIndex });
   const twins = buildConfluenceCampaigns(v1Missions, heroList, [...GREEK_BUILDINGS, ...NORSE_BUILDINGS, ...kits.flatMap((k) => k.buildings)]);
@@ -105,8 +111,8 @@ export function buildCatalog(): ContentCatalog {
     pantheons: index(pantheons, 'pantheon'),
     families: familyIndex,
     creatures: creatureIndex,
-    abilities: index([...ABILITIES, ...NEUTRAL_V2_ABILITIES, ...SEA_ABILITIES], 'ability'),
-    lore: index([...GREEK_LORE, ...NORSE_LORE, ...kits.flatMap((k) => k.lore), ...NEUTRAL_LORE, ...NEUTRAL_V2_LORE, ...SEA_LORE], 'lore'),
+    abilities: index([...ABILITIES, ...NEUTRAL_V2_ABILITIES, ...SEA_ABILITIES, ...DRAGON_ABILITIES], 'ability'),
+    lore: index([...GREEK_LORE, ...NORSE_LORE, ...kits.flatMap((k) => k.lore), ...NEUTRAL_LORE, ...NEUTRAL_V2_LORE, ...SEA_LORE, ...DRAGON_LORE], 'lore'),
     buildings: index([...GREEK_BUILDINGS, ...NORSE_BUILDINGS, ...kits.flatMap((k) => k.buildings)], 'building'),
     townArchetypes: index([GREEK_TOWN, NORSE_TOWN, ...kits.map((k) => k.town)], 'town archetype'),
     gods: index(godList, 'god'),
@@ -118,7 +124,7 @@ export function buildCatalog(): ContentCatalog {
     artifacts: index(withLore([...ARTIFACTS, ...SET_ARTIFACTS, ...ARCANA_ARTIFACTS, ...MYTHIC_RELICS]), 'artifact'),
     artifactSets: index([...ARTIFACT_SETS, ...ARCANA_SETS], 'artifact set'),
     difficulties: index(DIFFICULTIES, 'difficulty'),
-    interventions: index([...INTERVENTIONS, ...MYTHIC_BLESSINGS], 'intervention'),
+    interventions: index([...INTERVENTIONS, ...EXPANSION_MIRACLES, ...MYTHIC_BLESSINGS], 'intervention'),
     divineGifts: index(DIVINE_GIFTS, 'divine gift'),
     climates: index(CLIMATE_RULES, 'climate rule'),
     aiTemperaments: index(AI_TEMPERAMENTS, 'AI temperament'),

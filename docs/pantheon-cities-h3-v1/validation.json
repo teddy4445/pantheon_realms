@@ -1,0 +1,1352 @@
+{
+  "partial": false,
+  "assets": [
+    {
+      "id": "town.norse.support.civic_hall.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 737890,
+      "solid": 784763,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.support.civic_hall.l2",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 647505,
+      "solid": 872246,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.support.civic_hall.l3",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 680933,
+      "solid": 834894,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.support.civic_hall.l4",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 666731,
+      "solid": 836112,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.support.pantheon_temple.l1",
+      "width": 1774,
+      "height": 887,
+      "transparent": 799251,
+      "solid": 729887,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.support.pantheon_temple.l2",
+      "width": 1774,
+      "height": 887,
+      "transparent": 614586,
+      "solid": 892594,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.support.mage_guild.l1",
+      "width": 1355,
+      "height": 1161,
+      "transparent": 768423,
+      "solid": 761276,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.support.mage_guild.l2",
+      "width": 1355,
+      "height": 1160,
+      "transparent": 607436,
+      "solid": 925420,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.support.mage_guild.l3",
+      "width": 1356,
+      "height": 1159,
+      "transparent": 550876,
+      "solid": 980810,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.support.watchtower.l1",
+      "width": 1310,
+      "height": 1201,
+      "transparent": 1066917,
+      "solid": 466440,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.support.artifact_merchant.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 831222,
+      "solid": 695525,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.support.tavern.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 713529,
+      "solid": 782750,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.support.marketplace.l1",
+      "width": 1774,
+      "height": 887,
+      "transparent": 762902,
+      "solid": 749055,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.support.training_academy.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 731493,
+      "solid": 793660,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.support.workshop.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 749796,
+      "solid": 774513,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.support.resource_depot.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 790062,
+      "solid": 735541,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.support.fortifications.l1",
+      "width": 2132,
+      "height": 738,
+      "transparent": 733717,
+      "solid": 773088,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.support.fortifications.l2",
+      "width": 2135,
+      "height": 737,
+      "transparent": 604255,
+      "solid": 885504,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.support.fortifications.l3",
+      "width": 2135,
+      "height": 736,
+      "transparent": 611169,
+      "solid": 875809,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.dwelling.tier1.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 738217,
+      "solid": 792530,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.dwelling.tier1.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 593856,
+      "solid": 935880,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.dwelling.tier2.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 763481,
+      "solid": 745516,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.dwelling.tier2.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 697763,
+      "solid": 806721,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.dwelling.tier3.base",
+      "width": 1222,
+      "height": 1287,
+      "transparent": 566362,
+      "solid": 964141,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.dwelling.tier3.upgraded",
+      "width": 1221,
+      "height": 1288,
+      "transparent": 452070,
+      "solid": 1074664,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.dwelling.tier4.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 731364,
+      "solid": 778142,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.dwelling.tier4.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 670116,
+      "solid": 835146,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.dwelling.tier5.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 830275,
+      "solid": 669042,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.dwelling.tier5.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 634152,
+      "solid": 844180,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.dwelling.tier6.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 707454,
+      "solid": 826447,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.dwelling.tier6.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 615172,
+      "solid": 917777,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.dwelling.tier7.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 676046,
+      "solid": 849737,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.norse.dwelling.tier7.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 530125,
+      "solid": 975714,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.civic_hall.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 756992,
+      "solid": 773651,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.civic_hall.l2",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 569144,
+      "solid": 951252,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.civic_hall.l3",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 626409,
+      "solid": 850135,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.civic_hall.l4",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 550499,
+      "solid": 938294,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.pantheon_temple.l1",
+      "width": 1774,
+      "height": 887,
+      "transparent": 568952,
+      "solid": 954410,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.pantheon_temple.l2",
+      "width": 1774,
+      "height": 887,
+      "transparent": 557820,
+      "solid": 955738,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.mage_guild.l1",
+      "width": 1356,
+      "height": 1159,
+      "transparent": 831063,
+      "solid": 684390,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.mage_guild.l2",
+      "width": 1354,
+      "height": 1161,
+      "transparent": 655614,
+      "solid": 859465,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.mage_guild.l3",
+      "width": 1356,
+      "height": 1160,
+      "transparent": 767215,
+      "solid": 733253,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.watchtower.l1",
+      "width": 1310,
+      "height": 1201,
+      "transparent": 1112194,
+      "solid": 413495,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.artifact_merchant.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 887630,
+      "solid": 617635,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.tavern.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 679185,
+      "solid": 822216,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.marketplace.l1",
+      "width": 1774,
+      "height": 887,
+      "transparent": 664739,
+      "solid": 794873,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.training_academy.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 750787,
+      "solid": 736275,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.workshop.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 828183,
+      "solid": 705636,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.resource_depot.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 773995,
+      "solid": 751438,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.fortifications.l1",
+      "width": 2135,
+      "height": 737,
+      "transparent": 808374,
+      "solid": 712548,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.fortifications.l2",
+      "width": 2135,
+      "height": 737,
+      "transparent": 597912,
+      "solid": 858235,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.support.fortifications.l3",
+      "width": 2131,
+      "height": 738,
+      "transparent": 623716,
+      "solid": 856175,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.dwelling.tier1.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 983611,
+      "solid": 533564,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.dwelling.tier1.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 704109,
+      "solid": 794248,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.dwelling.tier2.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 727135,
+      "solid": 791389,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.dwelling.tier2.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 663954,
+      "solid": 841118,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.dwelling.tier3.base",
+      "width": 1221,
+      "height": 1288,
+      "transparent": 586987,
+      "solid": 881432,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.dwelling.tier3.upgraded",
+      "width": 1219,
+      "height": 1290,
+      "transparent": 589059,
+      "solid": 923352,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.dwelling.tier4.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 833652,
+      "solid": 684567,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.dwelling.tier4.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 857494,
+      "solid": 664862,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.dwelling.tier5.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 786415,
+      "solid": 706866,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.dwelling.tier5.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 713528,
+      "solid": 780308,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.dwelling.tier6.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 1065159,
+      "solid": 448607,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.dwelling.tier6.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 1026758,
+      "solid": 469209,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.dwelling.tier7.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 673626,
+      "solid": 779526,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.egyptian.dwelling.tier7.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 566034,
+      "solid": 938503,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.civic_hall.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 866906,
+      "solid": 664170,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.civic_hall.l2",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 617577,
+      "solid": 899480,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.civic_hall.l3",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 597608,
+      "solid": 923604,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.civic_hall.l4",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 612709,
+      "solid": 895936,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.pantheon_temple.l1",
+      "width": 1774,
+      "height": 887,
+      "transparent": 679442,
+      "solid": 833889,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.pantheon_temple.l2",
+      "width": 1774,
+      "height": 887,
+      "transparent": 645099,
+      "solid": 853123,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.mage_guild.l1",
+      "width": 1355,
+      "height": 1160,
+      "transparent": 761421,
+      "solid": 739747,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.mage_guild.l2",
+      "width": 1356,
+      "height": 1160,
+      "transparent": 671939,
+      "solid": 821834,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.mage_guild.l3",
+      "width": 1358,
+      "height": 1159,
+      "transparent": 665588,
+      "solid": 806451,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.watchtower.l1",
+      "width": 1308,
+      "height": 1202,
+      "transparent": 1065904,
+      "solid": 443343,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.artifact_merchant.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 728781,
+      "solid": 777993,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.tavern.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 710515,
+      "solid": 802001,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.marketplace.l1",
+      "width": 1774,
+      "height": 887,
+      "transparent": 875883,
+      "solid": 632898,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.training_academy.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 607899,
+      "solid": 903841,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.workshop.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 850249,
+      "solid": 626615,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.resource_depot.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 815989,
+      "solid": 713721,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.fortifications.l1",
+      "width": 2135,
+      "height": 736,
+      "transparent": 796862,
+      "solid": 712364,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.fortifications.l2",
+      "width": 2134,
+      "height": 737,
+      "transparent": 657196,
+      "solid": 846971,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.support.fortifications.l3",
+      "width": 2134,
+      "height": 737,
+      "transparent": 610342,
+      "solid": 876539,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.dwelling.tier1.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 640699,
+      "solid": 801168,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.dwelling.tier1.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 617022,
+      "solid": 844089,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.dwelling.tier2.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 639190,
+      "solid": 810461,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.dwelling.tier2.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 588178,
+      "solid": 898780,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.dwelling.tier3.base",
+      "width": 1223,
+      "height": 1286,
+      "transparent": 643075,
+      "solid": 813450,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.dwelling.tier3.upgraded",
+      "width": 1221,
+      "height": 1288,
+      "transparent": 468171,
+      "solid": 982979,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.dwelling.tier4.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 587133,
+      "solid": 914087,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.dwelling.tier4.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 576349,
+      "solid": 932151,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.dwelling.tier5.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 665091,
+      "solid": 752501,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.dwelling.tier5.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 571269,
+      "solid": 832538,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.dwelling.tier6.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 693094,
+      "solid": 784182,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.dwelling.tier6.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 779843,
+      "solid": 688369,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.dwelling.tier7.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 720675,
+      "solid": 777912,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.japanese.dwelling.tier7.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 610067,
+      "solid": 889203,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.civic_hall.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 685916,
+      "solid": 850738,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.civic_hall.l2",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 652464,
+      "solid": 870063,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.civic_hall.l3",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 677504,
+      "solid": 852424,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.civic_hall.l4",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 541371,
+      "solid": 940386,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.pantheon_temple.l1",
+      "width": 1774,
+      "height": 887,
+      "transparent": 679416,
+      "solid": 852004,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.pantheon_temple.l2",
+      "width": 1774,
+      "height": 887,
+      "transparent": 515429,
+      "solid": 964992,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.mage_guild.l1",
+      "width": 1358,
+      "height": 1159,
+      "transparent": 495986,
+      "solid": 914254,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.mage_guild.l2",
+      "width": 1355,
+      "height": 1160,
+      "transparent": 437909,
+      "solid": 1007926,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.mage_guild.l3",
+      "width": 1356,
+      "height": 1160,
+      "transparent": 364781,
+      "solid": 1066046,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.watchtower.l1",
+      "width": 1312,
+      "height": 1199,
+      "transparent": 1113661,
+      "solid": 414075,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.artifact_merchant.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 761715,
+      "solid": 740548,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.tavern.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 798292,
+      "solid": 728343,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.marketplace.l1",
+      "width": 1774,
+      "height": 887,
+      "transparent": 744494,
+      "solid": 730271,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.training_academy.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 573945,
+      "solid": 927554,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.workshop.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 852204,
+      "solid": 671214,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.resource_depot.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 741388,
+      "solid": 773751,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.fortifications.l1",
+      "width": 2135,
+      "height": 737,
+      "transparent": 791823,
+      "solid": 710070,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.fortifications.l2",
+      "width": 2134,
+      "height": 737,
+      "transparent": 708036,
+      "solid": 787431,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.support.fortifications.l3",
+      "width": 2135,
+      "height": 737,
+      "transparent": 638545,
+      "solid": 846763,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.dwelling.tier1.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 772408,
+      "solid": 723462,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.dwelling.tier1.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 716203,
+      "solid": 796992,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.dwelling.tier2.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 744815,
+      "solid": 780481,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.dwelling.tier2.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 569215,
+      "solid": 958515,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.dwelling.tier3.base",
+      "width": 1221,
+      "height": 1289,
+      "transparent": 540232,
+      "solid": 938013,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.dwelling.tier3.upgraded",
+      "width": 1221,
+      "height": 1288,
+      "transparent": 488975,
+      "solid": 1004050,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.dwelling.tier4.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 826844,
+      "solid": 697491,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.dwelling.tier4.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 705665,
+      "solid": 787488,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.dwelling.tier5.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 721849,
+      "solid": 801432,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.dwelling.tier5.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 626475,
+      "solid": 877165,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.dwelling.tier6.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 537580,
+      "solid": 883548,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.dwelling.tier6.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 591297,
+      "solid": 864469,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.dwelling.tier7.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 626765,
+      "solid": 900545,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.celtic.dwelling.tier7.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 555687,
+      "solid": 950468,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.civic_hall.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 709101,
+      "solid": 821397,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.civic_hall.l2",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 651873,
+      "solid": 869915,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.civic_hall.l3",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 586116,
+      "solid": 918942,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.civic_hall.l4",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 625794,
+      "solid": 886403,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.pantheon_temple.l1",
+      "width": 1774,
+      "height": 887,
+      "transparent": 783643,
+      "solid": 740305,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.pantheon_temple.l2",
+      "width": 1774,
+      "height": 887,
+      "transparent": 679804,
+      "solid": 828603,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.mage_guild.l1",
+      "width": 1355,
+      "height": 1161,
+      "transparent": 787216,
+      "solid": 739258,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.mage_guild.l2",
+      "width": 1355,
+      "height": 1161,
+      "transparent": 625697,
+      "solid": 884303,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.mage_guild.l3",
+      "width": 1356,
+      "height": 1159,
+      "transparent": 732918,
+      "solid": 780097,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.watchtower.l1",
+      "width": 1309,
+      "height": 1202,
+      "transparent": 1001218,
+      "solid": 514642,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.artifact_merchant.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 899334,
+      "solid": 624898,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.tavern.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 652668,
+      "solid": 867905,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.marketplace.l1",
+      "width": 1774,
+      "height": 887,
+      "transparent": 766271,
+      "solid": 737276,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.training_academy.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 655017,
+      "solid": 833649,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.workshop.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 785236,
+      "solid": 727615,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.resource_depot.l1",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 737016,
+      "solid": 794788,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.fortifications.l1",
+      "width": 2135,
+      "height": 737,
+      "transparent": 726835,
+      "solid": 778631,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.fortifications.l2",
+      "width": 2132,
+      "height": 738,
+      "transparent": 706266,
+      "solid": 794569,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.support.fortifications.l3",
+      "width": 2135,
+      "height": 737,
+      "transparent": 678831,
+      "solid": 814221,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.dwelling.tier1.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 732916,
+      "solid": 747667,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.dwelling.tier1.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 646258,
+      "solid": 845190,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.dwelling.tier2.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 737584,
+      "solid": 770140,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.dwelling.tier2.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 599308,
+      "solid": 903151,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.dwelling.tier3.base",
+      "width": 1221,
+      "height": 1288,
+      "transparent": 701500,
+      "solid": 762948,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.dwelling.tier3.upgraded",
+      "width": 1219,
+      "height": 1290,
+      "transparent": 623145,
+      "solid": 828072,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.dwelling.tier4.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 570869,
+      "solid": 872270,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.dwelling.tier4.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 659886,
+      "solid": 841112,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.dwelling.tier5.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 667958,
+      "solid": 831379,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.dwelling.tier5.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 625123,
+      "solid": 856955,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.dwelling.tier6.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 930605,
+      "solid": 591003,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.dwelling.tier6.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 734754,
+      "solid": 724330,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.dwelling.tier7.base",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 498891,
+      "solid": 993064,
+      "hasAlpha": true
+    },
+    {
+      "id": "town.mesoamerican.dwelling.tier7.upgraded",
+      "width": 1536,
+      "height": 1024,
+      "transparent": 622145,
+      "solid": 806876,
+      "hasAlpha": true
+    }
+  ],
+  "cities": [
+    {
+      "pantheon": "norse",
+      "versions": 33,
+      "stages": 4
+    },
+    {
+      "pantheon": "egyptian",
+      "versions": 33,
+      "stages": 4
+    },
+    {
+      "pantheon": "japanese",
+      "versions": 33,
+      "stages": 4
+    },
+    {
+      "pantheon": "celtic",
+      "versions": 33,
+      "stages": 4
+    },
+    {
+      "pantheon": "mesoamerican",
+      "versions": 33,
+      "stages": 4
+    }
+  ]
+}

@@ -24,6 +24,7 @@
  */
 import type { AbilityDefinition, LoreDefinition } from '@pr/rules';
 import { s, type FamilySpec } from '../greek/creatures';
+import { DRAGON_HABITATS, DRAGON_SITE_STOCK } from './neutralDragons';
 
 const MYTH = 'Mythological inspiration only; the game creature, its numbers and its story are an original adaptation without faction allegiance.';
 
@@ -97,10 +98,11 @@ export const NEUTRAL_V2_ABILITIES: readonly AbilityDefinition[] = [
 ];
 
 /** Weekly stock of one hiring site (the kit's `weeklySiteStock`). */
-export const NEUTRAL_V2_SITE_STOCK: Readonly<Record<string, number>> = { pegasus: 5, root_runner: 8, serpopard: 5, baku: 5, afanc: 5, ahuitzotl: 5 };
+export const NEUTRAL_V2_SITE_STOCK: Readonly<Record<string, number>> = { pegasus: 5, root_runner: 8, serpopard: 5, baku: 5, afanc: 5, ahuitzotl: 5, ...DRAGON_SITE_STOCK };
 
 /** Habitat tags (map editor and placement checks): where a hiring site may stand, and where never. */
 export const NEUTRAL_V2_HABITATS: Readonly<Record<string, { readonly habitat: string; readonly tags: readonly string[]; readonly forbidden: readonly string[]; readonly biomes: readonly string[] }>> = {
+  ...DRAGON_HABITATS,
   pegasus: { habitat: 'High meadows and pale limestone uplands with a spring.', tags: ['upland_meadow', 'limestone_hills'], forbidden: ['open_water', 'bare_dunes', 'lava'], biomes: ['coast', 'high_pass', 'storm_plateau', 'temperate'] },
   root_runner: { habitat: 'Ancient knotted tree-root hollows among mossy forest boulders.', tags: ['temperate_forest', 'conifer_edge', 'mossy_grove'], forbidden: ['bare_dunes', 'open_water', 'lava'], biomes: ['temperate', 'tundra', 'fjord', 'autumn', 'moor'] },
   serpopard: { habitat: 'Shaded sandstone dens where dry desert meets a river.', tags: ['sandstone_riverbank', 'dry_oasis', 'arid_scrub'], forbidden: ['deep_snow', 'open_water', 'lava'], biomes: ['desert'] },

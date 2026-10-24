@@ -1340,8 +1340,22 @@ button.gui-socket:hover:not(:disabled):not(.gui-socket--empty)::before,
   background-size: calc(var(--s) * var(--fw) * var(--frames)) 100%;
   background-position: 0 0;
   image-rendering: auto;
-  animation: recruit-idle var(--dur) steps(var(--frames)) infinite;
+  transform-origin: calc(var(--ax) * 100%) calc(var(--ay) * 100%);
+  animation: var(--idle-animation, recruit-idle) var(--dur) steps(var(--frames)) infinite, recruit-breathe 11s ease-in-out infinite;
+  animation-delay: var(--idle-phase, 0s), var(--idle-phase, 0s);
   filter: drop-shadow(0 0.4rem 0.35rem rgba(0, 0, 0, 0.45));
+}
+@keyframes recruit-breathe {
+  0%, 100% { transform: scaleY(1) skewX(0deg); }
+  50% { transform: scaleY(1.002) skewX(.04deg); }
+}
+@keyframes recruit-idle-six {
+  0% { background-position: 0 0; animation-timing-function: step-end; }
+  25% { background-position: calc(-1 * var(--s) * var(--fw)) 0; animation-timing-function: step-end; }
+  37.5% { background-position: calc(-2 * var(--s) * var(--fw)) 0; animation-timing-function: step-end; }
+  50% { background-position: calc(-3 * var(--s) * var(--fw)) 0; animation-timing-function: step-end; }
+  75% { background-position: calc(-4 * var(--s) * var(--fw)) 0; animation-timing-function: step-end; }
+  87.5%, 100% { background-position: calc(-5 * var(--s) * var(--fw)) 0; animation-timing-function: step-end; }
 }
 @keyframes recruit-idle {
   to {

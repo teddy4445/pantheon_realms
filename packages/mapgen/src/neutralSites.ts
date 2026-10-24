@@ -220,15 +220,16 @@ export function neutralSiteStock(catalog: ContentCatalog, table: NeutralSiteTabl
  * (`map.site.neutral_dwelling.<creature>`). Always the family's base form (an
  * upgraded ID resolves to it): the site hires both forms of the family.
  */
-export function neutralSiteDefinition(catalog: ContentCatalog, table: NeutralSiteTable | undefined, creatureId: string): Pick<SiteDefinition, 'name' | 'description' | 'kind' | 'art'> {
+export function neutralSiteDefinition(catalog: ContentCatalog, table: NeutralSiteTable | undefined, creatureId: string): Pick<SiteDefinition, 'name' | 'description' | 'kind' | 'art' | 'guard'> {
   creatureId = neutralSiteBase(catalog, creatureId);
   const c = catalog.creatures[creatureId]!;
   const stock = neutralSiteStock(catalog, table, creatureId);
   const habitat = table?.habitats[creatureId]?.habitat;
   return {
-    name: `${c.name} Hiring Site`,
+    name: `${c.name} ${c.tier===7?'Lair':'Hiring Site'}`,
     description: `${habitat ? `${habitat} ` : ''}${c.pluralName} join a visiting hero of any pantheon: ${stock} each week, shared by every empire; those not hired do not carry over.`,
     kind: { type: 'creature_camp', creatureId, weeklyGrowth: stock, initialStock: stock, restock: 'weekly' },
     art: `neutral_dwelling.${creatureId}`,
+    ...(c.tier===7 ? {guard:{army:[{creatureId,count:2}],reward:{},battlefield:'grove' as const,label:`${c.name} lair guardians`}} : {}),
   };
 }

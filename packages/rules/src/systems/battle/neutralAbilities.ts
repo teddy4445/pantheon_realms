@@ -43,12 +43,11 @@ export function straightMiddle(a: BattleCell, b: BattleCell, cols: number, rows:
   return null;
 }
 
-/** A clear line between two cells at most two apart: adjacent, or a shared neighbour that is not blocked. */
+/** A clear shortest hex path, preserving the adjacent/shared-neighbour rule at ranges one and two. */
 function clearLineBetween(a: BattleCell, b: BattleCell, battle: BattleState, blockers: Set<string>): boolean {
   const d = cellDistance(a, b);
   if (d <= 1) return true;
-  if (d > 2) return false;
-  return cellNeighbors(a, battle.cols, battle.rows).some((n) => cellDistance(n, b) === 1 && !blockers.has(cellKey(n)));
+  return cellNeighbors(a, battle.cols, battle.rows).some((n) => cellDistance(n, b) === d - 1 && !blockers.has(cellKey(n)) && clearLineBetween(n, b, battle, blockers));
 }
 
 /** Within `range` hexes with a clear line, measured between occupied cells. */
@@ -153,6 +152,13 @@ export interface NeutralAbilityOption {
   readonly name: string;
   readonly targets: BattleStackId[];
   readonly reason: string | null;
+  readonly maxTargets?: number;
+  readonly allTargets?: boolean;
+}
+
+function biologicallyLiving(catalog: ContentCatalog, stack: BattleStackState): boolean {
+  const traits = catalog.creatures[stack.creatureId]?.traits ?? [];
+  return !traits.includes('undead') && !traits.includes('construct');
 }
 
 /** Legal targets (and why not) for each of the stack's active neutral abilities. */
@@ -166,18 +172,18 @@ export function neutralAbilityOptions(catalog: ContentCatalog, battle: BattleSta
     const rule = def.rule;
     const used = (n: number) => (abilityUsed(stack, abilityId) >= n ? 'Already used in this battle' : null);
     const push = (targets: BattleStackId[], reason: string | null, none: string) =>
-      out.push({ abilityId, name: def.name, targets: reason ? [] : targets, reason: reason ?? (targets.length === 0 ? none : null) });
+      out.push({ abilityId, name: def.name, targets: reason ? [] : targets, reason: reason ?? (targets.length === 0 ? none : null), ...('maxTargets' in rule && rule.maxTargets ? {maxTargets:rule.maxTargets} : {}), ...('allAdjacent' in rule && rule.allAdjacent ? {allTargets:true} : {}) });
     switch (rule.type) {
       case 'sheltering_wings':
         push(
-          allies.filter((a) => a.id !== stack.id && adjacent(catalog, stack, a)).map((a) => a.id),
+          allies.filter((a) => (a.id !== stack.id || rule.includeSelf) && (!rule.livingOnly || biologicallyLiving(catalog,a)) && (rule.range ? inClearReach(catalog,battle,stack,a,rule.range) : adjacent(catalog, stack, a))).map((a) => a.id),
           used(rule.usesPerBattle),
-          'No adjacent ally to shelter',
+          rule.range ? `No living ally within ${rule.range} hexes in a clear line` : 'No adjacent ally to shelter',
         );
         break;
       case 'distract':
         push(
-          enemies.filter((e) => inClearReach(catalog, battle, stack, e, rule.range)).map((e) => e.id),
+          enemies.filter((e) => inClearReach(catalog, battle, stack, e, rule.range) && (!rule.mindEffect || (biologicallyLiving(catalog,e) && !catalog.creatures[e.creatureId]?.traits?.includes('mind_immune')))).map((e) => e.id),
           used(rule.usesPerBattle),
           `No enemy within ${rule.range} hexes in a clear line`,
         );
@@ -193,7 +199,7 @@ export function neutralAbilityOptions(catalog: ContentCatalog, battle: BattleSta
       }
       case 'reed_guard':
         push(
-          allies.filter((a) => a.id !== stack.id && adjacent(catalog, stack, a)).map((a) => a.id),
+          allies.filter((a) => a.id !== stack.id && adjacent(catalog, stack, a) && (!rule.livingOnly || biologicallyLiving(catalog,a))).map((a) => a.id),
           used(rule.usesPerBattle),
           'No adjacent ally to guard',
         );
@@ -258,7 +264,7 @@ function pullDestination(catalog: ContentCatalog, battle: BattleState, from: rea
 }
 
 /** Execute an active neutral ability (validated first; spends the activation unless stated). Returns false when the rule is not a neutral ability. */
-export function commitNeutralAbility(tx: Tx, battle: BattleState, stack: BattleStackState, abilityId: string, targetId: BattleStackId): boolean {
+export function commitNeutralAbility(tx: Tx, battle: BattleState, stack: BattleStackState, abilityId: string, targetId: BattleStackId, additionalTargetIds: readonly BattleStackId[] = []): boolean {
   const def = tx.catalog.abilities[abilityId];
   if (!def) return false;
   const rule = def.rule;
@@ -268,6 +274,29 @@ export function commitNeutralAbility(tx: Tx, battle: BattleState, stack: BattleS
   const needUse = (n: number) => {
     if (abilityUsed(stack, abilityId) >= n) reject('illegal_action', `${label} was already used by this stack in this battle`);
   };
+  // Extended neutral powers validate the whole selection before spending a use.
+  const extended = (rule.type==='sheltering_wings' && (rule.range || rule.livingOnly)) || (rule.type==='distract' && rule.mindEffect) || (rule.type==='reed_guard' && (rule.allAdjacent || rule.livingOnly));
+  if (extended && (rule.type==='sheltering_wings' || rule.type==='distract' || rule.type==='reed_guard')) {
+    needUse(rule.usesPerBattle);
+    const option=neutralAbilityOptions(catalog,battle,stack).find(o=>o.abilityId===abilityId)!;
+    const requested=[targetId,...additionalTargetIds];
+    if(new Set(requested).size!==requested.length) reject('illegal_target','Choose each target only once');
+    if(option.reason || requested.some(id=>!option.targets.includes(id))) reject('illegal_target',option.reason ?? 'A target is out of reach or immune');
+    if(requested.length>(option.maxTargets??1)) reject('illegal_target','Too many targets for this ability');
+    const targets=option.allTargets ? option.targets : requested;
+    spendUse(stack,abilityId);
+    if(rule.type==='reed_guard'){stack.defending=true;tx.emit({kind:'BattleStackDefended',stackId:stack.id});}
+    for(const id of targets){
+      const to=battle.stacks[id]!;
+      const common={sourceId:`ability:${rule.type}`,label,numerator:1,denominator:1,expiresAtRound:Number.MAX_SAFE_INTEGER,expiresOnActivationOf:stack.id,sourceStackId:stack.id,sourceSide:stack.side};
+      if(rule.type==='sheltering_wings') putStatus(battle,to,{...common,kind:'damage_ward',amount:rule.reductionPercent});
+      else if(rule.type==='distract') putStatus(battle,to,{...common,kind:'retaliation_suppressed',amount:1,hostile:true});
+      else {putStatus(battle,to,{...common,kind:'defense_bonus',amount:rule.defenseBonus,hostile:false});putStatus(battle,to,{...common,kind:'pull_immunity',amount:1,hostile:false});}
+    }
+    tx.emit({kind:'BattleAbilityUsed',stackId:stack.id,abilityId,targetId,targetIds:targets});
+    return true;
+  }
+  if(additionalTargetIds.length) reject('illegal_target','This ability accepts only one target');
   switch (rule.type) {
     case 'sheltering_wings': {
       needUse(rule.usesPerBattle);

@@ -21,24 +21,24 @@ const catalog = buildCatalog();
 const onDisk = (url: string | null) => !!url && existsSync(path.join(root, 'assets-runtime', url.replace(/^\.\//, '')));
 
 describe('map editor: campaign expansion palette', () => {
-  it('lists the six neutral hiring sites from content data, each with its portrait and map picture', () => {
+  it('lists all nine neutral hiring sites from content data, each with its portrait and map picture', () => {
     expect(NEUTRAL_SITE_TABLE.habitats).toBe(NEUTRAL_V2_HABITATS);
     expect(NEUTRAL_SITE_TABLE.stock).toBe(NEUTRAL_V2_SITE_STOCK);
     const palette = neutralPalette(catalog);
     expect(palette.map((e) => e.creatureId)).toEqual(Object.keys(NEUTRAL_V2_HABITATS));
-    expect(palette).toHaveLength(6);
+    expect(palette).toHaveLength(9);
     for (const e of palette) {
       expect(e.stock).toBe(NEUTRAL_V2_SITE_STOCK[e.creatureId]);
       expect(e.name).toBe(catalog.creatures[e.creatureId]!.name);
       expect(e.habitat).toBe(NEUTRAL_V2_HABITATS[e.creatureId]!.habitat);
-      expect(e.portraitUrl, `${e.creatureId} portrait`).toMatch(/campaign-v2\//);
+      expect(e.portraitUrl, `${e.creatureId} portrait`).toMatch(/(?:campaign-v2|neutral-dragons-v1)\//);
       expect(onDisk(e.portraitUrl), `${e.portraitUrl}`).toBe(true);
-      expect(e.siteUrl, `${e.creatureId} site`).toMatch(/campaign-v2\//);
+      expect(e.siteUrl, `${e.creatureId} site`).toMatch(/(?:campaign-v2|neutral-dragons-v1)\//);
       expect(onDisk(e.siteUrl), `${e.siteUrl}`).toBe(true);
     }
-    // Six different map pictures and portraits.
-    expect(new Set(palette.map((e) => e.siteUrl)).size).toBe(6);
-    expect(new Set(palette.map((e) => e.portraitUrl)).size).toBe(6);
+    // Nine different map pictures and portraits.
+    expect(new Set(palette.map((e) => e.siteUrl)).size).toBe(9);
+    expect(new Set(palette.map((e) => e.portraitUrl)).size).toBe(9);
   });
 
   it('draws the sluice closed and open, the ferry landing and the supply depot with their own pictures', () => {
@@ -47,7 +47,7 @@ describe('map editor: campaign expansion palette', () => {
     expect(closed).not.toBe(open);
     expect(v2SiteSpriteUrl({ kind: 'sluice' }, true)).toBe(open);
     for (const url of [closed, open, v2SiteSpriteUrl({ kind: 'ferry' }), v2SiteSpriteUrl({ kind: 'supply_depot' })]) {
-      expect(url).toMatch(/campaign-v2\//);
+      expect(url).toMatch(/(?:campaign-v2|neutral-dragons-v1)\//);
       expect(onDisk(url), `${url}`).toBe(true);
     }
     // The closed and open paintings share one ground anchor and display size (the same site in two states).
@@ -59,11 +59,11 @@ describe('map editor: campaign expansion palette', () => {
     expect(v2SiteSprite({ kind: 'creature_camp', creatureId: 'centaur' })).toBeNull();
   });
 
-  it('neutral upgrades add no placeable site: six dwellings keyed to the base form, each hiring both forms; habitat and stock by family', () => {
+  it('neutral upgrades add no placeable site: nine dwellings keyed to the base form, each hiring both forms; habitat and stock by family', () => {
     const palette = neutralPalette(catalog);
-    expect(palette).toHaveLength(6);
+    expect(palette).toHaveLength(9);
     for (const e of palette) {
-      const fam = catalog.families[e.creatureId]!;
+      const fam = catalog.families[catalog.creatures[e.creatureId]!.familyId]!;
       expect(fam.baseCreatureId).toBe(e.creatureId);
       const up = fam.upgradedCreatureId!;
       expect(up).toBeTruthy();

@@ -1,0 +1,410 @@
+[
+  {
+    "file": "assets/neutral_ancient_cuelebre/0.webp",
+    "sha256": "af21510d14e0b7eaa3786c989f6a0c7bb29bd269cb9b3c528eb96af31635e838"
+  },
+  {
+    "file": "assets/neutral_ancient_cuelebre/1.webp",
+    "sha256": "6da10cf8ae3e82f1da45414bcf3d8d7f15b9de35b4980d67c2e443e950444ec0"
+  },
+  {
+    "file": "assets/neutral_ancient_cuelebre/2.webp",
+    "sha256": "32a1653fab937323312e38e81001b3395476eda91cd815d5243bff626f32a4eb"
+  },
+  {
+    "file": "assets/neutral_ancient_cuelebre/3.webp",
+    "sha256": "e30275ef0e566430f7cdad4afb24f56e4fc57adff9033d89cbd55a54541a297e"
+  },
+  {
+    "file": "assets/neutral_ancient_cuelebre/4.webp",
+    "sha256": "c056e73a824fb13d6d55f8ba0916373d30dbc38bd128b62d5dfdff2aedc88b42"
+  },
+  {
+    "file": "assets/neutral_ancient_cuelebre/5.webp",
+    "sha256": "d969a0acc673ce7c000d109c418e0b9e400b6b4022dc6204cbe36cf94cdf90ac"
+  },
+  {
+    "file": "assets/neutral_ancient_cuelebre/6.webp",
+    "sha256": "fb2b8afa8dfbdd885eddf18159fdf2d57dcde9b6ed9144b19ca6b19c2a59fe22"
+  },
+  {
+    "file": "assets/neutral_ancient_cuelebre/map-160.webp",
+    "sha256": "065f3bee596d81edfdbab976c8abb72fbfd2691b31ad0b469d92ef06c9b9cfb4"
+  },
+  {
+    "file": "assets/neutral_ancient_cuelebre/map-64.webp",
+    "sha256": "abcf12d8178cc24891eef338e5446933b3004872d61cd2d71e52cecfedb2f9f7"
+  },
+  {
+    "file": "assets/neutral_ancient_cuelebre/map-96.webp",
+    "sha256": "c4ccee1e4f242473180de1c0d090a56d9f385517bf05b5ea81325c944ffd9794"
+  },
+  {
+    "file": "assets/neutral_ancient_cuelebre/portrait-160.webp",
+    "sha256": "03179d48fc103691f9019d423bf16483ea60b5c9511a2f9895af60efc02d63f1"
+  },
+  {
+    "file": "assets/neutral_ancient_cuelebre/portrait-320.webp",
+    "sha256": "17150502cc5bc82095792e10dc254934087de20535912e4adb9b8bf204391007"
+  },
+  {
+    "file": "assets/neutral_ancient_cuelebre/portrait-48.webp",
+    "sha256": "b13931bdcb7fed3029bf754a7e356e89764ceb5fe0579918aee729ae09cc79b7"
+  },
+  {
+    "file": "assets/neutral_ancient_cuelebre/portrait-64.webp",
+    "sha256": "cdd4dd6846c2ac338690c7fc5ef3e95dc3afaa969890295b82a4a37a3a94976a"
+  },
+  {
+    "file": "assets/neutral_ancient_cuelebre/portrait-96.webp",
+    "sha256": "f79209843f89a2007a7bfe1a27168e5817d023ecc0956aa4adbefa1ba50f0d01"
+  },
+  {
+    "file": "assets/neutral_ancient_cuelebre/special-fx.webp",
+    "sha256": "39caac8dc24b87755cf2052ec451f05658abe33db006bd14249f86e794ef3296"
+  },
+  {
+    "file": "assets/neutral_ancient_cuelebre/stand.png",
+    "sha256": "f79d03d1848ac6379d2c2a38f3dddfc9e78d607e738ba64dfcb1d85ea5f044f7"
+  },
+  {
+    "file": "assets/neutral_celestial_rain_dragon/0.webp",
+    "sha256": "57d3ab6c7d29df4284f524bf7bfcb218a09098027e5cca97a2fe3378c52eb931"
+  },
+  {
+    "file": "assets/neutral_celestial_rain_dragon/1.webp",
+    "sha256": "9d997f7a58ec5ea691fe40c5fcc6ec5ce9254a09da62f2167fce309f4383e5b1"
+  },
+  {
+    "file": "assets/neutral_celestial_rain_dragon/2.webp",
+    "sha256": "e0b60d373166fbfbeeffbe1ec928a5cbb61441e3498f7285151ba16950a5ce36"
+  },
+  {
+    "file": "assets/neutral_celestial_rain_dragon/3.webp",
+    "sha256": "7f0bc031ef3a7427788e15293d1f788cebbe2316e151a7af2d9bf74a9fd75dcd"
+  },
+  {
+    "file": "assets/neutral_celestial_rain_dragon/4.webp",
+    "sha256": "552e2d485d4801cd3cb21cee4214bf550f40af882b31cdbd979472d61c9d94c3"
+  },
+  {
+    "file": "assets/neutral_celestial_rain_dragon/5.webp",
+    "sha256": "bd12b18f2a313a6eedee4fb60545ce8909f4a35273d3c4ed0ad2e79fe7c6e7b5"
+  },
+  {
+    "file": "assets/neutral_celestial_rain_dragon/6.webp",
+    "sha256": "a9d90b0b16fbb27f7b7f6f2d9de92582517bf63d9f8d598c1003821de01d8b26"
+  },
+  {
+    "file": "assets/neutral_celestial_rain_dragon/map-160.webp",
+    "sha256": "079e3a29b1289b83e73a4948e4bd4d49762e848efccb1331736d636c4b0a5bd3"
+  },
+  {
+    "file": "assets/neutral_celestial_rain_dragon/map-64.webp",
+    "sha256": "aa938dcff8f9ced95d97aa9ccff5e2ac2f95ec6656a89c13a53829f803607981"
+  },
+  {
+    "file": "assets/neutral_celestial_rain_dragon/map-96.webp",
+    "sha256": "17cc77e4229137e3898c63a42c1bbbaeb502bd856d615de18c2f0fe5575c51ab"
+  },
+  {
+    "file": "assets/neutral_celestial_rain_dragon/portrait-160.webp",
+    "sha256": "a81c41e652c6a6dab4e2584206d890baea8d004de45da67ef956bc216fb373dc"
+  },
+  {
+    "file": "assets/neutral_celestial_rain_dragon/portrait-320.webp",
+    "sha256": "6a85996397edb31ae0e9fc644f0e2f5d196428586f35af6c78531651f419254c"
+  },
+  {
+    "file": "assets/neutral_celestial_rain_dragon/portrait-48.webp",
+    "sha256": "cfa3c8d33c15e1544065a42f8884ba4c62755856a156cc32a70555bfff949cd2"
+  },
+  {
+    "file": "assets/neutral_celestial_rain_dragon/portrait-64.webp",
+    "sha256": "873b3f9b8bbab853d1459cf858ceabc7101b4d71763690e68210d41339abe4ea"
+  },
+  {
+    "file": "assets/neutral_celestial_rain_dragon/portrait-96.webp",
+    "sha256": "432a814554ee4ee1d57ca4fca79e27ba49608c20bfa05e6b61e09f7944df5062"
+  },
+  {
+    "file": "assets/neutral_celestial_rain_dragon/special-fx.webp",
+    "sha256": "227f883484c9510ad4c218640f7b9363d837c6d29422ca7f6b24ee04fbec3225"
+  },
+  {
+    "file": "assets/neutral_celestial_rain_dragon/stand.png",
+    "sha256": "4d17de86a8c14d1a29ee8a0f1cf14e81eff3993673efcb25495cf67f808d2762"
+  },
+  {
+    "file": "assets/neutral_crowned_zilant/0.webp",
+    "sha256": "91a87c89605ba2933b5d88ebcdea400b78005283143b947f82e13a8c502000ac"
+  },
+  {
+    "file": "assets/neutral_crowned_zilant/1.webp",
+    "sha256": "9b6ba2672a82ab31e3fd03563313d31a43fc0c0eb255fb1c1ef6fe6237defb3a"
+  },
+  {
+    "file": "assets/neutral_crowned_zilant/2.webp",
+    "sha256": "283df97228291b049e60b1c357870148cf67bfb9d1933438f6cffb718fde6a4a"
+  },
+  {
+    "file": "assets/neutral_crowned_zilant/3.webp",
+    "sha256": "d08ac7eb750215f619c5d0667e0cddc8d486e8107dad395f0fa9e3b3a2333fe9"
+  },
+  {
+    "file": "assets/neutral_crowned_zilant/4.webp",
+    "sha256": "126414ffc3b8e5806a6287207af4c30a5d453ee0c21afeeaec5aceb7d42a55d4"
+  },
+  {
+    "file": "assets/neutral_crowned_zilant/5.webp",
+    "sha256": "063365e66aa3c63a313216c50a7ecff32c55c358dfe2e234584fd14bed94f247"
+  },
+  {
+    "file": "assets/neutral_crowned_zilant/6.webp",
+    "sha256": "e924ff7ebb3c647b7511889804feaf00c9e543ca459d4a1b41a1eef8e10d6dfe"
+  },
+  {
+    "file": "assets/neutral_crowned_zilant/map-160.webp",
+    "sha256": "8dde67fd33216a455dc5d5c63211b6cb396ddacc57d9638d00581bfeb2704d32"
+  },
+  {
+    "file": "assets/neutral_crowned_zilant/map-64.webp",
+    "sha256": "57dabb7e6ae3eca4721ef4c4aab0522d7d5aa65b2267ac1b214e6cff5c104ef5"
+  },
+  {
+    "file": "assets/neutral_crowned_zilant/map-96.webp",
+    "sha256": "ea06e1ce0ec0c7b49334611ae362b3b635aa0cd9295af6be871deef9aee5b44c"
+  },
+  {
+    "file": "assets/neutral_crowned_zilant/portrait-160.webp",
+    "sha256": "726103446f0a5a24515e4e2e734769ae7f8392bb63eb8853daf198209e310270"
+  },
+  {
+    "file": "assets/neutral_crowned_zilant/portrait-320.webp",
+    "sha256": "6a82b30cec9d38b56caffe2b0e98aef41c92a9f42e6ad577d26cb1a2b9630da3"
+  },
+  {
+    "file": "assets/neutral_crowned_zilant/portrait-48.webp",
+    "sha256": "70f3f32ab2c2a4bd4f7042c56870fff8e8640625c20c66ece0ad0a53b6da5b5e"
+  },
+  {
+    "file": "assets/neutral_crowned_zilant/portrait-64.webp",
+    "sha256": "79a7958c4703687c6d24891849c24b09b67c3093546fae7e2610a6d52f8a6b54"
+  },
+  {
+    "file": "assets/neutral_crowned_zilant/portrait-96.webp",
+    "sha256": "bc5d4cd8337bf13ef9a3f7d3c96b85a4ae9ec4e9bf705f2b4cd2b1808ce2380c"
+  },
+  {
+    "file": "assets/neutral_crowned_zilant/special-fx.webp",
+    "sha256": "c9abaa080198a271862135f3f32a5c5a4d5d6feff83bf90a1b23b9da4d70d729"
+  },
+  {
+    "file": "assets/neutral_crowned_zilant/stand.png",
+    "sha256": "42f4510ec272b9068a034a124f0d6c5f488055964da265fea7a13b2f29b253e5"
+  },
+  {
+    "file": "assets/neutral_cuelebre/0.webp",
+    "sha256": "9b01e96afb7147efdbffd597b5ca6114b6f5b574589c5eea83640146642f6775"
+  },
+  {
+    "file": "assets/neutral_cuelebre/1.webp",
+    "sha256": "6704fc180d312f98f17fa6e9abdac9463c8bf93dd549019f86ef9b54494f8480"
+  },
+  {
+    "file": "assets/neutral_cuelebre/2.webp",
+    "sha256": "9a0aba74f8dfa84e66ae41b4c71ae8d3c028c211a256efdebe6d4b02fd94edb3"
+  },
+  {
+    "file": "assets/neutral_cuelebre/3.webp",
+    "sha256": "4acfd1b10fc187fadcdfbe56b755fddccb75908c5fbac439be2fcca8cd324292"
+  },
+  {
+    "file": "assets/neutral_cuelebre/4.webp",
+    "sha256": "2fe2c7353d0fc8a7ef538e30de2376ed872d5b17147575dd565ab2127959ac8d"
+  },
+  {
+    "file": "assets/neutral_cuelebre/5.webp",
+    "sha256": "7739adf5c348de34cf02943ddda9b13c4276f9ab744a8e1a53cfc9a9aee16297"
+  },
+  {
+    "file": "assets/neutral_cuelebre/6.webp",
+    "sha256": "403444a8a1f4c866101f2ed3caef9a6f7afb325628bae283d9d86c9e3b7b1ef3"
+  },
+  {
+    "file": "assets/neutral_cuelebre/map-160.webp",
+    "sha256": "ce52c9db898ee05ffe8ee6b5c9b84f702ca0f58f00626342f60707007427d479"
+  },
+  {
+    "file": "assets/neutral_cuelebre/map-64.webp",
+    "sha256": "4d126035c3592a9d7ecc948eb28c533728ce38492f9ed3472f8e5d76afcb3064"
+  },
+  {
+    "file": "assets/neutral_cuelebre/map-96.webp",
+    "sha256": "90b0341ca4d22964c2aed7b26fb08a91239d98d2aef04de711caa2ac273a0e99"
+  },
+  {
+    "file": "assets/neutral_cuelebre/portrait-160.webp",
+    "sha256": "0c31b7eb58cc116d9a04cd6b1e75c3fd06d1f8717f9cae961ded3d6a020db2d8"
+  },
+  {
+    "file": "assets/neutral_cuelebre/portrait-320.webp",
+    "sha256": "11eefec5d165ea5601664f38cb671239782afd7c82b10083341776c2ed5c00d6"
+  },
+  {
+    "file": "assets/neutral_cuelebre/portrait-48.webp",
+    "sha256": "f03cf271cbb49d92ca2a9eb1ec92efdf13fc29f679b5775caef973664ffd69aa"
+  },
+  {
+    "file": "assets/neutral_cuelebre/portrait-64.webp",
+    "sha256": "983ffbbaa0dacb240594be119f98298f3f532a925f05681bbf359f1bcf493911"
+  },
+  {
+    "file": "assets/neutral_cuelebre/portrait-96.webp",
+    "sha256": "be21f9d18fbd4d9b66378a6c3833cb977b6a584f4aa6ea992d9132501a0588ca"
+  },
+  {
+    "file": "assets/neutral_cuelebre/special-fx.webp",
+    "sha256": "dfb1421d16ef72b64784a39201bfd6d1a3990e694045886849413c63f205bdd2"
+  },
+  {
+    "file": "assets/neutral_cuelebre/stand.png",
+    "sha256": "d45915270fd5b6081ebb63395c30a8120657d400692b5339162c3b76d93025b9"
+  },
+  {
+    "file": "assets/neutral_rain_dragon/0.webp",
+    "sha256": "dddc299056de03d0e7198431fc000239150b6d6eacbc9eda9246d437caae3810"
+  },
+  {
+    "file": "assets/neutral_rain_dragon/1.webp",
+    "sha256": "fa27383341d5b055987a33b8538122daa1eaf2e17df4f04ae923a1b852fbe4f3"
+  },
+  {
+    "file": "assets/neutral_rain_dragon/2.webp",
+    "sha256": "33d1346c561e4ce8d13054bf92ee5647dc8e848ae2acc9f4c0e7b810097a183d"
+  },
+  {
+    "file": "assets/neutral_rain_dragon/3.webp",
+    "sha256": "fd14bf4da5f74bc1494a2af7e577bc62febeadaa0f112c7fb9baa9d7aa4df625"
+  },
+  {
+    "file": "assets/neutral_rain_dragon/4.webp",
+    "sha256": "62da11f82736861e35b8fec6d6afbafbb2e03ca5db36eecc8558e3fa3d7d3a29"
+  },
+  {
+    "file": "assets/neutral_rain_dragon/5.webp",
+    "sha256": "19399d1aae348553326073958f80474fdd0a59c948270b5813a31414463d0b44"
+  },
+  {
+    "file": "assets/neutral_rain_dragon/6.webp",
+    "sha256": "13d66e5b4bb72ba3c7726855488dd793390ff3fe05f8a647166545cb25e42032"
+  },
+  {
+    "file": "assets/neutral_rain_dragon/map-160.webp",
+    "sha256": "da3995b981b43f2d7eb71308af3b422fbdb3cec989197ea8c6e03f04956cb01c"
+  },
+  {
+    "file": "assets/neutral_rain_dragon/map-64.webp",
+    "sha256": "72c90bc7cfa1a1d267f1d9d5734ec40a6932199d84b7f3a34dab2e67e8d50e39"
+  },
+  {
+    "file": "assets/neutral_rain_dragon/map-96.webp",
+    "sha256": "ccb2081a88875e3093487fb53c25316f37becd941cfa39b0de46a66eb74481c0"
+  },
+  {
+    "file": "assets/neutral_rain_dragon/portrait-160.webp",
+    "sha256": "469c2b2f15294faeb0bd4bbee0b2965829e414eb818e30f9a6617215877cca65"
+  },
+  {
+    "file": "assets/neutral_rain_dragon/portrait-320.webp",
+    "sha256": "4de39765d83860084f3d8b4a98d2116cc524ccb45a79ac80ef6163e892f0c7d1"
+  },
+  {
+    "file": "assets/neutral_rain_dragon/portrait-48.webp",
+    "sha256": "a0f35160449c203273e07a51dbca5506af7654b5e56579697b88ac1d6550eae4"
+  },
+  {
+    "file": "assets/neutral_rain_dragon/portrait-64.webp",
+    "sha256": "5536b92f3c3b10b9f074b21550c8234f436ea57090a9059c6cd11d3e00d365e7"
+  },
+  {
+    "file": "assets/neutral_rain_dragon/portrait-96.webp",
+    "sha256": "bf246dacaa9edc3646285d4821432098ec6a92450b9ec5e68493682c37115785"
+  },
+  {
+    "file": "assets/neutral_rain_dragon/special-fx.webp",
+    "sha256": "5fc83f0e61b69244d1e5ecac0405947fac34846464bc5c5c25af99d2d98fc46e"
+  },
+  {
+    "file": "assets/neutral_rain_dragon/stand.png",
+    "sha256": "5cf87f24560f8a567fec86dad365bb06482337651704a37d0f174e03e772939f"
+  },
+  {
+    "file": "assets/neutral_zilant/0.webp",
+    "sha256": "238669165b29bb3fab18af30a171005d1a7a6b155a9a8f7866518fbe179908ac"
+  },
+  {
+    "file": "assets/neutral_zilant/1.webp",
+    "sha256": "39b542c5e369175abaf23a719d18579b432944ef730e6db7086d107c8f6fff0a"
+  },
+  {
+    "file": "assets/neutral_zilant/2.webp",
+    "sha256": "4e8f3c9f66f5c981f0ef793e3347be4c507b1d4ada210fcfa77c54ead9b0132e"
+  },
+  {
+    "file": "assets/neutral_zilant/3.webp",
+    "sha256": "7fe33d291b132c1e84b01ef4877540f24996665f3a75f7e5a3629417b31162e7"
+  },
+  {
+    "file": "assets/neutral_zilant/4.webp",
+    "sha256": "55148652a8fa02135c73cdc0f77ab75b6cf9bdd8884413e7ac725ea28725fb8b"
+  },
+  {
+    "file": "assets/neutral_zilant/5.webp",
+    "sha256": "924c4b70241545113cccac78cad9f010f26da608c44017d172bdfea4bd0fcedf"
+  },
+  {
+    "file": "assets/neutral_zilant/6.webp",
+    "sha256": "319f9530edb2475455b1b41de9b1aa36b478624152ff6475de03e8a0718d3c2d"
+  },
+  {
+    "file": "assets/neutral_zilant/map-160.webp",
+    "sha256": "5b68dcc54f7d7efaa8d81982f85c6d4035acd3c81ec9d51c883d53861bf1a426"
+  },
+  {
+    "file": "assets/neutral_zilant/map-64.webp",
+    "sha256": "08ac56e53abb13a183ed9cb206eb999819dd8835e3858dd7da1e8c803e7553be"
+  },
+  {
+    "file": "assets/neutral_zilant/map-96.webp",
+    "sha256": "f3b625416d6f1deba956a76bd11da5ce3c525d94f29bc7f246fe0819fb0bd605"
+  },
+  {
+    "file": "assets/neutral_zilant/portrait-160.webp",
+    "sha256": "c5f571ba57296868d20236e034a7208c31df0963f5794d4d0693685ba3f0fe75"
+  },
+  {
+    "file": "assets/neutral_zilant/portrait-320.webp",
+    "sha256": "4888cf492d3fe877cd0bef94bee31c2e2a936d3bda359e5b72ce4b0c8284107c"
+  },
+  {
+    "file": "assets/neutral_zilant/portrait-48.webp",
+    "sha256": "ff1f63ae9eccf37227fea03b3addc52ce34791d89e1a90e9e29ca925250f2e0f"
+  },
+  {
+    "file": "assets/neutral_zilant/portrait-64.webp",
+    "sha256": "160b3bc21e829029e255c20975b535c223fc5c12f781186f4cb2c2bb22b5d99c"
+  },
+  {
+    "file": "assets/neutral_zilant/portrait-96.webp",
+    "sha256": "790d2fcfeb5a1c93439dc8fade344f5478676591f38b3bf4bb00672e91d04312"
+  },
+  {
+    "file": "assets/neutral_zilant/special-fx.webp",
+    "sha256": "31670e485c1da2f82eb7d7ac159e8a621b0bf46f0c72aa0a4d0ab1514c92a4d0"
+  },
+  {
+    "file": "assets/neutral_zilant/stand.png",
+    "sha256": "e0d26118da11ba6d98f3e731ea4425c973842192ac98a0a275711032cfe6de87"
+  }
+]

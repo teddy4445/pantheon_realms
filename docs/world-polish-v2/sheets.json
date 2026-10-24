@@ -1,0 +1,62 @@
+{
+  "forest": [
+    "birch",
+    "willow",
+    "ginkgo",
+    "cypress",
+    "olive",
+    "redwood",
+    "snow-spruce",
+    "bamboo"
+  ],
+  "mountains": [
+    "slate-ridge",
+    "granite-dome",
+    "twin-spires",
+    "karst-needles",
+    "red-mesa",
+    "crater-cone",
+    "limestone-arch",
+    "sea-cliff"
+  ],
+  "drylands": [
+    "acacia",
+    "date-palms",
+    "cactus",
+    "ochre-boulders",
+    "salt-stones",
+    "dead-tree",
+    "thorn-bushes",
+    "desert-arch"
+  ],
+  "freshwater": [
+    "cattails",
+    "willow-roots",
+    "river-stones",
+    "reed-log",
+    "lily-pads",
+    "alder-roots",
+    "blue-iris",
+    "reed-islet"
+  ],
+  "coast": [
+    "driftwood",
+    "sea-boulders",
+    "sea-thrift",
+    "shell-bank",
+    "old-jetty",
+    "mangrove",
+    "dune-grass",
+    "coral-rock"
+  ],
+  "details": [
+    "fern-stump",
+    "mushrooms",
+    "heather",
+    "moss-cairn",
+    "golden-bracken",
+    "juniper",
+    "root-slab",
+    "stone-spring"
+  ]
+}

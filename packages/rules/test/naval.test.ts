@@ -163,7 +163,7 @@ describe('launching a ship', () => {
 });
 
 describe('embarking and disembarking', () => {
-  it('embarks from an adjacent shore onto the neutral ship (claiming it), using all remaining movement', () => {
+  it('embarks from an adjacent shore onto the neutral ship (claiming it), using one movement step', () => {
     const d = navalDriver();
     const ship = ships(d.state)['map_ship_free']!;
     place(d, H1, shoreBeside(d.state, ship.coord), 640);
@@ -174,7 +174,7 @@ describe('embarking and disembarking', () => {
     const after = ships(d.state)[ship.shipId]!;
     expect(after).toMatchObject({ heroId: H1, ownerId: P1, state: 'occupied' });
     expect(d.state.heroes[H1]!.position).toEqual(ship.coord);
-    expect(d.state.heroes[H1]!.movementPoints).toBe(0);
+    expect(d.state.heroes[H1]!.movementPoints).toBe(540);
     expect(issues(d.state)).toEqual([]);
     // Already aboard: no second embarkation.
     d.state.heroes[H1]!.movementPoints = 500;
@@ -233,7 +233,7 @@ describe('embarking and disembarking', () => {
     const ev = d.do({ kind: 'DisembarkHero', heroId: H1, landCoord: shores[0]! });
     expect(ev.find((e) => e.kind === 'HeroDisembarked')).toMatchObject({ heroId: H1, shipId: 'map_ship_free', from: ship.coord, to: shores[0] });
     expect(d.state.heroes[H1]!.position).toEqual(shores[0]);
-    expect(d.state.heroes[H1]!.movementPoints).toBe(0);
+    expect(d.state.heroes[H1]!.movementPoints).toBe(200);
     expect(ships(d.state)['map_ship_free']).toMatchObject({ heroId: null, state: 'empty', ownerId: P1, coord: ship.coord });
     expect(issues(d.state)).toEqual([]);
     // The hull is ours now: a rival may not take it.
@@ -279,10 +279,13 @@ describe('sailing on the water-only graph', () => {
     const ship = ships(d.state)['map_ship_free']!;
     place(d, H1, shoreBeside(d.state, ship.coord), 450);
     d.do({ kind: 'EmbarkHero', heroId: H1, shipId: ship.shipId });
-    expect(d.state.heroes[H1]!.movementPoints).toBe(0);
-    // Nothing more today: the ship cannot move, and landing needs 100 points.
-    expect(d.reject({ kind: 'MoveHero', heroId: H1, destination: cellIn(d.state, 12, 8) }).code).toBe('insufficient_movement');
-    expect(d.reject({ kind: 'DisembarkHero', heroId: H1, landCoord: landingCells(catalog, d.state, H1)[0]! }).code).toBe('insufficient_movement');
+    expect(d.state.heroes[H1]!.movementPoints).toBe(350);
+    const shore = landingCells(catalog, d.state, H1)[0]!;
+    d.do({ kind: 'DisembarkHero', heroId: H1, landCoord: shore });
+    expect(d.state.heroes[H1]!.movementPoints).toBe(250);
+    d.do({ kind: 'EmbarkHero', heroId: H1, shipId: ship.shipId });
+    expect(d.state.heroes[H1]!.movementPoints).toBe(150);
+
   });
 
   it('two ships never share a tile: an own empty hull blocks the way, an enemy hull too', () => {
@@ -335,7 +338,7 @@ describe('mixed-mode routes stop at every mode change', () => {
     expect(q.voyage!.transitions.map((t) => t.kind)).toEqual(['embark', 'disembark']);
     expect(q.transition).toMatchObject({ kind: 'embark', shipId: 'map_ship_free' });
     const days = voyageDays(catalog, d.state, H1, q.voyage!);
-    expect(days).toBeGreaterThanOrEqual(3);
+    expect(days).toBe(2);
     // The same planner, the same answer.
     expect(quoteTravel(catalog, d.state, H1, target)).toEqual(q);
 

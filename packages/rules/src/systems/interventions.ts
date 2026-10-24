@@ -207,6 +207,7 @@ export function commitBattleIntervention(tx: Tx, interventionId: string, targetI
   const side: BattleSideId = active.side;
   if (def.consumesCommanderAction) battle.sides[side].castThisRound = true;
   const e = def.effect;
+  let damageDealt: number | undefined;
   switch (e.type) {
     case 'library_formation_swap': {
       const target = battle.stacks[targetId!]!;
@@ -263,12 +264,14 @@ export function commitBattleIntervention(tx: Tx, interventionId: string, targetI
     }
     case 'battle_smite': {
       const target = battle.stacks[targetId!]!;
-      applyDamage(tx, battle, target, e.damage);
+      const before = target.totalHp;
+      applyDamage(tx, battle, target, Math.max(e.damage, Math.floor(target.totalHp * (e.percent ?? 0) / 100)));
+      damageDealt = before - target.totalHp;
       break;
     }
     default:
       reject('illegal_action', 'Not a battle intervention');
   }
-  tx.emit({ kind: 'InterventionInvoked', playerId: tx.actorId, interventionId: def.id, targetTownId: null, targetStackId: targetId ?? null });
+  tx.emit({ kind: 'InterventionInvoked', playerId: tx.actorId, interventionId: def.id, targetTownId: null, targetStackId: targetId ?? null, ...(damageDealt !== undefined ? { damage: damageDealt } : {}) });
   battleEnded(tx, battle);
 }

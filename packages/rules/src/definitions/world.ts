@@ -196,8 +196,8 @@ export type SiteKind =
        */
       readonly weeklyTraining?: number;
     }
-  /** One-time map event: the first hero to arrive chooses one option. */
-  | { readonly type: 'map_event'; readonly title: string; readonly text: string; readonly options: readonly MapEventOptionDefinition[] }
+  /** Choice encounter. Ordinary events and ruins are one-time; other landmarks renew per hero each week. */
+  | { readonly type: 'map_event'; readonly landmark?: 'statue' | 'waterfall' | 'tree' | 'ruins'; readonly restoration?: { readonly pantheonId: string; readonly size: 'small' | 'large' }; readonly title: string; readonly text: string; readonly options: readonly MapEventOptionDefinition[] }
   /** Capturable relic shrine (hold-the-relic victory). */
   | { readonly type: 'relic' }
   /**
@@ -278,6 +278,9 @@ export const KEY_COLOR_LABEL: Readonly<Record<KeyColor, string>> = { azure: 'Azu
 export const KEY_COLOR_HEX: Readonly<Record<KeyColor, string>> = { azure: '#3b8fe0', crimson: '#c0392b', emerald: '#2e9e5b', amber: '#d9a21b', violet: '#8e5bd6', ivory: '#e8e2cf' };
 
 export interface MapEventOptionDefinition {
+  /** A paid teaching is validated before charging; uses the same spellbook/Wisdom rules as shrines. */
+  readonly teachSpellId?: SpellId;
+  readonly landmarkAction?: 'battle' | 'courage' | 'protection';
   /** A declared coalition reserve delivered to this allied hero instead of the visitor. */
   readonly rewardHeroId?: HeroId;
   readonly checkpointBefore?: boolean;

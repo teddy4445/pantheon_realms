@@ -62,7 +62,7 @@ function riverMap(extra: (doc: CustomMapDocument) => CustomSite[] = () => []): C
 describe('custom maps: campaign expansion sites', () => {
   it('lists the four new site kinds for the editor palette, apart from the classic ones', () => {
     expect(CUSTOM_SITE_KINDS.filter((k) => k.palette === 'neutral').map((k) => k.id)).toEqual(['neutral_dwelling']);
-    expect(CUSTOM_SITE_KINDS.filter((k) => k.palette === 'landmark').map((k) => k.id)).toEqual(['sluice', 'ferry', 'supply_depot']);
+    expect(CUSTOM_SITE_KINDS.filter((k) => k.palette === 'landmark').map((k) => k.id)).toEqual(['restoration_shrine', 'restoration_temple', 'sluice', 'ferry', 'supply_depot']);
     expect(CUSTOM_SITE_KINDS.filter((k) => !k.palette)).toHaveLength(21);
   });
 

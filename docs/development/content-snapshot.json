@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-24",
+  "appVersion": "1.0.0",
+  "counts": {
+    "pantheons": 6,
+    "families": 65,
+    "creatures": 130,
+    "spells": 136,
+    "interventions": 38,
+    "artifacts": 128,
+    "gods": 60,
+    "heroes": 77
+  },
+  "campaigns": [
+    {
+      "id": "three_beacons",
+      "name": "The Three Beacons",
+      "chapters": 2
+    },
+    {
+      "id": "silent_oracle",
+      "name": "The Silent Oracle",
+      "chapters": 6
+    },
+    {
+      "id": "winter_oath",
+      "name": "The Winter Oath",
+      "chapters": 6
+    },
+    {
+      "id": "twelfth_hour",
+      "name": "The Twelfth Hour",
+      "chapters": 6
+    },
+    {
+      "id": "lantern_road",
+      "name": "The Lantern Road",
+      "chapters": 6
+    },
+    {
+      "id": "silver_branch",
+      "name": "The Silver Branch",
+      "chapters": 6
+    },
+    {
+      "id": "new_fire",
+      "name": "The New Fire",
+      "chapters": 5
+    },
+    {
+      "id": "worlds_met",
+      "name": "When the Worlds Met",
+      "chapters": 7
+    },
+    {
+      "id": "ashes_accord",
+      "name": "The Ashes of the Accord",
+      "chapters": 7
+    }
+  ]
+}

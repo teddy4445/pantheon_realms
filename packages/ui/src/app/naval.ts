@@ -172,7 +172,7 @@ export function shipInspectView(catalog: ContentCatalog, state: MatchState, view
     const probe = cells[0] ? quoteDisembark(catalog, state, aboard.id, cells[0]) : null;
     landing = probe?.legal ? cells.map((c) => ({ coord: c, label: `Land to the ${directionLabel(ship.coord, c)}`, command: { kind: 'DisembarkHero', heroId: aboard.id, landCoord: { q: c.q, r: c.r } } as CommandPayload })) : [];
     const reason = cells.length === 0 ? 'No free shore beside the ship to land on' : probe && !probe.legal ? probe.reason : null;
-    actions.push({ id: 'disembark', label: 'Disembark', enabled: landing.length > 0, reason: landing.length > 0 ? null : (reason ?? 'Cannot land now'), detail: `Go ashore on a free tile beside the ship. ${probe?.remaining ? `Safe Landing preserves ${probe.remaining} movement points` : 'Uses all remaining movement'}; the empty ship stays here.` });
+    actions.push({ id: 'disembark', label: 'Disembark', enabled: landing.length > 0, reason: landing.length > 0 ? null : (reason ?? 'Cannot land now'), detail: `Go ashore on a free tile beside the ship. ${probe?.remaining ? `Leaves ${probe.remaining} movement points` : 'Costs one movement step'}; the empty ship stays here.` });
   } else if (!ship.heroId && selected && selected.ownerId === viewerId && !heroShip(state, selected.id)) {
     // An empty ship of the viewer's or neutral: the selected hero embarks from the adjacent shore.
     const q = quoteEmbark(catalog, state, selected.id, ship.shipId);
@@ -183,7 +183,7 @@ export function shipInspectView(catalog: ContentCatalog, state: MatchState, view
       enabled: q.legal,
       reason: q.legal ? null : q.reason,
       command: { kind: 'EmbarkHero', heroId: selected.id, shipId: ship.shipId },
-      detail: q.keel ? `The keel costs ${q.minimum} movement and preserves ${q.remaining ?? 0} for sailing. Once per day.` : `Uses all remaining movement (at least ${q.minimum}).`,
+      detail: q.keel ? `The keel costs ${q.minimum} movement and preserves ${q.remaining ?? 0} for sailing. Once per day.` : `Costs one movement step (at least ${q.minimum}).`,
     });
     if (!adjacent) {
       const t = quoteTravel(catalog, state, selected.id, ship.coord);
@@ -378,13 +378,12 @@ export interface TransitionPrompt {
 export function transitionPrompt(catalog: ContentCatalog, state: MatchState, heroId: string, t: VoyageTransition): TransitionPrompt {
   const hero = state.heroes[heroId];
   const name = hero?.name ?? 'The hero';
-  const mp = hero?.movementPoints ?? 0;
   if (t.kind === 'embark') {
     const q = quoteEmbark(catalog, state, heroId, t.shipId);
     return {
       kind: 'embark',
-      title: 'Embark on the ship? Uses all remaining movement.',
-      body: `${name} boards the ship to the ${directionLabel(t.shore, t.shipCoord)}${q.claims ? ' and claims it for your empire' : ''}. Embarking uses all ${mp} remaining movement points; the voyage continues next turn.`,
+      title: 'Embark on the ship? Costs one movement step.',
+      body: `${name} boards the ship to the ${directionLabel(t.shore, t.shipCoord)}${q.claims ? ' and claims it for your empire' : ''}. Boarding costs ${q.minimum} movement points; ${q.remaining ?? 0} remain.`,
       confirmLabel: 'Embark',
       legal: q.legal,
       reason: q.legal ? null : q.reason,
@@ -394,8 +393,8 @@ export function transitionPrompt(catalog: ContentCatalog, state: MatchState, her
   const q = quoteDisembark(catalog, state, heroId, t.landCoord);
   return {
     kind: 'disembark',
-    title: q.remaining ? 'Go ashore with Safe Landing?' : 'Go ashore? Uses all remaining movement.',
-    body: `${name} lands to the ${directionLabel(t.water, t.landCoord)}, leaving the empty ship at anchor. ${q.remaining ? `Safe Landing preserves ${q.remaining} movement points; you can continue today.` : `Landing uses all ${mp} remaining movement points; the journey continues next turn.`}`,
+    title: q.remaining ? 'Go ashore?' : 'Go ashore? Costs one movement step.',
+    body: `${name} lands to the ${directionLabel(t.water, t.landCoord)}, leaving the empty ship at anchor. ${q.remaining ? `Leaves ${q.remaining} movement points; you can continue today.` : `Landing costs ${q.minimum} movement points.`}`,
     confirmLabel: 'Disembark',
     legal: q.legal,
     reason: q.legal ? null : q.reason,

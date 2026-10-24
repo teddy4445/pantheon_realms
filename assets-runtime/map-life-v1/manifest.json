@@ -1,0 +1,16 @@
+{
+  "sites": {
+    "map.site.windmill": {
+      "file": "map-life-v1/windmill-body.webp",
+      "anchor": [
+        0.5,
+        0.9172
+      ],
+      "pixelsPerHex": 140,
+      "width": 162,
+      "height": 166,
+      "status": "final",
+      "provenance": "Built-in imagegen stationary windmill; separate animated sails in mapLife.ts."
+    }
+  }
+}

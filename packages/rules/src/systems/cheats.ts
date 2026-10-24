@@ -6,7 +6,8 @@ import { refreshTownShops } from './services';
 import { maxMana } from '../resolvers/heroes';
 import { weeklyGrowthFor } from '../resolvers/town';
 
-export type CheatEffect = 'resources' | 'movement' | 'buildings' | 'creatures' | 'explore' | 'mana' | 'upgrades';
+export type CheatEffect = 'resources' | 'movement' | 'buildings' | 'creatures' | 'explore' | 'mana' | 'upgrades'
+  | 'gold' | 'wood' | 'stone' | 'crystal' | 'favor' | 'attack' | 'defense' | 'power' | 'knowledge' | 'reinforcements' | 'population';
 
 /** Typed commands keep these deliberate rule bypasses deterministic and saveable. */
 export function commitCheat(tx: Tx, effect: CheatEffect): void {
@@ -15,6 +16,22 @@ export function commitCheat(tx: Tx, effect: CheatEffect): void {
   const heroes = Object.values(tx.state.heroes).filter(h => h.ownerId === tx.actorId && h.status === 'active');
   const towns = Object.values(tx.state.towns).filter(t => t.ownerId === tx.actorId);
   switch (effect) {
+    case 'gold': grant(tx, tx.actorId, resources({gold: 50000}), 'Midas touch'); break;
+    case 'wood': grant(tx, tx.actorId, resources({wood: 250}), 'Forest bounty'); break;
+    case 'stone': grant(tx, tx.actorId, resources({stone: 250}), 'Mountain gift'); break;
+    case 'crystal': grant(tx, tx.actorId, resources({crystal: 100}), 'Starlight'); break;
+    case 'favor': grant(tx, tx.actorId, resources({favor: 100}), 'Divine audience'); break;
+    case 'attack': case 'defense': case 'power': case 'knowledge':
+      for (const h of heroes) h.attributes[effect] += 5;
+      break;
+    case 'reinforcements':
+      for (const army of [...heroes.map(h => h.army), ...towns.map(t => t.garrison)])
+        for (const stack of army.slots) if (stack) stack.count += 25;
+      break;
+    case 'population':
+      for (const town of towns) for (const familyId of Object.keys(town.population))
+        town.population[familyId] = (town.population[familyId] ?? 0) + 25;
+      break;
     case 'resources': grant(tx, tx.actorId, resources({ gold: 10000, wood: 50, stone: 50, crystal: 25, favor: 25 }), 'Divine blessing'); break;
     case 'movement': for (const h of heroes) h.movementPoints = 10000; break;
     case 'mana': for (const h of heroes) h.mana = maxMana(tx.catalog, tx.state, h); break;

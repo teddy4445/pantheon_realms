@@ -22,6 +22,18 @@ const pngSize = (file: string) => {
   return { w: d.readUInt32BE(16), h: d.readUInt32BE(20), colorType: d[25] };
 };
 
+// Dragon recruitment strips use WebP; validate their real dimensions too.
+const webpSize = (file: string) => {
+  const d = readFileSync(file);
+  expect(d.toString('latin1', 8, 12)).toBe('WEBP');
+  const kind = d.toString('latin1', 12, 16);
+  if (kind === 'VP8X') return { w: 1 + d.readUIntLE(24, 3), h: 1 + d.readUIntLE(27, 3) };
+  if (kind === 'VP8 ') return { w: d.readUInt16LE(26) & 0x3fff, h: d.readUInt16LE(28) & 0x3fff };
+  expect(kind).toBe('VP8L');
+  const bits = d.readUInt32LE(21);
+  return { w: (bits & 0x3fff) + 1, h: ((bits >> 14) & 0x3fff) + 1 };
+};
+
 describe('recruitment & route kit', () => {
   it('registers the nine pictures: relative PNG files with alpha, at most 512 px, visible bounds measured', () => {
     const ids = routeKitIds().sort();
@@ -66,7 +78,7 @@ describe('recruitment & route kit', () => {
       expect(s, id).not.toBeNull();
       expect(s!.native, id).toBe(true);
       const file = path.join(runtime, s!.url.slice(2));
-      const size = pngSize(file);
+      const size = file.endsWith('.webp') ? webpSize(file) : pngSize(file);
       expect(size.w, id).toBe(s!.frameWidth * s!.frames);
       expect(size.h, id).toBe(s!.frameHeight);
       const [x0, y0, x1, y1] = s!.visible;

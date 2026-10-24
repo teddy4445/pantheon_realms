@@ -17,4 +17,29 @@ ambrosia
 age of heroes
   Upgrades every owned active hero's and town garrison's creatures to their upgraded form, preserving counts. Creatures with no upgrade remain unchanged.
 
-The extra phrases are original themed commands inspired by the resource, reveal and empowerment cheats found in Age of Empires / Age of Mythology. This list is an external owner reference; no list, autocomplete or command examples are shown in the game.
+midas touch
+  Adds 50,000 gold.
+whispering woods
+  Adds 250 wood.
+bones of the earth
+  Adds 250 stone.
+starlight in a bottle
+  Adds 100 crystals.
+the gods owe me
+  Adds 100 favor.
+ares awakens
+  Permanently adds 5 Attack to every active owned hero.
+aegis eternal
+  Permanently adds 5 Defense to every active owned hero.
+storm in my veins
+  Permanently adds 5 Power to every active owned hero.
+athena remembers
+  Permanently adds 5 Knowledge to every active owned hero. Use ambrosia afterward to refill mana.
+echoes of the legion
+  Adds 25 creatures to every occupied stack in active owned hero armies and owned town garrisons.
+spring without end
+  Adds 25 recruits to each already-open population pool in owned towns.
+alohomora
+  Opens the Unsealed Grimoire: an animated unlocking seal followed by an illustrated book, four invocations per page (the last page has three). Prepare invocation copies its phrase into the Oracle; press Send to apply it. Reduced motion skips the unlocking animation.
+
+The extra phrases are original themed commands inspired by resource, reveal and empowerment cheats. The list is now available in the game through alohomora.

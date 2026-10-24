@@ -82,13 +82,18 @@ describe('varied borders between lands (owner request 2026-10-07)', () => {
   // A patchwork of grounds (stable pseudo-random per hex).
   const terrainAt = (q: number, r: number): Terrain => grounds[((((Math.imul(q + 3, 2654435761) ^ Math.imul(r + 7, 40503)) >>> 0) >>> 7) + Math.floor(q / 3) + Math.floor(r / 2)) % grounds.length]!;
 
-  it('keeps one piece per border; shores unchanged; varies reach, mirroring and who reaches', () => {
+  it('keeps one piece per border; varies shore depth without moving edge joins', () => {
     const plain = planGroundEdges(W, H, terrainAt, ROAD_STEP, 3);
     const varied = planGroundEdges(W, H, terrainAt, ROAD_STEP, 3, { salt: 1234 });
     expect(varied.length).toBe(plain.length);
     const shores = (list: typeof plain) => list.filter((p) => p.character === 'shore').map((p) => `${p.q},${p.r},${p.k},${p.variant}`);
     expect(shores(varied)).toEqual(shores(plain));
-    for (const p of varied.filter((x) => x.character === 'shore')) expect([p.depth, p.mirror]).toEqual([1, false]);
+    for (const p of varied.filter((x) => x.character === 'shore')) {
+      expect(p.depth).toBeGreaterThanOrEqual(.72);
+      expect(p.depth).toBeLessThanOrEqual(1.28);
+      expect(p.mirror).toBe(false);
+    }
+    expect(new Set(varied.filter(x=>x.character==='shore').map(x=>x.depth)).size).toBeGreaterThan(1);
     const land = varied.filter((p) => p.character !== 'shore');
     const depths = land.map((p) => p.depth!);
     expect(Math.min(...depths)).toBeLessThan(1);

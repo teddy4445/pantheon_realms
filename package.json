@@ -1,8 +1,8 @@
 {
   "name": "pantheon-realms",
   "private": true,
-  "version": "1.8.0",
-  "description": "Pantheon Realms \u2014 turn-based mythological strategy (TypeScript rules, React UI, PixiJS 2D, Electron).",
+  "version": "1.0.0",
+  "description": "Pantheon Realms — turn-based mythological strategy (TypeScript rules, React UI, PixiJS 2D, Electron).",
   "author": "Teddy Lazebnik",
   "type": "module",
   "workspaces": [
@@ -56,6 +56,7 @@
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.1.1",
+    "sharp": "0.34.5",
     "typescript": "7.0.2",
     "vite": "8.3.1",
     "vitest": "5.0.2"

@@ -3,6 +3,12 @@ let data=structuredClone(original),selected=null,reference=false;
 const stage=document.querySelector('#stage'),list=document.querySelector('#list');
 function version(b){return b.variants.find(v=>v.id===b.versionId)??b.variants.at(-1);}
 function update(){
+ const civic=data.buildings.find(b=>b.id==='civic_hall');
+ const stageLevel=civic?version(civic).level:1;
+ data.background=`background.l${stageLevel}.png`;
+ const background=document.querySelector('.background');
+ if(background.getAttribute('src')!==data.background)background.src=data.background;
+ document.querySelector('#background-stage').value=String(stageLevel);
  for(const b of data.buildings){
   const v=version(b),img=document.getElementById('art-'+b.id);
   b.file=v.file;
@@ -46,6 +52,10 @@ for(const b of data.buildings){
  };
 }
 document.querySelector('#all').onclick=()=>{data.buildings.forEach(b=>b.visible=true);update()};
+document.querySelector('#background-stage').onchange=e=>{
+ const b=data.buildings.find(b=>b.id==='civic_hall');
+ b.versionId=b.variants.find(v=>v.level===+e.target.value).id;update();
+};
 document.querySelector('#none').onclick=()=>{data.buildings.forEach(b=>b.visible=false);update()};
 document.querySelector('#base').onclick=()=>{data.buildings.forEach(b=>{b.visible=true;b.versionId=b.variants[0].id});update()};
 document.querySelector('#maximum').onclick=()=>{data.buildings.forEach(b=>{b.visible=true;b.versionId=b.variants.at(-1).id});update()};

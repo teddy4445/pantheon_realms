@@ -98,6 +98,8 @@ export interface AbilityAction {
   readonly reason: string | null;
   readonly target: 'ally' | 'enemy' | 'self';
   readonly targets: readonly string[];
+  readonly maxTargets: number;
+  readonly allTargets: boolean;
   readonly icon: string;
   /** Tooltip and accessible description: state, uses, exact rule, restriction. */
   readonly tooltip: string;
@@ -127,8 +129,9 @@ export function abilityActions(catalog: ContentCatalog, battle: BattleState, la:
     const tooltip = [head.endsWith('.') ? head : `${head}.`, exactRule, restriction].filter(Boolean).join(' ');
     const n = a.targets.length;
     const whom = target === 'ally' ? 'friendly stack' : target === 'enemy' ? 'enemy stack' : 'stack';
-    const prompt = `${a.name}: choose a highlighted ${whom} (${n} in reach).`;
-    return { abilityId: a.abilityId, name: a.name, selfLabel, free: !!a.free, exactRule, restriction, uses, available, reason, target, targets: a.targets, icon: abilityBadge(catalog, a.abilityId), tooltip, prompt };
+    const maxTargets=a.maxTargets??1,allTargets=!!a.allTargets;
+    const prompt = allTargets ? `${a.name}: choose an ally to protect all ${n} eligible neighbours.` : maxTargets>1 ? `${a.name}: select up to ${maxTargets} highlighted stacks, then confirm (${n} in reach).` : `${a.name}: choose a highlighted ${whom} (${n} in reach).`;
+    return { abilityId: a.abilityId, name: a.name, selfLabel, free: !!a.free, exactRule, restriction, uses, available, reason, target, targets: a.targets, maxTargets, allTargets, icon: abilityBadge(catalog, a.abilityId), tooltip, prompt };
   });
 }
 

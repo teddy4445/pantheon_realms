@@ -296,8 +296,8 @@ export const ICON_ART: Partial<Record<IconName, string>> = {
 
 /**
  * The expedition kit's controls (2026-10-17) by Icon name → their kit asset ID (`expedition.icon.*`,
- * files in assets-runtime/expedition-v1/icons/). Drawn as glyphs (their paths above), never as icon art,
- * so they follow the text colour and contrast settings. `flag` stays the delivered objective flag
+ * files in assets-runtime/expedition-v1/icons/). Default to glyphs (their paths above), with final
+ * painted art taking precedence when supplied (such as the caravan). `flag` stays the delivered objective flag
  * (icon.ui.flag); the kit's ship/owner flag is `ownerFlag`.
  */
 export const EXPEDITION_ICONS: Readonly<Partial<Record<IconName, string>>> = {
@@ -348,7 +348,8 @@ export interface IconProps extends SVGProps<SVGSVGElement> {
 }
 
 export function Icon({ name, title, glyph, className, ...rest }: IconProps) {
-  const art = glyph ? null : iconArt(name);
+  const illustrated = !glyph && (name === 'ship' || name === 'catapult');
+  const art = glyph || illustrated ? null : iconArt(name);
   return (
     <svg
       viewBox="0 0 24 24"
@@ -359,7 +360,23 @@ export function Icon({ name, title, glyph, className, ...rest }: IconProps) {
       {...rest}
     >
       {title ? <title>{title}</title> : null}
-      {art ? <image href={art} x="0" y="0" width="24" height="24" preserveAspectRatio="xMidYMid meet" /> : PATHS[name]}
+      {illustrated ? name === 'ship' ? <g strokeLinejoin="round" strokeLinecap="round">
+        <path d="M2 20q3-2 6 0t6 0t7 0M4 23q3-2 6 0t6 0t6 0" fill="none" stroke="#69b7c9" strokeWidth="1.1"/>
+        <path d="M2 15l4 5h12l4-7-5 2z" fill="#91603b" stroke="#f0c777" strokeWidth="1"/>
+        <path d="M5 17h14" stroke="#ddb374"/><path d="M12 2v14" stroke="#f1ce86" strokeWidth="1.4"/>
+        <path d="M10 3Q4 8 4 12h6z" fill="#e6d7ad" stroke="#c69c5d" strokeWidth=".7"/>
+        <path d="M14 4q6 4 6 8h-6z" fill="#5c95af" stroke="#e6c17c" strokeWidth=".7"/>
+        <path d="M12 2h6l-2 2h-4" fill="#d4a854"/><path d="M4 15l-2-3" stroke="#f0c777"/>
+      </g> : <g strokeLinejoin="round" strokeLinecap="round">
+        <path d="M3 18h18l-2 2H5z" fill="#765033" stroke="#dfb66b"/>
+        <path d="M6 18l6-12 6 12M9 13h6" fill="none" stroke="#e1b773" strokeWidth="2"/>
+        <path d="M9 16L19 3" stroke="#563d2c" strokeWidth="3.2"/><path d="M9 16L19 3" stroke="#e2be7d" strokeWidth="1.6"/>
+        <path d="M17 2l5 2-2 3-3-2z" fill="#9e7846" stroke="#f5d58f" strokeWidth=".8"/>
+        <circle cx="20" cy="3" r="1.7" fill="#b2b9b5" stroke="#edf1da" strokeWidth=".6"/>
+        <path d="M7 7l6 1-1 5-6-1z" fill="#8a9397" stroke="#d9bd7c" strokeWidth=".8"/>
+        <circle cx="6" cy="20" r="2.5" fill="#493d31" stroke="#e8bd72"/><circle cx="18" cy="20" r="2.5" fill="#493d31" stroke="#e8bd72"/>
+        <path d="M6 18v4m-2-2h4m10-2v4m-2-2h4" stroke="#c99d58" strokeWidth=".7"/>
+      </g> : art ? <image href={art} x="0" y="0" width="24" height="24" preserveAspectRatio="xMidYMid meet" /> : PATHS[name]}
     </svg>
   );
 }

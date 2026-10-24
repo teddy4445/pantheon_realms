@@ -36,11 +36,14 @@ describe('magic looks', () => {
       if (l.school) expect(FX_PALETTE[l.school], id).toBeDefined();
     }
   });
-  it('every divine intervention has a look; a smite strikes from the sky, battle blessings reach the army', () => {
+  it('every divine intervention has a look; a smite has a sky strike or authored attack, blessings reach the army', () => {
     for (const def of Object.values(catalog.interventions ?? {})) {
       const look = miracleLook(def);
       expect(FX_PALETTE[look.school], def.id).toBeDefined();
-      if (def.effect.type === 'battle_smite') expect([look.travel, look.scope], def.id).toEqual(['sky', 'single']);
+      if (def.effect.type === 'battle_smite') {
+        expect(look.scope, def.id).toBe('single');
+        expect(look.travel === 'sky' || Boolean(look.magicArt), def.id).toBe(true);
+      }
       if (def.effect.type === 'battle_status' || def.effect.type === 'battle_heal') expect(look.scope, def.id).toBe('army');
     }
   });

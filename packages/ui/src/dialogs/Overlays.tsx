@@ -533,7 +533,6 @@ function BriefingDialog() {
   const [index, setIndex] = useState(0);
   const line = lines[Math.min(index, Math.max(0, lines.length - 1))];
   const art = introCoverArt(intro, mission.thumbnailAssetId);
-  const template = catalog.mapTemplates[mission.mapTemplateId];
   // Content v2 chapters are numbered by the chapter graph ("Chapter 3"), v1 missions by their order.
   const chapterNo = campaign?.chapters?.find((c) => c.missionId === mission.id)?.chapter;
   const kicker = campaign ? `${campaign.name} · ${chapterNo ? `Chapter ${chapterNo}` : `Mission ${mission.order}`}` : state.customMission ? 'Random map' : 'Skirmish';
@@ -548,7 +547,6 @@ function BriefingDialog() {
   const ref = useRef<HTMLDivElement>(null);
   const trap = useModalFocus(ref);
   const titleId = useId();
-  const difficulty = state.scenario.difficultyId ? catalog.difficulties?.[state.scenario.difficultyId] : undefined;
   const statusLabel: Record<string, string> = { completed: 'Done', failed: 'Failed' };
   return (
     <div className="briefing-scene brief" role="dialog" aria-modal="true" aria-labelledby={titleId} data-testid="briefing" ref={ref} onKeyDown={trap}>
@@ -569,11 +567,6 @@ function BriefingDialog() {
               </h1>
               <div className="brief__subtitle briefing-scene__subtitle">{mission.subtitle}</div>
             </div>
-            <p className="brief__facts" data-testid="briefing-facts">
-              {mission.targetPlaytime}
-              {template ? ` · ${template.width}×${template.height} map` : ''}
-              {difficulty ? ` · ${difficulty.name} difficulty` : ''}
-            </p>
           </header>
           <div className="brief__body">
             <div className="brief__left">

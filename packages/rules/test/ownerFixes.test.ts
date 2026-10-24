@@ -26,6 +26,31 @@ describe('personal starting armies and first gods', () => {
 });
 
 describe('hidden invocations', () => {
+  it('applies the eleven new gifts exactly, without changing opponents', () => {
+    const d = GameDriver.mission('skirmish_twin_harbors');
+    const owner = d.state.activePlayerId;
+    const foreign = () => JSON.stringify({
+      heroes:Object.values(d.state.heroes).filter(h=>h.ownerId!==owner),
+      towns:Object.values(d.state.towns).filter(t=>t.ownerId!==owner),
+      players:Object.values(d.state.players).filter(p=>p.id!==owner),
+    });
+    const enemy = foreign();
+    const wallet = {...d.player.wallet};
+    for(const effect of ['gold','wood','stone','crystal','favor'] as const) d.do({kind:'InvokeCheat',effect});
+    expect(d.player.wallet).toEqual({gold:wallet.gold+50000,wood:wallet.wood+250,stone:wallet.stone+250,crystal:wallet.crystal+100,favor:wallet.favor+100});
+    const hero = Object.values(d.state.heroes).find(h=>h.ownerId===owner && h.status==='active')!;
+    const attrs = {...hero.attributes};
+    for(const effect of ['attack','defense','power','knowledge'] as const) d.do({kind:'InvokeCheat',effect});
+    for(const key of ['attack','defense','power','knowledge'] as const) expect(d.state.heroes[hero.id]!.attributes[key]).toBe(attrs[key]+5);
+    const counts = d.state.heroes[hero.id]!.army.slots.map(s=>s?.count);
+    d.do({kind:'InvokeCheat',effect:'reinforcements'});
+    d.state.heroes[hero.id]!.army.slots.forEach((s,i)=>expect(s?.count).toBe(counts[i]===undefined?undefined:counts[i]!+25));
+    const town = Object.values(d.state.towns).find(t=>t.ownerId===owner)!;
+    const pop = {...town.population};
+    d.do({kind:'InvokeCheat',effect:'population'});
+    for(const key of Object.keys(pop)) expect(d.state.towns[town.id]!.population[key]).toBe(pop[key]!+25);
+    expect(foreign()).toBe(enemy);
+  });
   it('grants exact resources, movement and mana only to the acting player', () => {
     const d = GameDriver.mission('skirmish_twin_harbors');
     const before = { ...d.player.wallet };

@@ -1,3 +1,4 @@
+import { landmarkVisit } from '@pr/rules';
 import { CourierDialog } from '../components/libraryAdventure';
 /**
  * S06 Adventure Map. The 2D map view shows committed world state; every
@@ -190,12 +191,16 @@ function buildView(
       ownerShape: owner === playerId ? ('square' as const) : ('pennant' as const),
       guard: guardCreature?.id ?? null,
       // Event shrines glow until used; a relic and a portal always glow.
-      lit: siteLit(catalog, state, def, st),
+      lit: siteLit(catalog, state, def, st) && !(def.kind.type === 'map_event' && def.kind.landmark && selected && landmarkVisit(catalog, state, selected.id, def.id)),
       // Key gates show their barrier only to empires without the key.
       open: def.kind.type === 'key_gate' ? (state.players[playerId]?.keys ?? []).includes(def.kind.color) : !!st?.open,
       claimed: !!st?.claimed,
       // The site's own picture first (its art, a sluice's state, a ferry landing, a neutral hiring site), from data only.
-      sprites: siteSpriteCandidates({ ...def, art: def.artStates?.find((a) => state.mission.flags[a.flag])?.art ?? def.art }, st),
+      sprites: siteSpriteCandidates(
+        { ...def, art: def.artStates?.find((a) => state.mission.flags[a.flag])?.art ?? def.art },
+        st,
+        def.kind.type === 'town' ? state.towns[def.kind.townId] : undefined,
+      ),
       // A campaign icon not delivered falls back to the generic quest marker (the ID names the picture drawn).
       quest: quest ? ((id) => ({ id, url: resolveAsset(id).url }))(resolveAsset(quest.id).url ? quest.id : GENERIC_QUEST_MARKER) : null,
       ...(def.kind.type === 'key_gate' || def.kind.type === 'key_tent' || def.kind.type === 'skill_trainer' ? { tint: def.kind.type === 'skill_trainer' ? '#b5423a' : KEY_COLOR_HEX[def.kind.color] } : {}),
@@ -551,7 +556,7 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
           })()}
         </div>
       ) : null}
-      {site?.def.kind.type === 'map_event' ? <div className="small">{site.state.claimed ? 'Already happened' : 'Something awaits the first hero to arrive'}</div> : null}
+      {site?.def.kind.type === 'map_event' ? <div className="small">{site.def.kind.restoration ? (site.state.claimed ? 'Restored — the gift has been claimed' : `Restore for ${site.def.kind.restoration.size === 'small' ? 8 : 20} Favor: choose supplies, creatures, or a spell`) : site.state.claimed ? 'Already claimed' : site.def.kind.landmark ? (hero && landmarkVisit(catalog, state, hero.id, site.def.id) ? 'Visited this week — return next week' : site.def.kind.landmark === 'ruins' ? 'Visit: treasure or a guardian battle' : site.def.kind.landmark === 'statue' ? 'Visit: +2 Attack for the next battle · weekly' : site.def.kind.landmark === 'waterfall' ? 'Visit: restore up to 15 mana · weekly' : 'Visit: buy experience or a protective blessing · weekly') : 'Something awaits the first hero to arrive'}</div> : null}
       {site?.def.kind.type === 'relic' ? (
         <div className="small">
           {site.state.owner ? `Held by ${site.state.owner === playerId ? 'you' : (state.players[site.state.owner]?.name ?? site.state.owner)} for ${site.state.heldDays ?? 0} day(s)` : 'Unclaimed'}
@@ -739,7 +744,7 @@ function JourneyBar({
   let text: string;
   if (blocked) text = `Route unavailable — ${why && (journeyReason === 'no_ship' || journeyReason === 'no_route') ? `${why.toLowerCase()} (${quote.reason ?? 'no way there now'})` : (quote.reason ?? 'no way there now')}. The destination is kept.`;
   else if (rerouted) text = `Route changed${quote.endsInEncounter ? ': it now ends in battle' : ''} — ${arrivalText(days).toLowerCase()}. Check the new way on the map.`;
-  else if (atTransition) text = `${transition!.kind === 'embark' ? 'At the shore beside the ship: Continue to embark' : 'At the coast: Continue to go ashore'} (uses all remaining movement) · ${arrivalText(days)}`;
+  else if (atTransition) text = `${transition!.kind === 'embark' ? 'At the shore beside the ship: Continue to embark' : 'At the coast: Continue to go ashore'} (costs one movement step) · ${arrivalText(days)}`;
   else {
     const parts = [arrivalText(days)];
     if (quote.voyage) parts.push(`voyage: ${quote.voyage.transitions.map((t) => (t.kind === 'embark' ? 'embark' : 'go ashore')).join(' then ')}`);
@@ -789,7 +794,7 @@ function confirmTransition(store: AppStore, heroId: string, t: VoyageTransition)
     return;
   }
   store.confirm(p.title, p.body, p.confirmLabel, () => {
-    if (!store.dispatch(p.command)) store.toast(p.kind === 'embark' ? 'Embarked: the voyage goes on next turn.' : 'Ashore: the journey goes on next turn.', 'success');
+    if (!store.dispatch(p.command)) store.toast(p.kind === 'embark' ? 'Embarked: continue your voyage.' : 'Ashore: continue your journey.', 'success');
   });
 }
 
@@ -880,6 +885,14 @@ export function AdventureScreen() {
   }, [seesMonster, store]);
 
   const [auraTick, setAuraTick] = useState(0);
+  const [, refreshSystemMotion] = useState(0);
+  useEffect(() => {
+    if (store.prefs.motion !== 'system') return;
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const refresh = () => refreshSystemMotion(n => n + 1);
+    media.addEventListener('change', refresh);
+    return () => media.removeEventListener('change', refresh);
+  }, [store.prefs.motion]);
   const calm = reducedMotion(store.prefs);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   // The shore pick is the selected embarked hero's (it ends with the hero's turn, the panel or the selection).
@@ -909,6 +922,11 @@ export function AdventureScreen() {
   const sessionRef = store.session;
   useEffect(() => () => ctrl.current?.cancelPreparations(), [sessionRef]);
 
+  useEffect(() => store.registerPreparer(events => {
+    const session = store.session;
+    if (session && events.some(e => e.kind === 'HeroMoved' && session.state.heroes[e.heroId]?.ownerId === session.humanPlayerId)) ctrl.current?.holdTravelFog();
+  }), [store]);
+
   // Presentation of committed events (movement playback, day banner). Never alters state.
   useEffect(() => {
     return store.registerPresenter(async (events, source) => {
@@ -921,7 +939,7 @@ export function AdventureScreen() {
         // A new week shows its painted banner (the moment layer) when the art is there; otherwise this text.
         const painted = day.dayOfWeek === 1 && day.day > 1 && !!newWeekBannerArt(ev?.id ?? null);
         if (!painted) {
-          setDayBanner(`Week ${day.week} · Day ${day.dayOfWeek}${day.dayOfWeek === 1 ? (ev ? ` — ${ev.name}: ${ev.summary}` : ' — a new week: creatures grow') : ''}`);
+          setDayBanner(`Week ${day.week} · Day ${day.dayOfWeek}${day.dayOfWeek === 1 ? (ev ? ` — ${ev.name}: ${ev.summary}` : ' — a new week: enemy armies grow 12%; town recruits replenish') : ''}`);
           setTimeout(() => setDayBanner(null), ev ? 3600 : 2200);
         }
         if (ev) store.showHint('weekly_event');
@@ -937,6 +955,11 @@ export function AdventureScreen() {
         if (m.kind !== 'HeroMoved') continue;
         const hero = store.session?.state.heroes[m.heroId];
         const mine = hero?.ownerId === store.session?.humanPlayerId;
+        const updateSight = mine && hero && store.session ? (position: HexCoord) => {
+          const session = store.session!;
+          const visualState = { ...session.state, heroes: { ...session.state.heroes, [hero.id]: { ...hero, position } } };
+          c.advanceTravelFog(visibleCells(catalog, visualState, session.humanPlayerId));
+        } : undefined;
         const vis = store.session ? visibleCells(catalog, store.session.state, store.session.humanPlayerId) : new Set<number>();
         // A portal at the end of this walk: the hero sinks into it and rises from its twin.
         const tpIndex = teleports.findIndex((t, i) => !played.has(i) && t.kind === 'HeroTeleported' && t.heroId === m.heroId && !!t.viaSiteId);
@@ -947,15 +970,15 @@ export function AdventureScreen() {
         const last = m.path[m.path.length - 1];
         const sail = last ? events.find((x) => x.kind === 'ShipMoved' && x.heroId === m.heroId && hexEquals(x.path[x.path.length - 1] ?? last, last)) : undefined;
         if (sail && sail.kind === 'ShipMoved') {
-          await c.playShipMove(sail.shipId, sail.path, adventurePlaybackFactor(store.prefs, source === 'ai'), true, mine ? undefined : p => vis.has(cellIndex(store.session!.state.world.map, p)));
+          try { await c.playShipMove(sail.shipId, sail.path, adventurePlaybackFactor(store.prefs, source === 'ai'), true, mine ? undefined : p => vis.has(cellIndex(store.session!.state.world.map, p)), updateSight); } finally { if (mine) c.releaseTravelFog(); }
           continue;
         }
         if (mine) store.audio?.heroSteps(true);
         try {
           // The viewer's own walk keeps its route on the ground, cleared step by step.
-          await c.playHeroMove(m.heroId, m.path, adventurePlaybackFactor(store.prefs, source === 'ai'), true, mine || (teleportTo && vis.has(cellIndex(store.session!.state.world.map, teleportTo))) ? teleportTo : undefined, mine, mine ? undefined : p => vis.has(cellIndex(store.session!.state.world.map, p)));
+          await c.playHeroMove(m.heroId, m.path, adventurePlaybackFactor(store.prefs, source === 'ai'), true, mine || (teleportTo && vis.has(cellIndex(store.session!.state.world.map, teleportTo))) ? teleportTo : undefined, mine, mine ? undefined : p => vis.has(cellIndex(store.session!.state.world.map, p)), updateSight);
         } finally {
-          if (mine) store.audio?.heroSteps(false);
+          if (mine) { store.audio?.heroSteps(false); c.releaseTravelFog(); }
         }
       }
       // Teleports without a walk before them (the Recall spell: Homecoming's column of light).
@@ -1348,6 +1371,13 @@ export function AdventureScreen() {
     // A ship the viewer can see: its inspector (the selected hero's own ship included); the journey's own target continues it.
     const shipHere = navalOn(s) ? visibleShipAt(s, playerId, c, visibleCells(catalog, s, playerId)) : null;
     if (shipHere && !(target && hexEquals(target, c))) {
+      // Preview a voyage on the first click, then use the normal travel/boarding
+      // quote on the second. The inspector remains available for ship details.
+      if (sel && !hexEquals(sel.position, c) && !shipHere.heroId) {
+        closeShip();
+        planJourney(sel.id, c);
+        return;
+      }
       const aboard = shipHere.heroId ? s.heroes[shipHere.heroId] : undefined;
       if (aboard && allied(s, aboard.ownerId, playerId) && sel?.id !== aboard.id) selectHero(aboard);
       openShip(shipHere.shipId);
@@ -1840,7 +1870,7 @@ export function AdventureScreen() {
                   ) : (
                     <Icon name={st === 'completed' ? 'check' : st === 'failed' ? 'close' : 'flag'} className="inline-icon" />
                   )}
-                  <span>{o.title}</span>
+                  <span>{o.title}{o.condition.type === 'claim' && st !== 'completed' ? ' — open Journal to claim' : ''}</span>
                   {o.markerSiteId ? (
                     <button type="button" className="link" onClick={() => { const def = missionSite(catalog, state, o.markerSiteId!); if (def && (state.fog[playerId]?.explored[cellIndex(state.world.map, def.coord)] === 1 || state.mission.revealedSiteIds.includes(def.id))) ctrl.current?.focus(def.coord); else store.toast('Location not yet discovered'); }} aria-label={`Show ${o.title} on map`}>
                       <Icon name="eye" className="inline-icon" />

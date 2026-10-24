@@ -1,0 +1,113 @@
+{
+  "generator": "Built-in ImageGen",
+  "jobs": [
+    {
+      "id": "temple-greek-small-ruined",
+      "type": "temple",
+      "pantheon": "greek",
+      "size": "small",
+      "prompt": "Edit the supplied intact temple sprite into the abandoned ruined version of EXACTLY THE SAME building. Preserve exact square canvas dimensions, camera viewpoint, building scale, lighting direction, foundation position, entrance and ground contact, transparent padding and true alpha background. The foundation footprint must align precisely with the original so switching states does not move the building. Show clearly collapsed or missing roof sections, cracked masonry or broken timber, a few fallen columns/beams on the original footprint, weathered muted materials and modest vines. Keep enough architecture to identify the same pantheon and building. No fire, no smoke, no new scene, no people, no text, no frame, no extra ground tile, no zoom or recentering. Same detailed realistic hand-painted classic fantasy adventure-map style; ruin damage obvious at small map scale.",
+      "subject": "a small four-column white marble wayside shrine, triangular pediment and blue ceramic roof, olive offerings",
+      "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-source/world-expansion-v1/temple-greek-small-built.png"
+    },
+    {
+      "id": "temple-greek-large-ruined",
+      "type": "temple",
+      "pantheon": "greek",
+      "size": "large",
+      "prompt": "Edit the supplied intact temple sprite into the abandoned ruined version of EXACTLY THE SAME building. Preserve exact square canvas dimensions, camera viewpoint, building scale, lighting direction, foundation position, entrance and ground contact, transparent padding and true alpha background. The foundation footprint must align precisely with the original so switching states does not move the building. Show clearly collapsed or missing roof sections, cracked masonry or broken timber, a few fallen columns/beams on the original footprint, weathered muted materials and modest vines. Keep enough architecture to identify the same pantheon and building. No fire, no smoke, no new scene, no people, no text, no frame, no extra ground tile, no zoom or recentering. Same detailed realistic hand-painted classic fantasy adventure-map style; ruin damage obvious at small map scale.",
+      "subject": "a majestic white marble peripteral temple, eight-column facade, blue pediment, broad stairs and small bronze braziers",
+      "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-source/world-expansion-v1/temple-greek-large-built.png"
+    },
+    {
+      "id": "temple-norse-small-ruined",
+      "type": "temple",
+      "pantheon": "norse",
+      "size": "small",
+      "prompt": "Edit the supplied intact temple sprite into the abandoned ruined version of EXACTLY THE SAME building. Preserve exact square canvas dimensions, camera viewpoint, building scale, lighting direction, foundation position, entrance and ground contact, transparent padding and true alpha background. The foundation footprint must align precisely with the original so switching states does not move the building. Show clearly collapsed or missing roof sections, cracked masonry or broken timber, a few fallen columns/beams on the original footprint, weathered muted materials and modest vines. Keep enough architecture to identify the same pantheon and building. No fire, no smoke, no new scene, no people, no text, no frame, no extra ground tile, no zoom or recentering. Same detailed realistic hand-painted classic fantasy adventure-map style; ruin damage obvious at small map scale.",
+      "subject": "a small carved dark timber roadside shrine, steep shingle roof and intertwined dragon-head finials, runestone beside it",
+      "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-source/world-expansion-v1/temple-norse-small-built.png"
+    },
+    {
+      "id": "temple-norse-large-ruined",
+      "type": "temple",
+      "pantheon": "norse",
+      "size": "large",
+      "prompt": "Edit the supplied intact temple sprite into the abandoned ruined version of EXACTLY THE SAME building. Preserve exact square canvas dimensions, camera viewpoint, building scale, lighting direction, foundation position, entrance and ground contact, transparent padding and true alpha background. The foundation footprint must align precisely with the original so switching states does not move the building. Show clearly collapsed or missing roof sections, cracked masonry or broken timber, a few fallen columns/beams on the original footprint, weathered muted materials and modest vines. Keep enough architecture to identify the same pantheon and building. No fire, no smoke, no new scene, no people, no text, no frame, no extra ground tile, no zoom or recentering. Same detailed realistic hand-painted classic fantasy adventure-map style; ruin damage obvious at small map scale.",
+      "subject": "a large Norse stave temple hall, layered steep timber roofs with dragon finials, heavy carved portals, stone foundation and round bronze shields",
+      "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-source/world-expansion-v1/temple-norse-large-built.png"
+    },
+    {
+      "id": "temple-egyptian-small-ruined",
+      "type": "temple",
+      "pantheon": "egyptian",
+      "size": "small",
+      "prompt": "Edit the supplied intact temple sprite into the abandoned ruined version of EXACTLY THE SAME building. Preserve exact square canvas dimensions, camera viewpoint, building scale, lighting direction, foundation position, entrance and ground contact, transparent padding and true alpha background. The foundation footprint must align precisely with the original so switching states does not move the building. Show clearly collapsed or missing roof sections, cracked masonry or broken timber, a few fallen columns/beams on the original footprint, weathered muted materials and modest vines. Keep enough architecture to identify the same pantheon and building. No fire, no smoke, no new scene, no people, no text, no frame, no extra ground tile, no zoom or recentering. Same detailed realistic hand-painted classic fantasy adventure-map style; ruin damage obvious at small map scale.",
+      "subject": "a small sandstone naos shrine with a winged sun disk cornice, two lotus columns, lapis accents and offering basin",
+      "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-source/world-expansion-v1/temple-egyptian-small-built.png"
+    },
+    {
+      "id": "temple-egyptian-large-ruined",
+      "type": "temple",
+      "pantheon": "egyptian",
+      "size": "large",
+      "prompt": "Edit the supplied intact temple sprite into the abandoned ruined version of EXACTLY THE SAME building. Preserve exact square canvas dimensions, camera viewpoint, building scale, lighting direction, foundation position, entrance and ground contact, transparent padding and true alpha background. The foundation footprint must align precisely with the original so switching states does not move the building. Show clearly collapsed or missing roof sections, cracked masonry or broken timber, a few fallen columns/beams on the original footprint, weathered muted materials and modest vines. Keep enough architecture to identify the same pantheon and building. No fire, no smoke, no new scene, no people, no text, no frame, no extra ground tile, no zoom or recentering. Same detailed realistic hand-painted classic fantasy adventure-map style; ruin damage obvious at small map scale.",
+      "subject": "a large Egyptian sandstone pylon temple, two monumental gateway towers, painted lotus columns, paired obelisks and turquoise-gold architectural details",
+      "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-source/world-expansion-v1/temple-egyptian-large-built.png"
+    },
+    {
+      "id": "temple-japanese-small-ruined",
+      "type": "temple",
+      "pantheon": "japanese",
+      "size": "small",
+      "prompt": "Edit the supplied intact temple sprite into the abandoned ruined version of EXACTLY THE SAME building. Preserve exact square canvas dimensions, camera viewpoint, building scale, lighting direction, foundation position, entrance and ground contact, transparent padding and true alpha background. The foundation footprint must align precisely with the original so switching states does not move the building. Show clearly collapsed or missing roof sections, cracked masonry or broken timber, a few fallen columns/beams on the original footprint, weathered muted materials and modest vines. Keep enough architecture to identify the same pantheon and building. No fire, no smoke, no new scene, no people, no text, no frame, no extra ground tile, no zoom or recentering. Same detailed realistic hand-painted classic fantasy adventure-map style; ruin damage obvious at small map scale.",
+      "subject": "a small wooden hokora shrine with vermilion torii, cypress-bark curved roof and stone lantern",
+      "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-source/world-expansion-v1/temple-japanese-small-built.png"
+    },
+    {
+      "id": "temple-japanese-large-ruined",
+      "type": "temple",
+      "pantheon": "japanese",
+      "size": "large",
+      "prompt": "Edit the supplied intact temple sprite into the abandoned ruined version of EXACTLY THE SAME building. Preserve exact square canvas dimensions, camera viewpoint, building scale, lighting direction, foundation position, entrance and ground contact, transparent padding and true alpha background. The foundation footprint must align precisely with the original so switching states does not move the building. Show clearly collapsed or missing roof sections, cracked masonry or broken timber, a few fallen columns/beams on the original footprint, weathered muted materials and modest vines. Keep enough architecture to identify the same pantheon and building. No fire, no smoke, no new scene, no people, no text, no frame, no extra ground tile, no zoom or recentering. Same detailed realistic hand-painted classic fantasy adventure-map style; ruin damage obvious at small map scale.",
+      "subject": "a large Japanese Shinto shrine compound, vermilion wood, layered curved roofs, broad stone stairs, sacred rope and two stone lanterns",
+      "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-source/world-expansion-v1/temple-japanese-large-built.png"
+    },
+    {
+      "id": "temple-celtic-small-ruined",
+      "type": "temple",
+      "pantheon": "celtic",
+      "size": "small",
+      "prompt": "Edit the supplied intact temple sprite into the abandoned ruined version of EXACTLY THE SAME building. Preserve exact square canvas dimensions, camera viewpoint, building scale, lighting direction, foundation position, entrance and ground contact, transparent padding and true alpha background. The foundation footprint must align precisely with the original so switching states does not move the building. Show clearly collapsed or missing roof sections, cracked masonry or broken timber, a few fallen columns/beams on the original footprint, weathered muted materials and modest vines. Keep enough architecture to identify the same pantheon and building. No fire, no smoke, no new scene, no people, no text, no frame, no extra ground tile, no zoom or recentering. Same detailed realistic hand-painted classic fantasy adventure-map style; ruin damage obvious at small map scale.",
+      "subject": "a small Celtic woodland sanctuary, three upright knot-carved standing stones around a low altar, fern and oak-root details",
+      "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-source/world-expansion-v1/temple-celtic-small-built.png"
+    },
+    {
+      "id": "temple-celtic-large-ruined",
+      "type": "temple",
+      "pantheon": "celtic",
+      "size": "large",
+      "prompt": "Edit the supplied intact temple sprite into the abandoned ruined version of EXACTLY THE SAME building. Preserve exact square canvas dimensions, camera viewpoint, building scale, lighting direction, foundation position, entrance and ground contact, transparent padding and true alpha background. The foundation footprint must align precisely with the original so switching states does not move the building. Show clearly collapsed or missing roof sections, cracked masonry or broken timber, a few fallen columns/beams on the original footprint, weathered muted materials and modest vines. Keep enough architecture to identify the same pantheon and building. No fire, no smoke, no new scene, no people, no text, no frame, no extra ground tile, no zoom or recentering. Same detailed realistic hand-painted classic fantasy adventure-map style; ruin damage obvious at small map scale.",
+      "subject": "a large Celtic sacred hall, oak timber and stone, sweeping thatched roof, knotwork gables, entrance flanked by standing stones, bronze spiral ornaments",
+      "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-source/world-expansion-v1/temple-celtic-large-built.png"
+    },
+    {
+      "id": "temple-mesoamerican-small-ruined",
+      "type": "temple",
+      "pantheon": "mesoamerican",
+      "size": "small",
+      "prompt": "Edit the supplied intact temple sprite into the abandoned ruined version of EXACTLY THE SAME building. Preserve exact square canvas dimensions, camera viewpoint, building scale, lighting direction, foundation position, entrance and ground contact, transparent padding and true alpha background. The foundation footprint must align precisely with the original so switching states does not move the building. Show clearly collapsed or missing roof sections, cracked masonry or broken timber, a few fallen columns/beams on the original footprint, weathered muted materials and modest vines. Keep enough architecture to identify the same pantheon and building. No fire, no smoke, no new scene, no people, no text, no frame, no extra ground tile, no zoom or recentering. Same detailed realistic hand-painted classic fantasy adventure-map style; ruin damage obvious at small map scale.",
+      "subject": "a small Mesoamerican stepped stone altar shrine, three broad terraces, carved jaguar doorway, jade details",
+      "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-source/world-expansion-v1/temple-mesoamerican-small-built.png"
+    },
+    {
+      "id": "temple-mesoamerican-large-ruined",
+      "type": "temple",
+      "pantheon": "mesoamerican",
+      "size": "large",
+      "prompt": "Edit the supplied intact temple sprite into the abandoned ruined version of EXACTLY THE SAME building. Preserve exact square canvas dimensions, camera viewpoint, building scale, lighting direction, foundation position, entrance and ground contact, transparent padding and true alpha background. The foundation footprint must align precisely with the original so switching states does not move the building. Show clearly collapsed or missing roof sections, cracked masonry or broken timber, a few fallen columns/beams on the original footprint, weathered muted materials and modest vines. Keep enough architecture to identify the same pantheon and building. No fire, no smoke, no new scene, no people, no text, no frame, no extra ground tile, no zoom or recentering. Same detailed realistic hand-painted classic fantasy adventure-map style; ruin damage obvious at small map scale.",
+      "subject": "a large Mesoamerican stepped pyramid temple with steep central staircase, summit sanctuary, feathered-serpent balustrades and jade-turquoise ornaments",
+      "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-source/world-expansion-v1/temple-mesoamerican-large-built.png"
+    }
+  ]
+}

@@ -1,0 +1,434 @@
+{
+  "status": "review-only-not-integrated",
+  "created": "2026-10-23",
+  "forms": [
+    {
+      "id": "neutral_rain_dragon",
+      "familyId": "yinglong",
+      "name": "Rain Dragon",
+      "form": "base",
+      "side": "LEFT",
+      "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragon-concepts-v1/yinglong-standing-base-upgrade-v2.png",
+      "anatomy": "Exactly four clawed legs, long continuous serpentine torso, one antlered dragon head with long whiskers and flowing mane, exactly two pale membrane wings. All four feet grounded for idle; tail grounded. Jade and warm ivory scales, teal mane.",
+      "distinctive": "Match the LEFT base form exactly; do not add upgrade-only features.",
+      "role": "Flying support / balanced defender",
+      "tier": 7,
+      "stats": {
+        "attack": 24,
+        "defense": 26,
+        "hp": 240,
+        "damageMin": 35,
+        "damageMax": 45,
+        "speed": 10,
+        "shots": 0,
+        "footprint": 2
+      },
+      "cost": {
+        "gold": 3500,
+        "crystal": 2
+      },
+      "weeklyGrowth": 1,
+      "upgradeCost": null,
+      "traits": [
+        "flight"
+      ],
+      "ability": {
+        "id": "neutral_rain_dragon_special",
+        "name": "Rainward",
+        "rule": "Once per battle, spend the action to ward one allied living stack within 3 hexes. Its next direct creature attack taken is reduced by 25%, expiring at the start of this dragon's next activation. No stacking; no spell or siege reduction.",
+        "implementationStatus": "proposed-not-implemented",
+        "usesPerBattle": 1
+      },
+      "myth": "Chinese Yinglong — winged rain dragon. Neutral creatures are original adaptations, not the deity itself.",
+      "mythSource": "https://religion-in-japan.univie.ac.at/k/img_auth.php/archive/a/a7/20160512121924%21De_Visser_1913.pdf",
+      "habitat": "Misty waterfalls and upland lake shrines.",
+      "actions": {
+        "attack": "neck draws back, near foreclaw lifts, precise forward bite and claw swipe to the right, recoil, claw settles, grounded rest",
+        "move": "slow measured four-legged walking cycle in place; alternating fore and hind feet support the long body; tail sways gently",
+        "ability": "wings open like a shelter, head rises, throat glows softly aqua, fine rain falls around shoulders, wings ease inward, returns grounded",
+        "shoot": "inhale, throat fills, head extends, a short focused water-jet release to the right from mouth, droplets fall, returns grounded"
+      },
+      "status": "review-only",
+      "balanceStatus": "proposed-unplaytested",
+      "sourceScaleHex": 2.2
+    },
+    {
+      "id": "neutral_celestial_rain_dragon",
+      "familyId": "yinglong",
+      "name": "Celestial Rain Dragon",
+      "form": "upgraded",
+      "side": "RIGHT",
+      "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragon-concepts-v1/yinglong-standing-base-upgrade-v2.png",
+      "anatomy": "Exactly four clawed legs, long continuous serpentine torso, one antlered dragon head with long whiskers and flowing mane, exactly two pale membrane wings. All four feet grounded for idle; tail grounded. Jade and warm ivory scales, teal mane.",
+      "distinctive": "Pearl-white and jade scales edged gold, larger branching ivory antlers, luxurious silver-teal mane, broad pearlescent scalloped wings, rich tail fringe. Preserve all upgrade features.",
+      "role": "Flying support / balanced defender",
+      "tier": 7,
+      "stats": {
+        "attack": 27,
+        "defense": 29,
+        "hp": 285,
+        "damageMin": 40,
+        "damageMax": 50,
+        "speed": 11,
+        "shots": 0,
+        "footprint": 2
+      },
+      "cost": {
+        "gold": 4800,
+        "crystal": 3
+      },
+      "weeklyGrowth": 1,
+      "upgradeCost": {
+        "gold": 1300,
+        "crystal": 1
+      },
+      "traits": [
+        "flight"
+      ],
+      "ability": {
+        "id": "neutral_celestial_rain_dragon_special",
+        "name": "Monsoon Ward",
+        "rule": "Once per battle, spend the action to ward up to two allied living stacks within 3 hexes. Each takes 30% less from its next direct creature attack before the start of this dragon's next activation. No stacking; no spell or siege reduction.",
+        "implementationStatus": "proposed-not-implemented",
+        "usesPerBattle": 1
+      },
+      "myth": "Chinese Yinglong — winged rain dragon. Neutral creatures are original adaptations, not the deity itself.",
+      "mythSource": "https://religion-in-japan.univie.ac.at/k/img_auth.php/archive/a/a7/20160512121924%21De_Visser_1913.pdf",
+      "habitat": "Misty waterfalls and upland lake shrines.",
+      "actions": {
+        "attack": "neck draws back, near foreclaw lifts, precise forward bite and claw swipe to the right, recoil, claw settles, grounded rest",
+        "move": "slow measured four-legged walking cycle in place; alternating fore and hind feet support the long body; tail sways gently",
+        "ability": "wings open like a shelter, head rises, throat glows softly aqua, fine rain falls around shoulders, wings ease inward, returns grounded",
+        "shoot": "inhale, throat fills, head extends, a short focused water-jet release to the right from mouth, droplets fall, returns grounded"
+      },
+      "status": "review-only",
+      "balanceStatus": "proposed-unplaytested",
+      "sourceScaleHex": 2.2
+    },
+    {
+      "id": "neutral_zilant",
+      "familyId": "zilant",
+      "name": "Zilant",
+      "form": "base",
+      "side": "LEFT",
+      "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragon-concepts-v1/zilant-base-upgrade-v3.png",
+      "anatomy": "Exactly TWO powerful birdlike legs with golden talons and NO forelegs/arms. Upright S-curved reptilian neck and ONE dragon head, compact thorax, exactly TWO red bat-membrane wings, long black-scaled snake tail resting behind. Midnight-black scales, dark crimson membranes, amber eyes.",
+      "distinctive": "Match the LEFT base form exactly; do not add upgrade-only features.",
+      "role": "Fast flying flanker / disruptive attacker",
+      "tier": 7,
+      "stats": {
+        "attack": 27,
+        "defense": 22,
+        "hp": 220,
+        "damageMin": 40,
+        "damageMax": 52,
+        "speed": 12,
+        "shots": 0,
+        "footprint": 2
+      },
+      "cost": {
+        "gold": 3400,
+        "crystal": 2
+      },
+      "weeklyGrowth": 1,
+      "upgradeCost": null,
+      "traits": [
+        "flight"
+      ],
+      "ability": {
+        "id": "neutral_zilant_special",
+        "name": "Dread Hiss",
+        "rule": "Once per battle, spend the action. One hostile living stack within 3 hexes loses its next otherwise-legal retaliation until this dragon's next activation; that retaliation counts as spent. Mind-immune, undead and constructs are immune. No damage or skipped turn.",
+        "implementationStatus": "proposed-not-implemented",
+        "usesPerBattle": 1
+      },
+      "myth": "Tatar/Kazan winged serpent-dragon, black body, red wings, golden talons and crowned form.",
+      "mythSource": "https://kitaphane.tatarstan.ru/eng/state_symbols/gerb_kazan.htm",
+      "habitat": "Ruined hill forts and high rocky nests.",
+      "actions": {
+        "attack": "weight shifts to one hind leg, long tail coils back, tail whips and stabs to the right, quick bite accent, tail retracts, both talons settle",
+        "move": "measured two-legged raptor walking cycle in place with both wings resting and snake tail counterbalancing; NEVER grow extra front legs",
+        "ability": "stands taller, wings spread, crimson neck fan opens, head roars and eyes flare amber, wings settle, tail rests",
+        "shoot": "neck recoils, jaws open, short thin venom spit releases to the right, jaws close, tongue flicks, returns grounded"
+      },
+      "status": "review-only",
+      "balanceStatus": "proposed-unplaytested",
+      "sourceScaleHex": 2.2
+    },
+    {
+      "id": "neutral_crowned_zilant",
+      "familyId": "zilant",
+      "name": "Crowned Zilant",
+      "form": "upgraded",
+      "side": "RIGHT",
+      "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragon-concepts-v1/zilant-base-upgrade-v3.png",
+      "anatomy": "Exactly TWO powerful birdlike legs with golden talons and NO forelegs/arms. Upright S-curved reptilian neck and ONE dragon head, compact thorax, exactly TWO red bat-membrane wings, long black-scaled snake tail resting behind. Midnight-black scales, dark crimson membranes, amber eyes.",
+      "distinctive": "Real tall openwork five-point golden crown, expanded crimson neck fan, hooked golden wing thumbs, extra scalloped outer wing lobe, three-bladed black-and-gold lance tail. Crown stays securely on head in every pose.",
+      "role": "Fast flying flanker / disruptive attacker",
+      "tier": 7,
+      "stats": {
+        "attack": 30,
+        "defense": 25,
+        "hp": 265,
+        "damageMin": 46,
+        "damageMax": 58,
+        "speed": 13,
+        "shots": 0,
+        "footprint": 2
+      },
+      "cost": {
+        "gold": 4700,
+        "crystal": 3
+      },
+      "weeklyGrowth": 1,
+      "upgradeCost": {
+        "gold": 1300,
+        "crystal": 1
+      },
+      "traits": [
+        "flight"
+      ],
+      "ability": {
+        "id": "neutral_crowned_zilant_special",
+        "name": "Royal Dread",
+        "rule": "Once per battle, spend the action. Up to two hostile living stacks within 3 hexes lose their next otherwise-legal retaliation until this dragon's next activation; each counts as spent. Mind-immune, undead and constructs are immune. No damage or skipped turn.",
+        "implementationStatus": "proposed-not-implemented",
+        "usesPerBattle": 1
+      },
+      "myth": "Tatar/Kazan winged serpent-dragon, black body, red wings, golden talons and crowned form.",
+      "mythSource": "https://kitaphane.tatarstan.ru/eng/state_symbols/gerb_kazan.htm",
+      "habitat": "Ruined hill forts and high rocky nests.",
+      "actions": {
+        "attack": "weight shifts to one hind leg, long tail coils back, tail whips and stabs to the right, quick bite accent, tail retracts, both talons settle",
+        "move": "measured two-legged raptor walking cycle in place with both wings resting and snake tail counterbalancing; NEVER grow extra front legs",
+        "ability": "stands taller, wings spread, crimson neck fan opens, head roars and eyes flare amber, wings settle, tail rests",
+        "shoot": "neck recoils, jaws open, short thin venom spit releases to the right, jaws close, tongue flicks, returns grounded"
+      },
+      "status": "review-only",
+      "balanceStatus": "proposed-unplaytested",
+      "sourceScaleHex": 2.2
+    },
+    {
+      "id": "neutral_cuelebre",
+      "familyId": "cuelebre",
+      "name": "Cuélebre",
+      "form": "base",
+      "side": "LEFT",
+      "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragon-concepts-v1/cuelebre-base-upgrade-v3.png",
+      "anatomy": "Genuinely LEGLESS serpent: ZERO feet, ZERO legs, ZERO arms. One continuous long scaled snake body grounded in an open coil, ONE broad reptilian head, exactly TWO large feathered birdlike wings. Deep marine-blue scales with copper edges, warm ivory belly, amber eyes. Wings steel blue and warm ivory copper-tipped. No bat membranes.",
+      "distinctive": "Match the LEFT base form exactly; do not add upgrade-only features.",
+      "role": "Durable flying guardian / defensive anchor",
+      "tier": 7,
+      "stats": {
+        "attack": 22,
+        "defense": 29,
+        "hp": 280,
+        "damageMin": 32,
+        "damageMax": 44,
+        "speed": 8,
+        "shots": 0,
+        "footprint": 2
+      },
+      "cost": {
+        "gold": 3600,
+        "crystal": 2
+      },
+      "weeklyGrowth": 1,
+      "upgradeCost": null,
+      "traits": [
+        "flight",
+        "charge_guard"
+      ],
+      "ability": {
+        "id": "neutral_cuelebre_special",
+        "name": "Guardian Coil",
+        "rule": "Once per battle, spend the action and Defend. One adjacent allied living stack gains +4 Defense and immunity to one forced pull until this dragon's next activation. Copies do not stack; no extra attack.",
+        "implementationStatus": "proposed-not-implemented",
+        "usesPerBattle": 1
+      },
+      "myth": "Asturian winged treasure-guardian serpent; this design uses the regional feather-wing interpretation.",
+      "mythSource": "https://mas.lne.es/diccionario/palabra/15333",
+      "habitat": "Forest caves, freshwater caverns and ancient treasure vaults.",
+      "actions": {
+        "attack": "grounded coil tightens, neck draws back, long neck lunges and bites to the right while coil stays grounded, head recoils, coil loosens, rest",
+        "move": "slithering cycle in place: continuous body undulates and lower coils shift along ground, head stable, wings tucked; NEVER add legs",
+        "ability": "coil tightens protectively, feathered wings wrap forward like a shield, neck scutes catch warm light, feathers open into a sheltering fan, wings ease back, rests",
+        "shoot": "neck raises, mouth opens, short pale-gold wind pulse releases toward right, wing feathers ripple, head lowers, rest"
+      },
+      "status": "review-only",
+      "balanceStatus": "proposed-unplaytested",
+      "sourceScaleHex": 2.2
+    },
+    {
+      "id": "neutral_ancient_cuelebre",
+      "familyId": "cuelebre",
+      "name": "Ancient Cuélebre",
+      "form": "upgraded",
+      "side": "RIGHT",
+      "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragon-concepts-v1/cuelebre-base-upgrade-v3.png",
+      "anatomy": "Genuinely LEGLESS serpent: ZERO feet, ZERO legs, ZERO arms. One continuous long scaled snake body grounded in an open coil, ONE broad reptilian head, exactly TWO large feathered birdlike wings. Deep marine-blue scales with copper edges, warm ivory belly, amber eyes. Wings steel blue and warm ivory copper-tipped. No bat membranes.",
+      "distinctive": "Swept-back ivory/copper quill crown, layered shield-like neck scutes, double-tier long spear-shaped flight feathers, visible broad five-feather tail fan. These structures stay in every pose, never turn it into a quadruped.",
+      "role": "Durable flying guardian / defensive anchor",
+      "tier": 7,
+      "stats": {
+        "attack": 25,
+        "defense": 33,
+        "hp": 330,
+        "damageMin": 38,
+        "damageMax": 50,
+        "speed": 9,
+        "shots": 0,
+        "footprint": 2
+      },
+      "cost": {
+        "gold": 4900,
+        "crystal": 3
+      },
+      "weeklyGrowth": 1,
+      "upgradeCost": {
+        "gold": 1300,
+        "crystal": 1
+      },
+      "traits": [
+        "flight",
+        "charge_guard"
+      ],
+      "ability": {
+        "id": "neutral_ancient_cuelebre_special",
+        "name": "Ancient Aegis",
+        "rule": "Once per battle, spend the action and Defend. All adjacent allied living stacks gain +5 Defense and immunity to one forced pull until this dragon's next activation. Copies do not stack; no extra attack.",
+        "implementationStatus": "proposed-not-implemented",
+        "usesPerBattle": 1
+      },
+      "myth": "Asturian winged treasure-guardian serpent; this design uses the regional feather-wing interpretation.",
+      "mythSource": "https://mas.lne.es/diccionario/palabra/15333",
+      "habitat": "Forest caves, freshwater caverns and ancient treasure vaults.",
+      "actions": {
+        "attack": "grounded coil tightens, neck draws back, long neck lunges and bites to the right while coil stays grounded, head recoils, coil loosens, rest",
+        "move": "slithering cycle in place: continuous body undulates and lower coils shift along ground, head stable, wings tucked; NEVER add legs",
+        "ability": "coil tightens protectively, feathered wings wrap forward like a shield, neck scutes catch warm light, feathers open into a sheltering fan, wings ease back, rests",
+        "shoot": "neck raises, mouth opens, short pale-gold wind pulse releases toward right, wing feathers ripple, head lowers, rest"
+      },
+      "status": "review-only",
+      "balanceStatus": "proposed-unplaytested",
+      "sourceScaleHex": 2.2
+    }
+  ],
+  "animations": [
+    {
+      "name": "idle",
+      "fps": 2,
+      "loop": true,
+      "action": "Six subtly different breathing poses. Head almost steady, chest expands and relaxes gently, tail tip moves slightly. Wings rest partly folded. First and last poses smoothly join; no hopping or bouncing."
+    },
+    {
+      "name": "move",
+      "fps": 5,
+      "loop": true,
+      "action": "ACTION_MOVE. Six sequential phases of a slow in-place ground movement cycle, no camera translation."
+    },
+    {
+      "name": "attack",
+      "fps": 6,
+      "loop": false,
+      "action": "ACTION_ATTACK. Six sequential distinct poses, strongest contact in frame 3 (zero-based frame 2)."
+    },
+    {
+      "name": "hit",
+      "fps": 6,
+      "loop": false,
+      "action": "Small impact reaction: neutral, flinch shoulders/neck backward, recoil maximum, regains balance, eases toward rest, normal grounded stance. No blood, no dismemberment."
+    },
+    {
+      "name": "defend",
+      "fps": 4,
+      "loop": false,
+      "action": "Neutral, lower body/braced coil, wings wrap inward as armor, fully guarded compact stance, hold, guarded end. Clear protective pose, not an attack."
+    },
+    {
+      "name": "victory",
+      "fps": 4,
+      "loop": false,
+      "action": "Grounded rest, head rises, wings lift proudly, brief dignified triumphant call, wings lower, grounded rest. No jumping."
+    },
+    {
+      "name": "shoot",
+      "fps": 6,
+      "loop": false,
+      "action": "ACTION_SHOOT. Small local mouth cue only, no giant effect crossing other cells. This is a presentation reserve; proposed rules have no ordinary ranged shot."
+    },
+    {
+      "name": "cast",
+      "fps": 4,
+      "loop": false,
+      "action": "Grounded rest, head lifts in concentration, wings open gently, a tiny species-colored glow in throat/eyes, head lowers, rest. Keep feet/coil grounded."
+    },
+    {
+      "name": "takeoff",
+      "fps": 5,
+      "loop": false,
+      "action": "Grounded rest, crouch or compress coil, wings rise, forceful downstroke, feet/coil lift a little, airborne wings extended. Rise within frame while same ground registration stays fixed."
+    },
+    {
+      "name": "fly",
+      "fps": 5,
+      "loop": true,
+      "action": "Six sequential powerful wingbeat phases in place: wings high, sweep down halfway, wings low, sweep backward, rising halfway, high. Body floats steadily with little vertical bob. Legs tucked or serpent coil extended gently, complete full body within cell."
+    },
+    {
+      "name": "landing",
+      "fps": 5,
+      "loop": false,
+      "action": "Airborne wings open, wings brake up, feet/coil reach down, ground contact, body absorbs landing, grounded original idle. No teleport, no camera shift."
+    },
+    {
+      "name": "ability",
+      "fps": 5,
+      "loop": false,
+      "action": "ACTION_ABILITY. Six poses with strongest special gesture at frame 3 (index 2)."
+    },
+    {
+      "name": "death",
+      "fps": 4,
+      "loop": false,
+      "action": "Non-graphic defeated collapse in six poses: hit and falter, knees/coil weaken, torso lowers, falls onto side and folds wings, head rests on ground, final still body lying dead with wings folded and no movement. Do NOT vanish, no blood/gore, no severed parts. Last pose visibly distinct from standing."
+    }
+  ],
+  "groups": [
+    [
+      "idle",
+      "move"
+    ],
+    [
+      "attack",
+      "hit"
+    ],
+    [
+      "defend",
+      "victory"
+    ],
+    [
+      "shoot",
+      "cast"
+    ],
+    [
+      "takeoff",
+      "fly"
+    ],
+    [
+      "landing",
+      "ability"
+    ],
+    [
+      "death"
+    ]
+  ],
+  "policy": {
+    "tier": 7,
+    "weeklyStock": "One shared creature per family per week per rare neutral lair; base and upgrade draw from the same pool.",
+    "recruitment": "All pantheons; rare optional guarded neutral lairs; not town rosters. Upgrade at cleared lair for price difference. No campaign requirement.",
+    "animationNote": "All 13 states are authored. Shoot and cast are reserved clips for future scripting; shots=0 means no normal ranged attack. Grounded idle for all; flight used for travelling.",
+    "balance": "Initial values compared with Nidhogg/World-Serpent Wyrm (258/308 HP, 41–52/47–58 damage, 3000+1/4500+2 cost). Flyers trade raw damage/HP for mobility and one-use support. Needs human playtesting.",
+    "integration": "No edits to live content catalogs, rules, sprite registries, runtime assets or installer. Manifest fragments and proposed data are packaged for later approved integration."
+  }
+}

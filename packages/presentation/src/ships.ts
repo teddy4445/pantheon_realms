@@ -17,6 +17,7 @@ import { hexPolygon } from './hexmath';
 import { mapTokenPicture, tokenHeading, type MapTokenHeading } from './mapTokens';
 import { SHIP_MOTION, facingHeading, shipPose, shipTokenLayout, sinkingLayers, transitionLayers, type ShipMotionState } from './shipMotion';
 import { loadTexture } from './textures';
+import { paintedMapFlag } from './mapFlags';
 import { colorOf, groundShadow } from './staticSprites';
 import { graphicsProfile } from './graphics';
 import { linear, type TweenPlayer } from './tween';
@@ -127,7 +128,7 @@ interface ShipEntry {
   wakeG: Graphics;
   /** The owner's flag (occupied) — fades with embark / disembark. */
   crew: Container;
-  cloth: Graphics;
+  cloth: Container;
   /** The owner / neutral pennant of an empty hull. */
   marker: Container;
   base: Graphics;
@@ -371,20 +372,12 @@ export class ShipLayer {
     e.ring.visible = !!v.selected;
     // Crewed: the hero's square banner on a short staff over the masthead (only this cloth carries the colour).
     for (const c of e.crew.removeChildren()) c.destroy({ children: true });
-    const pole = new Graphics();
-    const poleH = R * 0.62;
-    pole.moveTo(0, 0).lineTo(0, -poleH).stroke({ width: 2.2, color: 0x3a2c1c });
-    e.cloth = new Graphics();
-    e.cloth.rect(0, 0, R * 0.5, R * 0.36).fill({ color: col }).stroke({ width: 1.2, color: 0x1a1208, alpha: 0.75 });
-    e.cloth.position.set(1, -poleH);
-    e.crew.addChild(pole, e.cloth);
+    e.cloth = paintedMapFlag(v.color ?? '#e8e2cf','square',R*.85);
+    e.crew.addChild(e.cloth);
     e.crew.visible = v.occupied;
     // Empty: a small pennant (the "not crewed" shape), the owner's colour or a pale neutral one.
     for (const c of e.marker.removeChildren()) c.destroy({ children: true });
-    const pen = new Graphics();
-    const ph = R * 0.42;
-    pen.moveTo(0, 0).lineTo(0, -ph).stroke({ width: 1.8, color: 0x3a2c1c });
-    pen.poly([1, -ph, 1 + R * 0.4, -ph + R * 0.11, 1, -ph + R * 0.22]).fill({ color: col, alpha: owned ? 0.98 : 0.9 }).stroke({ width: 1, color: 0x1a1208, alpha: 0.8 });
+    const pen = paintedMapFlag(v.color ?? '#e8e2cf','pennant',R*.64);
     e.marker.addChild(pen);
     e.marker.visible = !v.occupied;
     this.positionFlag(e);
@@ -559,13 +552,13 @@ export class ShipLayer {
   // ------------------------------------------------------------------ playback (committed events; never changes state)
 
   /** The ship follows its hero's committed sea route (`ShipMoved`), sailing hex to hex. */
-  async playMove(shipId: string, path: readonly HexCoord[], speed: number, follow: boolean, visibleAt?: (coord: HexCoord) => boolean): Promise<void> {
+  async playMove(shipId: string, path: readonly HexCoord[], speed: number, follow: boolean, visibleAt?: (coord: HexCoord) => boolean, onStep?: (coord: HexCoord) => void): Promise<void> {
     const e = this.ships.get(shipId);
     if (!e || path.length === 0) return;
     const end = path[path.length - 1]!;
     const start = end.q === e.coord.q && end.r === e.coord.r ? e.prevCoord : e.coord;
     if (start.q === end.q && start.r === end.r) return;
-    await this.sail(e, start, path, speed, follow, visibleAt);
+    await this.sail(e, start, path, speed, follow, visibleAt, onStep);
   }
 
   /**
@@ -595,7 +588,7 @@ export class ShipLayer {
     await this.sail(e, from, [to], speed, follow);
   }
 
-  private async sail(e: ShipEntry, start: HexCoord, path: readonly HexCoord[], speed: number, follow: boolean, visibleAt?: (coord: HexCoord) => boolean): Promise<void> {
+  private async sail(e: ShipEntry, start: HexCoord, path: readonly HexCoord[], speed: number, follow: boolean, visibleAt?: (coord: HexCoord) => boolean, onStep?: (coord: HexCoord) => void): Promise<void> {
     e.locked += 1;
     e.snapIn = 0;
     this.host.tweens.speed = speed;
@@ -603,6 +596,7 @@ export class ShipLayer {
     try {
       let from = start;
       this.place(e, from);
+      onStep?.(from);
       for (const step of path) {
         const shown = !visibleAt || visibleAt(from) || visibleAt(step);
         e.root.visible = shown;
@@ -621,6 +615,7 @@ export class ShipLayer {
           linear,
         );
         from = step;
+        onStep?.(step);
       }
     } finally {
       e.locked -= 1;

@@ -1,3 +1,4 @@
+import { EXPANSION_LOOKS } from './expansionLooks';
 /**
  * How magic and Favor look (presentation data; no PixiJS import, part of
  * `@pr/presentation/core`). Every spell, divine intervention and divine gift
@@ -58,6 +59,7 @@ export const FX_SOUNDS = ['strike', 'thunder', 'fire', 'heal', 'bless', 'curse',
 export type FxSound = (typeof FX_SOUNDS)[number];
 
 export interface FxLook {
+  readonly magicArt?: string;
   readonly school: FxSchool;
   readonly travel: FxTravel;
   readonly impact: FxImpact;
@@ -221,7 +223,7 @@ export const SPELL_LOOKS: Readonly<Record<string, Partial<FxLook>>> = {
 };
 
 export function spellLook(spell: { readonly id: string; readonly effect: EffectLike; readonly target: string }): FxLook {
-  return { ...defaultSpellLook(spell.effect, spell.target), ...(SPELL_LOOKS[spell.id] ?? {}) };
+  return { ...defaultSpellLook(spell.effect, spell.target), ...(SPELL_LOOKS[spell.id] ?? {}), ...(EXPANSION_LOOKS[spell.id] ?? {}) };
 }
 
 /** The look of any divine intervention from its effect type (refined by MIRACLE_LOOKS). */
@@ -266,7 +268,7 @@ export const MIRACLE_LOOKS: Readonly<Record<string, Partial<FxLook>>> = {
 };
 
 export function miracleLook(def: { readonly id: string; readonly effect: EffectLike; readonly target: string }): FxLook {
-  return { ...defaultMiracleLook(def.effect, def.target), ...(MIRACLE_LOOKS[def.id] ?? {}) };
+  return { ...defaultMiracleLook(def.effect, def.target), ...(MIRACLE_LOOKS[def.id] ?? {}), ...(EXPANSION_LOOKS[def.id] ?? {}) };
 }
 
 /** Divine gifts and the Temple offering: what rises from the Temple on the town screen. */

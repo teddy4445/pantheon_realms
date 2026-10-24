@@ -1,0 +1,40 @@
+Pantheon Realms - campaign and battle magic update, 22 October 2026
+Version remains 1.0.0.
+
+Boarding and landing cost one ordinary movement step. Route arrival estimates,
+confirmations and movement messages use the same rule. Safe Landing never makes
+landing worse than an ordinary step.
+
+All v2 regional maps gain up to six reachable optional guarded prospects/supply
+caches, placed away from narrow passages and authored roads. The Confluence's
+12 regional chapters gain ten optional guarded locations each, stronger story
+and passage guards, more distant investigations, required Civic Hall II and a
+creature dwelling, and two announced enemy patrols. Clearing their home outposts
+stops them. Enemy forces muster after twelve days. Coastal boarding approaches
+are reserved so destination-only sites cannot obstruct the hero.
+
+Surviving AI/neutral armies grow 12% at each new week, minimum one creature per
+stack. This includes guards, hostile heroes and unowned/AI garrisons, not human
+armies. Cleared sites never respawn. Growth is applied once per week.
+
+Claim objectives explicitly say to open the Journal. New Game's chronicle reads
+saved campaign progress and offers replay of completed chapters and continuation
+to available chapters. Completed chapters receive a dedicated campaign save.
+Replay uses the existing protected practice branch; it preserves the main run.
+
+The map's visible/explored mask advances with each walked or sailed hex instead
+of revealing the committed destination immediately. Camera follows the avatar.
+
+Attack miracles now support percentage-of-current-HP damage with a minimum
+flat amount. Existing Wrath/Zeus miracles use 12%/18%; the new miracles use 16%
+and 24%. AI evaluation uses the same scaling. Weekly Favor limits still apply.
+
+42 new attack spells: six for each pantheon and six shared; two per tier 1-3
+in each group. Each tier includes a direct and an area attack. 12 new native
+attack miracles: two per pantheon. All use native SVG icons and procedural
+colour, travel, impact and sigil animations. No large sprite strips added.
+Dev gallery: apps/client/magic-preview.html (run the development server).
+
+New campaign layouts require a new or replayed chapter; existing saves keep
+current map data. Numerical difficulty is a first balancing pass and needs
+human playtesting across full campaigns.

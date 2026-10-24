@@ -12,9 +12,10 @@
  *   Dwellings: base -> upgraded at the same location.
  * The v0.3 Centaur Grove pair is not part of the Greek roster in this build.
  *
- * Placements are percentages over the town composition (x = building center,
- * y = baseline where it meets its platform) matched to the empty terraces of
- * the owner's Greek town concept reference. The central agora hosts the Marketplace.
+ * Placements match the 3:2 coastal polis composition (x = image center,
+ * y = bottom edge). Upgrade variants share an image frame at each location.
+ * Source artwork and the editable placement preview live in
+ * docs/greek-city-h3-prototype-v1; import with tools/assets/import_greek_city.mjs.
  */
 import type { BuildingDefinition, BuildingSlotDefinition, EffectDefinition, RequirementDefinition, ResourceCost, TownArchetypeDefinition } from '@pr/rules';
 
@@ -127,26 +128,28 @@ export const GREEK_TOWN: TownArchetypeDefinition = {
   pantheonId: G,
   name: 'Greek Polis',
   backgroundAssetId: 'town.greek.background',
-  // Sky and sea at the top left; Athena's statue stands at the top centre-right.
+  damagedBackgroundAssetId: 'town.greek.background.damaged',
+  sceneAspectRatio: 3 / 2,
+  // Coastal polis composition: clear sea/sky at the top left.
   hudAnchor: 'left',
   slots: [
-    slot('civic_hall', 'support', 'Civic Hall', ['village_hall', 'town_hall', 'city_hall', 'capitol'], { x: 51, y: 38, width: 18, height: 18, layer: 4 }, { role: 'civic_hall' }),
-    slot('pantheon_temple', 'support', 'Pantheon Temple', ['temple_1', 'temple_2'], { x: 47.5, y: 23, width: 14, height: 14, layer: 2 }, { role: 'pantheon_temple' }),
-    slot('mage_guild', 'support', 'Mage Guild / Sanctum', ['sanctum_1', 'sanctum_2', 'sanctum_3'], { x: 63.5, y: 29, width: 13, height: 13, layer: 2 }, { role: 'mage_guild' }),
-    slot('watchtower', 'support', 'Watchtower / Observatory', ['watchtower'], { x: 92, y: 27, width: 8, height: 8, layer: 2 }, { role: 'watchtower' }),
-    slot('artifact_merchant', 'support', 'Artifact Merchant', ['artifact_merchant'], { x: 75, y: 39, width: 13, height: 13, layer: 4 }, { role: 'artifact_merchant' }),
-    slot('tavern', 'support', 'Tavern / Heroes’ Lodge', ['tavern'], { x: 30, y: 43.5, width: 12, height: 12, layer: 4 }, { role: 'tavern' }),
-    slot('marketplace', 'support', 'Marketplace', ['market'], { x: 51, y: 75, width: 14, height: 14, layer: 7 }, { role: 'marketplace' }),
-    slot('training_academy', 'support', 'Training Academy', ['training_academy'], { x: 78, y: 57.5, width: 14, height: 14, layer: 5 }, { role: 'training_academy' }),
-    slot('workshop', 'support', 'Workshop', ['workshop'], { x: 21, y: 74.5, width: 13, height: 13, layer: 7 }, { role: 'workshop' }),
-    slot('resource_depot', 'support', 'Resource Depot', ['supply_depot'], { x: 33, y: 75.5, width: 11, height: 11, layer: 7 }, { role: 'resource_depot' }),
-    slot('fortifications', 'support', 'Fortifications / Gatehouse', ['fort', 'citadel', 'castle'], { x: 51, y: 98, width: 22, height: 22, layer: 9 }, { role: 'fortifications' }),
-    slot('dwelling_t1', 'dwelling', 'Tier 1 — Barracks', ['barracks', 'barracks_up'], { x: 67, y: 74.5, width: 13, height: 13, layer: 7 }, { tier: 1 }),
-    slot('dwelling_t2', 'dwelling', 'Tier 2 — Peltast Range', ['peltast_range', 'peltast_range_up'], { x: 82, y: 74.5, width: 13, height: 13, layer: 7 }, { tier: 2 }),
-    slot('dwelling_t3', 'dwelling', 'Tier 3 — Griffin Aerie', ['griffin_aerie', 'griffin_aerie_up'], { x: 89, y: 46, width: 12, height: 12, layer: 4 }, { tier: 3 }),
-    slot('dwelling_t4', 'dwelling', 'Tier 4 — Training Court', ['training_court', 'training_court_up'], { x: 26, y: 34, width: 13, height: 13, layer: 3 }, { tier: 4 }),
-    slot('dwelling_t5', 'dwelling', 'Tier 5 — House of Adepts', ['adept_house', 'adept_house_up'], { x: 19.5, y: 56, width: 12, height: 12, layer: 5 }, { tier: 5 }),
-    slot('dwelling_t6', 'dwelling', 'Tier 6 — Labyrinth', ['labyrinth', 'labyrinth_up'], { x: 90.5, y: 64, width: 11, height: 11, layer: 6 }, { tier: 6 }),
-    slot('dwelling_t7', 'dwelling', 'Tier 7 — Thunder Quarry', ['thunder_quarry', 'thunder_quarry_up'], { x: 8, y: 67, width: 12, height: 12, layer: 6 }, { tier: 7 }),
+    slot('civic_hall', 'support', 'Civic Hall', ['village_hall', 'town_hall', 'city_hall', 'capitol'], { x: 57, y: 36, width: 23, height: 23, layer: 4, artAspectRatio: 1.5 }, { role: 'civic_hall' }),
+    slot('pantheon_temple', 'support', 'Pantheon Temple', ['temple_1', 'temple_2'], { x: 48, y: 26, width: 31, height: 23.25, layer: 2, artAspectRatio: 2 }, { role: 'pantheon_temple' }),
+    slot('mage_guild', 'support', 'Mage Guild / Sanctum', ['sanctum_1', 'sanctum_2', 'sanctum_3'], { x: 74, y: 23, width: 13, height: 16.735, layer: 3, artAspectRatio: 1.1652323580034423 }, { role: 'mage_guild' }),
+    slot('watchtower', 'support', 'Watchtower / Observatory', ['watchtower'], { x: 92, y: 19, width: 9, height: 12.377, layer: 2, artAspectRatio: 1.0907577019150707 }, { role: 'watchtower' }),
+    slot('artifact_merchant', 'support', 'Artifact Merchant', ['artifact_merchant'], { x: 67, y: 47, width: 18, height: 18, layer: 5, artAspectRatio: 1.5 }, { role: 'artifact_merchant' }),
+    slot('tavern', 'support', 'Tavern / Heroes’ Lodge', ['tavern'], { x: 42, y: 44, width: 20, height: 20, layer: 5, artAspectRatio: 1.5 }, { role: 'tavern' }),
+    slot('marketplace', 'support', 'Marketplace', ['market'], { x: 55, y: 57, width: 23, height: 17.25, layer: 6, artAspectRatio: 2 }, { role: 'marketplace' }),
+    slot('training_academy', 'support', 'Training Academy', ['training_academy'], { x: 86, y: 62, width: 21, height: 21, layer: 7, artAspectRatio: 1.5 }, { role: 'training_academy' }),
+    slot('workshop', 'support', 'Workshop', ['workshop'], { x: 28, y: 68, width: 16, height: 16, layer: 8, artAspectRatio: 1.5 }, { role: 'workshop' }),
+    slot('resource_depot', 'support', 'Resource Depot', ['supply_depot'], { x: 43, y: 69, width: 17, height: 17, layer: 8, artAspectRatio: 1.5 }, { role: 'resource_depot' }),
+    slot('fortifications', 'support', 'Fortifications / Gatehouse', ['fort', 'citadel', 'castle'], { x: 63, y: 100, width: 66, height: 34.128, layer: 12, artAspectRatio: 2.900815217391304 }, { role: 'fortifications' }),
+    slot('dwelling_t1', 'dwelling', 'Tier 1 — Barracks', ['barracks', 'barracks_up'], { x: 65, y: 73, width: 20, height: 20, layer: 9, artAspectRatio: 1.5 }, { tier: 1 }),
+    slot('dwelling_t2', 'dwelling', 'Tier 2 — Peltast Range', ['peltast_range', 'peltast_range_up'], { x: 87, y: 73, width: 18, height: 18, layer: 10, artAspectRatio: 1.5 }, { tier: 2 }),
+    slot('dwelling_t3', 'dwelling', 'Tier 3 — Griffin Aerie', ['griffin_aerie', 'griffin_aerie_up'], { x: 92.5, y: 45, width: 11, height: 17.35, layer: 5, artAspectRatio: 0.9510108864696734 }, { tier: 3 }),
+    slot('dwelling_t4', 'dwelling', 'Tier 4 — Training Court', ['training_court', 'training_court_up'], { x: 27, y: 39, width: 17, height: 17, layer: 4, artAspectRatio: 1.5 }, { tier: 4 }),
+    slot('dwelling_t5', 'dwelling', 'Tier 5 — House of Adepts', ['adept_house', 'adept_house_up'], { x: 14, y: 40, width: 13, height: 13, layer: 4, artAspectRatio: 1.5 }, { tier: 5 }),
+    slot('dwelling_t6', 'dwelling', 'Tier 6 — Labyrinth', ['labyrinth', 'labyrinth_up'], { x: 84, y: 47, width: 15, height: 15, layer: 5, artAspectRatio: 1.5 }, { tier: 6 }),
+    slot('dwelling_t7', 'dwelling', 'Tier 7 — Thunder Quarry', ['thunder_quarry', 'thunder_quarry_up'], { x: 12, y: 74, width: 24, height: 24, layer: 7, artAspectRatio: 1.5 }, { tier: 7 }),
   ],
 };

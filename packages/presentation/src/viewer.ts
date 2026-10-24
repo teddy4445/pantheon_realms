@@ -312,7 +312,7 @@ export class UnitViewerController implements SceneController {
   tick(dt: number): void {
     if (this.playback !== 'playing') return;
     this.tweens.tick(dt);
-    this.figure?.tick(dt, this.speed);
+    this.figure?.tick(dt, this.speed, !this.reducedMotion);
   }
 
   dispose(): void {

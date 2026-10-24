@@ -279,6 +279,8 @@
 .ch-text { margin: 0; }
 .ch .gui-choices { grid-template-columns: repeat(auto-fit, minmax(min(19rem, 100%), 1fr)); }
 .ch .gui-choice { align-items: flex-start; }
+.ch--restoration .gui-choices { grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr)); }
+.ch--restoration > .gui-art-header > img { max-height: min(10rem, 18vh); }
 .ch-opt__title { display: inline-flex; align-items: center; gap: 0.4rem; }
 .ch-opt__icon { width: 1.7em; height: 1.7em; }
 .ch-summary { display: block; margin-top: 0.2rem; }

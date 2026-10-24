@@ -11,6 +11,9 @@
  */
 import { Rectangle, Texture, type TextureSource } from 'pixi.js';
 import { spriteUrl, stripKey, type SpriteStrip } from './sprites';
+import { DecodeQueue } from './decodeQueue';
+
+const decodes = new DecodeQueue(4);
 
 const images = new Map<string, Promise<Texture>>();
 const strips = new Map<string, Texture[]>();
@@ -84,8 +87,13 @@ export function loadTexture(url: string, opts?: { mipmaps?: boolean; urgent?: bo
     if (src && uploads.delete(src)) urgent.add(src);
   }
   if (!p) {
-    p = decoded(url).then(async (bmp) => {
-      const t = bmp ? Texture.from(bmp) : await viaImage(url);
+    p = decodes.run(async () => {
+      const bmp=await decoded(url);
+      const texture=bmp ? Texture.from(bmp) : await viaImage(url);
+      // Pixi releases GPU storage but does not close the decoded ImageBitmap.
+      if(bmp) texture.source.once('destroy',()=>bmp.close());
+      return texture;
+    },!!opts?.urgent).then(async (t) => {
       if (opts?.mipmaps) t.source.autoGenerateMipmaps = true;
       sourceOf.set(url, t.source);
       (wantsUrgent.has(url) ? urgent : uploads).add(t.source);
@@ -159,4 +167,45 @@ export async function loadStrip(strip: SpriteStrip): Promise<Texture[]> {
 /** Frames of a strip if already cut (synchronous; null while loading). */
 export function stripFrames(strip: SpriteStrip): Texture[] | null {
   return strips.get(stripKey(strip)) ?? null;
+}
+
+
+// Figure textures have explicit owners; scenery and effects keep their existing cache policy.
+const figureFiles = new Map<string, { users: number; last: number }>();
+let figureClock = 0;
+const UNUSED_FIGURE_BYTES = 24 * 1024 * 1024;
+export function retainFigureStrip(strip: SpriteStrip): void {
+  const url = spriteUrl(strip.file), entry = figureFiles.get(url) ?? {users:0,last:0};
+  entry.users++; entry.last=++figureClock; figureFiles.set(url,entry);
+}
+export function releaseFigureStrip(strip: SpriteStrip): void {
+  const entry=figureFiles.get(spriteUrl(strip.file));
+  if(entry) { entry.users=Math.max(0,entry.users-1); entry.last=++figureClock; }
+  trimFigureTextures();
+}
+export function figureTextureStats() {
+  let activeBytes=0, unusedBytes=0;
+  for(const [url,e] of figureFiles) {
+    const source=sourceOf.get(url); const bytes=source ? source.width*source.height*4 : 0;
+    if(e.users) activeBytes+=bytes; else unusedBytes+=bytes;
+  }
+  return {activeBytes,unusedBytes,budget:UNUSED_FIGURE_BYTES};
+}
+export function trimFigureTextures(): void {
+  let unused=figureTextureStats().unusedBytes;
+  if(unused<=UNUSED_FIGURE_BYTES) return;
+  const free=[...figureFiles].filter(([,e])=>!e.users).sort((a,b)=>a[1].last-b[1].last);
+  for(const [url] of free) {
+    if(unused<=UNUSED_FIGURE_BYTES) break;
+    const source=sourceOf.get(url);
+    // An upload in progress must finish before its cache entry can be reclaimed.
+    if(!source || waiting.has(source)) continue;
+    unused-=source.width*source.height*4;
+    for(const [key,frames] of strips) if(frames[0]?.source===source) {
+      for(const frame of frames) frame.destroy(false);
+      strips.delete(key);
+    }
+    uploads.delete(source); urgent.delete(source); wantsUrgent.delete(url);
+    source.destroy(); sourceOf.delete(url); images.delete(url); figureFiles.delete(url);
+  }
 }

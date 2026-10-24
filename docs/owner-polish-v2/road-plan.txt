@@ -1,0 +1,19 @@
+Road alignment review
+
+The renderer chooses one independent painted tile per road hex, from 63 masks.
+Direction masks and grid positions already agree mathematically. The visible
+inconsistencies are inside the painted pieces: edge width, rut positions and
+junction shapes vary. Enlarging or shifting entire tiles cannot fix all six
+edges at once.
+
+Recommended next pass:
+1. Draw every connection along a shared centerline with identical edge ports,
+   width and paired wheel ruts. Build junctions from the same connected graph.
+2. Apply the current dirt/cobble/sand/snow texture to those continuous surfaces.
+   Texture should decorate geometry, not determine where a road joins.
+3. Blend materials over one tile at biome boundaries instead of switching sharply.
+4. Validate all 63 masks against their neighbours and suppress tiny generated
+   loops where they do not connect meaningful destinations.
+
+This pass changes map scale and camera tracking, but leaves road artwork intact
+pending that dedicated geometry/texture pass.

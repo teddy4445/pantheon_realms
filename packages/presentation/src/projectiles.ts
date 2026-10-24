@@ -1,3 +1,4 @@
+import { frameDurations, frameStart } from './animationTiming';
 /**
  * Shooter missiles and their impacts (battle FX delivery 2026-10-15,
  * `docs/battle-fx-neutral-upgrades-v1`, handoff §4–6): which profile a shot
@@ -374,10 +375,9 @@ export const LEGACY_RELEASE_MS = 260;
  * When, after the shoot strip starts, the missile leaves: the start of the release frame of the
  * strip actually drawn (`SpriteFigure.playOnce` spreads `frames` over max(`minMs`, frames / fps)).
  */
-export function releaseDelayMs(strip: { readonly frames: number; readonly fps: number } | null | undefined, minMs: number, frame: number): number {
+export function releaseDelayMs(strip: { readonly frames: number; readonly fps: number; readonly frameDurationsMs?: readonly number[] } | null | undefined, minMs: number, frame: number): number {
   if (!strip || strip.frames <= 0) return LEGACY_RELEASE_MS;
-  const total = Math.max(minMs, (strip.frames / Math.max(1, strip.fps)) * 1000);
-  return (total * clamp(Math.round(frame), 0, strip.frames - 1)) / strip.frames;
+  return frameStart(frameDurations('shoot', strip, minMs), frame);
 }
 
 /**

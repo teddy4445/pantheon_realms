@@ -338,6 +338,7 @@ export function MapEditorScreen() {
       if (kind === 'sluice') s = { ...s, channel: autoChannel(doc, c) };
       if (kind === 'ferry' && pendingFerry) s = { ...s, twinId: pendingFerry };
       if (kind === 'supply_depot') s = { ...s, reward: { ...SUPPLY_DEPOT_REWARD } };
+      if (kind === 'restoration_shrine' || kind === 'restoration_temple') s = { ...s, pantheon: doc.players[0]?.pantheonId ?? 'greek' };
       if (seaProblem !== undefined) s = { ...s, ...seaSiteDefaults(catalog, kind, resource) };
       setDoc((d) => {
         let sites = d.sites;
@@ -1559,6 +1560,15 @@ function SitePanel({
         <>
           <label className="setting-block__label">Creatures for hire</label>
           {creatureSelect(site.creatureId ?? creatures[0]!.id, (creatureId) => update(site.id, { creatureId }), 'Camp creature', 'site-camp-creature')}
+        </>
+      ) : null}
+      {site.kind === 'restoration_shrine' || site.kind === 'restoration_temple' ? (
+        <>
+          <label className="setting-block__label">Sanctuary pantheon</label>
+          <select className="text-input" value={site.pantheon ?? doc.players[0]?.pantheonId ?? 'greek'} aria-label="Sanctuary pantheon" onChange={e => update(site.id, { pantheon: e.target.value })} data-testid="site-temple-pantheon">
+            {['greek','norse','egyptian','japanese','celtic','mesoamerican'].map(id => <option key={id} value={id}>{catalog.pantheons[id]?.name ?? id}</option>)}
+          </select>
+          <p className="small dim">Starts ruined. The first hero pays {site.kind === 'restoration_shrine' ? 8 : 20} Favor and chooses supplies, creatures, or magical teaching. Restoration is permanent.</p>
         </>
       ) : null}
       {site.kind === 'spell_shrine' ? (

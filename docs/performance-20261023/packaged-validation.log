@@ -1,0 +1,13 @@
+Packaged version, assets and exact JS/CSS comparison passed.
+(node:5624) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Packaged main menu visible.
+All 757 optimized artwork URLs decoded in packaged Electron.
+Packaged 1.0.0 launch and New Game passed.
+Packaged Land deployment, battle and results passed.
+Packaged Siege deployment, battle and results passed.
+Packaged Naval deployment, battle and results passed.
+Packaged campaign map and manual save passed; no JavaScript errors.
+Debugger ending on ws://127.0.0.1:60774/745457ac-e40b-4e35-b012-1c6b18eeffbb
+For help, see: https://nodejs.org/learn/getting-started/debugging
+Packaged process exit: 0 null

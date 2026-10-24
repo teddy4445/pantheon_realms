@@ -1,0 +1,230 @@
+{
+  "version": 1,
+  "provenance": "Built-in ImageGen, October 2026; style references from the game’s delivered painted icon set.",
+  "icons": {
+    "land": {
+      "file": "single-battle-icons-v1/land-64.webp",
+      "retina": "single-battle-icons-v1/land-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/land.png",
+      "width": 64,
+      "height": 64
+    },
+    "siege": {
+      "file": "single-battle-icons-v1/siege-64.webp",
+      "retina": "single-battle-icons-v1/siege-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/siege.png",
+      "width": 64,
+      "height": 64
+    },
+    "naval": {
+      "file": "single-battle-icons-v1/naval-64.webp",
+      "retina": "single-battle-icons-v1/naval-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/naval.png",
+      "width": 64,
+      "height": 64
+    },
+    "campaign": {
+      "file": "single-battle-icons-v1/campaign-64.webp",
+      "retina": "single-battle-icons-v1/campaign-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/campaign.png",
+      "width": 64,
+      "height": 64
+    },
+    "random": {
+      "file": "single-battle-icons-v1/random-64.webp",
+      "retina": "single-battle-icons-v1/random-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/random.png",
+      "width": 64,
+      "height": 64
+    },
+    "editor": {
+      "file": "single-battle-icons-v1/editor-64.webp",
+      "retina": "single-battle-icons-v1/editor-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/editor.png",
+      "width": 64,
+      "height": 64
+    },
+    "back": {
+      "file": "single-battle-icons-v1/back-64.webp",
+      "retina": "single-battle-icons-v1/back-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/back.png",
+      "width": 64,
+      "height": 64
+    },
+    "plan": {
+      "file": "single-battle-icons-v1/plan-64.webp",
+      "retina": "single-battle-icons-v1/plan-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/plan.png",
+      "width": 64,
+      "height": 64
+    },
+    "attacker": {
+      "file": "single-battle-icons-v1/attacker-64.webp",
+      "retina": "single-battle-icons-v1/attacker-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/attacker.png",
+      "width": 64,
+      "height": 64
+    },
+    "defender": {
+      "file": "single-battle-icons-v1/defender-64.webp",
+      "retina": "single-battle-icons-v1/defender-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/defender.png",
+      "width": 64,
+      "height": 64
+    },
+    "player": {
+      "file": "single-battle-icons-v1/player-64.webp",
+      "retina": "single-battle-icons-v1/player-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/player.png",
+      "width": 64,
+      "height": 64
+    },
+    "ai": {
+      "file": "single-battle-icons-v1/ai-64.webp",
+      "retina": "single-battle-icons-v1/ai-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/ai.png",
+      "width": 64,
+      "height": 64
+    },
+    "add": {
+      "file": "single-battle-icons-v1/add-64.webp",
+      "retina": "single-battle-icons-v1/add-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/add.png",
+      "width": 64,
+      "height": 64
+    },
+    "close": {
+      "file": "single-battle-icons-v1/close-64.webp",
+      "retina": "single-battle-icons-v1/close-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/close.png",
+      "width": 64,
+      "height": 64
+    },
+    "upgrade": {
+      "file": "single-battle-icons-v1/upgrade-64.webp",
+      "retina": "single-battle-icons-v1/upgrade-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/upgrade.png",
+      "width": 64,
+      "height": 64
+    },
+    "terrain": {
+      "file": "single-battle-icons-v1/terrain-64.webp",
+      "retina": "single-battle-icons-v1/terrain-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/terrain.png",
+      "width": 64,
+      "height": 64
+    },
+    "obstacles": {
+      "file": "single-battle-icons-v1/obstacles-64.webp",
+      "retina": "single-battle-icons-v1/obstacles-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/obstacles.png",
+      "width": 64,
+      "height": 64
+    },
+    "climate": {
+      "file": "single-battle-icons-v1/climate-64.webp",
+      "retina": "single-battle-icons-v1/climate-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/climate.png",
+      "width": 64,
+      "height": 64
+    },
+    "rules": {
+      "file": "single-battle-icons-v1/rules-64.webp",
+      "retina": "single-battle-icons-v1/rules-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/rules.png",
+      "width": 64,
+      "height": 64
+    },
+    "seed": {
+      "file": "single-battle-icons-v1/seed-64.webp",
+      "retina": "single-battle-icons-v1/seed-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/seed.png",
+      "width": 64,
+      "height": 64
+    },
+    "dice": {
+      "file": "single-battle-icons-v1/dice-64.webp",
+      "retina": "single-battle-icons-v1/dice-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/dice.png",
+      "width": 64,
+      "height": 64
+    },
+    "reset": {
+      "file": "single-battle-icons-v1/reset-64.webp",
+      "retina": "single-battle-icons-v1/reset-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/reset.png",
+      "width": 64,
+      "height": 64
+    },
+    "save": {
+      "file": "single-battle-icons-v1/save-64.webp",
+      "retina": "single-battle-icons-v1/save-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/save.png",
+      "width": 64,
+      "height": 64
+    },
+    "library": {
+      "file": "single-battle-icons-v1/library-64.webp",
+      "retina": "single-battle-icons-v1/library-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/library.png",
+      "width": 64,
+      "height": 64
+    },
+    "deploy": {
+      "file": "single-battle-icons-v1/deploy-64.webp",
+      "retina": "single-battle-icons-v1/deploy-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/deploy.png",
+      "width": 64,
+      "height": 64
+    },
+    "rotate": {
+      "file": "single-battle-icons-v1/rotate-64.webp",
+      "retina": "single-battle-icons-v1/rotate-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/rotate.png",
+      "width": 64,
+      "height": 64
+    },
+    "export": {
+      "file": "single-battle-icons-v1/export-64.webp",
+      "retina": "single-battle-icons-v1/export-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/export.png",
+      "width": 64,
+      "height": 64
+    },
+    "import": {
+      "file": "single-battle-icons-v1/import-64.webp",
+      "retina": "single-battle-icons-v1/import-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/import.png",
+      "width": 64,
+      "height": 64
+    },
+    "load": {
+      "file": "single-battle-icons-v1/load-64.webp",
+      "retina": "single-battle-icons-v1/load-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/load.png",
+      "width": 64,
+      "height": 64
+    },
+    "delete": {
+      "file": "single-battle-icons-v1/delete-64.webp",
+      "retina": "single-battle-icons-v1/delete-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/delete.png",
+      "width": 64,
+      "height": 64
+    },
+    "replay": {
+      "file": "single-battle-icons-v1/replay-64.webp",
+      "retina": "single-battle-icons-v1/replay-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/replay.png",
+      "width": 64,
+      "height": 64
+    },
+    "settings": {
+      "file": "single-battle-icons-v1/settings-64.webp",
+      "retina": "single-battle-icons-v1/settings-128.webp",
+      "source": "assets-source/ui/single-battle-icons-v1/settings.png",
+      "width": 64,
+      "height": 64
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import type { SiteDefinition } from '../definitions/world';
 /**
  * Runtime state for one match. Plain serializable data only.
  *
@@ -194,6 +195,8 @@ export interface HeroState {
   pendingLevels: number;
   /** Gods' gifts this hero took at levels 10 and 15 (`catalog.godPerks` IDs; absent = none). */
   perks?: string[];
+  /** Held until this hero's next attacking or defending battle; never stacked. */
+  landmarkBlessing?: { kind: 'courage' | 'protection'; source: string };
   /** World week of the last Training Academy session (0 = never). */
   lastTrainedWeek: number;
   ai?: HeroAiState;
@@ -279,6 +282,8 @@ export interface SiteState {
   stock?: number;
   /** Relic: consecutive dawns the current owner has held it. */
   heldDays?: number;
+  /** Latest weekly gift for each visitor, persisted independently of other heroes. */
+  landmarkVisits?: Record<HeroId, { week: number; option: number }>;
   /** Heroes that already used a once-per-hero site (learning stone, spell shrine, skill trainer). */
   usedBy?: HeroId[];
   /** Windmill: world week of the last collection (0 or absent = never). */
@@ -300,6 +305,10 @@ export interface SiteState {
 }
 
 export interface WorldState {
+  /** Deterministic encounters generated at map creation and saved with the map. */
+  landmarkSites?: SiteDefinition[];
+  /** Restorable temples generated once for new maps; definitions and claimed states survive saves. */
+  restorationSites?: SiteDefinition[];
   /** Non-blocking magical signals. They never grant vision or become armies. */
   signals?: { id: string; ownerId: PlayerId; coord: HexCoord; untilDay: number; identifiedBy: PlayerId[] }[];
   map: WorldMapDefinition;

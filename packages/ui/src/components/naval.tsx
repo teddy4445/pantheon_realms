@@ -147,7 +147,7 @@ export function ShipInspectPanel({
         )}
         {picking && view.landing.length ? (
           <div className="ship-inspect__landing" role="group" aria-label="Choose a shore to land on" data-testid="ship-landing">
-            <div className="small">Pick a highlighted shore on the map, or one here (uses all remaining movement):</div>
+            <div className="small">Pick a highlighted shore on the map, or one here (costs one movement step):</div>
             {view.landing.map((l) => (
               <Button key={`${l.coord.q},${l.coord.r}`} size="small" icon="disembark" onClick={() => onDisembark(l.coord)} data-testid={`ship-land-${l.coord.q}-${l.coord.r}`}>
                 {l.label}

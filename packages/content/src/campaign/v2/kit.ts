@@ -15,7 +15,7 @@
  * those values passed their headless journeys; v2 changes the map, the tasks and
  * the pacing, not the economy model. Everything is proposed and unplaytested.
  */
-import { armyToken, type AssetId, type BattlefieldArchetype, type CommanderSpec, type DialogueLine, type EntryBonusDefinition, type EvidenceDefinition, type HexCoord, type HostileHeroDefinition, type MapEventOptionDefinition, type MissionDefinition, type MissionTimerDefinition, type ObjectiveCondition, type ObjectiveDefinition, type RewardDefinition, type ResourceCost, type SiteDefinition, type StorySceneDefinition, type Terrain } from '@pr/rules';
+import { axialDistance, axialNeighbors, hexKey, armyToken, type AssetId, type BattlefieldArchetype, type CommanderSpec, type DialogueLine, type EntryBonusDefinition, type EvidenceDefinition, type HexCoord, type HostileHeroDefinition, type MapEventOptionDefinition, type MissionDefinition, type MissionTimerDefinition, type ObjectiveCondition, type ObjectiveDefinition, type RewardDefinition, type ResourceCost, type SiteDefinition, type StorySceneDefinition, type Terrain } from '@pr/rules';
 import { compileRegionMap, toAxial, type RegionMapSpec, type RoadSpec, type SitePlacement, type XY } from './regionMap';
 
 export type Army = readonly (readonly [string, number])[];
@@ -263,6 +263,28 @@ export function chapter(spec: ChapterSpec): MissionDefinition {
     if (def.kind.type === 'sluice' && channelXY) return { ...def, kind: { ...def.kind, channel: channelXY.map(ax) } };
     return def;
   });
+  // Populate reachable side routes without moving authored gates or story landmarks.
+  const occupied = new Set(sites.map(site => hexKey(site.coord)));
+  const townCell = sites.find(site => site.kind.type === 'town')!.coord;
+  const walkable = (c: HexCoord) => !['w','m','v'].includes(compiled.map.rows[c.r]?.[c.q] ?? 'v');
+  const queue = [townCell], reached = new Set<string>();
+  for (let n=0;n<queue.length;n++) {
+    const c=queue[n]!; if(reached.has(hexKey(c)) || !walkable(c)) continue;
+    reached.add(hexKey(c)); queue.push(...axialNeighbors(c));
+  }
+  const candidates = [...reached].map(key => { const [q,r]=key.split(',').map(Number); return {q:q!,r:r!}; })
+    .filter(c => axialDistance(c,townCell)>=5 && !occupied.has(hexKey(c)))
+    .sort((a,b) => ((a.q*71+a.r*31)%101)-((b.q*71+b.r*31)%101) || a.r-b.r || a.q-b.q);
+  let extra=0;
+  for(const coord of candidates) {
+    if(extra>=6) break;
+    if(sites.some(site => axialDistance(site.coord,coord)<3) || axialNeighbors(coord).filter(walkable).length < 6 || compiled.map.roads.some(edge => edge.split('|').includes(hexKey(coord)))) continue;
+    const sid=`${id}_frontier_${extra}`;
+    sites.push({id:sid,anchorId:sid,coord,name:extra%2?'Frontier supplies':'Guarded prospect',description:'An optional expedition to finance town development and fresh recruits.',
+      kind:extra%2?{type:'pickup',reward:{resources:{gold:650,wood:2,stone:2}}}:{type:'resource_site',siteType:'gold_mine',resource:'gold',dailyYield:500},
+      guard:{label:'Frontier defenders',army:[{creatureId:'brigand',count:8+spec.chapter*3+extra}],battlefield:'open_field',reward:{},required:false}});
+    extra++;
+  }
   const hostile: HostileHeroDefinition[] = (spec.patrols ?? []).map((p) => {
     const start = ax(p.start);
     return {

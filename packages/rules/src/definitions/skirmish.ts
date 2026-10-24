@@ -85,7 +85,7 @@ export type InterventionEffectDefinition =
   /** Battle: the front creature of every friendly stack heals up to `amount` HP (no resurrection). */
   | { readonly type: 'battle_heal'; readonly amount: number }
   /** Battle: one enemy stack takes `damage` damage. */
-  | { readonly type: 'battle_smite'; readonly damage: number };
+  | { readonly type: 'battle_smite'; readonly damage: number; readonly percent?: number };
 
 /**
  * A divine intervention: a miracle paid for in Favor. A player may invoke at

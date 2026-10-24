@@ -30,6 +30,7 @@ const ALLOWED = {
 };
 
 const RELATIVE_EXCEPTIONS = [
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/neutral-dragons-v1/manifest.json' },
   { from: 'packages/ui/src/assets/expansionArt.ts', to: 'assets-runtime/mythic-library-v2/manifest.json' },
   { from: 'packages/ui/src/assets/expansionArt.ts', to: 'assets-runtime/mythic-library-v2/design/vfx-recipes.json' },
   { from: 'packages/ui/src/assets/expansionArt.ts', to: 'assets-runtime/twin-campaigns-v1/manifest.json' },
@@ -56,6 +57,15 @@ const RELATIVE_EXCEPTIONS = [
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/naval-random-v1/manifest.json' },
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/sea-creatures-v1/manifest.json' },
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/sea-sites-v1/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/greek-city-h3-v1/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/pantheon-cities-h3-v1/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/map-town-development-v1/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/map-life-v1/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/expansion-magic-v2/icons.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/map-landmarks-v1/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/world-expansion-v1/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/world-polish-v2/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/city-icons-v1/manifest.json' },
   { from: 'packages/ui/src/audio/gameAudio.ts', to: 'assets-runtime/audio/manifest.json' },
   { from: 'packages/ui/src/assets/cursors.ts', to: 'assets-runtime/ui/cursors/manifest.json' },
 ];

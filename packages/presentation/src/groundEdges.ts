@@ -90,7 +90,7 @@ export const GROUND_VARIETY: Readonly<Record<string, { readonly depth: readonly 
   rocky: { depth: [0.7, 1.5], reverse: 0.3 },
   boggy: { depth: [0.85, 1.8], reverse: 0.3 },
   scree: { depth: [0.8, 1.3], reverse: 0 },
-  shore: { depth: [1, 1], reverse: 0 },
+  shore: { depth: [0.72, 1.28], reverse: 0 },
 };
 
 const mix = (h: number): number => {

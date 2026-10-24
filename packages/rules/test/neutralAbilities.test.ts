@@ -363,3 +363,77 @@ describe('neutral abilities on older saves', () => {
 });
 
 export type { BattleCell };
+
+describe('neutral dragon powers', () => {
+  const ward = 'neutral_celestial_rain_dragon_special';
+  const wings: Piece[] = [
+    { id:'dragon',side:'attacker',creatureId:'neutral_celestial_rain_dragon',count:2,at:[3,4] },
+    { id:'ally',side:'attacker',creatureId:'hoplite',count:50,at:[6,4] },
+    { id:'near',side:'attacker',creatureId:'hoplite',count:50,at:[3,5] },
+    { id:'foe',side:'defender',creatureId:'brigand',count:100,at:[7,4] },
+  ];
+  it('wards two chosen targets within three hexes, spends one action/use, draws no RNG, and expires on reactivation', () => {
+    const d=arena(wings,'dragon');
+    expect(legalActions(d.catalog,d.state)!.abilities.find(a=>a.abilityId===ward)).toMatchObject({maxTargets:2,targets:['ally','dragon','near']});
+    const rng={...d.state.rng};
+    const events=act(d,{...ability(d,'dragon',ward,'ally'),additionalTargetIds:['near']});
+    expect(d.state.rng).toEqual(rng);
+    expect(events.filter(e=>e.kind==='BattleAbilityUsed')).toEqual([expect.objectContaining({targetId:'ally',targetIds:['ally','near']})]);
+    for(const id of ['ally','near']) expect(stack(d,id).statuses).toContainEqual(expect.objectContaining({kind:'damage_ward',amount:30,expiresOnActivationOf:'dragon'}));
+    expect(stack(d,'dragon').abilityUses?.[ward]).toBe(1);
+    expect(d.state.battle!.activeStackId).not.toBe('dragon');
+    for(let i=0;i<10 && d.state.battle!.activeStackId!=='dragon';i++) act(d,{kind:'BattleDefend',stackId:d.state.battle!.activeStackId!});
+    for(const id of ['ally','near']) expect(stack(d,id).statuses).not.toContainEqual(expect.objectContaining({kind:'damage_ward'}));
+    expect(refuse(d,ability(d,'dragon',ward,'ally')).message).toMatch(/already used/i);
+  });
+  it('validates every selected target before changing state, including duplicates, excess and hostile targets', () => {
+    const d=arena(wings,'dragon');
+    for(const ids of [['ally'],['near','dragon'],['foe'],['missing']]){
+      const before=canonicalStateHash(d.state);
+      expect(refuse(d,{...ability(d,'dragon',ward,'ally'),additionalTargetIds:ids}).code).toBe('illegal_target');
+      expect(canonicalStateHash(d.state)).toBe(before);
+    }
+  });
+  it('a blocked three-hex line is illegal; base Rainward allows self but only one target', () => {
+    const d=arena(wings.map(p=>p.id==='dragon'?{...p,creatureId:'neutral_rain_dragon'}:p),'dragon');
+    d.state.battle!.obstacles=[{col:4,row:4}];
+    const id='neutral_rain_dragon_special';
+    expect(legalActions(d.catalog,d.state)!.abilities.find(a=>a.abilityId===id)!.targets).not.toContain('ally');
+    expect(refuse(d,{...ability(d,'dragon',id,'dragon'),additionalTargetIds:['near']}).code).toBe('illegal_target');
+    act(d,ability(d,'dragon',id,'dragon'));
+    expect(stack(d,'dragon').statuses).toContainEqual(expect.objectContaining({kind:'damage_ward',amount:25}));
+  });
+  it('Royal Dread suppresses two foes and excludes undead, constructs and mind immunity', () => {
+    const d=arena([
+      {id:'dragon',side:'attacker',creatureId:'neutral_crowned_zilant',count:2,at:[3,4]},
+      {id:'foe',side:'defender',creatureId:'brigand',count:10,at:[5,4]},
+      {id:'foe2',side:'defender',creatureId:'brigand',count:10,at:[4,5]},
+      {id:'immune',side:'defender',creatureId:'hoplite',count:10,at:[5,5]},
+    ],'dragon');
+    const id='neutral_crowned_zilant_special';
+    for(const trait of ['undead','construct','mind_immune'] as const){
+      const catalog={...d.catalog,creatures:{...d.catalog.creatures,hoplite:{...d.catalog.creatures.hoplite!,traits:[trait]}}};
+      expect(legalActions(catalog,d.state)!.abilities.find(a=>a.abilityId===id)!.targets).toEqual(['foe','foe2']);
+    }
+    act(d,{...ability(d,'dragon',id,'foe'),additionalTargetIds:['foe2']});
+    for(const target of ['foe','foe2']) expect(stack(d,target).statuses).toContainEqual(expect.objectContaining({kind:'retaliation_suppressed',amount:1}));
+  });
+  it.each([['neutral_cuelebre',4,false],['neutral_ancient_cuelebre',5,true]] as const)('%s defends and protects the intended living neighbours', (creatureId,amount,all) => {
+    const d=arena([
+      {id:'dragon',side:'attacker',creatureId,count:2,at:[3,4]},
+      {id:'a',side:'attacker',creatureId:'hoplite',count:30,at:[3,5]},
+      {id:'b',side:'attacker',creatureId:'hoplite',count:30,at:[2,3]},
+      {id:'far',side:'attacker',creatureId:'hoplite',count:30,at:[7,5]},
+      {id:'foe',side:'defender',creatureId:'brigand',count:100,at:[9,4]},
+    ],'dragon');
+    const events=act(d,ability(d,'dragon',creatureId+'_special','a'));
+    expect(stack(d,'dragon').defending).toBe(true);
+    expect(events.filter(e=>e.kind==='BattleStackDefended')).toHaveLength(1);
+    for(const target of (all?['a','b']:['a'])) {
+      expect(stack(d,target).statuses).toContainEqual(expect.objectContaining({kind:'defense_bonus',amount}));
+      expect(stack(d,target).statuses).toContainEqual(expect.objectContaining({kind:'pull_immunity',amount:1}));
+    }
+    expect(stack(d,'far').statuses).toEqual([]);
+    if(!all) expect(stack(d,'b').statuses).toEqual([]);
+  });
+});

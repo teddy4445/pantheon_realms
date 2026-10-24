@@ -218,6 +218,10 @@ export function customMapFromGenerated(catalog: ContentCatalog, g: GeneratedForE
       case 'learning_stone':
         site = withGuard({ ...base, kind: 'learning_stone', name: s.name } as CustomSite);
         break;
+      case 'map_event':
+        if (k.restoration) site = { ...base, kind: k.restoration.size === 'small' ? 'restoration_shrine' : 'restoration_temple', pantheon: k.restoration.pantheonId, name: s.name };
+        break;
+      /* Existing shrine/trainer definitions retain their own independent per-hero visits. */
       case 'spell_shrine':
         site = withGuard({ ...base, kind: 'spell_shrine', spellId: k.spellId, name: s.name } as CustomSite);
         break;

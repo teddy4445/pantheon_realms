@@ -1,0 +1,39 @@
+{
+  "mode": "built-in image_gen",
+  "jobs": [
+    {
+      "level": 1,
+      "prompt": "Use case: precise-object-edit. Edit this Greek coastal city BACKGROUND PLATE into civic development stage 1 of four. Level 1 VILLAGE: modest frontier settlement. Mostly earthen tracks, rough stone steps, dry grass and scattered wild bushes. A handful of small humble plaster-and-terracotta homes ONLY where the reference already has incidental houses. Rough low retaining walls. Sparse infrastructure, no grand decorations. Warm and inviting, not damaged or ruined. CRITICAL INVARIANTS: exact same 3:2 canvas, horizon, camera, sea, mountains, sun direction, color temperature, cliff shapes, terrace elevations, road centerlines and stair positions as input. Preserve all the large open building footprints and their ground height; they will receive independent transparent building layers. All improvements are roads, retaining walls, decorative landscaping and tiny incidental houses at the margins. Do NOT add any major temple, palace, tower, gatehouse, fortress walls, market, barracks, academy, quarry, maze, griffins or other gameplay landmarks. Do not put new objects in the centers of the empty terraces. No circular pads, text, UI, borders, labels or fog. Keep the same warm late-afternoon Heroes III-inspired painted/pre-rendered visual style. This is one full background image only, not a collage or comparison."
+    },
+    {
+      "level": 2,
+      "prompt": "Use case: precise-object-edit. Edit this Greek coastal city BACKGROUND PLATE into civic development stage 2 of four. Level 2 TOWN: established settlement. Main avenue and stairs are neatly laid sandstone, side paths remain dirt. Repaired low retaining walls, a few more small terracotta-roof houses tucked against existing residential rock edges, modest timber railings, clay pots and practical roadside greenery. Clearly more settled and orderly than a village, restrained decoration. CRITICAL INVARIANTS: exact same 3:2 canvas, horizon, camera, sea, mountains, sun direction, color temperature, cliff shapes, terrace elevations, road centerlines and stair positions as input. Preserve all the large open building footprints and their ground height; they will receive independent transparent building layers. All improvements are roads, retaining walls, decorative landscaping and tiny incidental houses at the margins. Do NOT add any major temple, palace, tower, gatehouse, fortress walls, market, barracks, academy, quarry, maze, griffins or other gameplay landmarks. Do not put new objects in the centers of the empty terraces. No circular pads, text, UI, borders, labels or fog. Keep the same warm late-afternoon Heroes III-inspired painted/pre-rendered visual style. This is one full background image only, not a collage or comparison."
+    },
+    {
+      "level": 3,
+      "prompt": "Use case: precise-object-edit. Edit this Greek coastal city BACKGROUND PLATE into civic development stage 3 of four. Level 3 CITY: prosperous polis. Smooth limestone paving on the main routes, neatly finished terrace retaining walls and balustrades, denser clusters of small whitewashed terracotta homes confined to existing residential margins, orderly olive gardens and trimmed cypresses, roadside lamps and small urns, narrow decorative mosaic edging. A clearly rich city infrastructure, no enormous monuments. CRITICAL INVARIANTS: exact same 3:2 canvas, horizon, camera, sea, mountains, sun direction, color temperature, cliff shapes, terrace elevations, road centerlines and stair positions as input. Preserve all the large open building footprints and their ground height; they will receive independent transparent building layers. All improvements are roads, retaining walls, decorative landscaping and tiny incidental houses at the margins. Do NOT add any major temple, palace, tower, gatehouse, fortress walls, market, barracks, academy, quarry, maze, griffins or other gameplay landmarks. Do not put new objects in the centers of the empty terraces. No circular pads, text, UI, borders, labels or fog. Keep the same warm late-afternoon Heroes III-inspired painted/pre-rendered visual style. This is one full background image only, not a collage or comparison."
+    },
+    {
+      "level": 4,
+      "prompt": "Use case: precise-object-edit. Edit this Greek coastal city BACKGROUND PLATE into civic development stage 4 of four. Level 4 CAPITAL: magnificent mature Greek capital infrastructure. Broad polished warm ivory-marble streets following the EXACT existing routes, fine blue-and-gold Greek key mosaic borders, elegant continuous marble terrace balustrades, lush manicured gardens in existing vegetation margins, tiny bronze roadside statues and ceremonial lamps, richer tightly clustered small civic residences in existing residential margins, decorative planters. Luxurious but restrained ancient Greek craftsmanship; keep terrain readable and avoid overwhelming the detachable landmarks. CRITICAL INVARIANTS: exact same 3:2 canvas, horizon, camera, sea, mountains, sun direction, color temperature, cliff shapes, terrace elevations, road centerlines and stair positions as input. Preserve all the large open building footprints and their ground height; they will receive independent transparent building layers. All improvements are roads, retaining walls, decorative landscaping and tiny incidental houses at the margins. Do NOT add any major temple, palace, tower, gatehouse, fortress walls, market, barracks, academy, quarry, maze, griffins or other gameplay landmarks. Do not put new objects in the centers of the empty terraces. No circular pads, text, UI, borders, labels or fog. Keep the same warm late-afternoon Heroes III-inspired painted/pre-rendered visual style. This is one full background image only, not a collage or comparison."
+    }
+  ],
+  "results": [
+    {
+      "level": 1,
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-ece1933d-6120-408f-8e3d-3b91c9b53d06.png"
+    },
+    {
+      "level": 2,
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-c8685239-4dc8-48bb-b5f4-f740f52f93da.png"
+    },
+    {
+      "level": 3,
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-e91db18b-fc32-4e9c-92db-74817535f51b.png"
+    },
+    {
+      "level": 4,
+      "path": "C:\\Users\\Teddy Lazebnik\\.codex\\generated_images\\01a157b5-b18e-7362-9a67-463f9f902617\\exec-e9abcc28-c0fc-40e3-8942-28b9547ab7b9.png"
+    }
+  ]
+}

@@ -1,13 +1,36 @@
-# @pr/rules — authoritative rules core
+# @pr/rules
 
-The only place game rules live. Pure TypeScript with no DOM, Node, React,
-PixiJS or Electron imports.
+The authoritative, DOM-free simulation. It defines content contracts, serializable match state, legal commands and gameplay transitions. No UI or renderer may bypass this layer to alter an outcome.
 
-* `definitions/` — immutable content **types** (the vocabulary content is written in).
-* `state/match.ts` — `MatchState`, the plain serializable runtime record.
-* `commands/`, `events/` — every requested mutation and every committed fact.
-* `engine/` — `processCommand` (validate → handler on a draft → objectives/outcome → commit) and `Tx`.
-* `resolvers/` — read-only derivations (town effects, requirements, hero modifiers, paths, vision).
-* `systems/` — quote/commit pairs: economy, heroes, divine, quests, adventure, turn/dawn, battle.
+## Read the code
 
-Every UI legality question is answered by a `quote*` function that shares code with its commit.
+| Entry point | Responsibility |
+| --- | --- |
+| [src/engine/processor.ts](src/engine/processor.ts) | The command boundary: validation, draft mutation, accepted revision and emitted events. |
+| [src/commands/commands.ts](src/commands/commands.ts) | The discriminated command vocabulary used by UI, AI and tests. |
+| [src/state/match.ts](src/state/match.ts) | Persistent match state; keep it plain data and keyed by stable IDs. |
+| [src/definitions](src/definitions) | Contracts for creatures, spells, towns, scenarios and other authored content. |
+| [src/resolvers](src/resolvers) | Read-side queries, quotes, legality and scenario views. |
+| [src/systems](src/systems) | Economy, world interactions, heroes, turns, naval rules and other transitions. |
+| [src/systems/battle](src/systems/battle) | Battle creation, targeting, attacks, abilities, resolution and rewards. |
+| [src/core](src/core) | Shared IDs, hex math, deterministic RNG and data helpers. |
+
+## Contracts and design decisions
+
+This package imports no other workspace package and has no DOM, Node, React or Pixi dependency. Rejected commands must leave the original match untouched. Gameplay randomness must use the saved RNG streams. Events describe authoritative outcomes; animation callbacks never apply those outcomes.
+
+## Making a change
+
+Add an intent to the command union, reuse or extend a read-side quote, implement the transition in a system, wire it through the processor, and test success, rejection and repeated submission. For new persistent fields, cover save/load compatibility through the session tests.
+
+## Verification
+
+Run from the repository root:
+
+```bash
+npm test -- packages/rules/test --maxWorkers=2
+npm run typecheck
+npm run lint:boundaries
+```
+
+See the [developer handbook](../../docs/development/README.md), [extension recipes](../../docs/development/EXTENDING.md), and [complete source atlas](../../docs/development/SOURCE_INDEX.md). Tests and visual checks appropriate to the change are described in the [testing guide](../../docs/development/TESTING.md).

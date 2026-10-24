@@ -1,3 +1,4 @@
+import type { SaveSnapshot } from '@pr/session';
 import { SingleBattleIcon } from '../components/SingleBattleIcon';
 /**
  * Setup flow. Campaign: S02 Game Mode → S03 Campaign → Mission Briefing →
@@ -10,7 +11,7 @@ import { SingleBattleIcon } from '../components/SingleBattleIcon';
  * one patron god, so it is taken from the content (`defaultPatron`).
  * Content not yet playable is shown honestly as unavailable.
  */
-import { useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
 import { DEFAULT_CAMPAIGN_DIFFICULTY, difficultyLevels, type CampaignDefinition, type ContentCatalog, type DifficultyDefinition, type PantheonDefinition, type SkirmishMapDefinition, type SkirmishScenarioDefinition } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Button, Panel, SectionTitle, Segmented, TextInput } from '../components/kit';
@@ -80,7 +81,7 @@ export function GameModeScreen() {
     >
       <div className="fe-modes" role="group" aria-label="Game modes">
         {modes.map((m) => (
-          <IllustratedChoice key={m.id} artId={m.art} name={<><SingleBattleIcon name={({campaign:'campaign',skirmish:'defender',random:'random',single:'land',editor:'editor'})[m.id]} /> {m.title}</>} title={m.text || 'Single Battle'} onSelect={() => pick(m.id)} testId={`mode-${m.id}`} className="fe-choice--mode" />
+          <IllustratedChoice key={m.id} artId={m.art} name={<><SingleBattleIcon name={({campaign:'campaign',skirmish:'defender',random:'random',single:'land',editor:'editor'} as const)[m.id]} /> {m.title}</>} title={m.text || 'Single Battle'} onSelect={() => pick(m.id)} testId={`mode-${m.id}`} className="fe-choice--mode" />
         ))}
       </div>
     </FrontendShell>
@@ -133,7 +134,21 @@ function CampaignDetail({ c, difficultyId, onDifficulty }: { c: CampaignDefiniti
   const store = useStore();
   const catalog = store.catalog;
   const missions = c.chapters?.length ? [] : c.missionIds.map((id) => catalog.missions[id]!).filter(Boolean);
-  const chronicle = chronicleModel(catalog, c.id, null);
+  const [saved, setSaved] = useState<SaveSnapshot | null>(null);
+  useEffect(() => {
+    let active = true;
+    void store.saves.list().then(slots => {
+      const snapshots = slots.flatMap(slot => slot.envelope?.snapshot.campaign?.campaignId === c.id && slot.envelope.snapshot.campaign.branch === 'primary' ? [slot.envelope.snapshot] : []);
+      snapshots.sort((a,b) => (b.campaign?.completions.length ?? 0) - (a.campaign?.completions.length ?? 0));
+      if (active) setSaved(snapshots[0] ?? null);
+    }).catch(() => undefined);
+    return () => { active = false; };
+  }, [store,c.id]);
+  const current = store.session?.campaign?.campaignId === c.id ? store.session.campaign : null;
+  const useSaved = !!saved?.campaign && (!current || saved.campaign.completions.length > current.completions.length);
+  const run = useSaved ? saved!.campaign : current;
+  const restoreProgress = () => { if (useSaved && saved) store.loadSnapshot(saved); };
+  const chronicle = chronicleModel(catalog, c.id, run, { allowPractice: true });
   const [chapter, setChapter] = useState<string | null>(() => (chronicle ? defaultSelection(chronicle) : null));
   const cover = resolveArt(`campaign.${c.id}.cover`);
   const hero = catalog.heroes[c.heroDefinitionId];
@@ -145,7 +160,7 @@ function CampaignDetail({ c, difficultyId, onDifficulty }: { c: CampaignDefiniti
         </figure>
         <div className="fe-chronicle__story">
           <div className="fe-chronicle__kicker">
-            <Emblem catalog={catalog} pantheonId={c.pantheonId} size="1.6rem" /> {catalog.pantheons[c.pantheonId]?.name} campaign
+            {c.id === 'worlds_met' || c.id === 'ashes_accord' ? 'Six realms · One chronicle' : <><Emblem catalog={catalog} pantheonId={c.pantheonId} size="1.6rem" /> {catalog.pantheons[c.pantheonId]?.name} campaign</>}
           </div>
           <div className="tagline">{c.tagline}</div>
           {/* A new run plays the chapters (content v2): their summary, else the original one. */}
@@ -167,6 +182,8 @@ function CampaignDetail({ c, difficultyId, onDifficulty }: { c: CampaignDefiniti
             {chronicle.nodes.length} {chronicle.nodes.length === 1 ? 'chapter' : 'chapters'}
           </SectionTitle>
           <Chronicle catalog={catalog} model={chronicle} selectedId={chapter} onSelect={setChapter} testId="setup-chronicle" />
+          {chapter && chronicle.nodes.find(n => n.missionId === chapter)?.replayable ? <Button onClick={() => { restoreProgress(); store.startPracticeReplay(chapter); }}>Replay chapter</Button> : null}
+          {chapter && chronicle.available.includes(chapter) ? <Button onClick={() => { restoreProgress(); store.continueCampaign(chapter); }}>Continue to this chapter</Button> : null}
         </>
       ) : null}
       {missions.length ? (
@@ -297,7 +314,10 @@ export function ScenarioSelectScreen() {
   const store = useStore();
   const catalog = store.catalog;
   const mode = store.setup.mode ?? 'campaign';
-  const campaigns = Object.values(catalog.campaigns);
+  const campaigns = Object.values(catalog.campaigns).sort((a, b) => {
+    const order = (id: string) => id === 'three_beacons' ? 0 : id === 'worlds_met' ? 1 : 2;
+    return order(a.id) - order(b.id);
+  });
   const skirmishes = Object.values(catalog.skirmishes);
   const maps = Object.values(catalog.skirmishMaps ?? {}).sort((a, b) => a.order - b.order);
   const [selected, setSelected] = useState<string>(mode === 'campaign' ? (campaigns.find((c) => c.status === 'playable')?.id ?? '') : (skirmishes[0]?.id ?? ''));
@@ -349,7 +369,7 @@ export function ScenarioSelectScreen() {
           </Button>
           {campaign ? (
             <Button variant="primary" size="large" disabled={!playable} disabledReason="This content is not available in this build" onClick={next} data-testid="setup-begin">
-              {campaign.chapters?.length ? `Begin — Chapter ${campaign.chapters.find((ch) => ch.requiresAll.length === 0)?.chapter ?? 1} Briefing` : 'Begin — Mission Briefing'}
+              Start chapter
             </Button>
           ) : map ? (
             <Button variant="primary" size="large" onClick={next} data-testid="setup-next">
@@ -388,7 +408,7 @@ export function ScenarioSelectScreen() {
                   <span className="fe-campaign-row__text">
                     <span className="list-card__title">{c.name}</span>
                     <span className="list-card__meta">
-                      {catalog.pantheons[c.pantheonId]?.name} · {countLabel(campaignRunCount(c))}
+                      {c.id === 'worlds_met' || c.id === 'ashes_accord' ? 'Six realms' : catalog.pantheons[c.pantheonId]?.name} · {countLabel(campaignRunCount(c))}
                     </span>
                     {c.status !== 'playable' ? <span className="list-card__meta dim">Not available yet</span> : null}
                   </span>

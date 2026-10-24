@@ -1,0 +1,1298 @@
+[
+  {
+    "id": "exp_greek_aegis_shard",
+    "occupancy": [
+      15,
+      15,
+      17,
+      18,
+      17,
+      14,
+      9,
+      4
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_greek_olympian_spark",
+    "occupancy": [
+      8,
+      14,
+      18,
+      25,
+      19,
+      17,
+      15,
+      6
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_greek_trident_surge",
+    "occupancy": [
+      7,
+      12,
+      17,
+      17,
+      15,
+      12,
+      9,
+      6
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_greek_gorgon_gaze",
+    "occupancy": [
+      17,
+      18,
+      19,
+      21,
+      15,
+      15,
+      13,
+      6
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_greek_titan_javelin",
+    "occupancy": [
+      8,
+      12,
+      13,
+      14,
+      14,
+      13,
+      12,
+      8
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_greek_olympian_tempest",
+    "occupancy": [
+      16,
+      20,
+      20,
+      25,
+      25,
+      15,
+      19,
+      10
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_greek_judgment_of_olympus",
+    "occupancy": [
+      14,
+      15,
+      16,
+      16,
+      16,
+      17,
+      17,
+      12
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_greek_sea_kings_wrath",
+    "occupancy": [
+      10,
+      14,
+      18,
+      20,
+      16,
+      14,
+      11,
+      9
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_norse_rime_needle",
+    "occupancy": [
+      16,
+      14,
+      13,
+      16,
+      16,
+      12,
+      15,
+      7
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_norse_raven_talon",
+    "occupancy": [
+      13,
+      16,
+      15,
+      10,
+      15,
+      14,
+      7,
+      3
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_norse_glacier_fang",
+    "occupancy": [
+      8,
+      14,
+      18,
+      18,
+      16,
+      15,
+      10,
+      9
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_norse_rune_shatter",
+    "occupancy": [
+      14,
+      16,
+      17,
+      18,
+      15,
+      13,
+      11,
+      6
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_norse_fenrir_bite",
+    "occupancy": [
+      18,
+      22,
+      23,
+      21,
+      19,
+      19,
+      18,
+      11
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_norse_winter_sundering",
+    "occupancy": [
+      5,
+      13,
+      15,
+      21,
+      19,
+      16,
+      17,
+      10
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_norse_ragnarok_hammer",
+    "occupancy": [
+      15,
+      18,
+      19,
+      23,
+      25,
+      21,
+      19,
+      10
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_norse_fimbulwinter",
+    "occupancy": [
+      14,
+      15,
+      19,
+      29,
+      20,
+      19,
+      16,
+      11
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_egyptian_sun_needle",
+    "occupancy": [
+      7,
+      7,
+      6,
+      17,
+      12,
+      11,
+      9,
+      4
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_egyptian_scarab_sting",
+    "occupancy": [
+      15,
+      20,
+      20,
+      21,
+      19,
+      17,
+      14,
+      11
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_egyptian_desert_glass",
+    "occupancy": [
+      14,
+      16,
+      16,
+      19,
+      18,
+      15,
+      11,
+      9
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_egyptian_cobra_crown",
+    "occupancy": [
+      18,
+      21,
+      22,
+      18,
+      13,
+      20,
+      17,
+      11
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_egyptian_solar_lance",
+    "occupancy": [
+      12,
+      11,
+      14,
+      18,
+      18,
+      12,
+      10,
+      8
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_egyptian_pyramid_nova",
+    "occupancy": [
+      12,
+      16,
+      16,
+      29,
+      22,
+      18,
+      19,
+      14
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_egyptian_judgment_of_anubis",
+    "occupancy": [
+      13,
+      21,
+      14,
+      19,
+      25,
+      19,
+      14,
+      8
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_egyptian_ra_ascendant",
+    "occupancy": [
+      15,
+      21,
+      28,
+      25,
+      22,
+      18,
+      11,
+      8
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_japanese_fox_ember",
+    "occupancy": [
+      4,
+      15,
+      12,
+      16,
+      22,
+      15,
+      12,
+      4
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_japanese_paper_blade",
+    "occupancy": [
+      11,
+      16,
+      15,
+      17,
+      15,
+      13,
+      7,
+      3
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_japanese_oni_flame",
+    "occupancy": [
+      18,
+      21,
+      19,
+      19,
+      22,
+      17,
+      13,
+      10
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_japanese_mirror_shatter",
+    "occupancy": [
+      11,
+      16,
+      16,
+      20,
+      19,
+      12,
+      9,
+      2
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_japanese_dragon_comet",
+    "occupancy": [
+      13,
+      16,
+      16,
+      21,
+      23,
+      17,
+      13,
+      11
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_japanese_thousand_lanterns",
+    "occupancy": [
+      9,
+      15,
+      20,
+      21,
+      16,
+      15,
+      9,
+      3
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_japanese_raijins_verdict",
+    "occupancy": [
+      16,
+      19,
+      24,
+      28,
+      20,
+      17,
+      15,
+      8
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_japanese_amaterasus_dawn",
+    "occupancy": [
+      13,
+      18,
+      25,
+      28,
+      23,
+      16,
+      16,
+      11
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_celtic_briar_dart",
+    "occupancy": [
+      9,
+      13,
+      12,
+      13,
+      13,
+      14,
+      7,
+      2
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_celtic_wisp_sting",
+    "occupancy": [
+      5,
+      11,
+      16,
+      16,
+      10,
+      13,
+      6,
+      2
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_celtic_oak_spear",
+    "occupancy": [
+      7,
+      12,
+      12,
+      17,
+      19,
+      15,
+      12,
+      8
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_celtic_thorn_spiral",
+    "occupancy": [
+      9,
+      14,
+      16,
+      23,
+      20,
+      14,
+      10,
+      8
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_celtic_moon_hunt",
+    "occupancy": [
+      13,
+      18,
+      16,
+      23,
+      19,
+      18,
+      12,
+      8
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_celtic_wildwood_reckoning",
+    "occupancy": [
+      12,
+      19,
+      21,
+      25,
+      22,
+      17,
+      12,
+      9
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_celtic_morrigans_flight",
+    "occupancy": [
+      16,
+      17,
+      15,
+      21,
+      16,
+      15,
+      14,
+      7
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_celtic_lughs_judgment",
+    "occupancy": [
+      14,
+      14,
+      16,
+      21,
+      23,
+      12,
+      14,
+      9
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_mesoamerican_jade_fang",
+    "occupancy": [
+      12,
+      15,
+      14,
+      16,
+      17,
+      18,
+      10,
+      6
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_mesoamerican_obsidian_splinter",
+    "occupancy": [
+      4,
+      8,
+      12,
+      22,
+      16,
+      13,
+      13,
+      9
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_mesoamerican_serpent_coil",
+    "occupancy": [
+      11,
+      16,
+      21,
+      20,
+      17,
+      17,
+      11,
+      7
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_mesoamerican_jaguar_eclipse",
+    "occupancy": [
+      20,
+      21,
+      15,
+      21,
+      19,
+      19,
+      14,
+      9
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_mesoamerican_star_calendar",
+    "occupancy": [
+      17,
+      18,
+      18,
+      25,
+      21,
+      16,
+      12,
+      11
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_mesoamerican_volcanic_crown",
+    "occupancy": [
+      10,
+      12,
+      22,
+      23,
+      18,
+      15,
+      14,
+      9
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_mesoamerican_feathered_serpent_descent",
+    "occupancy": [
+      8,
+      14,
+      14,
+      19,
+      16,
+      16,
+      14,
+      12
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_mesoamerican_heart_of_the_sun",
+    "occupancy": [
+      8,
+      12,
+      19,
+      20,
+      20,
+      16,
+      15,
+      11
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_shared_arcane_needle",
+    "occupancy": [
+      5,
+      9,
+      7,
+      13,
+      13,
+      10,
+      5,
+      5
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_shared_searing_cinder",
+    "occupancy": [
+      3,
+      6,
+      15,
+      18,
+      13,
+      15,
+      7,
+      5
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_shared_crystal_lance",
+    "occupancy": [
+      8,
+      11,
+      11,
+      16,
+      20,
+      11,
+      10,
+      5
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_shared_gravity_bloom",
+    "occupancy": [
+      2,
+      15,
+      18,
+      20,
+      17,
+      12,
+      13,
+      4
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_shared_astral_execution",
+    "occupancy": [
+      9,
+      14,
+      17,
+      22,
+      19,
+      14,
+      14,
+      6
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  },
+  {
+    "id": "exp_shared_comet_convergence",
+    "occupancy": [
+      10,
+      17,
+      17,
+      20,
+      23,
+      13,
+      14,
+      8
+    ],
+    "borderPixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bytes": null
+  }
+]

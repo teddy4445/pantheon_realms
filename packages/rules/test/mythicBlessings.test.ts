@@ -228,3 +228,12 @@ describe('Xolotl reactive displacement', () => {
     expect(d.state.battle!.stacks[ally.id]!.statuses.some(s=>s.kind==='faithful_shadow')).toBe(false);
   });
 });
+
+it('attack miracles scale with remaining stack HP and cannot be repeated in the same week',()=>{
+ const {d,b,enemy}=setup('greek','zeus');
+ enemy.totalHp=10000;
+ const events=d.do(invoke('thunderbolt_of_zeus',enemy.id));
+ expect(events.find(e=>e.kind==='InterventionInvoked')).toMatchObject({damage:1800});
+ expect(d.state.battle!.stacks[enemy.id]!.totalHp).toBe(8200);
+ expect(quoteIntervention(d.catalog,d.state,b.sides.attacker.playerId!,'thunderbolt_of_zeus',{stackId:enemy.id}).legal).toBe(false);
+});

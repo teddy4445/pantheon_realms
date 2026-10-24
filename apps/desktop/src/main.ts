@@ -47,6 +47,14 @@ function rendererRoot(): string {
   return path.join(app.getAppPath(), 'renderer');
 }
 
+// Release-only WebP derivatives retain stable game URLs and sprite coordinates.
+// Resolve once at startup, before the protocol accepts image requests.
+let optimizedAssets: Readonly<Record<string,string>> = {};
+function loadOptimizedAssets(): void {
+  const file=path.join(rendererRoot(),'optimized-assets.json');
+  if(fsSync.existsSync(file)) optimizedAssets=JSON.parse(fsSync.readFileSync(file,'utf8')).assets;
+}
+
 function savesDir(): string {
   return path.join(app.getPath('userData'), 'saves');
 }
@@ -81,7 +89,7 @@ function resolveRendererPath(urlPath: string): string | null {
   const root = rendererRoot();
   const decoded = decodeURIComponent(urlPath.split('?')[0] ?? '/');
   const rel = decoded === '/' || decoded === '' ? 'index.html' : decoded.replace(/^\/+/, '');
-  const full = path.normalize(path.join(root, rel));
+  const full = path.normalize(path.join(root, Object.hasOwn(optimizedAssets,rel) ? optimizedAssets[rel]! : rel));
   if (full !== root && !full.startsWith(root + path.sep)) return null; // traversal
   return full;
 }
@@ -281,6 +289,7 @@ app.on('web-contents-created', (_e, contents) => {
 });
 
 app.whenReady().then(() => {
+  loadOptimizedAssets();
   Menu.setApplicationMenu(null);
   protocol.handle(SCHEME, async (request) => {
     const url = new URL(request.url);

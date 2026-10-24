@@ -1,0 +1,741 @@
+{
+  "decor": {
+    "scenery2.forest.birch": {
+      "file": "world-polish-v2/scenery2-forest-birch.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.forest.willow": {
+      "file": "world-polish-v2/scenery2-forest-willow.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.forest.ginkgo": {
+      "file": "world-polish-v2/scenery2-forest-ginkgo.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.forest.cypress": {
+      "file": "world-polish-v2/scenery2-forest-cypress.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.forest.olive": {
+      "file": "world-polish-v2/scenery2-forest-olive.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.forest.redwood": {
+      "file": "world-polish-v2/scenery2-forest-redwood.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.forest.snow-spruce": {
+      "file": "world-polish-v2/scenery2-forest-snow-spruce.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.forest.bamboo": {
+      "file": "world-polish-v2/scenery2-forest-bamboo.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 340,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.mountains.slate-ridge": {
+      "file": "world-polish-v2/scenery2-mountains-slate-ridge.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.mountains.granite-dome": {
+      "file": "world-polish-v2/scenery2-mountains-granite-dome.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.mountains.twin-spires": {
+      "file": "world-polish-v2/scenery2-mountains-twin-spires.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.mountains.karst-needles": {
+      "file": "world-polish-v2/scenery2-mountains-karst-needles.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.mountains.red-mesa": {
+      "file": "world-polish-v2/scenery2-mountains-red-mesa.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.mountains.crater-cone": {
+      "file": "world-polish-v2/scenery2-mountains-crater-cone.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.mountains.limestone-arch": {
+      "file": "world-polish-v2/scenery2-mountains-limestone-arch.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.mountains.sea-cliff": {
+      "file": "world-polish-v2/scenery2-mountains-sea-cliff.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 260,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.freshwater.cattails": {
+      "file": "world-polish-v2/scenery2-freshwater-cattails.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.freshwater.willow-roots": {
+      "file": "world-polish-v2/scenery2-freshwater-willow-roots.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.freshwater.river-stones": {
+      "file": "world-polish-v2/scenery2-freshwater-river-stones.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.freshwater.reed-log": {
+      "file": "world-polish-v2/scenery2-freshwater-reed-log.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.freshwater.lily-pads": {
+      "file": "world-polish-v2/scenery2-freshwater-lily-pads.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.freshwater.alder-roots": {
+      "file": "world-polish-v2/scenery2-freshwater-alder-roots.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.freshwater.blue-iris": {
+      "file": "world-polish-v2/scenery2-freshwater-blue-iris.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.freshwater.reed-islet": {
+      "file": "world-polish-v2/scenery2-freshwater-reed-islet.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.drylands.acacia": {
+      "file": "world-polish-v2/scenery2-drylands-acacia.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.drylands.date-palms": {
+      "file": "world-polish-v2/scenery2-drylands-date-palms.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.drylands.cactus": {
+      "file": "world-polish-v2/scenery2-drylands-cactus.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.drylands.ochre-boulders": {
+      "file": "world-polish-v2/scenery2-drylands-ochre-boulders.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.drylands.salt-stones": {
+      "file": "world-polish-v2/scenery2-drylands-salt-stones.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.drylands.dead-tree": {
+      "file": "world-polish-v2/scenery2-drylands-dead-tree.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.drylands.thorn-bushes": {
+      "file": "world-polish-v2/scenery2-drylands-thorn-bushes.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.drylands.desert-arch": {
+      "file": "world-polish-v2/scenery2-drylands-desert-arch.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.coast.driftwood": {
+      "file": "world-polish-v2/scenery2-coast-driftwood.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.coast.sea-boulders": {
+      "file": "world-polish-v2/scenery2-coast-sea-boulders.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.coast.sea-thrift": {
+      "file": "world-polish-v2/scenery2-coast-sea-thrift.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.coast.shell-bank": {
+      "file": "world-polish-v2/scenery2-coast-shell-bank.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.coast.old-jetty": {
+      "file": "world-polish-v2/scenery2-coast-old-jetty.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.coast.mangrove": {
+      "file": "world-polish-v2/scenery2-coast-mangrove.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.coast.dune-grass": {
+      "file": "world-polish-v2/scenery2-coast-dune-grass.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.coast.coral-rock": {
+      "file": "world-polish-v2/scenery2-coast-coral-rock.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 480,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.details.fern-stump": {
+      "file": "world-polish-v2/scenery2-details-fern-stump.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 540,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.details.mushrooms": {
+      "file": "world-polish-v2/scenery2-details-mushrooms.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 540,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.details.heather": {
+      "file": "world-polish-v2/scenery2-details-heather.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 540,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.details.moss-cairn": {
+      "file": "world-polish-v2/scenery2-details-moss-cairn.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 540,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.details.golden-bracken": {
+      "file": "world-polish-v2/scenery2-details-golden-bracken.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 540,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.details.juniper": {
+      "file": "world-polish-v2/scenery2-details-juniper.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 540,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.details.root-slab": {
+      "file": "world-polish-v2/scenery2-details-root-slab.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 540,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "scenery2.details.stone-spring": {
+      "file": "world-polish-v2/scenery2-details-stone-spring.webp",
+      "width": 320,
+      "height": 320,
+      "pixelsPerHex": 540,
+      "anchor": [
+        0.5,
+        0.96875
+      ],
+      "status": "final"
+    },
+    "map.flag.pennant.blue": {
+      "file": "world-polish-v2/map-flag-pennant-blue.webp",
+      "width": 169,
+      "height": 256,
+      "pixelsPerHex": 256,
+      "anchor": [
+        0.18140243902439024,
+        1
+      ],
+      "status": "final"
+    },
+    "map.flag.pennant.red": {
+      "file": "world-polish-v2/map-flag-pennant-red.webp",
+      "width": 169,
+      "height": 256,
+      "pixelsPerHex": 256,
+      "anchor": [
+        0.18140243902439024,
+        1
+      ],
+      "status": "final"
+    },
+    "map.flag.pennant.green": {
+      "file": "world-polish-v2/map-flag-pennant-green.webp",
+      "width": 169,
+      "height": 256,
+      "pixelsPerHex": 256,
+      "anchor": [
+        0.17933130699088146,
+        1
+      ],
+      "status": "final"
+    },
+    "map.flag.pennant.amber": {
+      "file": "world-polish-v2/map-flag-pennant-amber.webp",
+      "width": 169,
+      "height": 256,
+      "pixelsPerHex": 256,
+      "anchor": [
+        0.17933130699088146,
+        1
+      ],
+      "status": "final"
+    },
+    "map.flag.pennant.purple": {
+      "file": "world-polish-v2/map-flag-pennant-purple.webp",
+      "width": 169,
+      "height": 256,
+      "pixelsPerHex": 256,
+      "anchor": [
+        0.18140243902439024,
+        1
+      ],
+      "status": "final"
+    },
+    "map.flag.pennant.teal": {
+      "file": "world-polish-v2/map-flag-pennant-teal.webp",
+      "width": 169,
+      "height": 256,
+      "pixelsPerHex": 256,
+      "anchor": [
+        0.18140243902439024,
+        1
+      ],
+      "status": "final"
+    },
+    "map.flag.pennant.ivory": {
+      "file": "world-polish-v2/map-flag-pennant-ivory.webp",
+      "width": 169,
+      "height": 256,
+      "pixelsPerHex": 256,
+      "anchor": [
+        0.18140243902439024,
+        1
+      ],
+      "status": "final"
+    },
+    "map.flag.pennant.black": {
+      "file": "world-polish-v2/map-flag-pennant-black.webp",
+      "width": 169,
+      "height": 256,
+      "pixelsPerHex": 256,
+      "anchor": [
+        0.18140243902439024,
+        1
+      ],
+      "status": "final"
+    },
+    "map.flag.standard.blue": {
+      "file": "world-polish-v2/map-flag-standard-blue.webp",
+      "width": 167,
+      "height": 256,
+      "pixelsPerHex": 256,
+      "anchor": [
+        0.19375,
+        1
+      ],
+      "status": "final"
+    },
+    "map.flag.standard.red": {
+      "file": "world-polish-v2/map-flag-standard-red.webp",
+      "width": 167,
+      "height": 256,
+      "pixelsPerHex": 256,
+      "anchor": [
+        0.19375,
+        1
+      ],
+      "status": "final"
+    },
+    "map.flag.standard.green": {
+      "file": "world-polish-v2/map-flag-standard-green.webp",
+      "width": 166,
+      "height": 256,
+      "pixelsPerHex": 256,
+      "anchor": [
+        0.19158878504672897,
+        1
+      ],
+      "status": "final"
+    },
+    "map.flag.standard.amber": {
+      "file": "world-polish-v2/map-flag-standard-amber.webp",
+      "width": 166,
+      "height": 256,
+      "pixelsPerHex": 256,
+      "anchor": [
+        0.19435736677115986,
+        1
+      ],
+      "status": "final"
+    },
+    "map.flag.standard.purple": {
+      "file": "world-polish-v2/map-flag-standard-purple.webp",
+      "width": 166,
+      "height": 256,
+      "pixelsPerHex": 256,
+      "anchor": [
+        0.19158878504672897,
+        1
+      ],
+      "status": "final"
+    },
+    "map.flag.standard.teal": {
+      "file": "world-polish-v2/map-flag-standard-teal.webp",
+      "width": 166,
+      "height": 256,
+      "pixelsPerHex": 256,
+      "anchor": [
+        0.19375,
+        1
+      ],
+      "status": "final"
+    },
+    "map.flag.standard.ivory": {
+      "file": "world-polish-v2/map-flag-standard-ivory.webp",
+      "width": 167,
+      "height": 256,
+      "pixelsPerHex": 256,
+      "anchor": [
+        0.19349845201238391,
+        1
+      ],
+      "status": "final"
+    },
+    "map.flag.standard.black": {
+      "file": "world-polish-v2/map-flag-standard-black.webp",
+      "width": 165,
+      "height": 256,
+      "pixelsPerHex": 256,
+      "anchor": [
+        0.19339622641509435,
+        1
+      ],
+      "status": "final"
+    }
+  },
+  "banners": {
+    "greek": {
+      "file": "world-polish-v2/banner-greek.webp",
+      "width": 1440,
+      "height": 480
+    },
+    "norse": {
+      "file": "world-polish-v2/banner-norse.webp",
+      "width": 1440,
+      "height": 480
+    },
+    "japanese": {
+      "file": "world-polish-v2/banner-japanese.webp",
+      "width": 1440,
+      "height": 480
+    },
+    "egyptian": {
+      "file": "world-polish-v2/banner-egyptian.webp",
+      "width": 1440,
+      "height": 480
+    },
+    "celtic": {
+      "file": "world-polish-v2/banner-celtic.webp",
+      "width": 1440,
+      "height": 480
+    },
+    "mesoamerican": {
+      "file": "world-polish-v2/banner-mesoamerican.webp",
+      "width": 1440,
+      "height": 480
+    }
+  },
+  "provenance": "Built-in ImageGen, October 2026; original panels and prompts: docs/world-polish-v2."
+}

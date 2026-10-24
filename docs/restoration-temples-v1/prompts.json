@@ -1,0 +1,178 @@
+{
+  "generator": "Built-in ImageGen",
+  "references": [
+    "assets-runtime/map-landmarks-v1/ruins-marble.webp",
+    "assets-runtime/sprites/final/decor/nature.high_pass.mountain.01.webp",
+    "assets-runtime/sprites/final/decor/nature.temperate.canopy.01.webp"
+  ],
+  "jobs": [
+    {
+      "id": "temple-greek-small-built",
+      "type": "temple",
+      "pantheon": "greek",
+      "size": "small",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a small four-column white marble wayside shrine, triangular pediment and blue ceramic roof, olive offerings. Intact, lovingly restored architecture. Full building, not a city. Compact footprint.",
+      "subject": "a small four-column white marble wayside shrine, triangular pediment and blue ceramic roof, olive offerings"
+    },
+    {
+      "id": "temple-greek-large-built",
+      "type": "temple",
+      "pantheon": "greek",
+      "size": "large",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a majestic white marble peripteral temple, eight-column facade, blue pediment, broad stairs and small bronze braziers. Intact, lovingly restored architecture. Full building, not a city. Compact footprint.",
+      "subject": "a majestic white marble peripteral temple, eight-column facade, blue pediment, broad stairs and small bronze braziers"
+    },
+    {
+      "id": "temple-norse-small-built",
+      "type": "temple",
+      "pantheon": "norse",
+      "size": "small",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a small carved dark timber roadside shrine, steep shingle roof and intertwined dragon-head finials, runestone beside it. Intact, lovingly restored architecture. Full building, not a city. Compact footprint.",
+      "subject": "a small carved dark timber roadside shrine, steep shingle roof and intertwined dragon-head finials, runestone beside it"
+    },
+    {
+      "id": "temple-norse-large-built",
+      "type": "temple",
+      "pantheon": "norse",
+      "size": "large",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a large Norse stave temple hall, layered steep timber roofs with dragon finials, heavy carved portals, stone foundation and round bronze shields. Intact, lovingly restored architecture. Full building, not a city. Compact footprint.",
+      "subject": "a large Norse stave temple hall, layered steep timber roofs with dragon finials, heavy carved portals, stone foundation and round bronze shields"
+    },
+    {
+      "id": "temple-egyptian-small-built",
+      "type": "temple",
+      "pantheon": "egyptian",
+      "size": "small",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a small sandstone naos shrine with a winged sun disk cornice, two lotus columns, lapis accents and offering basin. Intact, lovingly restored architecture. Full building, not a city. Compact footprint.",
+      "subject": "a small sandstone naos shrine with a winged sun disk cornice, two lotus columns, lapis accents and offering basin"
+    },
+    {
+      "id": "temple-egyptian-large-built",
+      "type": "temple",
+      "pantheon": "egyptian",
+      "size": "large",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a large Egyptian sandstone pylon temple, two monumental gateway towers, painted lotus columns, paired obelisks and turquoise-gold architectural details. Intact, lovingly restored architecture. Full building, not a city. Compact footprint.",
+      "subject": "a large Egyptian sandstone pylon temple, two monumental gateway towers, painted lotus columns, paired obelisks and turquoise-gold architectural details"
+    },
+    {
+      "id": "temple-japanese-small-built",
+      "type": "temple",
+      "pantheon": "japanese",
+      "size": "small",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a small wooden hokora shrine with vermilion torii, cypress-bark curved roof and stone lantern. Intact, lovingly restored architecture. Full building, not a city. Compact footprint.",
+      "subject": "a small wooden hokora shrine with vermilion torii, cypress-bark curved roof and stone lantern"
+    },
+    {
+      "id": "temple-japanese-large-built",
+      "type": "temple",
+      "pantheon": "japanese",
+      "size": "large",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a large Japanese Shinto shrine compound, vermilion wood, layered curved roofs, broad stone stairs, sacred rope and two stone lanterns. Intact, lovingly restored architecture. Full building, not a city. Compact footprint.",
+      "subject": "a large Japanese Shinto shrine compound, vermilion wood, layered curved roofs, broad stone stairs, sacred rope and two stone lanterns"
+    },
+    {
+      "id": "temple-celtic-small-built",
+      "type": "temple",
+      "pantheon": "celtic",
+      "size": "small",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a small Celtic woodland sanctuary, three upright knot-carved standing stones around a low altar, fern and oak-root details. Intact, lovingly restored architecture. Full building, not a city. Compact footprint.",
+      "subject": "a small Celtic woodland sanctuary, three upright knot-carved standing stones around a low altar, fern and oak-root details"
+    },
+    {
+      "id": "temple-celtic-large-built",
+      "type": "temple",
+      "pantheon": "celtic",
+      "size": "large",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a large Celtic sacred hall, oak timber and stone, sweeping thatched roof, knotwork gables, entrance flanked by standing stones, bronze spiral ornaments. Intact, lovingly restored architecture. Full building, not a city. Compact footprint.",
+      "subject": "a large Celtic sacred hall, oak timber and stone, sweeping thatched roof, knotwork gables, entrance flanked by standing stones, bronze spiral ornaments"
+    },
+    {
+      "id": "temple-mesoamerican-small-built",
+      "type": "temple",
+      "pantheon": "mesoamerican",
+      "size": "small",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a small Mesoamerican stepped stone altar shrine, three broad terraces, carved jaguar doorway, jade details. Intact, lovingly restored architecture. Full building, not a city. Compact footprint.",
+      "subject": "a small Mesoamerican stepped stone altar shrine, three broad terraces, carved jaguar doorway, jade details"
+    },
+    {
+      "id": "temple-mesoamerican-large-built",
+      "type": "temple",
+      "pantheon": "mesoamerican",
+      "size": "large",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a large Mesoamerican stepped pyramid temple with steep central staircase, summit sanctuary, feathered-serpent balustrades and jade-turquoise ornaments. Intact, lovingly restored architecture. Full building, not a city. Compact footprint.",
+      "subject": "a large Mesoamerican stepped pyramid temple with steep central staircase, summit sanctuary, feathered-serpent balustrades and jade-turquoise ornaments"
+    },
+    {
+      "id": "mountain-alpine",
+      "type": "scenery",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a rugged double-peaked alpine mountain outcrop, scattered snow and tiny dark conifers at its foot. One compact object or coherent natural cluster only.",
+      "subject": "a rugged double-peaked alpine mountain outcrop, scattered snow and tiny dark conifers at its foot"
+    },
+    {
+      "id": "mountain-sandstone",
+      "type": "scenery",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a layered red sandstone mesa with a natural arch and small dry scree at its foot. One compact object or coherent natural cluster only.",
+      "subject": "a layered red sandstone mesa with a natural arch and small dry scree at its foot"
+    },
+    {
+      "id": "mountain-basalt",
+      "type": "scenery",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a dark basalt crag with striking hexagonal columns, a little green moss at its foot. One compact object or coherent natural cluster only.",
+      "subject": "a dark basalt crag with striking hexagonal columns, a little green moss at its foot"
+    },
+    {
+      "id": "rocks-granite",
+      "type": "scenery",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a compact asymmetric cluster of three pale granite boulders with gritty stones around their base. One compact object or coherent natural cluster only.",
+      "subject": "a compact asymmetric cluster of three pale granite boulders with gritty stones around their base"
+    },
+    {
+      "id": "rocks-moss",
+      "type": "scenery",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a low broken boulder cluster densely edged with moss, small ferns and a few pale mushrooms. One compact object or coherent natural cluster only.",
+      "subject": "a low broken boulder cluster densely edged with moss, small ferns and a few pale mushrooms"
+    },
+    {
+      "id": "rocks-obsidian",
+      "type": "scenery",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a jagged dark obsidian outcrop with subtle polished mineral highlights and sparse dry grass. One compact object or coherent natural cluster only.",
+      "subject": "a jagged dark obsidian outcrop with subtle polished mineral highlights and sparse dry grass"
+    },
+    {
+      "id": "tree-oak",
+      "type": "scenery",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a broad ancient oak tree with a twisted sturdy trunk, rich green layered crown and visible spreading roots. One compact object or coherent natural cluster only.",
+      "subject": "a broad ancient oak tree with a twisted sturdy trunk, rich green layered crown and visible spreading roots"
+    },
+    {
+      "id": "tree-cedar",
+      "type": "scenery",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a tall asymmetrical mountain cedar with tiered branches, dark bluish-green needles and rough bark. One compact object or coherent natural cluster only.",
+      "subject": "a tall asymmetrical mountain cedar with tiered branches, dark bluish-green needles and rough bark"
+    },
+    {
+      "id": "tree-palm",
+      "type": "scenery",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a cluster of two graceful date palms of different heights, sunlit fronds and a tiny sandy root base. One compact object or coherent natural cluster only.",
+      "subject": "a cluster of two graceful date palms of different heights, sunlit fronds and a tiny sandy root base"
+    },
+    {
+      "id": "tree-blossom",
+      "type": "scenery",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: an elegant mature cherry tree with a spreading pale pink blossoming canopy, bent dark trunk and few petals at the base. One compact object or coherent natural cluster only.",
+      "subject": "an elegant mature cherry tree with a spreading pale pink blossoming canopy, bent dark trunk and few petals at the base"
+    },
+    {
+      "id": "flowers-meadow",
+      "type": "scenery",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a low compact meadow patch of varied wildflowers, purple irises, small white daisies and gold grasses, no enclosing ground tile. One compact object or coherent natural cluster only.",
+      "subject": "a low compact meadow patch of varied wildflowers, purple irises, small white daisies and gold grasses, no enclosing ground tile"
+    },
+    {
+      "id": "deadwood-ferns",
+      "type": "scenery",
+      "prompt": "Use case: stylized-concept. ONE isolated adventure-map sprite for a classic late-1990s painted fantasy strategy game, matching the supplied existing map sprites. Elevated isometric three-quarter view, camera looking down about 35 degrees; front and right side visible. Detailed miniature realistic hand-painted textures, warm upper-left sunlight, natural restrained colors, clear silhouette at map scale. Genuine transparent background, no square base, no tile, no scenery behind it, no text, no UI, no framing, no people. Entire object and its small irregular grounded footprint visible with 8% transparent padding, grounded on the bottom center. No floating platform. Subject: a weathered fallen hollow log with bracket fungi, bright ferns and a few small mossy stones. One compact object or coherent natural cluster only.",
+      "subject": "a weathered fallen hollow log with bracket fungi, bright ferns and a few small mossy stones"
+    }
+  ]
+}

@@ -76,6 +76,8 @@ export interface TownSlotPlacement {
   readonly height: number;
   /** Draw order; higher is closer to the viewer. */
   readonly layer: number;
+  /** Optional shared image frame for a town's building upgrade variants. */
+  readonly artAspectRatio?: number;
 }
 
 export interface BuildingSlotDefinition {
@@ -94,6 +96,10 @@ export interface TownArchetypeDefinition {
   readonly pantheonId: PantheonId;
   readonly name: string;
   readonly backgroundAssetId: AssetId;
+  /** Background canvas width / height; older town paintings default to 4:3. */
+  readonly sceneAspectRatio?: number;
+  /** Matching recovery-state painting for archetypes with a revised composition. */
+  readonly damagedBackgroundAssetId?: AssetId;
   /**
    * Presentation only: where the town screen's economy panel sits along the top
    * edge of the painting — the stretch of sky free of buildings and landmarks:

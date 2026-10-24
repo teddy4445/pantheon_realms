@@ -1,3 +1,4 @@
+import { frameDurations, frameStart, stableAnimationPhase, timelineDuration, timelineFrame } from './animationTiming';
 /**
  * SpriteFigure: one animated 2D figure (a battle stack, a map avatar, a map
  * guard, the bestiary subject) drawn from a manifest sprite set.
@@ -14,7 +15,7 @@
  */
 import { Container, Sprite, Texture } from 'pixi.js';
 import { directionalStrip, resolveAnimation, type ResolvedAnimation, type SpriteSetDefinition, type SpriteStrip } from './sprites';
-import { loadStrip, stripFrames } from './textures';
+import { loadStrip, stripFrames, retainFigureStrip, releaseFigureStrip, trimFigureTextures } from './textures';
 import { linear, type TweenPlayer } from './tween';
 import type { MapDirection } from './hexmath';
 
@@ -26,6 +27,10 @@ export interface FigureOptions {
   readonly size?: number;
   /** Owner/accent colour, used only by sets marked `tint: 'accent'`. */
   readonly accent?: number | null;
+  /** Stable instance phase; avoids identical troops breathing in unison. */
+  readonly phaseKey?: string;
+  /** Map figures request only standing/travel art, battle/viewer figures preload everything. */
+  readonly context?: 'map' | 'guard' | 'battle';
 }
 
 interface Playing {
@@ -37,12 +42,23 @@ interface Playing {
   time: number;
   /** Frame on screen (frame-region strips set the anchor and scale per frame). */
   index: number;
+  times: number[];
 }
 
 export class SpriteFigure {
   readonly view = new Container();
   readonly pose = new Container();
   readonly sprite = new Sprite();
+  /** Independent of combat choreography: tiny anchored breathing/weight shifts. */
+  readonly body = new Container();
+  private ambientTime = 0;
+  private readonly phase: number;
+  private readonly context: 'map' | 'guard' | 'battle';
+  private travelDistance: number | null = null;
+  private readonly retained = new Map<string, SpriteStrip>();
+  private transitionMs = 0;
+  private transitionY = 0;
+  private transitionScale = 1;
   readonly set: SpriteSetDefinition | null;
   private playing: Playing | null = null;
   private loopName = 'idle';
@@ -66,7 +82,10 @@ export class SpriteFigure {
   constructor(opts: FigureOptions) {
     this.set = opts.set;
     this.view.addChild(this.pose);
-    this.pose.addChild(this.sprite);
+    this.pose.addChild(this.body);
+    this.body.addChild(this.sprite);
+    this.phase = stableAnimationPhase(opts.phaseKey ?? opts.set?.animations.idle?.file ?? 'figure');
+    this.context = opts.context ?? 'battle';
     this.hexWidth = opts.hexWidth;
     this.size = opts.size ?? 1;
     this.accent = opts.accent ?? null;
@@ -74,7 +93,7 @@ export class SpriteFigure {
     this.sprite.scale.set(this.baseScale);
     const idle = opts.set?.animations['idle'];
     this.firstFrame = idle
-      ? loadStrip(idle).then(
+      ? this.requestStrip(idle).then(
           () => this.showFirstFrame(),
           () => undefined,
         )
@@ -95,16 +114,25 @@ export class SpriteFigure {
       return;
     }
     const strips: SpriteStrip[] = [];
-    for (const a of Object.values(set.animations)) {
+    for (const [name, a] of Object.entries(set.animations)) {
+      if (this.context === 'guard' && name !== 'idle') continue;
+      if (this.context === 'map' && !['idle', 'move', 'walk', 'fly', 'prepare', 'cast'].includes(name)) continue;
       if (!a) continue;
       strips.push(a);
       for (const d of Object.values(a.directions ?? {})) if (d) strips.push(d);
     }
-    await Promise.all(strips.map((s) => loadStrip(s).catch(() => null)));
+    await Promise.all(strips.map((s) => this.requestStrip(s).catch(() => null)));
     if (this.destroyed) return;
     this.status = set.animations['idle'] && stripFrames(set.animations['idle']) ? 'ready' : 'missing';
     // Start the requested loop (the early idle frame may already be playing; a one-shot never is yet).
     if (!this.playing || this.playing.loop) this.setLoop(this.loopName);
+  }
+
+  private async requestStrip(strip: SpriteStrip): Promise<Texture[]> {
+    if (!this.retained.has(strip.file)) { this.retained.set(strip.file,strip); retainFigureStrip(strip); }
+    const frames = await loadStrip(strip);
+    if (this.destroyed) trimFigureTextures();
+    return frames;
   }
 
   /** The figure's own strip exists for this animation (not a stand-in). */
@@ -129,6 +157,7 @@ export class SpriteFigure {
 
   /** Map avatars: face one of eight directions (a direction strip, else mirror the right-facing one). */
   face(dir: MapDirection): void {
+    if (this.direction === dir) return;
     this.direction = dir;
     const p = this.playing;
     if (p) this.start(p.requested, p.loop);
@@ -160,13 +189,24 @@ export class SpriteFigure {
   }
 
   private start(name: string, loop: boolean): Playing | null {
+    if (this.destroyed) return null;
     const resolved = resolveAnimation(this.set, name);
     if (!resolved) return null;
     const { strip, mirror } = directionalStrip(resolved.def, this.direction);
     const frames = stripFrames(strip);
     if (!frames || frames.length === 0) return null;
-    const keep = this.playing && this.playing.strip === strip ? this.playing.time : 0;
-    const p: Playing = { requested: name, resolved, strip, frames, loop, time: keep, index: -1 };
+    const times = frameDurations(name, strip);
+    const old = this.playing;
+    // Preserve gait phase through direction changes; one-shots always restart.
+    const keep = !loop ? 0 : old?.strip === strip ? old.time :
+      old?.loop && old.requested === name ? (old.time / timelineDuration(old.times) % 1) * timelineDuration(times) :
+      name === 'idle' && !old ? this.phase * timelineDuration(times) : 0;
+    if (old?.requested !== name) {
+      this.transitionMs = 120;
+      this.transitionY = this.body.y;
+      this.transitionScale = this.body.scale.y;
+    }
+    const p: Playing = { requested: name, resolved, strip, frames, loop, time: keep, index: -1, times };
     this.playing = p;
     this.sprite.anchor.set(strip.anchor[0], strip.anchor[1]);
     // Each strip carries its own scale and tint when it differs from its set's (mixed final/placeholder sets).
@@ -176,7 +216,7 @@ export class SpriteFigure {
     const tinted = (strip.tint ?? resolved.def.tint ?? (strip.status === 'final' ? undefined : this.set!.tint)) === 'accent';
     this.sprite.tint = tinted && this.accent !== null ? this.accent : 0xffffff;
     this.applyFacing(mirror);
-    this.showFrame(p, Math.floor((p.time / 1000) * strip.fps));
+    this.showFrame(p, timelineFrame(times, p.time, loop));
     return p;
   }
 
@@ -215,11 +255,17 @@ export class SpriteFigure {
    * Returns what was drawn (null: nothing to draw; the owner animates the pose instead).
    */
   async playOnce(name: string, tweens: TweenPlayer, opts: { hold?: boolean; minMs?: number } = {}): Promise<ResolvedAnimation | null> {
+    if (this.destroyed) return null;
     if (this.status === 'loading') await this.loaded;
+    if (this.destroyed) return null;
+    const resolved = this.resolve(name);
+    if (resolved && !stripFrames(directionalStrip(resolved.def, this.direction).strip)) await this.requestStrip(directionalStrip(resolved.def, this.direction).strip).catch(() => null);
+    if (this.destroyed) return null;
     const p = this.start(name, false);
     if (!p) return null;
-    const ms = Math.max(opts.minMs ?? 0, (p.frames.length / Math.max(1, p.strip.fps)) * 1000);
-    await tweens.tween(ms, (t) => this.playing === p && this.showFrame(p, Math.floor(t * p.frames.length)), linear);
+    p.times = frameDurations(name, p.strip, opts.minMs);
+    const ms = timelineDuration(p.times);
+    await tweens.tween(ms, (t) => this.playing === p && this.showFrame(p, timelineFrame(p.times, t * ms, false)), linear);
     if (this.playing === p) {
       if (opts.hold) this.showFrame(p, p.frames.length - 1);
       else this.start(this.loopName, true);
@@ -229,6 +275,7 @@ export class SpriteFigure {
 
   /** Show the last frame of an animation at once (a stack that fell earlier). */
   holdLast(name: string): ResolvedAnimation | null {
+    if (this.destroyed) return null;
     if (this.status !== 'ready') {
       // A fallen stack never stands up in the early idle frame while its death strip loads.
       this.holding = true;
@@ -240,16 +287,61 @@ export class SpriteFigure {
       return this.resolve(name);
     }
     const p = this.start(name, false);
-    if (p) this.showFrame(p, p.frames.length - 1);
+    if (p) { this.showFrame(p, p.frames.length - 1); this.body.position.set(0,0); this.body.scale.set(1); this.body.skew.set(0,0); }
     return p?.resolved ?? null;
   }
 
-  /** Advance looping animations (`rate` 1 = normal speed). */
-  tick(dt: number, rate = 1): void {
+  motionDebug() {
+    return {frame:this.playing?.index ?? -1,animation:this.playing?.requested ?? null,phase:this.playing?.time ?? 0,
+      bodyY:this.body.y,bodyScale:this.body.scale.y,retainedFiles:this.retained.size,context:this.context};
+  }
+  duration(name: string, minMs = 0): number {
+    const strip = this.resolve(name)?.def;
+    return strip ? timelineDuration(frameDurations(name, strip, minMs)) : minMs;
+  }
+  contactFrame(): number {
+    const strip = this.set?.animations.attack;
+    return this.set?.events?.attackContactFrame ?? Math.floor((strip?.frames ?? 6) / 2);
+  }
+  frameDelay(name: string, frame: number, minMs = 0): number {
+    const strip = this.resolve(name)?.def;
+    return strip ? frameStart(frameDurations(name, strip, minMs), frame) : minMs / 2;
+  }
+  beginTravel(): void { this.travelDistance = 0; }
+  travelTo(distance: number): void {
     const p = this.playing;
-    if (!p || !p.loop) return;
-    p.time += dt * rate;
-    this.showFrame(p, Math.floor((p.time / 1000) * p.strip.fps));
+    if (!p?.loop || this.travelDistance === null) return;
+    const delta = Math.max(0, distance - this.travelDistance);
+    this.travelDistance = distance;
+    // A relaxed stride: avoid cycling the whole strip several times per map tile.
+    p.time += delta / (this.hexWidth * 2.5) * timelineDuration(p.times);
+    this.showFrame(p, timelineFrame(p.times, p.time, true));
+  }
+  endTravel(): void { this.travelDistance = null; }
+
+  /** Ambient transforms never affect feet anchors, hit positions or combat clocks. */
+  tick(dt: number, rate = 1, ambient = true): void {
+    const p = this.playing;
+    if (!p) return;
+    const step = Math.min(Math.max(dt, 0), 100);
+    if (p.loop && this.travelDistance === null && rate > 0) {
+      const pace = p.requested === 'idle' ? .32 : ['walk', 'move', 'fly'].includes(p.requested) ? .6 : 1;
+      p.time += dt * rate * pace;
+      this.showFrame(p, timelineFrame(p.times, p.time, true));
+    }
+    if (ambient) this.ambientTime += step;
+    const t = this.ambientTime / 1000 + this.phase * Math.PI * 2;
+    const idle = ambient && p.loop && p.requested === 'idle';
+    const travelling = ambient && p.loop && ['walk','move','fly'].includes(p.requested);
+    const beat = p.time / timelineDuration(p.times) * Math.PI * 4;
+    const flying = travelling && p.requested === 'fly';
+    const y = flying ? Math.sin(beat / 2) * this.hexWidth * .005 : travelling ? -Math.abs(Math.sin(beat)) * this.hexWidth * .003 : 0;
+    const scale = idle ? 1 + Math.sin(t * .55) * .002 : 1;
+    this.transitionMs = ambient ? Math.max(0, this.transitionMs-step) : 0;
+    const blend = 1-this.transitionMs/120;
+    this.body.y = this.transitionY*(1-blend)+y*blend;
+    this.body.scale.y = this.transitionScale*(1-blend)+scale*blend;
+    this.body.skew.x = idle ? Math.sin(t * .3) * .001 : 0;
   }
 
   /** Reset the choreography transforms (position, rotation, squash, alpha). */
@@ -265,5 +357,7 @@ export class SpriteFigure {
   destroy(): void {
     this.destroyed = true;
     this.view.destroy({ children: true });
+    for (const strip of this.retained.values()) releaseFigureStrip(strip);
+    this.retained.clear();
   }
 }

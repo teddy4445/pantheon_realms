@@ -1,0 +1,12 @@
+{
+  "mapStages": 24,
+  "newGeneratedSprites": 18,
+  "retainedCapitalSprites": 6,
+  "browserTests": { "passed": 24, "upgradeTransitions": 6 },
+  "unitTests": { "passed": 36 },
+  "typecheck": "passed",
+  "boundaries": "passed",
+  "build": "passed",
+  "visualReview": "All 24 comparison sprites and in-game screenshots for every pantheon reviewed",
+  "generation": "built-in imagegen"
+}

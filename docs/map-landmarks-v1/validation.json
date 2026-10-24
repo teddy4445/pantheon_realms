@@ -1,0 +1,50 @@
+[
+  {
+    "id": "statue-greek",
+    "transparent": 0.7250794268547983
+  },
+  {
+    "id": "statue-norse",
+    "transparent": 0.67242241096434
+  },
+  {
+    "id": "statue-egyptian",
+    "transparent": 0.6787186903026742
+  },
+  {
+    "id": "statue-japanese",
+    "transparent": 0.6323868728666502
+  },
+  {
+    "id": "statue-celtic",
+    "transparent": 0.7112124773293245
+  },
+  {
+    "id": "statue-mesoamerican",
+    "transparent": 0.670390635135032
+  },
+  {
+    "id": "ruins-marble",
+    "transparent": 0.6063817474671164
+  },
+  {
+    "id": "ruins-sandstone",
+    "transparent": 0.5639478390044997
+  },
+  {
+    "id": "waterfall-temperate",
+    "transparent": 0.6053642697435193
+  },
+  {
+    "id": "waterfall-tropical",
+    "transparent": 0.6021738411564652
+  },
+  {
+    "id": "tree-sacred-oak",
+    "transparent": 0.4725478150937733
+  },
+  {
+    "id": "tree-sacred-blossom",
+    "transparent": 0.5226643162931252
+  }
+]

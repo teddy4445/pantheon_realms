@@ -1,0 +1,98 @@
+[
+  {
+    "id": "neutral_rain_dragon-master",
+    "type": "master",
+    "form": "neutral_rain_dragon",
+    "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragon-concepts-v1/yinglong-standing-base-upgrade-v2.png",
+    "output": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragons-review-v1/source/neutral_rain_dragon-master.png",
+    "prompt": "Use case: identity-preserve. From the supplied approved two-panel dragon concept board extract and faithfully redraw ONLY the LEFT creature (Rain Dragon) as ONE isolated full-body game creature on genuinely transparent alpha. Preserve its exact identity, head, anatomy, species, colors, wings, proportions and upgrade details. Exactly four clawed legs, long continuous serpentine torso, one antlered dragon head with long whiskers and flowing mane, exactly two pale membrane wings. All four feet grounded for idle; tail grounded. Jade and warm ivory scales, teal mane. Match the LEFT base form exactly; do not add upgrade-only features. It must face RIGHT in 3/4 side view and be in the same grounded default idle pose as reference. All feet or lower serpent coils touch a common baseline at 85% of image height. One full creature centered, 12% clear padding on every side, wings folded enough to fit. No background, floor, shadows, border, captions, letters or other dragon. Maintain the beautiful sculpted painterly strategy-game creature style of reference. Crisp silhouette. Square canvas. Do not invent accessories or add limbs. This single character master will be reused as animation reference."
+  },
+  {
+    "id": "neutral_rain_dragon-portrait",
+    "type": "portrait",
+    "form": "neutral_rain_dragon",
+    "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragon-concepts-v1/yinglong-standing-base-upgrade-v2.png",
+    "output": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragons-review-v1/source/neutral_rain_dragon-portrait.png",
+    "prompt": "Use case: identity-preserve. Create a square game creature portrait of ONLY the LEFT creature (Rain Dragon) from the approved board. Faithfully preserve its exact face, crown/antlers/crest, eyes, scales, feather/membrane type and base or upgraded identity. Exactly four clawed legs, long continuous serpentine torso, one antlered dragon head with long whiskers and flowing mane, exactly two pale membrane wings. All four feet grounded for idle; tail grounded. Jade and warm ivory scales, teal mane. Match the LEFT base form exactly; do not add upgrade-only features. Framing: close three-quarter head and upper neck, looking right, shoulders and wing root visible, entire crown/antlers kept inside frame with breathing room. Head occupies central 65%, recognizable at 48 pixels. Painterly fantasy strategy game look matching reference, sculptural light, dark desaturated green background, clear face silhouette. No text, border, extra creature or UI. This is a portrait, not a full body."
+  },
+  {
+    "id": "neutral_celestial_rain_dragon-master",
+    "type": "master",
+    "form": "neutral_celestial_rain_dragon",
+    "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragon-concepts-v1/yinglong-standing-base-upgrade-v2.png",
+    "output": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragons-review-v1/source/neutral_celestial_rain_dragon-master.png",
+    "prompt": "Use case: identity-preserve. From the supplied approved two-panel dragon concept board extract and faithfully redraw ONLY the RIGHT creature (Celestial Rain Dragon) as ONE isolated full-body game creature on genuinely transparent alpha. Preserve its exact identity, head, anatomy, species, colors, wings, proportions and upgrade details. Exactly four clawed legs, long continuous serpentine torso, one antlered dragon head with long whiskers and flowing mane, exactly two pale membrane wings. All four feet grounded for idle; tail grounded. Jade and warm ivory scales, teal mane. Pearl-white and jade scales edged gold, larger branching ivory antlers, luxurious silver-teal mane, broad pearlescent scalloped wings, rich tail fringe. Preserve all upgrade features. It must face RIGHT in 3/4 side view and be in the same grounded default idle pose as reference. All feet or lower serpent coils touch a common baseline at 85% of image height. One full creature centered, 12% clear padding on every side, wings folded enough to fit. No background, floor, shadows, border, captions, letters or other dragon. Maintain the beautiful sculpted painterly strategy-game creature style of reference. Crisp silhouette. Square canvas. Do not invent accessories or add limbs. This single character master will be reused as animation reference."
+  },
+  {
+    "id": "neutral_celestial_rain_dragon-portrait",
+    "type": "portrait",
+    "form": "neutral_celestial_rain_dragon",
+    "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragon-concepts-v1/yinglong-standing-base-upgrade-v2.png",
+    "output": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragons-review-v1/source/neutral_celestial_rain_dragon-portrait.png",
+    "prompt": "Use case: identity-preserve. Create a square game creature portrait of ONLY the RIGHT creature (Celestial Rain Dragon) from the approved board. Faithfully preserve its exact face, crown/antlers/crest, eyes, scales, feather/membrane type and base or upgraded identity. Exactly four clawed legs, long continuous serpentine torso, one antlered dragon head with long whiskers and flowing mane, exactly two pale membrane wings. All four feet grounded for idle; tail grounded. Jade and warm ivory scales, teal mane. Pearl-white and jade scales edged gold, larger branching ivory antlers, luxurious silver-teal mane, broad pearlescent scalloped wings, rich tail fringe. Preserve all upgrade features. Framing: close three-quarter head and upper neck, looking right, shoulders and wing root visible, entire crown/antlers kept inside frame with breathing room. Head occupies central 65%, recognizable at 48 pixels. Painterly fantasy strategy game look matching reference, sculptural light, dark desaturated green background, clear face silhouette. No text, border, extra creature or UI. This is a portrait, not a full body."
+  },
+  {
+    "id": "neutral_zilant-master",
+    "type": "master",
+    "form": "neutral_zilant",
+    "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragon-concepts-v1/zilant-base-upgrade-v3.png",
+    "output": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragons-review-v1/source/neutral_zilant-master.png",
+    "prompt": "Use case: identity-preserve. From the supplied approved two-panel dragon concept board extract and faithfully redraw ONLY the LEFT creature (Zilant) as ONE isolated full-body game creature on genuinely transparent alpha. Preserve its exact identity, head, anatomy, species, colors, wings, proportions and upgrade details. Exactly TWO powerful birdlike legs with golden talons and NO forelegs/arms. Upright S-curved reptilian neck and ONE dragon head, compact thorax, exactly TWO red bat-membrane wings, long black-scaled snake tail resting behind. Midnight-black scales, dark crimson membranes, amber eyes. Match the LEFT base form exactly; do not add upgrade-only features. It must face RIGHT in 3/4 side view and be in the same grounded default idle pose as reference. All feet or lower serpent coils touch a common baseline at 85% of image height. One full creature centered, 12% clear padding on every side, wings folded enough to fit. No background, floor, shadows, border, captions, letters or other dragon. Maintain the beautiful sculpted painterly strategy-game creature style of reference. Crisp silhouette. Square canvas. Do not invent accessories or add limbs. This single character master will be reused as animation reference."
+  },
+  {
+    "id": "neutral_zilant-portrait",
+    "type": "portrait",
+    "form": "neutral_zilant",
+    "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragon-concepts-v1/zilant-base-upgrade-v3.png",
+    "output": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragons-review-v1/source/neutral_zilant-portrait.png",
+    "prompt": "Use case: identity-preserve. Create a square game creature portrait of ONLY the LEFT creature (Zilant) from the approved board. Faithfully preserve its exact face, crown/antlers/crest, eyes, scales, feather/membrane type and base or upgraded identity. Exactly TWO powerful birdlike legs with golden talons and NO forelegs/arms. Upright S-curved reptilian neck and ONE dragon head, compact thorax, exactly TWO red bat-membrane wings, long black-scaled snake tail resting behind. Midnight-black scales, dark crimson membranes, amber eyes. Match the LEFT base form exactly; do not add upgrade-only features. Framing: close three-quarter head and upper neck, looking right, shoulders and wing root visible, entire crown/antlers kept inside frame with breathing room. Head occupies central 65%, recognizable at 48 pixels. Painterly fantasy strategy game look matching reference, sculptural light, dark desaturated green background, clear face silhouette. No text, border, extra creature or UI. This is a portrait, not a full body."
+  },
+  {
+    "id": "neutral_crowned_zilant-master",
+    "type": "master",
+    "form": "neutral_crowned_zilant",
+    "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragon-concepts-v1/zilant-base-upgrade-v3.png",
+    "output": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragons-review-v1/source/neutral_crowned_zilant-master.png",
+    "prompt": "Use case: identity-preserve. From the supplied approved two-panel dragon concept board extract and faithfully redraw ONLY the RIGHT creature (Crowned Zilant) as ONE isolated full-body game creature on genuinely transparent alpha. Preserve its exact identity, head, anatomy, species, colors, wings, proportions and upgrade details. Exactly TWO powerful birdlike legs with golden talons and NO forelegs/arms. Upright S-curved reptilian neck and ONE dragon head, compact thorax, exactly TWO red bat-membrane wings, long black-scaled snake tail resting behind. Midnight-black scales, dark crimson membranes, amber eyes. Real tall openwork five-point golden crown, expanded crimson neck fan, hooked golden wing thumbs, extra scalloped outer wing lobe, three-bladed black-and-gold lance tail. Crown stays securely on head in every pose. It must face RIGHT in 3/4 side view and be in the same grounded default idle pose as reference. All feet or lower serpent coils touch a common baseline at 85% of image height. One full creature centered, 12% clear padding on every side, wings folded enough to fit. No background, floor, shadows, border, captions, letters or other dragon. Maintain the beautiful sculpted painterly strategy-game creature style of reference. Crisp silhouette. Square canvas. Do not invent accessories or add limbs. This single character master will be reused as animation reference."
+  },
+  {
+    "id": "neutral_crowned_zilant-portrait",
+    "type": "portrait",
+    "form": "neutral_crowned_zilant",
+    "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragon-concepts-v1/zilant-base-upgrade-v3.png",
+    "output": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragons-review-v1/source/neutral_crowned_zilant-portrait.png",
+    "prompt": "Use case: identity-preserve. Create a square game creature portrait of ONLY the RIGHT creature (Crowned Zilant) from the approved board. Faithfully preserve its exact face, crown/antlers/crest, eyes, scales, feather/membrane type and base or upgraded identity. Exactly TWO powerful birdlike legs with golden talons and NO forelegs/arms. Upright S-curved reptilian neck and ONE dragon head, compact thorax, exactly TWO red bat-membrane wings, long black-scaled snake tail resting behind. Midnight-black scales, dark crimson membranes, amber eyes. Real tall openwork five-point golden crown, expanded crimson neck fan, hooked golden wing thumbs, extra scalloped outer wing lobe, three-bladed black-and-gold lance tail. Crown stays securely on head in every pose. Framing: close three-quarter head and upper neck, looking right, shoulders and wing root visible, entire crown/antlers kept inside frame with breathing room. Head occupies central 65%, recognizable at 48 pixels. Painterly fantasy strategy game look matching reference, sculptural light, dark desaturated green background, clear face silhouette. No text, border, extra creature or UI. This is a portrait, not a full body."
+  },
+  {
+    "id": "neutral_cuelebre-master",
+    "type": "master",
+    "form": "neutral_cuelebre",
+    "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragon-concepts-v1/cuelebre-base-upgrade-v3.png",
+    "output": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragons-review-v1/source/neutral_cuelebre-master.png",
+    "prompt": "Use case: identity-preserve. From the supplied approved two-panel dragon concept board extract and faithfully redraw ONLY the LEFT creature (Cuélebre) as ONE isolated full-body game creature on genuinely transparent alpha. Preserve its exact identity, head, anatomy, species, colors, wings, proportions and upgrade details. Genuinely LEGLESS serpent: ZERO feet, ZERO legs, ZERO arms. One continuous long scaled snake body grounded in an open coil, ONE broad reptilian head, exactly TWO large feathered birdlike wings. Deep marine-blue scales with copper edges, warm ivory belly, amber eyes. Wings steel blue and warm ivory copper-tipped. No bat membranes. Match the LEFT base form exactly; do not add upgrade-only features. It must face RIGHT in 3/4 side view and be in the same grounded default idle pose as reference. All feet or lower serpent coils touch a common baseline at 85% of image height. One full creature centered, 12% clear padding on every side, wings folded enough to fit. No background, floor, shadows, border, captions, letters or other dragon. Maintain the beautiful sculpted painterly strategy-game creature style of reference. Crisp silhouette. Square canvas. Do not invent accessories or add limbs. This single character master will be reused as animation reference."
+  },
+  {
+    "id": "neutral_cuelebre-portrait",
+    "type": "portrait",
+    "form": "neutral_cuelebre",
+    "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragon-concepts-v1/cuelebre-base-upgrade-v3.png",
+    "output": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragons-review-v1/source/neutral_cuelebre-portrait.png",
+    "prompt": "Use case: identity-preserve. Create a square game creature portrait of ONLY the LEFT creature (Cuélebre) from the approved board. Faithfully preserve its exact face, crown/antlers/crest, eyes, scales, feather/membrane type and base or upgraded identity. Genuinely LEGLESS serpent: ZERO feet, ZERO legs, ZERO arms. One continuous long scaled snake body grounded in an open coil, ONE broad reptilian head, exactly TWO large feathered birdlike wings. Deep marine-blue scales with copper edges, warm ivory belly, amber eyes. Wings steel blue and warm ivory copper-tipped. No bat membranes. Match the LEFT base form exactly; do not add upgrade-only features. Framing: close three-quarter head and upper neck, looking right, shoulders and wing root visible, entire crown/antlers kept inside frame with breathing room. Head occupies central 65%, recognizable at 48 pixels. Painterly fantasy strategy game look matching reference, sculptural light, dark desaturated green background, clear face silhouette. No text, border, extra creature or UI. This is a portrait, not a full body."
+  },
+  {
+    "id": "neutral_ancient_cuelebre-master",
+    "type": "master",
+    "form": "neutral_ancient_cuelebre",
+    "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragon-concepts-v1/cuelebre-base-upgrade-v3.png",
+    "output": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragons-review-v1/source/neutral_ancient_cuelebre-master.png",
+    "prompt": "Use case: identity-preserve. From the supplied approved two-panel dragon concept board extract and faithfully redraw ONLY the RIGHT creature (Ancient Cuélebre) as ONE isolated full-body game creature on genuinely transparent alpha. Preserve its exact identity, head, anatomy, species, colors, wings, proportions and upgrade details. Genuinely LEGLESS serpent: ZERO feet, ZERO legs, ZERO arms. One continuous long scaled snake body grounded in an open coil, ONE broad reptilian head, exactly TWO large feathered birdlike wings. Deep marine-blue scales with copper edges, warm ivory belly, amber eyes. Wings steel blue and warm ivory copper-tipped. No bat membranes. Swept-back ivory/copper quill crown, layered shield-like neck scutes, double-tier long spear-shaped flight feathers, visible broad five-feather tail fan. These structures stay in every pose, never turn it into a quadruped. It must face RIGHT in 3/4 side view and be in the same grounded default idle pose as reference. All feet or lower serpent coils touch a common baseline at 85% of image height. One full creature centered, 12% clear padding on every side, wings folded enough to fit. No background, floor, shadows, border, captions, letters or other dragon. Maintain the beautiful sculpted painterly strategy-game creature style of reference. Crisp silhouette. Square canvas. Do not invent accessories or add limbs. This single character master will be reused as animation reference."
+  },
+  {
+    "id": "neutral_ancient_cuelebre-portrait",
+    "type": "portrait",
+    "form": "neutral_ancient_cuelebre",
+    "reference": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragon-concepts-v1/cuelebre-base-upgrade-v3.png",
+    "output": "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/neutral-dragons-review-v1/source/neutral_ancient_cuelebre-portrait.png",
+    "prompt": "Use case: identity-preserve. Create a square game creature portrait of ONLY the RIGHT creature (Ancient Cuélebre) from the approved board. Faithfully preserve its exact face, crown/antlers/crest, eyes, scales, feather/membrane type and base or upgraded identity. Genuinely LEGLESS serpent: ZERO feet, ZERO legs, ZERO arms. One continuous long scaled snake body grounded in an open coil, ONE broad reptilian head, exactly TWO large feathered birdlike wings. Deep marine-blue scales with copper edges, warm ivory belly, amber eyes. Wings steel blue and warm ivory copper-tipped. No bat membranes. Swept-back ivory/copper quill crown, layered shield-like neck scutes, double-tier long spear-shaped flight feathers, visible broad five-feather tail fan. These structures stay in every pose, never turn it into a quadruped. Framing: close three-quarter head and upper neck, looking right, shoulders and wing root visible, entire crown/antlers kept inside frame with breathing room. Head occupies central 65%, recognizable at 48 pixels. Painterly fantasy strategy game look matching reference, sculptural light, dark desaturated green background, clear face silhouette. No text, border, extra creature or UI. This is a portrait, not a full body."
+  }
+]

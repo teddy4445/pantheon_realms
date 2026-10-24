@@ -265,3 +265,19 @@ describe('tactical AI without neutral abilities (unchanged)', () => {
     });
   }
 });
+
+it('the AI combines two useful Monsoon Ward targets into one legal action', () => {
+  const d=arena([
+    {id:'dragon',side:'attacker',creatureId:'neutral_celestial_rain_dragon',count:1,at:[3,4]},
+    {id:'a',side:'attacker',creatureId:'hoplite',count:100,at:[4,5]},
+    {id:'b',side:'attacker',creatureId:'hoplite',count:100,at:[3,3]},
+    {id:'foe',side:'defender',creatureId:'brigand',count:100,at:[6,4]},
+  ],'dragon');
+  const b=d.state.battle!;
+  const choices=neutralAbilityChoices(d.catalog,b,b.stacks.dragon!,legalActions(d.catalog,d.state)!);
+  const multi=choices.find(c=>c.payload.kind==='BattleUseAbility' && c.payload.additionalTargetIds?.length===1)!;
+  expect(multi).toBeDefined();
+  expect(neutralAbilityChoices(d.catalog,b,b.stacks.dragon!,legalActions(d.catalog,d.state)!)).toEqual(choices);
+  d.do(multi.payload,actorOf(d));
+  expect(Object.values(d.state.battle!.stacks).filter(s=>s.statuses.some(x=>x.kind==='damage_ward'))).toHaveLength(2);
+});

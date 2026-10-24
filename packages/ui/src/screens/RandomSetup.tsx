@@ -509,7 +509,7 @@ export function RandomSetupScreen() {
                 <div className="row gap editor-v2-random">
                   <Toggle checked={neutralCreatures} onChange={setNeutralCreatures} label="New neutral creatures" />
                   <span className="small" data-testid="random-neutrals-text">
-                    Recruit neutral creatures — camps open to every pantheon: {neutralCount === 1 ? 'one kind' : 'two kinds'} on a {SKIRMISH_SIZE_LABEL[size].toLowerCase()} map, a site in each empire’s lands.{' '}
+                    Recruit neutral creatures — camps open to every pantheon (dragon lairs are guarded): {neutralCount === 1 ? 'one kind' : 'two kinds'} on a {SKIRMISH_SIZE_LABEL[size].toLowerCase()} map, a site in each empire’s lands.{' '}
                     {neutralNames.length ? `${typeInfo.label}: ${neutralNames.length > 1 ? `${neutralNames.slice(0, -1).join(', ')} or ${neutralNames[neutralNames.length - 1]}` : neutralNames[0]}.` : `None lives in ${typeInfo.label} lands.`}
                   </span>
                 </div>

@@ -41,7 +41,8 @@ const baseManifest = JSON.parse(readFileSync(path.join(runtime, 'sprites/manifes
 const kit = JSON.parse(readFileSync(path.join(runtime, 'campaign-v2/manifest.json'), 'utf8')) as { creatures: SpriteManifest['creatures'] };
 /** The battle FX & neutral upgrades delivery (2026-10-15) adds the six upgraded neutrals' sets, merged the same way. */
 const upgrades = JSON.parse(readFileSync(path.join(runtime, 'battle-fx-neutral-upgrades-v1/manifest.json'), 'utf8')) as { creatures: SpriteManifest['creatures'] };
-const manifest: SpriteManifest = { ...baseManifest, creatures: { ...baseManifest.creatures, ...kit.creatures, ...upgrades.creatures } };
+const dragons = JSON.parse(readFileSync(path.join(runtime, 'neutral-dragons-v1/manifest.json'), 'utf8')) as { creatures: SpriteManifest['creatures'] };
+const manifest: SpriteManifest = { ...baseManifest, creatures: { ...baseManifest.creatures, ...kit.creatures, ...upgrades.creatures, ...dragons.creatures } };
 registerSpriteManifest(manifest);
 const catalog = buildCatalog();
 
@@ -102,7 +103,7 @@ describe('sprite manifest', () => {
     const forms = Object.values(catalog.creatures).filter((c) => !!c.stats);
     // 102 pantheon and legacy neutral forms, plus the six expansion neutrals and their six upgrades (2026-10-15),
     // plus the ten sea forms (sea-creature delivery 2026-10-17).
-    expect(forms.length).toBe(124);
+    expect(forms.length).toBe(130);
     for (const c of forms) {
       const set = manifest.creatures[c.id];
       expect(set, c.id).toBeDefined();

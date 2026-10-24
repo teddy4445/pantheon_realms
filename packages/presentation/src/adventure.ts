@@ -1,3 +1,10 @@
+import { SiteAmbient } from './siteAmbient';
+import { paintedMapFlag } from './mapFlags';
+import { groundMosaic } from './groundMosaic';
+import { GROUND_MOSAIC_REPEAT } from './groundVariation';
+import { cullMapObjects } from './viewportCull';
+import { ambientVisible } from './siteAmbientPlan';
+import { segmentProgress } from './animationTiming';
 /**
  * AdventureSceneController (S06): the 2D adventure map, drawn in layers from a
  * view model the interface builds from committed MatchState.
@@ -37,13 +44,15 @@ import { groundCornerOutlines, groundEdgesComplete, groundEdgesUsable, groundPie
 import { mapTokenPicture, mapTokenScale, tokenHeading, type MapTokenHeading } from './mapTokens';
 import { ShipLayer, type AdventureShipView, type ShipLayerDebug, type ShipMarksView, type ShipOverlayUrls } from './ships';
 import { SeaSiteLayer, type AdventureSeaSiteView, type SeaSiteDebug } from './seaSites';
+import { CoastLife, SiteLife } from './mapLife';
+import { landmarkDistance, planLandmarks } from './landmarks';
 
 /**
  * Nominal map time per hex step (ms, before the Adventure animation speed
  * setting). Slower since 2026-10-04 (owner request: the player should feel the
  * journey); the walk strip plays at WALK_RATE of its own pace to match.
  */
-const STEP_MS = 360;
+const STEP_MS = 560;
 const WALK_RATE = 0.7;
 /** Hex radius in view pixels at zoom 1. */
 const R = 36;
@@ -228,6 +237,10 @@ export type PrepareOutcome = 'finished' | 'cancelled';
 
 /** Read-only avatar state for tests and diagnostics. */
 export interface HeroAnimationDebug {
+  readonly x: number;
+  readonly y: number;
+  readonly height: number;
+  readonly cameraFollowing: boolean;
   readonly sprite: 'ready' | 'loading' | 'missing';
   readonly status: 'final' | 'placeholder' | null;
   /** Animation requested: idle, walk or prepare (the readiness beat before a battle). */
@@ -270,6 +283,10 @@ interface HeroEntry {
 }
 
 interface SiteEntry {
+  ambient?: SiteAmbient;
+  ambientEnabled?: boolean;
+  life?: SiteLife;
+  tile?: number;
   root: Container;
   sprite: Sprite;
   def: StaticSpriteDefinition | null;
@@ -282,7 +299,7 @@ interface SiteEntry {
   questKey: string;
   glow: Graphics | null;
   seal: Graphics | null;
-  banner: Graphics | null;
+  banner: Container | null;
   bannerKey: string;
   guard: SpriteFigure | null;
   guardKey: string;
@@ -370,6 +387,9 @@ export class AdventureSceneController implements SceneController {
   private readonly selectRing = new Container();
   private readonly selectRingShape = new Graphics();
   private readonly objects = new Container();
+  private readonly coastLife = new CoastLife(this.objects, c => this.hexCenter(c));
+  private liveVisible: ReadonlySet<number> = new Set();
+  private landmarkDrawn: { id: string; coord: HexCoord; reveal: number[]; root: Container }[] = [];
   private readonly fog = new Graphics();
   /** Soft-edged fog (one low-resolution picture, redrawn when the fog changes). */
   private readonly fogSoft = new Container();
@@ -419,6 +439,7 @@ export class AdventureSceneController implements SceneController {
   /** Camera: the world point at the view's centre, and the zoom. */
   private cam = { x: 0, y: 0, zoom: ZOOM_DEFAULT };
   private camGoal: { x: number; y: number } | null = null;
+  private followingHero: string | null = null;
   private view = { width: 1, height: 1 };
   private time = 0;
   private disposed = false;
@@ -508,7 +529,30 @@ export class AdventureSceneController implements SceneController {
 
   // ------------------------------------------------------------------ view updates
 
+  private travelFog: { explored: number[]; visible: ReadonlySet<number> } | null = null;
+  private finalFog: AdventureView | null = null;
+  holdTravelFog(): void {
+    this.travelFog = { explored: [...this.explored], visible: new Set(this.liveVisible) };
+  }
+  advanceTravelFog(visible: ReadonlySet<number>): void {
+    if (!this.travelFog) return;
+    this.travelFog.visible = visible;
+    for (const index of visible) this.travelFog.explored[index] = 1;
+    this.applyFog(this.travelFog.explored, visible, true);
+  }
+  releaseTravelFog(): void {
+    this.travelFog = null;
+    const final = this.finalFog;
+    this.finalFog = null;
+    this.fogKey = '';
+    if (final) this.update(final);
+  }
+
   update(view: AdventureView): void {
+    if (this.travelFog) {
+      this.finalFog = view;
+      view = { ...view, explored: this.travelFog.explored, visible: this.travelFog.visible };
+    }
     this.wake();
     this.calm = !!view.calm;
     const key = `${view.map.templateId}|${view.map.logicalHash}`;
@@ -574,6 +618,7 @@ export class AdventureSceneController implements SceneController {
     for (const list of this.decorByTile.values()) for (const d of list) d.destroy({ children: true });
     this.decorByTile.clear();
     this.buildDecor(map, sites);
+    this.coastLife.rebuild(map, sites.filter(s => s.archetype === 'town').map(s => s.coord));
     // The fog is applied again in full below: the new scenery's visibility, the grid and the roads.
     this.fogKey = '';
     this.exploredKey = '';
@@ -627,6 +672,7 @@ export class AdventureSceneController implements SceneController {
     this.map = map;
     const build = ++this.mapBuild;
     this.terrainArts.clear();
+    for(const tex of this.terrainTextures.values())if(tex.source.label?.startsWith('ground-mosaic:'))tex.destroy(true);
     this.terrainTextures.clear();
     const painted = graphicsProfile().paintedGround;
     for (const t of GROUND_TYPES) {
@@ -635,6 +681,7 @@ export class AdventureSceneController implements SceneController {
     }
     this.drawTerrain();
     this.buildDecor(map, sites);
+    this.coastLife.rebuild(map, sites.filter(s => s.archetype === 'town').map(s => s.coord));
     // Painted ground replaces the flat colours as each texture arrives.
     for (const [t, art] of this.terrainArts) {
       // A ground painting spans about two tiles: drawn 5–20 times smaller than its pixels, so with mipmaps.
@@ -644,7 +691,7 @@ export class AdventureSceneController implements SceneController {
           tex.source.style.addressModeU = art.wrap === 'repeat' ? 'repeat' : 'mirror-repeat';
           tex.source.style.addressModeV = art.wrap === 'repeat' ? 'repeat' : 'mirror-repeat';
           tex.source.style.update();
-          this.terrainTextures.set(t, tex);
+          this.terrainTextures.set(t, groundMosaic(tex, map.seed, `${map.biome}:${t}`) ?? tex);
           this.queueTerrain();
         },
         () => undefined,
@@ -661,10 +708,11 @@ export class AdventureSceneController implements SceneController {
     const tex = this.terrainTextures.get(t);
     if (!tex) return null;
     const p = new FillPattern(tex, 'repeat');
-    const mode = this.terrainArts.get(t)?.wrap === 'repeat' ? 'repeat' : 'mirror-repeat';
+    const mosaic=tex.source.label?.startsWith('ground-mosaic:');
+    const mode = mosaic || this.terrainArts.get(t)?.wrap === 'repeat' ? 'repeat' : 'mirror-repeat';
     tex.source.style.addressModeU = mode;
     tex.source.style.addressModeV = mode;
-    const span = TERRAIN_TEXTURE_WORLD * R;
+    const span = TERRAIN_TEXTURE_WORLD * R * (mosaic ? GROUND_MOSAIC_REPEAT : 1);
     p.setTransform(new Matrix().scale(span / tex.width, (span * S) / tex.height));
     return p;
   }
@@ -804,6 +852,9 @@ export class AdventureSceneController implements SceneController {
     let n = 0;
     for (const p of pieces) {
       if (p.character !== 'shore') continue;
+      const shoreSeed = ((p.q * 73856093) ^ (p.r * 19349663) ^ (p.k * 83492791) ^ map.seed) >>> 0;
+      // Foam comes in broken washes rather than outlining every hex identically.
+      if (shoreSeed % 5 === 0) continue;
       const row = p.variant % def.rows;
       const key = `${p.k}|${row}`;
       let frame = this.foamFrames.get(key);
@@ -816,6 +867,7 @@ export class AdventureSceneController implements SceneController {
       const { x, y } = this.hexCenter({ q: p.q, r: p.r });
       sp.position.set(x, y);
       sp.scale.set(HEX_W / def.hexWidth);
+      sp.alpha = .22 + (shoreSeed % 7) * .055;
       this.groundFoam.addChild(sp);
       n++;
     }
@@ -823,11 +875,11 @@ export class AdventureSceneController implements SceneController {
   }
 
   /** How the ground borders and roads are drawn right now (read-only diagnostics for tests): painted road tiles drawn, if any. */
-  groundDebug(): { edges: 'painted' | 'softened' | 'crisp'; pieces: number; foam: number; roadTiles: number; roadTypes: Record<string, number>; roadTileTypes: Record<string, string>; cache: GroundCacheStats; terrain: string; groundChanges: number } {
+  groundDebug(): { edges: 'painted' | 'softened' | 'crisp'; pieces: number; foam: number; roadTiles: number; roadTypes: Record<string, number>; roadTileTypes: Record<string, string>; cache: GroundCacheStats; terrain: string; groundChanges: number; mosaicTextures:number } {
     const roadTypes: Record<string, number> = {};
     for (const t of Object.values(this.roadTileTypes)) roadTypes[t] = (roadTypes[t] ?? 0) + 1;
     // `terrain`: the terrain codes the ground is drawn from; `groundChanges`: redraws for a changed terrain (a sluice).
-    return { ...this.groundMode, roadTiles: this.roadTiles.children.length, roadTypes, roadTileTypes: { ...this.roadTileTypes }, cache: this.groundCache.stats(), terrain: this.map?.terrain ?? '', groundChanges: this.groundChanges };
+    return { ...this.groundMode, roadTiles: this.roadTiles.children.length, roadTypes, roadTileTypes: { ...this.roadTileTypes }, cache: this.groundCache.stats(), terrain: this.map?.terrain ?? '', groundChanges: this.groundChanges, mosaicTextures:[...this.terrainTextures.values()].filter(t=>t.source.label?.startsWith('ground-mosaic:')).length };
   }
 
   /** The material of every painted road tile now drawn, by `q,r` (read-only diagnostics). */
@@ -913,6 +965,19 @@ export class AdventureSceneController implements SceneController {
       this.decorByTile.set(i, list);
     };
     const decorDefs = spriteManifest().decor;
+    const landmarks = sites.some(s => s.id.startsWith('landmark:')) ? [] : planLandmarks(map, sites, id => !!decorDefs[id]);
+    this.landmarkDrawn = [];
+    for (const landmark of landmarks) {
+      const c = this.decorSprite(landmark.id, 1, false);
+      if (!c) continue;
+      const p = this.hexCenter(landmark.coord);
+      c.position.set(p.x, p.y + R * S * .25);
+      c.zIndex = c.y;
+      c.eventMode = 'none';
+      c.visible = false;
+      push(landmark.coord.r * map.width + landmark.coord.q, c);
+      this.landmarkDrawn.push({ ...landmark, root: c });
+    }
     const plan = planNatureSceneryCached(map, {
       sites: sites.map((v) => v.coord),
       towns: sites.filter((v) => v.archetype === 'town').map((v) => v.coord),
@@ -923,6 +988,8 @@ export class AdventureSceneController implements SceneController {
     this.naturePlan = plan;
     if (plan.supported) {
       for (const it of plan.items) {
+        const tileCoord = { q: it.tile % map.width, r: Math.floor(it.tile / map.width) };
+        if (landmarks.some(l => landmarkDistance(l.coord, tileCoord) <= 1)) continue;
         const c = this.natureSprite(it);
         if (!c) continue;
         const q = it.tile % map.width;
@@ -939,6 +1006,7 @@ export class AdventureSceneController implements SceneController {
       for (let q = 0; q < map.width; q++) {
         const i = r * map.width + q;
         if (this.terrainOf(map, i) !== 'mountain') continue;
+        if (landmarks.some(l => landmarkDistance(l.coord, { q, r }) <= 1)) continue;
         const { x, y } = this.hexCenter({ q, r });
         const m = this.decorSprite('mountain', 1 + tileNoise(q, r) * 0.08, tileNoise(q + 3, r) > 0);
         if (!m) continue;
@@ -952,6 +1020,7 @@ export class AdventureSceneController implements SceneController {
     // Graphics quality: Medium drops grass tufts and shrubs, Low also every other tree and rock.
     const decor = graphicsProfile().decor;
     for (const [n, d] of items.entries()) {
+      if (landmarks.some(l => landmarkDistance(l.coord, { q: d.q, r: d.r }) <= 1)) continue;
       if (decor !== 'all' && (d.kind === 'grass' || d.kind === 'shrub')) continue;
       if (decor === 'sparse' && n % 2 === 1) continue;
       if (d.kind === 'rock' && this.terrainOf(map, d.r * map.width + d.q) === 'mountain') continue;
@@ -969,15 +1038,16 @@ export class AdventureSceneController implements SceneController {
     const def = spriteManifest().decor[it.id] ?? null;
     if (!def) return null;
     const c = new Container();
+    const size = it.scale * (it.role === 'canopy' ? 1.45 : ['shrub', 'woodland_edge', 'rock', 'rocky_edge'].includes(it.role) ? 1.25 : 1);
     // Shadows only where they read (trees and rocks), kept small: on a huge map the shadow quads cost the
     // emulated GPU more than the scenery itself (measured 2026-10-06).
     const shadowed = it.role === 'canopy' || it.role === 'rock';
     if (graphicsProfile().shadows && shadowed) {
       // The stills are trimmed to their painted pixels: the shadow follows the visible width.
-      const w = (def.width / def.pixelsPerHex) * HEX_W * it.scale;
+      const w = (def.width / def.pixelsPerHex) * HEX_W * size;
       c.addChild(groundShadow(w * 0.36, w * 0.13, 0.22));
     }
-    c.addChild(stillSprite(def, HEX_W, it.scale));
+    c.addChild(stillSprite(def, HEX_W, size));
     return c;
   }
 
@@ -998,7 +1068,11 @@ export class AdventureSceneController implements SceneController {
     /** Location guards drawn beside their sites and whether each faces left (mirrored). */
     guards: { id: string; mirrored: boolean }[];
     /** Every location drawn: the sprite ID of its picture, whether it shows now, and its quest marker's icon (asset ID). */
-    sites: { id: string; sprite: string | null; shown: boolean; quest: string | null }[];
+    sites: { id: string; sprite: string | null; shown: boolean; loaded: boolean; quest: string | null; life: string | null; flag: string | null; flagLoaded: boolean }[];
+    coastLife: ReturnType<CoastLife['debug']>;
+    resourceLife: { id: string; kind: string; phase: number; rotor: number | null; visible: boolean }[];
+    ambientSites: ({id: string} & ReturnType<SiteAmbient['debug']>)[];
+    landmarks: { id: string; q: number; r: number; shown: boolean; loaded: boolean }[];
   } {
     const plan = this.naturePlan;
     const byRole: Record<string, number> = {};
@@ -1036,7 +1110,11 @@ export class AdventureSceneController implements SceneController {
           return { id: it.id, tile: it.tile, body: c.kind, area: c.area };
         }),
       guards: [...this.sites.entries()].filter(([, e]) => !!e.guard).map(([id, e]) => ({ id, mirrored: e.guard!.mirror })),
-      sites: [...this.sites.entries()].map(([id, e]) => ({ id, sprite: e.spriteId, shown: e.root.visible, quest: e.questKey ? e.questKey.slice(0, e.questKey.indexOf('|')) : null })),
+      sites: [...this.sites.entries()].map(([id, e]) => ({ id, sprite: e.spriteId, shown: e.root.visible, loaded: e.sprite.visible, quest: e.questKey ? e.questKey.slice(0, e.questKey.indexOf('|')) : null, life: e.life?.kind ?? null, flag:e.banner?.label ?? null, flagLoaded:!!e.banner?.children.some(c=>c instanceof Sprite&&c.visible) })),
+      coastLife: this.coastLife.debug(),
+      ambientSites: [...this.sites.entries()].flatMap(([id,e]) => e.ambient ? [{id,...e.ambient.debug()}] : []),
+      resourceLife: [...this.sites.entries()].flatMap(([id, e]) => e.life ? [{ id, kind: e.life.kind, ...e.life.debug() }] : []),
+      landmarks: [...this.landmarkDrawn.map(l => ({ id: l.id, ...l.coord, shown: l.root.visible, loaded: l.root.children.at(-1)?.visible === true })), ...[...this.sites.entries()].filter(([id]) => id.startsWith('landmark:')).map(([id, e]) => ({ id, q: Number(id.split(':')[2]), r: Number(id.split(':')[3]), shown: e.root.visible, loaded: e.sprite.visible }))],
     };
   }
 
@@ -1045,6 +1123,8 @@ export class AdventureSceneController implements SceneController {
     const map = this.map;
     if (!map) return;
     this.explored = explored;
+    this.liveVisible = visible;
+    this.coastLife.visibility(visible);
     const fog = this.fog;
     const grid = this.grid;
     fog.clear();
@@ -1073,6 +1153,7 @@ export class AdventureSceneController implements SceneController {
         if (full && this.gridMode === 'always') grid.poly(hexPolygon(x, y, R * 0.985, S));
       }
     }
+    for (const l of this.landmarkDrawn) l.root.visible = l.reveal.every(i => explored[i] === 1);
     if (!full) return;
     if (this.gridMode === 'always') grid.stroke({ width: 1.1, color: 0x0d121a, alpha: 0.42 });
     // Roads only over explored tiles (the fog above dims what is out of sight).
@@ -1563,14 +1644,8 @@ export class AdventureSceneController implements SceneController {
   }
 
   /** Owner banner on a pole: square = yours, pennant = others (ownership is never colour alone). */
-  private banner(color: string, shape: 'square' | 'pennant', height: number): Graphics {
-    const g = new Graphics();
-    const c = colorOf(color);
-    g.moveTo(0, 0).lineTo(0, -height).stroke({ width: 2.2, color: 0x3a2c1c });
-    const top = -height;
-    if (shape === 'square') g.rect(1, top, R * 0.42, R * 0.3).fill({ color: c }).stroke({ width: 1, color: 0x1a1208, alpha: 0.6 });
-    else g.poly([1, top, 1 + R * 0.5, top + R * 0.15, 1, top + R * 0.3]).fill({ color: c }).stroke({ width: 1, color: 0x1a1208, alpha: 0.6 });
-    return g;
+  private banner(color: string, shape: 'square' | 'pennant', height: number): Container {
+    return paintedMapFlag(color,shape,height);
   }
 
   private held(c: HexCoord): boolean {
@@ -1673,7 +1748,7 @@ export class AdventureSceneController implements SceneController {
         Object.assign(e, { sprite: next, def, key, spriteId: pick.id, questKey: '', bannerKey: '' });
         e.quest?.destroy({ children: true });
         e.quest = null;
-        e.banner?.destroy();
+        e.banner?.destroy({children:true});
         e.banner = null;
       }
       if (e && e.key !== key) {
@@ -1692,9 +1767,20 @@ export class AdventureSceneController implements SceneController {
         root.addChild(sprite);
         this.objects.addChild(root);
         e = { root, sprite, def, key, spriteId: pick.id, kindKey, quest: null, questKey: '', glow: null, seal: null, banner: null, bannerKey: '', guard: null, guardKey: '' };
+        if (SiteLife.supports(v.archetype) && pick.id === `map.site.${v.archetype}` &&
+            (v.archetype !== 'windmill' || def?.file.includes('map-life-v1/'))) {
+          e.life = new SiteLife(v.archetype, root, HEX_W / 140);
+          e.life.root.visible = false;
+          e.tile = v.coord.r * this.map!.width + v.coord.q;
+        }
+        e.tile = v.coord.r * this.map!.width + v.coord.q;
+        const ambient = new SiteAmbient(root, v.archetype, pick.id ?? '', v.id, Math.max(R*.9,stillHeight(def,HEX_W)));
+        if (ambient.effects.length) e.ambient = ambient;
+        else ambient.root.destroy({children:true});
         this.sites.set(v.id, e);
       }
       e.root.visible = true;
+      e.ambientEnabled = !v.claimed || !['treasure_chest','pickup'].includes(v.archetype);
       const h = Math.max(R * 0.9, stillHeight(e.def, HEX_W));
       // Lit sites (beacons, event shrines, relics, portals) glow.
       if (v.lit && !e.glow) {
@@ -1723,7 +1809,7 @@ export class AdventureSceneController implements SceneController {
       // Ownership banner (towns, mines) or the key colour of key tents and gates.
       const bk = v.ownerColor ? `${v.ownerColor}|${v.ownerShape}` : v.tint ? `tint|${v.tint}` : '';
       if (bk !== e.bannerKey) {
-        e.banner?.destroy();
+        e.banner?.destroy({children:true});
         e.banner = v.ownerColor ? this.banner(v.ownerColor, v.ownerShape, h * 0.9) : v.tint ? this.banner(v.tint, 'pennant', h * 0.8) : null;
         if (e.banner) {
           e.banner.position.set(-HEX_W * 0.36, 0);
@@ -1740,7 +1826,7 @@ export class AdventureSceneController implements SceneController {
         if (v.guard) {
           // A figure-only location (sea monster): its creature stands alone in the middle of the hex, larger.
           const alone = FIGURE_SITE_ARCHETYPES.includes(v.archetype);
-          const f = new SpriteFigure({ set: creatureSprites(v.guard), hexWidth: HEX_W, size: alone ? 0.86 : 0.62, accent: 0x7a2f2a });
+          const f = new SpriteFigure({ set: creatureSprites(v.guard), phaseKey: v.id, context: 'guard', hexWidth: HEX_W, size: (alone ? 0.86 : 0.62) * .85, accent: 0x7a2f2a });
           f.view.position.set(alone ? 0 : HEX_W * 0.34, alone ? -R * S * 0.06 : R * S * 0.1);
           f.mirror = facesLeft('guard', v.id);
           e.root.addChild(f.view);
@@ -1824,16 +1910,16 @@ export class AdventureSceneController implements SceneController {
         const root = new Container();
         const monster = !!v.monster;
         const figure = monster
-          ? new SpriteFigure({ set: creatureSprites(v.monster!), hexWidth: HEX_W, size: 0.8, accent: colorOf(v.color) })
-          : new SpriteFigure({ set: heroSprites(pantheonId), hexWidth: HEX_W, accent: colorOf(v.color) });
+          ? new SpriteFigure({ set: creatureSprites(v.monster!), phaseKey: v.id, context: 'map', hexWidth: HEX_W, size: 0.8 * .85, accent: colorOf(v.color) })
+          : new SpriteFigure({ set: heroSprites(pantheonId), phaseKey: v.id, context: 'map', hexWidth: HEX_W, size: .85, accent: colorOf(v.color) });
         let marks: Container | null = null;
         if (graphicsProfile().shadows) root.addChild(groundShadow(HEX_W * 0.34, HEX_W * 0.12));
         if (!monster) {
           // Faction ownership stays visible on the avatar: a base disc and the owner's banner behind the rider.
           marks = new Container();
           marks.addChild(new Graphics().ellipse(0, 0, HEX_W * 0.36, HEX_W * 0.36 * S * 0.5).fill({ color: colorOf(v.color), alpha: 0.5 }).stroke({ width: 1.5, color: colorOf(v.color), alpha: 0.9 }));
-          const flag = this.banner(v.color, 'square', R * 1.75);
-          flag.position.set(-HEX_W * 0.3, -2);
+          const flag = this.banner(v.color, 'square', R * 1.45);
+          flag.position.set(-HEX_W * 0.26, -2);
           marks.addChild(flag);
           root.addChild(marks);
         }
@@ -1937,13 +2023,10 @@ export class AdventureSceneController implements SceneController {
     const color = colorOf(e.color);
     e.marks.addChild(new Graphics().ellipse(0, 0, HEX_W * 0.4, HEX_W * 0.4 * S * 0.5).fill({ color, alpha: 0.42 }).stroke({ width: 1.5, color, alpha: 0.9 }));
     const west = e.heading === 'w' || e.heading === 'nw' || e.heading === 'sw';
-    const flag = new Graphics();
+    const flag = paintedMapFlag(e.color,'pennant',R*1.25);
     const x0 = (west ? 1 : -1) * HEX_W * 0.4;
-    const top = -R * 1.25;
-    flag.moveTo(x0, 0).lineTo(x0, top).stroke({ width: 2, color: 0x3b2a1a, alpha: 0.95 });
     // The pennant streams away from the direction of travel.
-    const dir = west ? 1 : -1;
-    flag.poly([x0, top, x0 + dir * R * 0.62, top + R * 0.16, x0, top + R * 0.34]).fill({ color, alpha: 0.98 }).stroke({ width: 1, color: 0x1a1208, alpha: 0.8 });
+    flag.x=x0;flag.scale.x=west?1:-1;
     e.marks.addChild(flag);
   }
 
@@ -2107,8 +2190,8 @@ export class AdventureSceneController implements SceneController {
   // ------------------------------------------------------------------ hero ships (navalMovementV1)
 
   /** Playback of a committed `ShipMoved` (never changes state): the hull sails the committed sea route. */
-  playShipMove(shipId: string, path: readonly HexCoord[], speed: number, follow: boolean, visibleAt?: (coord: HexCoord) => boolean): Promise<void> {
-    return this.shipLayer.playMove(shipId, path, speed, follow, visibleAt);
+  playShipMove(shipId: string, path: readonly HexCoord[], speed: number, follow: boolean, visibleAt?: (coord: HexCoord) => boolean, onStep?: (coord: HexCoord) => void): Promise<void> {
+    return this.shipLayer.playMove(shipId, path, speed, follow, visibleAt, onStep);
   }
 
   /** A boarding battle's loser withdrew (`ShipWithdrawn`): its hull sails to the new hex. */
@@ -2198,7 +2281,7 @@ export class AdventureSceneController implements SceneController {
    * avatar walks hex to hex facing its direction (walk strip, or a light step bob
    * while only a still exists) and returns to idle when it stops.
    */
-  async playHeroMove(heroId: string, path: readonly HexCoord[], speed: number, follow: boolean, teleportTo?: HexCoord, trail = false, visibleAt?: (coord: HexCoord) => boolean): Promise<void> {
+  async playHeroMove(heroId: string, path: readonly HexCoord[], speed: number, follow: boolean, teleportTo?: HexCoord, trail = false, visibleAt?: (coord: HexCoord) => boolean, onStep?: (coord: HexCoord) => void): Promise<void> {
     const e = this.heroes.get(heroId);
     if (!e || path.length === 0) {
       this.releaseArrival(heroId);
@@ -2214,7 +2297,16 @@ export class AdventureSceneController implements SceneController {
     try {
       let from = start;
       this.placeHero(e, from);
+      onStep?.(from);
+      const startVisible = !visibleAt || visibleAt(start);
+      e.root.visible = startVisible && !e.embarked;
+      if (follow && speed > 0 && startVisible) {
+        this.followingHero = heroId;
+        this.camGoal = { x: e.root.x, y: e.root.y };
+      }
       if (speed > 0) this.setClip(e, 'walk');
+      e.figure.beginTravel();
+      let travelled = 0;
       const bob = e.figure.resolve(e.monster ? 'move' : 'walk')?.fallback !== false;
       // The route stays on the ground ahead of the hero and is cleared tile by tile as it walks.
       if (trail && speed > 0) this.drawTrail(path);
@@ -2232,14 +2324,21 @@ export class AdventureSceneController implements SceneController {
           STEP_MS,
           (t) => {
             if (visibleAt) e.root.visible = visibleAt(t < 0.5 ? from : step) && !e.embarked;
-            e.root.position.set(base.x + dx * t, base.y + dy * t);
+            const progress = segmentProgress(t, n, path.length);
+            e.root.position.set(base.x + dx * progress, base.y + dy * progress);
+            e.figure.travelTo(travelled + Math.hypot(dx,dy)*progress);
             e.root.zIndex = e.root.y + 1;
-            if (bob) e.figure.pose.y = -Math.abs(Math.sin(t * Math.PI)) * R * 0.1;
-            if (follow && e.root.visible) this.camGoal = { x: e.root.x, y: e.root.y };
+            if (bob) e.figure.pose.y = -Math.abs(Math.sin(t * Math.PI)) * R * 0.025;
+            if (follow && e.root.visible) {
+              this.followingHero = heroId;
+              this.camGoal = { x: e.root.x, y: e.root.y };
+            }
           },
           linear,
         );
+        travelled += Math.hypot(dx,dy);
         from = step;
+        onStep?.(step);
         // The piece of route just walked disappears.
         if (trail && speed > 0) {
           const piece = this.trailLayer.children[n];
@@ -2249,6 +2348,8 @@ export class AdventureSceneController implements SceneController {
       e.figure.pose.y = 0;
       if (teleportTo) await this.playTeleport(e, teleportTo, speed, follow);
     } finally {
+      if (this.followingHero === heroId) this.followingHero = null;
+      e.figure.endTravel();
       if (trail) for (const c of this.trailLayer.removeChildren()) c.destroy({ children: true });
       e.locked -= 1;
       if (e.locked === 0) {
@@ -2510,6 +2611,10 @@ export class AdventureSceneController implements SceneController {
     for (const [id, e] of this.heroes) {
       const cur = e.figure.current;
       out[id] = {
+        x: e.root.x,
+        y: e.root.y,
+        height: e.figure.height,
+        cameraFollowing: this.followingHero === id,
         sprite: e.figure.status,
         status: e.figure.set?.status ?? null,
         clip: e.clip,
@@ -2581,6 +2686,9 @@ export class AdventureSceneController implements SceneController {
   }
 
   focus(c: HexCoord, animate = true): void {
+    // Committed state already contains the destination during playback.
+    // Keep the camera on the visible traveller until that playback finishes.
+    if (this.followingHero) return;
     const p = this.hexCenter(c);
     if (animate) this.camGoal = { x: p.x, y: p.y };
     else {
@@ -2720,8 +2828,10 @@ export class AdventureSceneController implements SceneController {
     this.time += dt;
     this.tweens.tick(dt);
     for (const tw of this.extraTweens) tw.tick(dt);
+    const traveller = this.followingHero ? this.heroes.get(this.followingHero) : undefined;
+    if (traveller?.root.visible) this.camGoal = { x: traveller.root.x, y: traveller.root.y };
     if (this.camGoal) {
-      const k = Math.min(1, dt / 160);
+      const k = 1 - Math.exp(-Math.min(dt, 100) / 220);
       this.cam.x += (this.camGoal.x - this.cam.x) * k;
       this.cam.y += (this.camGoal.y - this.cam.y) * k;
       if (Math.hypot(this.camGoal.x - this.cam.x, this.camGoal.y - this.cam.y) < 0.5) this.camGoal = null;
@@ -2729,6 +2839,24 @@ export class AdventureSceneController implements SceneController {
       this.applyCamera();
     }
     const motion = graphicsProfile().ambientMotion;
+    const alive = motion && !this.calm;
+    const inView = (x: number, y: number) => {
+      const sx = x * this.cam.zoom + this.world.x, sy = y * this.cam.zoom + this.world.y;
+      return sx > -100 && sy > -100 && sx < this.view.width + 100 && sy < this.view.height + 100;
+    };
+    this.coastLife.tick(dt, alive, inView);
+    let ambientBudget = 240;
+    for (const e of this.sites.values()) if (e.ambient) {
+      const visible = ambientVisible(e.root.visible,e.sprite.visible,this.liveVisible.has(e.tile!),inView(e.root.x,e.root.y),alive && !!e.ambientEnabled);
+      const cost = e.ambient.particleCount;
+      const active = visible && ambientBudget >= cost;
+      if(active) ambientBudget -= cost;
+      e.ambient.tick(dt,active);
+    }
+    for (const e of this.sites.values()) if (e.life) {
+      e.life.root.visible = e.root.visible && e.sprite.visible && this.liveVisible.has(e.tile!);
+      if (e.life.root.visible && inView(e.root.x, e.root.y)) e.life.tick(dt, alive);
+    }
     for (const e of this.heroes.values()) {
       if (e.snapIn > 0 && e.locked === 0) {
         e.snapIn -= 1;
@@ -2738,7 +2866,7 @@ export class AdventureSceneController implements SceneController {
           for (const [id, h] of this.heroes) if (h === e) this.releaseArrival(id);
         }
       }
-      if (motion || e.clip === 'walk') e.figure.tick(dt, e.clip === 'walk' ? WALK_RATE : 1);
+      if (e.root.visible && inView(e.root.x,e.root.y)) e.figure.tick(dt, e.clip === 'walk' ? WALK_RATE : alive ? 1 : 0, alive);
       if (e.aura) {
         const frames = stripFrames(e.aura.def);
         // Loops with the scene time; a still first frame without ambient motion (Low, reduced motion).
@@ -2753,7 +2881,7 @@ export class AdventureSceneController implements SceneController {
     }
     this.shipLayer.tick(dt);
     this.seaSiteLayer.tick(dt);
-    if (motion) for (const s of this.sites.values()) s.guard?.tick(dt);
+    for (const s of this.sites.values()) if (s.root.visible && inView(s.root.x,s.root.y)) s.guard?.tick(dt, alive ? 1 : 0, alive);
     const sel = this.selectedHero ? this.heroes.get(this.selectedHero) : undefined;
     const ring = this.selectRing;
     if (sel && sel.root.visible) {
@@ -2776,6 +2904,13 @@ export class AdventureSceneController implements SceneController {
       }
     }
     this.syncGroundCache();
+    // Leave fog visibility and logical movement alone: only skip off-camera drawing.
+    const z = this.cam.zoom, padding = 24 / z;
+    cullMapObjects(this.objects.children, {
+      left: -this.world.x / z - padding, top: -this.world.y / z - padding,
+      right: (this.view.width - this.world.x) / z + padding,
+      bottom: (this.view.height - this.world.y) / z + padding,
+    });
   }
 
   /** Bring the ground chunks up to date for this frame's camera: the chunks when they cover the view, else the live ground. */
@@ -2822,6 +2957,8 @@ export class AdventureSceneController implements SceneController {
     this.shipLayer.dispose();
     this.seaSiteLayer.dispose();
     this.groundCache.destroy();
+    for(const tex of this.terrainTextures.values())if(tex.source.label?.startsWith('ground-mosaic:'))tex.destroy(true);
+    this.terrainTextures.clear();
     this.heroes.clear();
     this.caravans.clear();
     this.sites.clear();

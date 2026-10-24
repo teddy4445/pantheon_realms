@@ -17,6 +17,7 @@ import { FX_PALETTE, type FxLook, type FxSchool, type FxScreen, type StatusOverl
 import { TweenPlayer, easeInOut, easeOut, linear } from './tween';
 import { graphicsProfile } from './graphics';
 import { spriteManifest, type EffectDefinition } from './sprites';
+import { paintedMagicRecipe, preloadPaintedMagic, playPaintedMagicCast, playPaintedMagic } from './paintedMagic';
 import { libraryFxRecipe } from './libraryFx';
 import { loadTexture, loadStrip, stripFrames } from './textures';
 
@@ -206,6 +207,17 @@ export class FxPainter {
     return graphicsProfile().effects === 'simple';
   }
 
+  /** Finish decoding authored poses before starting the hit-reaction clock. */
+  async ready(look: FxLook): Promise<void> {
+    const recipe = paintedMagicRecipe(look.magicArt);
+    if (recipe && this.tweens.speed !== 0) await loadStrip(recipe.strip).catch(() => null);
+  }
+
+  impactContactMs(look: FxLook, fallback: number): number {
+    const recipe = paintedMagicRecipe(look.magicArt);
+    return recipe ? this.simple ? 100 : Math.round(recipe.durationMs * .36) : fallback;
+  }
+
   /** Independent painted material cells: crop once, then animate position/scale/opacity. */
   async material(id: string, at: Pt, scale = 1): Promise<void> { await this.painted(id, at, scale); }
 
@@ -239,6 +251,7 @@ export class FxPainter {
    * later phase does not wait for its texture between two others. Never waits; Low quality loads nothing.
    */
   preload(id: string, phases: readonly string[] = ['cast', 'travel', 'impact', 'screen', 'area', 'depart', 'arrive']): void {
+    preloadPaintedMagic(id);
     for (const p of phases) {
       const def = this.stripOf(`${id}.${p}`);
       if (def) void loadStrip(def).catch(() => null);
@@ -328,6 +341,8 @@ export class FxPainter {
 
   /** On the caster (the commander's banner corner, or the hero): a sigil opens and motes rise. */
   async cast(look: FxLook, at: Pt, id?: string): Promise<void> {
+    const recipe = paintedMagicRecipe(look.magicArt);
+    if (recipe) return playPaintedMagicCast(recipe, at, this.layer, this.tweens, this.u);
     if (await this.painted(id, at, .65)) return;
     const def = this.stripOf(id);
     if (def) return this.strip(def, at);
@@ -549,10 +564,12 @@ export class FxPainter {
 
   /** Where the spell lands, on one stack, hero or town (`at`: its feet). */
   async impact(look: FxLook, at: FxTarget, id?: string): Promise<void> {
+    const recipe = paintedMagicRecipe(look.magicArt);
+    if (recipe) return playPaintedMagic(recipe, at, this.layer, this.tweens, this.u);
     if (await this.painted(id, at, at.width)) return;
     // A strip made for this spell or miracle first; else the delivered final strip of its kind
     // (genericImpactOf: the shared battle effects); else the code-drawn impact.
-    const def = this.stripOf(id) ?? this.finalStripOf(genericImpactOf(look) ?? undefined);
+    const def = id === 'procedural.expansion' ? undefined : this.stripOf(id) ?? this.finalStripOf(genericImpactOf(look) ?? undefined);
     if (def) return this.strip(def, at, at.width, this.layer, at.facing === -1);
     const [core, glow, spark] = FX_PALETTE[look.school];
     const chest = { x: at.x, y: at.y - at.height * 0.5 };

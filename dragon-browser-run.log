@@ -1,0 +1,49 @@
+
+Running 2 tests using 1 worker
+
+(node:28032) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28032) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\neutralDragons.spec.ts:14:1 › all six dragons have encyclopedia pages, final sprites, thirteen animations, lore and hiring information (46.4s)
+(node:6868) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6868) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 2 tests\e2e\neutralDragons.spec.ts:61:1 › Monsoon Ward selects two allies, commits once and plays the painted effect without missing assets (2.0m)
+
+
+  1) tests\e2e\neutralDragons.spec.ts:14:1 › all six dragons have encyclopedia pages, final sprites, thirteen animations, lore and hiring information 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: getByTestId('unit-forms-note')
+    Expected substring: [32m"1300 Gold"[39m
+    Received string:    [31m"Forms Both forms are hired at the same hiring sites from one shared weekly stock; Rain Dragons already in an army train there into Celestial Rain Dragons for 1,300 Gold, 1 Crystal each."[39m
+    Timeout: 15000ms
+
+    Call log:
+    [2m  - Expect "toContainText" with timeout 15000ms[22m
+    [2m  - waiting for getByTestId('unit-forms-note')[22m
+    [2m    17 × locator resolved to <p class="ncx-unit__row" data-testid="unit-forms-note">…</p>[22m
+    [2m       - unexpected value "Forms Both forms are hired at the same hiring sites from one shared weekly stock; Rain Dragons already in an army train there into Celestial Rain Dragons for 1,300 Gold, 1 Crystal each."[22m
+
+
+      27 |       await expect(page.getByTestId('unit-name')).toHaveText(catalog.creatures[id]!.name);
+      28 |       await expect(page.getByTestId('unit-hiring')).toContainText('guarded dragon lairs');
+    > 29 |       await expect(page.getByTestId('unit-forms-note')).toContainText('1300 Gold');
+         |                                                         ^
+      30 |       await expect(page.getByTestId('viewer-sprite-status')).toHaveAttribute('data-status','final');
+      31 |       for(const anim of ['idle','move','attack','hit','defend','victory','shoot','cast','takeoff','fly','landing','ability','death']){
+      32 |         await expect(page.getByTestId('anim-'+anim)).toHaveAttribute('data-own','yes');
+        at C:\Users\Teddy Lazebnik\Desktop\pantheon_realms\tests\e2e\neutralDragons.spec.ts:29:57
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\neutralDragons-all-six-dra-0bd17-lore-and-hiring-information\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\neutralDragons-all-six-dra-0bd17-lore-and-hiring-information\error-context.md
+
+  1 failed
+    tests\e2e\neutralDragons.spec.ts:14:1 › all six dragons have encyclopedia pages, final sprites, thirteen animations, lore and hiring information 
+  1 passed (5.0m)

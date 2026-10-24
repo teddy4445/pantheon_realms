@@ -1,0 +1,213 @@
+{
+  "generator": "built-in ImageGen",
+  "jobs": [
+    {
+      "id": "forest",
+      "subjects": [
+        "silver birch grove with pale trunks",
+        "broad willow with hanging leaves",
+        "golden ginkgo tree",
+        "dark cypress pair",
+        "twisted olive tree",
+        "tall redwood with fern roots",
+        "snow-dusted spruce pair",
+        "dense bamboo cluster"
+      ],
+      "type": "scenery-sheet",
+      "prompt": "Use case: stylized-concept. Create a production sprite sheet containing EXACTLY EIGHT different isolated adventure-map scenery sprites in a mathematically regular FOUR COLUMN by TWO ROW grid. Canvas 1536x1024; each cell 384x512. Transparent RGBA background including gutters; no backdrop, no labels, no grid lines, no words, no shadows outside each small object's footprint. Each sprite entirely within its own cell with at least 36px transparent gutter on EVERY side; none overlap adjacent cells. All viewed from the same elevated isometric angle, grounded feet near the lower quarter of each cell; keep each asset large, crisp and complete. Painterly late-1990s fantasy strategy adventure-map artwork, richly textured hand-painted stone, leaves and wood, warm natural overhead-left lighting, restrained earthy color, readable at very small size, elegant realistic miniature not cartoon, not glossy 3D. Match the supplied game art references. Row 1 left to right: silver birch grove with pale trunks; broad willow with hanging leaves; golden ginkgo tree; dark cypress pair. Row 2 left to right: twisted olive tree; tall redwood with fern roots; snow-dusted spruce pair; dense bamboo cluster. Eight distinct silhouettes and irregular organic ground edges; do not add extra objects elsewhere. Shore pieces have isolated mud/stone bases, NO surrounding rectangular water tiles. This is an actual transparent sprite atlas, not a screenshot or presentation board.",
+      "refs": [
+        "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-runtime/world-expansion-v1/tree-oak.webp",
+        "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-runtime/world-expansion-v1/mountain-alpine.webp"
+      ],
+      "transparent": true
+    },
+    {
+      "id": "mountains",
+      "subjects": [
+        "jagged slate ridge with sparse grass",
+        "rounded granite dome with moss",
+        "snow capped twin spires",
+        "brown broken karst needles",
+        "layered red sandstone mesa",
+        "volcanic crater cone without lava",
+        "pale limestone arch crag",
+        "steep sea cliff stack with grass cap"
+      ],
+      "type": "scenery-sheet",
+      "prompt": "Use case: stylized-concept. Create a production sprite sheet containing EXACTLY EIGHT different isolated adventure-map scenery sprites in a mathematically regular FOUR COLUMN by TWO ROW grid. Canvas 1536x1024; each cell 384x512. Transparent RGBA background including gutters; no backdrop, no labels, no grid lines, no words, no shadows outside each small object's footprint. Each sprite entirely within its own cell with at least 36px transparent gutter on EVERY side; none overlap adjacent cells. All viewed from the same elevated isometric angle, grounded feet near the lower quarter of each cell; keep each asset large, crisp and complete. Painterly late-1990s fantasy strategy adventure-map artwork, richly textured hand-painted stone, leaves and wood, warm natural overhead-left lighting, restrained earthy color, readable at very small size, elegant realistic miniature not cartoon, not glossy 3D. Match the supplied game art references. Row 1 left to right: jagged slate ridge with sparse grass; rounded granite dome with moss; snow capped twin spires; brown broken karst needles. Row 2 left to right: layered red sandstone mesa; volcanic crater cone without lava; pale limestone arch crag; steep sea cliff stack with grass cap. Eight distinct silhouettes and irregular organic ground edges; do not add extra objects elsewhere. Shore pieces have isolated mud/stone bases, NO surrounding rectangular water tiles. This is an actual transparent sprite atlas, not a screenshot or presentation board.",
+      "refs": [
+        "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-runtime/world-expansion-v1/tree-oak.webp",
+        "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-runtime/world-expansion-v1/mountain-alpine.webp"
+      ],
+      "transparent": true
+    },
+    {
+      "id": "drylands",
+      "subjects": [
+        "weathered desert acacia",
+        "date palm grove with low reeds",
+        "giant prickly pear cactus clump",
+        "ochre sandstone boulders",
+        "white salt-encrusted stones",
+        "twisted sunbleached dead tree",
+        "dry thorn bushes with amber grass",
+        "small dry stone natural arch"
+      ],
+      "type": "scenery-sheet",
+      "prompt": "Use case: stylized-concept. Create a production sprite sheet containing EXACTLY EIGHT different isolated adventure-map scenery sprites in a mathematically regular FOUR COLUMN by TWO ROW grid. Canvas 1536x1024; each cell 384x512. Transparent RGBA background including gutters; no backdrop, no labels, no grid lines, no words, no shadows outside each small object's footprint. Each sprite entirely within its own cell with at least 36px transparent gutter on EVERY side; none overlap adjacent cells. All viewed from the same elevated isometric angle, grounded feet near the lower quarter of each cell; keep each asset large, crisp and complete. Painterly late-1990s fantasy strategy adventure-map artwork, richly textured hand-painted stone, leaves and wood, warm natural overhead-left lighting, restrained earthy color, readable at very small size, elegant realistic miniature not cartoon, not glossy 3D. Match the supplied game art references. Row 1 left to right: weathered desert acacia; date palm grove with low reeds; giant prickly pear cactus clump; ochre sandstone boulders. Row 2 left to right: white salt-encrusted stones; twisted sunbleached dead tree; dry thorn bushes with amber grass; small dry stone natural arch. Eight distinct silhouettes and irregular organic ground edges; do not add extra objects elsewhere. Shore pieces have isolated mud/stone bases, NO surrounding rectangular water tiles. This is an actual transparent sprite atlas, not a screenshot or presentation board.",
+      "refs": [
+        "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-runtime/world-expansion-v1/tree-oak.webp",
+        "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-runtime/world-expansion-v1/mountain-alpine.webp"
+      ],
+      "transparent": true
+    },
+    {
+      "id": "freshwater",
+      "subjects": [
+        "cattails and reeds on a low muddy bank",
+        "drooping willow sapling with exposed waterside roots",
+        "rounded river stones with moss",
+        "fallen log with reeds and ferns",
+        "small lily pad cluster with two pale flowers and no painted water",
+        "tangled alder roots on a low bank",
+        "blue iris and tall waterside grasses",
+        "small reed-covered pebbly islet"
+      ],
+      "type": "scenery-sheet",
+      "prompt": "Use case: stylized-concept. Create a production sprite sheet containing EXACTLY EIGHT different isolated adventure-map scenery sprites in a mathematically regular FOUR COLUMN by TWO ROW grid. Canvas 1536x1024; each cell 384x512. Transparent RGBA background including gutters; no backdrop, no labels, no grid lines, no words, no shadows outside each small object's footprint. Each sprite entirely within its own cell with at least 36px transparent gutter on EVERY side; none overlap adjacent cells. All viewed from the same elevated isometric angle, grounded feet near the lower quarter of each cell; keep each asset large, crisp and complete. Painterly late-1990s fantasy strategy adventure-map artwork, richly textured hand-painted stone, leaves and wood, warm natural overhead-left lighting, restrained earthy color, readable at very small size, elegant realistic miniature not cartoon, not glossy 3D. Match the supplied game art references. Row 1 left to right: cattails and reeds on a low muddy bank; drooping willow sapling with exposed waterside roots; rounded river stones with moss; fallen log with reeds and ferns. Row 2 left to right: small lily pad cluster with two pale flowers and no painted water; tangled alder roots on a low bank; blue iris and tall waterside grasses; small reed-covered pebbly islet. Eight distinct silhouettes and irregular organic ground edges; do not add extra objects elsewhere. Shore pieces have isolated mud/stone bases, NO surrounding rectangular water tiles. This is an actual transparent sprite atlas, not a screenshot or presentation board.",
+      "refs": [
+        "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-runtime/world-expansion-v1/tree-oak.webp",
+        "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-runtime/world-expansion-v1/mountain-alpine.webp"
+      ],
+      "transparent": true
+    },
+    {
+      "id": "coast",
+      "subjects": [
+        "driftwood tangled with dune grass",
+        "sea-worn dark boulder cluster",
+        "salt marsh grasses with white flowering thrift",
+        "pale seashell and pebble bank",
+        "broken weathered wooden jetty on short pilings",
+        "small coastal mangrove tree with stilt roots",
+        "dune hummock with sea oats",
+        "coral limestone outcrop with sparse coastal grass"
+      ],
+      "type": "scenery-sheet",
+      "prompt": "Use case: stylized-concept. Create a production sprite sheet containing EXACTLY EIGHT different isolated adventure-map scenery sprites in a mathematically regular FOUR COLUMN by TWO ROW grid. Canvas 1536x1024; each cell 384x512. Transparent RGBA background including gutters; no backdrop, no labels, no grid lines, no words, no shadows outside each small object's footprint. Each sprite entirely within its own cell with at least 36px transparent gutter on EVERY side; none overlap adjacent cells. All viewed from the same elevated isometric angle, grounded feet near the lower quarter of each cell; keep each asset large, crisp and complete. Painterly late-1990s fantasy strategy adventure-map artwork, richly textured hand-painted stone, leaves and wood, warm natural overhead-left lighting, restrained earthy color, readable at very small size, elegant realistic miniature not cartoon, not glossy 3D. Match the supplied game art references. Row 1 left to right: driftwood tangled with dune grass; sea-worn dark boulder cluster; salt marsh grasses with white flowering thrift; pale seashell and pebble bank. Row 2 left to right: broken weathered wooden jetty on short pilings; small coastal mangrove tree with stilt roots; dune hummock with sea oats; coral limestone outcrop with sparse coastal grass. Eight distinct silhouettes and irregular organic ground edges; do not add extra objects elsewhere. Shore pieces have isolated mud/stone bases, NO surrounding rectangular water tiles. This is an actual transparent sprite atlas, not a screenshot or presentation board.",
+      "refs": [
+        "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-runtime/world-expansion-v1/tree-oak.webp",
+        "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-runtime/world-expansion-v1/mountain-alpine.webp"
+      ],
+      "transparent": true
+    },
+    {
+      "id": "details",
+      "subjects": [
+        "fern dell around a mossy stump",
+        "cluster of small red and cream mushrooms beside fallen branch",
+        "heather and purple wildflowers",
+        "rounded mossy cairn with tiny ferns",
+        "golden bracken patch with autumn leaves",
+        "low juniper thicket with blue berries",
+        "lichen-coated stone slab with creeping roots",
+        "small stony spring basin with a trickle and ferns, no large water body"
+      ],
+      "type": "scenery-sheet",
+      "prompt": "Use case: stylized-concept. Create a production sprite sheet containing EXACTLY EIGHT different isolated adventure-map scenery sprites in a mathematically regular FOUR COLUMN by TWO ROW grid. Canvas 1536x1024; each cell 384x512. Transparent RGBA background including gutters; no backdrop, no labels, no grid lines, no words, no shadows outside each small object's footprint. Each sprite entirely within its own cell with at least 36px transparent gutter on EVERY side; none overlap adjacent cells. All viewed from the same elevated isometric angle, grounded feet near the lower quarter of each cell; keep each asset large, crisp and complete. Painterly late-1990s fantasy strategy adventure-map artwork, richly textured hand-painted stone, leaves and wood, warm natural overhead-left lighting, restrained earthy color, readable at very small size, elegant realistic miniature not cartoon, not glossy 3D. Match the supplied game art references. Row 1 left to right: fern dell around a mossy stump; cluster of small red and cream mushrooms beside fallen branch; heather and purple wildflowers; rounded mossy cairn with tiny ferns. Row 2 left to right: golden bracken patch with autumn leaves; low juniper thicket with blue berries; lichen-coated stone slab with creeping roots; small stony spring basin with a trickle and ferns, no large water body. Eight distinct silhouettes and irregular organic ground edges; do not add extra objects elsewhere. Shore pieces have isolated mud/stone bases, NO surrounding rectangular water tiles. This is an actual transparent sprite atlas, not a screenshot or presentation board.",
+      "refs": [
+        "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-runtime/world-expansion-v1/tree-oak.webp",
+        "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/assets-runtime/world-expansion-v1/mountain-alpine.webp"
+      ],
+      "transparent": true
+    },
+    {
+      "id": "banner-greek",
+      "type": "banner",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. A beautiful charming decorative panorama banner for a greek temple encounter box in a classic painterly fantasy strategy game. Wide 3:1 horizontal composition, 1536x512. sunlit olive grove, blue Aegean inlet, graceful white marble columns at the far sides, laurel leaves and a tiny owl ornament, ivory and lapis accents. Painterly late-1990s fantasy strategy adventure-map artwork, richly textured hand-painted stone, leaves and wood, warm natural overhead-left lighting, restrained earthy color, readable at very small size, elegant realistic miniature not cartoon, not glossy 3D. Match the supplied game art references. Visually delightful intimate miniature landscape, no characters. Keep the central foreground simple and darker green/sand so a separate temple sprite can be layered on it. Detail concentrated at far left and right, soft landscape depth in the middle. All important ornament within the central horizontal band so this works as a shallow header. Entire rectangle painted edge to edge. No text, letters, logo, interface, border, frame or cards.",
+      "refs": [
+        "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/restoration-temples-v1/in-game/greek-offering.png"
+      ]
+    },
+    {
+      "id": "banner-norse",
+      "type": "banner",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. A beautiful charming decorative panorama banner for a norse temple encounter box in a classic painterly fantasy strategy game. Wide 3:1 horizontal composition, 1536x512. fjord and misty pine valley, carved wooden dragon-posts at the far sides, rune stones, tiny ravens, muted blue and bronze accents. Painterly late-1990s fantasy strategy adventure-map artwork, richly textured hand-painted stone, leaves and wood, warm natural overhead-left lighting, restrained earthy color, readable at very small size, elegant realistic miniature not cartoon, not glossy 3D. Match the supplied game art references. Visually delightful intimate miniature landscape, no characters. Keep the central foreground simple and darker green/sand so a separate temple sprite can be layered on it. Detail concentrated at far left and right, soft landscape depth in the middle. All important ornament within the central horizontal band so this works as a shallow header. Entire rectangle painted edge to edge. No text, letters, logo, interface, border, frame or cards.",
+      "refs": [
+        "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/restoration-temples-v1/in-game/greek-offering.png"
+      ]
+    },
+    {
+      "id": "banner-egyptian",
+      "type": "banner",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. A beautiful charming decorative panorama banner for a egyptian temple encounter box in a classic painterly fantasy strategy game. Wide 3:1 horizontal composition, 1536x512. lush Nile lotus garden, sandstone pylons far at the sides, reeds and palms, small gold scarab ornament, turquoise and warm sand accents. Painterly late-1990s fantasy strategy adventure-map artwork, richly textured hand-painted stone, leaves and wood, warm natural overhead-left lighting, restrained earthy color, readable at very small size, elegant realistic miniature not cartoon, not glossy 3D. Match the supplied game art references. Visually delightful intimate miniature landscape, no characters. Keep the central foreground simple and darker green/sand so a separate temple sprite can be layered on it. Detail concentrated at far left and right, soft landscape depth in the middle. All important ornament within the central horizontal band so this works as a shallow header. Entire rectangle painted edge to edge. No text, letters, logo, interface, border, frame or cards.",
+      "refs": [
+        "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/restoration-temples-v1/in-game/greek-offering.png"
+      ]
+    },
+    {
+      "id": "banner-japanese",
+      "type": "banner",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. A beautiful charming decorative panorama banner for a japanese temple encounter box in a classic painterly fantasy strategy game. Wide 3:1 horizontal composition, 1536x512. serene cherry blossom garden, distant misty mountains and red shrine gateway at a far side, tiny stone lanterns, pale pink and vermilion accents. Painterly late-1990s fantasy strategy adventure-map artwork, richly textured hand-painted stone, leaves and wood, warm natural overhead-left lighting, restrained earthy color, readable at very small size, elegant realistic miniature not cartoon, not glossy 3D. Match the supplied game art references. Visually delightful intimate miniature landscape, no characters. Keep the central foreground simple and darker green/sand so a separate temple sprite can be layered on it. Detail concentrated at far left and right, soft landscape depth in the middle. All important ornament within the central horizontal band so this works as a shallow header. Entire rectangle painted edge to edge. No text, letters, logo, interface, border, frame or cards.",
+      "refs": [
+        "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/restoration-temples-v1/in-game/greek-offering.png"
+      ]
+    },
+    {
+      "id": "banner-celtic",
+      "type": "banner",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. A beautiful charming decorative panorama banner for a celtic temple encounter box in a classic painterly fantasy strategy game. Wide 3:1 horizontal composition, 1536x512. enchanted oak grove and fern garden, distant green hills, knot-carved standing stones at the far sides, little mushrooms, deep emerald and bronze accents. Painterly late-1990s fantasy strategy adventure-map artwork, richly textured hand-painted stone, leaves and wood, warm natural overhead-left lighting, restrained earthy color, readable at very small size, elegant realistic miniature not cartoon, not glossy 3D. Match the supplied game art references. Visually delightful intimate miniature landscape, no characters. Keep the central foreground simple and darker green/sand so a separate temple sprite can be layered on it. Detail concentrated at far left and right, soft landscape depth in the middle. All important ornament within the central horizontal band so this works as a shallow header. Entire rectangle painted edge to edge. No text, letters, logo, interface, border, frame or cards.",
+      "refs": [
+        "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/restoration-temples-v1/in-game/greek-offering.png"
+      ]
+    },
+    {
+      "id": "banner-mesoamerican",
+      "type": "banner",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. A beautiful charming decorative panorama banner for a mesoamerican temple encounter box in a classic painterly fantasy strategy game. Wide 3:1 horizontal composition, 1536x512. lush tropical sanctuary garden, distant stepped temple partly hidden by trees, carved jade serpents at the far sides, tiny bright birds, jade and terracotta accents. Painterly late-1990s fantasy strategy adventure-map artwork, richly textured hand-painted stone, leaves and wood, warm natural overhead-left lighting, restrained earthy color, readable at very small size, elegant realistic miniature not cartoon, not glossy 3D. Match the supplied game art references. Visually delightful intimate miniature landscape, no characters. Keep the central foreground simple and darker green/sand so a separate temple sprite can be layered on it. Detail concentrated at far left and right, soft landscape depth in the middle. All important ornament within the central horizontal band so this works as a shallow header. Entire rectangle painted edge to edge. No text, letters, logo, interface, border, frame or cards.",
+      "refs": [
+        "C:/Users/Teddy Lazebnik/Desktop/pantheon_realms/docs/restoration-temples-v1/in-game/greek-offering.png"
+      ]
+    },
+    {
+      "id": "flags-standard",
+      "type": "flags",
+      "transparent": true,
+      "colors": [
+        "royal blue #3b73d9",
+        "crimson red #c0392b",
+        "emerald green #2e9e5b",
+        "golden amber #c98a1b",
+        "royal purple #8a4fc2",
+        "teal #1f9fa6",
+        "warm ivory #e8e2cf",
+        "charcoal black #383a3d"
+      ],
+      "prompt": "Use case: stylized-concept. Production sprite sheet, exactly EIGHT tiny ornate fantasy map ownership flags in a strict FOUR COLUMN by TWO ROW regular grid, 1536x1024 canvas. Each cell 384x512, every whole flag and full pole isolated on genuinely transparent RGBA with 40px clear margin per cell. Identical dimensions and upright pole positions in every cell. Each rectangular cloth standard with a gently scalloped bottom edge blows softly to the RIGHT. Gold stitched edging, a simple ivory diamond/star emblem, fabric folds and restrained highlights clearly visible at 32px final height. Slender carved warm wood pole with a bright brass spearhead finial and two small tie cords; pole ends at bottom of each sprite, no base or landscape. Hand-painted classic fantasy strategy UI asset matching Heroes of Might and Magic III map art, detailed material but exceptionally clear strong silhouette. Row 1 cloth colors left to right: royal blue #3b73d9; crimson red #c0392b; emerald green #2e9e5b; golden amber #c98a1b. Row 2: royal purple #8a4fc2; teal #1f9fa6; warm ivory #e8e2cf; charcoal black #383a3d. Exactly one complete flag per cell. No text, no gridlines, no color swatches or captions, no backdrop. Cloth should occupy the TOP HALF of each pole, leaving lower half visible. No cut-off poles.",
+      "refs": []
+    },
+    {
+      "id": "flags-pennant",
+      "type": "flags",
+      "transparent": true,
+      "colors": [
+        "royal blue #3b73d9",
+        "crimson red #c0392b",
+        "emerald green #2e9e5b",
+        "golden amber #c98a1b",
+        "royal purple #8a4fc2",
+        "teal #1f9fa6",
+        "warm ivory #e8e2cf",
+        "charcoal black #383a3d"
+      ],
+      "prompt": "Use case: stylized-concept. Production sprite sheet, exactly EIGHT tiny ornate fantasy map ownership flags in a strict FOUR COLUMN by TWO ROW regular grid, 1536x1024 canvas. Each cell 384x512, every whole flag and full pole isolated on genuinely transparent RGBA with 40px clear margin per cell. Identical dimensions and upright pole positions in every cell. Each long swallowtail cloth pennant with a clearly forked end blows softly to the RIGHT. Gold stitched edging, a simple ivory diamond/star emblem, fabric folds and restrained highlights clearly visible at 32px final height. Slender carved warm wood pole with a bright brass spearhead finial and two small tie cords; pole ends at bottom of each sprite, no base or landscape. Hand-painted classic fantasy strategy UI asset matching Heroes of Might and Magic III map art, detailed material but exceptionally clear strong silhouette. Row 1 cloth colors left to right: royal blue #3b73d9; crimson red #c0392b; emerald green #2e9e5b; golden amber #c98a1b. Row 2: royal purple #8a4fc2; teal #1f9fa6; warm ivory #e8e2cf; charcoal black #383a3d. Exactly one complete flag per cell. No text, no gridlines, no color swatches or captions, no backdrop. Cloth should occupy the TOP HALF of each pole, leaving lower half visible. No cut-off poles.",
+      "refs": []
+    }
+  ]
+}

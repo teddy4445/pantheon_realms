@@ -1,0 +1,169 @@
+{
+  "status": "passed",
+  "visited": [
+    {
+      "family": "yinglong",
+      "state": "idle"
+    },
+    {
+      "family": "yinglong",
+      "state": "move"
+    },
+    {
+      "family": "yinglong",
+      "state": "attack"
+    },
+    {
+      "family": "yinglong",
+      "state": "hit"
+    },
+    {
+      "family": "yinglong",
+      "state": "defend"
+    },
+    {
+      "family": "yinglong",
+      "state": "victory"
+    },
+    {
+      "family": "yinglong",
+      "state": "shoot"
+    },
+    {
+      "family": "yinglong",
+      "state": "cast"
+    },
+    {
+      "family": "yinglong",
+      "state": "takeoff"
+    },
+    {
+      "family": "yinglong",
+      "state": "fly"
+    },
+    {
+      "family": "yinglong",
+      "state": "landing"
+    },
+    {
+      "family": "yinglong",
+      "state": "ability"
+    },
+    {
+      "family": "yinglong",
+      "state": "death"
+    },
+    {
+      "family": "zilant",
+      "state": "idle"
+    },
+    {
+      "family": "zilant",
+      "state": "move"
+    },
+    {
+      "family": "zilant",
+      "state": "attack"
+    },
+    {
+      "family": "zilant",
+      "state": "hit"
+    },
+    {
+      "family": "zilant",
+      "state": "defend"
+    },
+    {
+      "family": "zilant",
+      "state": "victory"
+    },
+    {
+      "family": "zilant",
+      "state": "shoot"
+    },
+    {
+      "family": "zilant",
+      "state": "cast"
+    },
+    {
+      "family": "zilant",
+      "state": "takeoff"
+    },
+    {
+      "family": "zilant",
+      "state": "fly"
+    },
+    {
+      "family": "zilant",
+      "state": "landing"
+    },
+    {
+      "family": "zilant",
+      "state": "ability"
+    },
+    {
+      "family": "zilant",
+      "state": "death"
+    },
+    {
+      "family": "cuelebre",
+      "state": "idle"
+    },
+    {
+      "family": "cuelebre",
+      "state": "move"
+    },
+    {
+      "family": "cuelebre",
+      "state": "attack"
+    },
+    {
+      "family": "cuelebre",
+      "state": "hit"
+    },
+    {
+      "family": "cuelebre",
+      "state": "defend"
+    },
+    {
+      "family": "cuelebre",
+      "state": "victory"
+    },
+    {
+      "family": "cuelebre",
+      "state": "shoot"
+    },
+    {
+      "family": "cuelebre",
+      "state": "cast"
+    },
+    {
+      "family": "cuelebre",
+      "state": "takeoff"
+    },
+    {
+      "family": "cuelebre",
+      "state": "fly"
+    },
+    {
+      "family": "cuelebre",
+      "state": "landing"
+    },
+    {
+      "family": "cuelebre",
+      "state": "ability"
+    },
+    {
+      "family": "cuelebre",
+      "state": "death"
+    }
+  ],
+  "checks": [
+    "39 family/state selections",
+    "12 visible pose thumbnails per selection",
+    "no missing resources or script errors",
+    "tour advances through looping state",
+    "mobile has no page overflow"
+  ],
+  "errors": []
+}

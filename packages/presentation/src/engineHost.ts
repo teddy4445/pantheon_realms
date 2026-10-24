@@ -454,10 +454,11 @@ export class EngineHost {
   sceneCounts(): { objects: number; renderables: number } {
     let objects = 0;
     let renderables = 0;
-    const walk = (c: Container) => {
+    const walk = (c: Container, parentDraws = true) => {
       objects += 1;
-      if (c.visible && c.renderable && (c as unknown as { renderPipeId?: string }).renderPipeId) renderables += 1;
-      for (const ch of c.children) walk(ch);
+      const draws = parentDraws && c.visible && c.renderable;
+      if (draws && (c as unknown as { renderPipeId?: string }).renderPipeId) renderables += 1;
+      for (const ch of c.children) walk(ch, draws);
     };
     walk(this.stage);
     return { objects, renderables };

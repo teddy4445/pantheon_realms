@@ -83,6 +83,8 @@ export interface BattleLegalActions {
     abilityId: string;
     name: string;
     targets: BattleStackId[];
+    maxTargets?: number;
+    allTargets?: boolean;
     reason: string | null;
     /** Does not spend the activation (e.g. Shapeshift with free_shapeshift). */
     free?: boolean;
@@ -153,7 +155,7 @@ export function legalActions(catalog: ContentCatalog, state: MatchState): Battle
     abilities.push({ abilityId: 'family_ward', name: 'Ward', targets: reason ? [] : allies.map((a) => a.id), reason });
   }
   // The neutral creatures' active abilities (handoff 2026-10-15): once per battle per stack.
-  for (const o of neutralAbilityOptions(catalog, battle, stack)) abilities.push({ abilityId: o.abilityId, name: o.name, targets: o.targets, reason: o.reason });
+  for (const o of neutralAbilityOptions(catalog, battle, stack)) abilities.push({...o});
   const shiftId = shapeshiftAbilityId(catalog, stack.creatureId);
   const shift = shiftId ? shapeshiftRule(catalog, stack.creatureId) : null;
   if (shiftId && shift) {
@@ -480,15 +482,18 @@ export function shapeshiftAbilityId(catalog: ContentCatalog, creatureId: string)
   return null;
 }
 
-export function commitBattleAbility(tx: Tx, stackId: BattleStackId, abilityId: string, targetId: BattleStackId): void {
+export function commitBattleAbility(tx: Tx, stackId: BattleStackId, abilityId: string, targetId: BattleStackId, additionalTargetIds: readonly BattleStackId[] = []): void {
   const { battle, stack } = requireActive(tx, stackId);
   rejectEngineAsStack(battle, targetId, `${tx.catalog.abilities[abilityId]?.name ?? 'this ability'} works only on creatures`);
   const def = tx.catalog.abilities[abilityId];
   if (!def || !(tx.catalog.creatures[stack.creatureId]?.abilityIds ?? []).includes(abilityId)) reject('illegal_action', 'This creature has no such ability');
   if (stack.summoned?.kind === 'illusion') reject('illegal_action', 'Illusions cannot use abilities');
   if (def.spellcasting && stack.statuses.some((s) => s.kind === 'spell_lock')) reject('illegal_action', 'Creature spellcasting is sealed for this activation');
-  if (def.rule.type === 'shapeshift') return commitShapeshift(tx, battle, stack, def.rule, targetId);
-  if (commitNeutralAbility(tx, battle, stack, abilityId, targetId)) return finishActivation(tx, battle, stack, true);
+  if (def.rule.type === 'shapeshift') {
+    if(additionalTargetIds.length) reject('illegal_target','Shapeshift only targets itself');
+    return commitShapeshift(tx, battle, stack, def.rule, targetId);
+  }
+  if (commitNeutralAbility(tx, battle, stack, abilityId, targetId, additionalTargetIds)) return finishActivation(tx, battle, stack, true);
   if (def.rule.type !== 'family_ward') reject('illegal_action', 'That ability is not an action');
   const ward = findAbility(tx.catalog, stack.creatureId, 'family_ward');
   if (!ward) reject('illegal_action', 'This creature has no Ward');

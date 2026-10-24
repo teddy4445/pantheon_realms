@@ -599,7 +599,8 @@ function interventionChoice(catalog: ContentCatalog, state: MatchState, battle: 
     if (e.type === 'battle_smite') {
       for (const t of sideStacks(battle, opposing(stack.side))) {
         const hp = catalog.creatures[t.creatureId]!.stats!.hp;
-        const v = killValue(catalog, t, e.damage, Math.min(aliveCount(catalog, t), Math.floor(e.damage / hp)));
+        const damage = Math.max(e.damage, Math.floor(t.totalHp * (e.percent ?? 0) / 100));
+        const v = killValue(catalog, t, damage, Math.min(aliveCount(catalog, t), Math.floor(damage / hp)));
         if (v >= 600 && quoteIntervention(catalog, state, playerId, d.id, { stackId: t.id }).legal) options.push({ score: v, key: `miracle:${d.id}:${t.id}`, payload: { kind: 'BattleInvokeIntervention', interventionId: d.id, targetId: t.id } });
       }
     } else if (e.type === 'battle_status') {

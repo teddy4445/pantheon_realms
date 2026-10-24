@@ -1261,7 +1261,7 @@ export function TownScreen() {
     );
   }
   // The town's painting follows its town hall (Brief 17: four stages per pantheon; `townBackground`).
-  const bg = town.warDamaged && (town.buildings['civic_hall'] ?? 0) < 2 ? resolveAsset(`twin.town-${town.pantheonId}`) : townBackground(archetype.backgroundAssetId, town.buildings['civic_hall']);
+  const bg = town.warDamaged && (town.buildings['civic_hall'] ?? 0) < 2 ? resolveAsset(archetype.damagedBackgroundAssetId ?? `twin.town-${town.pantheonId}`) : townBackground(archetype.backgroundAssetId, town.buildings['civic_hall']);
   const mine = town.ownerId === player.id;
   const visiting = heroesInTown(catalog, state, town).filter((h) => h.ownerId === player.id);
   const slot = selected ? archetype.slots.find((s) => s.id === selected) : undefined;
@@ -1347,8 +1347,9 @@ export function TownScreen() {
       <div className="town-stage">
         <div
           className="town-scene"
-          style={bg.url ? { backgroundImage: `url(${bg.url})` } : undefined}
+          style={{ ...(bg.url ? { backgroundImage: `url(${bg.url})` } : {}), ...(archetype.sceneAspectRatio ? { aspectRatio: String(archetype.sceneAspectRatio) } : {}) }}
           data-testid="town-scene"
+          data-pantheon={town.pantheonId}
           onClick={(e) => {
             // A click on the painting itself (not a building or the pop-up) closes the pop-up.
             if (e.target === e.currentTarget) setSlot(null);
@@ -1377,7 +1378,7 @@ export function TownScreen() {
                 data-testid={`slot-${s.id}`}
               >
                 {art.built ? (
-                  <BuildingArt artAssetId={art.id} alt={activeBuildingInSlot(catalog, town, s.id)?.name ?? s.label} className="town-slot__art" />
+                  <BuildingArt artAssetId={art.id} alt={activeBuildingInSlot(catalog, town, s.id)?.name ?? s.label} className="town-slot__art" style={p.artAspectRatio ? { aspectRatio: String(p.artAspectRatio), objectFit: 'contain', objectPosition: 'center bottom' } : undefined} />
                 ) : (
                   <span className="town-slot__plot">
                     <span className="town-slot__plot-mark">{planned ? <Icon name="lock" /> : q?.legal ? <span className="plus">+</span> : <Icon name="hourglass" />}</span>

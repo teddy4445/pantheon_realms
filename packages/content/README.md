@@ -1,11 +1,36 @@
-# @pr/content — authored, validated content
+# @pr/content
 
-Builds the frozen `ContentCatalog` and validates it (`loadCatalog()` throws with every issue).
+The authored game catalog: six playable pantheons, creature families, gods, heroes, buildings, magic, artifacts, campaign chapters and skirmish definitions. It builds data against the rules contracts and validates references before play.
 
-* `greek/` — roster (7 families × base/upgrade), 18-location town, gods, heroes, lore.
-* `pantheons.ts` — five preparation pantheons (names/topology only; labeled, not playable).
-* `common/` — abilities, hero classes, skills, spells, artifacts.
-* `campaign/threeBeacons.ts` — *The Three Beacons* M01–M03 manifests; `skirmish/` — *Twin Harbors*.
-* `validation/` — roster, upgrade-pair, town-layout, building-tree, god, hero, campaign and asset-reference validators.
+## Read the code
 
-Numbers marked proposed are unplaytested candidates.
+| Entry point | Responsibility |
+| --- | --- |
+| [src/catalog.ts](src/catalog.ts) | Assembly, ID indexing, version bundle and validated/frozen catalog loading. |
+| [src/validation/validators.ts](src/validation/validators.ts) | Cross-reference and content-contract validation. |
+| [src/pantheonKit.ts](src/pantheonKit.ts) | Shared builder for compact pantheon specs. |
+| [src/greek](src/greek) | Greek roster, town, patrons and lore; the other named pantheon directories serve the same role. |
+| [src/common](src/common) | Shared mechanics data, neutral/naval creatures, dragons, magic and policies. |
+| [src/campaign/v2](src/campaign/v2) | Current chapter-based campaign writing and map/objective definitions. |
+| [src/campaign/confluence](src/campaign/confluence) | When the Worlds Met and The Ashes of the Accord. |
+| [src/townArt](src/townArt) | Current city scene layouts and art bindings. |
+
+## Contracts and design decisions
+
+Depends only on @pr/rules. Keep rules behavior in the rules package; builders may construct definitions but should not create a second simulation. A catalog record does not imply availability in every scenario: scope, access, eligibility and mission settings still apply. App version and content compatibility versions are different contracts.
+
+## Making a change
+
+Prefer an existing definition or shared builder over a faction-specific engine branch. Register new IDs in catalog.ts, validate all references, then add availability and presentation bindings. The current counts are generated in ../../docs/development/content-snapshot.json.
+
+## Verification
+
+Run from the repository root:
+
+```bash
+npm test -- packages/content/test --maxWorkers=2
+npm run typecheck
+npm run lint:boundaries
+```
+
+See the [developer handbook](../../docs/development/README.md), [extension recipes](../../docs/development/EXTENDING.md), and [complete source atlas](../../docs/development/SOURCE_INDEX.md). Tests and visual checks appropriate to the change are described in the [testing guide](../../docs/development/TESTING.md).

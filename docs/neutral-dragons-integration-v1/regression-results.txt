@@ -1,0 +1,18 @@
+Dragon integration verification — 23 October 2026
+
+PASS: production build, TypeScript, package import boundaries.
+PASS: 137 focused tests across content, abilities, recruitment/training, weekly stock, AI, sprites, UI and map generation. The recruitment test now validates WebP dimensions as well as PNG dimensions.
+PASS: two browser scenarios: all six encyclopedia pages; two-target Monsoon Ward with actual painted effect playback. Screenshots accompany this report.
+
+The additional full-suite run was stopped after assertion failures and slow-test timeouts elsewhere in the game. It did not complete and is not claimed green. The full partial output is dragon-regression.log at the repository root.
+
+Outstanding checks observed in that broader run:
+- Divine Sight learning / revelation test (rules/siege).
+- Ship inspector movement wording and multi-day voyage expectations (ui/naval).
+- Expedition icon and reused-asset registrations (ui/expeditionAssets).
+- Divine intervention painted-card expectations (ui/bigMoments).
+- Campaign difficulty guard/army scaling (campaign/campaignDifficulty).
+- Naval save voyage continuation and day-one embark expectations (session/navalRandomSave, campaign/navalRandom).
+- Adventure cursor and route-day checks exceeded their test timeouts (ui/cursors).
+
+The dragon-specific checks passed. No installer was produced in this integration task. Human playtesting is still needed to tune the proposed dragon balance values.

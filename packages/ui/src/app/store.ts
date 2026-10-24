@@ -848,6 +848,7 @@ export class AppStore {
     try {
       if (session.campaign) {
         const camp = session.campaign;
+        if (camp.branch === 'primary' && st.outcome.status === 'victory') await this.saves.write(`campaign-${camp.campaignId}-${camp.campaignRunId}`, 'manual', `${this.catalog.campaigns[camp.campaignId]?.name ?? camp.campaignId} — chapter progress`, session.snapshot());
         if (camp.branch !== 'primary' || camp.status !== 'completed') return;
         const player = st.players[mission?.player.playerId ?? st.playerOrder[0]!]!;
         const score = campaignScore(camp);
@@ -1159,8 +1160,8 @@ export class AppStore {
       if (session.campaign.branch === 'primary') {
         session.completeMission();
         const last = !session.hasNextMission();
+        void this.recordResults();
         if (last) {
-          void this.recordResults();
           const camp = this.catalog.campaigns[session.campaign.campaignId];
           // The closing scene plays first; the campaign summary follows it. Content v2 plays its own
           // epilogue (and the variant of the final choice) over its own painting, never a v1 ending.

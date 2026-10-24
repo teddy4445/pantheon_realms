@@ -148,13 +148,13 @@ export function libraryTravelClock(catalog: ContentCatalog, state: MatchState, h
     },
     transition(kind: 'embark' | 'disembark', ownedShip: boolean) {
       const canUseKeel = () => kind === 'embark' && ownedShip && keelUsedDay !== day && heroEffects(catalog, hero, state).some((e) => e.type === 'adventure_embark_discount');
-      let keel = canUseKeel(), cost = keel ? catalog.rulesProfile.terrainCost.plains! : navalRules(catalog.rulesProfile).transitionMinimumMovement;
-      if (points < cost) { dawn(); keel = canUseKeel(); cost = keel ? catalog.rulesProfile.terrainCost.plains! : navalRules(catalog.rulesProfile).transitionMinimumMovement; }
+      let keel = canUseKeel(), cost = keel ? catalog.rulesProfile.terrainCost.plains! : catalog.rulesProfile.terrainCost.plains!;
+      if (points < cost) { dawn(); keel = canUseKeel(); cost = keel ? catalog.rulesProfile.terrainCost.plains! : catalog.rulesProfile.terrainCost.plains!; }
       if (points < cost) return false;
       const blessing = hero.libraryAdventure?.safeLanding;
       if (keel) { points -= cost; keelUsedDay = day; }
-      else if (kind === 'disembark' && !landingUsed && blessing && blessing.untilDay > day && blessing.ownerId === hero.ownerId) points = Math.min(points, Math.floor(budget * blessing.percent / 100));
-      else points = 0;
+      else if (kind === 'disembark' && !landingUsed && blessing && blessing.untilDay > day && blessing.ownerId === hero.ownerId) points = Math.max(points - cost, Math.min(points, Math.floor(budget * blessing.percent / 100)));
+      else points -= cost;
       if (kind === 'disembark') { ledger.triggers.landing = true; landingUsed = true; }
       return true;
     },

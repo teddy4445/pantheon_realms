@@ -43,7 +43,7 @@ function describe(catalog: ContentCatalog, battle: BattleState, e: GameEvent, de
     case 'BattleAbilityUsed': {
       // Who used which ability on whom, and what it did (from the ability's rule).
       const clause = abilityEffect(catalog, e.abilityId, e.removedStatus).clause;
-      const on = e.targetId === e.stackId ? 'themselves' : stackName(catalog, battle, e.targetId);
+      const on = (e.targetIds??[e.targetId]).map(id=>id===e.stackId?'themselves':stackName(catalog,battle,id)).join(' and ');
       return `${stackName(catalog, battle, e.stackId)} use ${catalog.abilities[e.abilityId]?.name ?? e.abilityId} on ${on}${clause ? `: ${clause}` : ''}.`;
     }
     case 'BattleStatusConsumed': {

@@ -52,9 +52,9 @@ function heroCommander(tx: Tx, hero: HeroState): BattleCommanderSnapshot | null 
     heroId: hero.id,
     name: hero.name,
     portraitAssetId: hero.portraitAssetId,
-    attack: attrs.attack.total,
-    defense: attrs.defense.total,
-    ...(tx.state.scenario.features?.mythicLibraryV2 ? { defenseWithoutArtifacts: Math.max(0, attrs.defense.total - attrs.defense.artifacts) } : {}),
+    attack: attrs.attack.total + (hero.landmarkBlessing?.kind === 'courage' ? 2 : 0),
+    defense: attrs.defense.total + (hero.landmarkBlessing?.kind === 'protection' ? 2 : 0),
+    ...(tx.state.scenario.features?.mythicLibraryV2 ? { defenseWithoutArtifacts: Math.max(0, attrs.defense.total - attrs.defense.artifacts + (hero.landmarkBlessing?.kind === 'protection' ? 2 : 0)) } : {}),
     power: attrs.power.total,
     knowledge: attrs.knowledge.total,
     skills: hero.skills.map((s) => ({ ...s })),
@@ -350,6 +350,10 @@ export function startBattle(tx: Tx, req: EncounterRequest): BattleState {
         delete ship.mooring;
       }
     }
+  }
+  for (const side of [battle.sides.attacker, battle.sides.defender]) {
+    const id = side.commander?.heroId;
+    if (id && tx.state.heroes[id]) delete tx.state.heroes[id]!.landmarkBlessing;
   }
   tx.state.battle = battle;
   tx.state.lastBattleResult = null;

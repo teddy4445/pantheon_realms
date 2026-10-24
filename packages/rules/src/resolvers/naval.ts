@@ -189,7 +189,7 @@ export function quoteLaunchShip(catalog: ContentCatalog, state: MatchState, play
 // ---------------------------------------------------------------------------
 
 export interface EmbarkQuote extends NavalQuote {
-  /** Movement needed (at least) — all remaining movement is used. */
+  /** Movement needed (at least) — one ordinary movement step is used. */
   readonly minimum: number;
   /** The ship is neutral and becomes the hero's empire's. */
   readonly claims: boolean;
@@ -199,7 +199,7 @@ export interface EmbarkQuote extends NavalQuote {
 
 /** EmbarkHero (read-only quote). */
 export function quoteEmbark(catalog: ContentCatalog, state: MatchState, heroId: HeroId, shipId: ShipId): EmbarkQuote {
-  const minimum = navalRules(catalog.rulesProfile).transitionMinimumMovement;
+  const minimum = catalog.rulesProfile.terrainCost.plains!;
   const fail = (code: RejectionCode, reason: string): EmbarkQuote => ({ legal: false, code, reason, minimum, claims: false });
   if (!navalEnabled(state)) return fail('not_in_scope', NAVAL_OFF);
   const hero = state.heroes[heroId];
@@ -220,8 +220,8 @@ export function quoteEmbark(catalog: ContentCatalog, state: MatchState, heroId: 
   if (axialDistance(hero.position, ship.coord) !== 1) return fail('not_present', `${hero.name} must stand on the shore beside the ship`);
   const keel = ship.ownerId === hero.ownerId && hero.libraryAdventure?.usedDays?.keel !== state.day && heroEffects(catalog, hero, state).some((e) => e.type === 'adventure_embark_discount');
   const required = keel ? catalog.rulesProfile.terrainCost.plains! : minimum;
-  if (hero.movementPoints < required) return { ...fail('insufficient_movement', `Embarking needs at least ${required} movement points${keel ? '' : ' (it uses all that remain)'}`), minimum: required };
-  return { legal: true, code: null, reason: null, minimum: required, claims: ship.ownerId === null, ...(keel ? { keel: true, remaining: hero.movementPoints - required } : {}) };
+  if (hero.movementPoints < required) return { ...fail('insufficient_movement', `Embarking needs at least ${required} movement points`), minimum: required };
+  return { legal: true, code: null, reason: null, minimum: required, claims: ship.ownerId === null, remaining: hero.movementPoints - required, ...(keel ? { keel: true } : {}) };
 }
 
 export interface DisembarkQuote extends NavalQuote {
@@ -250,7 +250,7 @@ export function landingProblem(catalog: ContentCatalog, state: MatchState, hero:
 
 /** DisembarkHero (read-only quote). */
 export function quoteDisembark(catalog: ContentCatalog, state: MatchState, heroId: HeroId, landCoord: HexCoord): DisembarkQuote {
-  const minimum = navalRules(catalog.rulesProfile).transitionMinimumMovement;
+  const minimum = catalog.rulesProfile.terrainCost.plains!;
   const fail = (code: RejectionCode, reason: string): DisembarkQuote => ({ legal: false, code, reason, minimum });
   if (!navalEnabled(state)) return fail('not_in_scope', NAVAL_OFF);
   const hero = state.heroes[heroId];
@@ -261,10 +261,10 @@ export function quoteDisembark(catalog: ContentCatalog, state: MatchState, heroI
   if (axialDistance(ship.coord, landCoord) !== 1) return fail('illegal_move', 'Land on a shore beside the ship');
   const problem = landingProblem(catalog, state, hero, landCoord);
   if (problem) return fail('illegal_move', problem);
-  if (hero.movementPoints < minimum) return fail('insufficient_movement', `Landing needs at least ${minimum} movement points (it uses all that remain)`);
+  if (hero.movementPoints < minimum) return fail('insufficient_movement', `Landing needs at least ${minimum} movement points`);
   const blessing = state.scenario.features?.mythicLibraryV2 ? hero.libraryAdventure?.safeLanding : undefined;
-  const remaining = blessing && blessing.untilDay > state.day && blessing.ownerId === hero.ownerId ? Math.min(hero.movementPoints, Math.floor(movementBudget(catalog, state, hero).total * blessing.percent / 100)) : 0;
-  return { legal: true, code: null, reason: null, minimum, ...(remaining ? { remaining } : {}) };
+  const remaining = blessing && blessing.untilDay > state.day && blessing.ownerId === hero.ownerId ? Math.min(hero.movementPoints, Math.floor(movementBudget(catalog, state, hero).total * blessing.percent / 100)) : hero.movementPoints - minimum;
+  return { legal: true, code: null, reason: null, minimum, remaining: Math.max(hero.movementPoints - minimum, remaining) };
 }
 
 /** Ships `heroId` could embark now or after walking to their shore (claimable and afloat), in ID order. */
@@ -517,7 +517,6 @@ function searchVoyage(catalog: ContentCatalog, state: MatchState, heroId: HeroId
   const map = state.world.map;
   const fog = state.fog[hero.ownerId];
   const explored = (c: HexCoord) => !fog || fog.explored[cellIndex(map, c)] === 1;
-  const rules = navalRules(catalog.rulesProfile);
   const ships = shipOccupancy(state);
   const heroes = heroOccupancy(state, heroId);
   const aboard = heroShip(state, heroId);
@@ -585,13 +584,13 @@ function searchVoyage(catalog: ContentCatalog, state: MatchState, heroId: HeroId
       for (const n of axialNeighbors(cur)) {
         const ship = ships.get(hexKey(n));
         if (!ship || !explored(n) || !shipClaimable(ship, hero.ownerId) || !isWater(state, n)) continue;
-        relax(nodeKey(p + 1, n), n, d + rules.transitionMinimumMovement, key, ship.shipId);
+        relax(nodeKey(p + 1, n), n, d + catalog.rulesProfile.terrainCost.plains!, key, ship.shipId);
       }
     } else if (mode === 'sea' && role === 'open') {
       for (const n of axialNeighbors(cur)) {
         if (!inMap(map, n) || !explored(n) || isWater(state, n)) continue;
         if (isTownTile(catalog, state, n) || landRole(n) !== 'open') continue;
-        relax(nodeKey(p + 1, n), n, d + rules.transitionMinimumMovement, key);
+        relax(nodeKey(p + 1, n), n, d + catalog.rulesProfile.terrainCost.plains!, key);
       }
     }
   }
@@ -685,7 +684,7 @@ export function planVoyage(catalog: ContentCatalog, state: MatchState, heroId: H
     last === 'land'
       ? tileRole(catalog, state, hero.ownerId, dest, heroId) === 'encounter'
       : seaTileRole(state, hero.ownerId, dest, heroId, shipOccupancy(state), heroOccupancy(state, heroId), seaSiteBlockedCells(catalog, state), seaEncounterTiles(catalog, state)) === 'encounter';
-  return { destination: { q: dest.q, r: dest.r }, legs, transitions, totalCost: legs.reduce((n, l) => n + l.cost, 0) + transitions.length * navalRules(catalog.rulesProfile).transitionMinimumMovement, endsInEncounter };
+  return { destination: { q: dest.q, r: dest.r }, legs, transitions, totalCost: legs.reduce((n, l) => n + l.cost, 0) + transitions.length * catalog.rulesProfile.terrainCost.plains!, endsInEncounter };
 }
 
 /**
@@ -708,7 +707,7 @@ export function voyageDays(catalog: ContentCatalog, state: MatchState, heroId: H
     return clock.days;
   }
   const budget = movementBudget(catalog, state, hero).total;
-  const minimum = navalRules(catalog.rulesProfile).transitionMinimumMovement;
+  const minimum = catalog.rulesProfile.terrainCost.plains!;
   let points = hero.movementPoints;
   let day = 1;
   for (let i = 0; i < plan.legs.length; i++) {
@@ -729,7 +728,7 @@ export function voyageDays(catalog: ContentCatalog, state: MatchState, heroId: H
         day++;
         points = budget;
       }
-      points = 0;
+      points -= minimum;
     }
   }
   return day;

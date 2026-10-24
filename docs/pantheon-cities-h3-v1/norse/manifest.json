@@ -1,0 +1,494 @@
+{
+  "name": "Norse Hold — Heroes III inspired city",
+  "version": 1,
+  "aspectRatio": "3:2",
+  "background": "background.l1.png",
+  "reference": "full-city.png",
+  "anchor": "center-bottom",
+  "totalVersions": 33,
+  "buildings": [
+    {
+      "id": "civic_hall",
+      "name": "Civic Hall",
+      "x": 57,
+      "y": 36,
+      "width": 23,
+      "layer": 4,
+      "file": "buildings/civic_hall.l4.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "norse_longhouse",
+          "name": "Longhouse",
+          "level": 1,
+          "artAssetId": "town.norse.support.civic_hall.l1",
+          "file": "buildings/civic_hall.l1.png"
+        },
+        {
+          "id": "norse_jarls_hall",
+          "name": "Jarl’s Hall",
+          "level": 2,
+          "artAssetId": "town.norse.support.civic_hall.l2",
+          "file": "buildings/civic_hall.l2.png"
+        },
+        {
+          "id": "norse_high_hall",
+          "name": "High Hall",
+          "level": 3,
+          "artAssetId": "town.norse.support.civic_hall.l3",
+          "file": "buildings/civic_hall.l3.png"
+        },
+        {
+          "id": "norse_hall_of_kings",
+          "name": "Hall of Kings",
+          "level": 4,
+          "artAssetId": "town.norse.support.civic_hall.l4",
+          "file": "buildings/civic_hall.l4.png"
+        }
+      ],
+      "versionId": "norse_hall_of_kings",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "pantheon_temple",
+      "name": "Pantheon Temple (Hof)",
+      "x": 48,
+      "y": 26,
+      "width": 31,
+      "layer": 2,
+      "file": "buildings/pantheon_temple.l2.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "norse_hof_1",
+          "name": "Hof I",
+          "level": 1,
+          "artAssetId": "town.norse.support.pantheon_temple.l1",
+          "file": "buildings/pantheon_temple.l1.png"
+        },
+        {
+          "id": "norse_hof_2",
+          "name": "Hof II",
+          "level": 2,
+          "artAssetId": "town.norse.support.pantheon_temple.l2",
+          "file": "buildings/pantheon_temple.l2.png"
+        }
+      ],
+      "versionId": "norse_hof_2",
+      "frameAspectRatio": 2
+    },
+    {
+      "id": "mage_guild",
+      "name": "Rune Circle",
+      "x": 74,
+      "y": 23,
+      "width": 13,
+      "layer": 3,
+      "file": "buildings/mage_guild.l3.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "norse_rune_circle_1",
+          "name": "Rune Circle I",
+          "level": 1,
+          "artAssetId": "town.norse.support.mage_guild.l1",
+          "file": "buildings/mage_guild.l1.png"
+        },
+        {
+          "id": "norse_rune_circle_2",
+          "name": "Rune Circle II",
+          "level": 2,
+          "artAssetId": "town.norse.support.mage_guild.l2",
+          "file": "buildings/mage_guild.l2.png"
+        },
+        {
+          "id": "norse_rune_circle_3",
+          "name": "Rune Circle III",
+          "level": 3,
+          "artAssetId": "town.norse.support.mage_guild.l3",
+          "file": "buildings/mage_guild.l3.png"
+        }
+      ],
+      "versionId": "norse_rune_circle_3",
+      "frameAspectRatio": 1.1652323580034423
+    },
+    {
+      "id": "watchtower",
+      "name": "Watchtower / Observatory",
+      "x": 92,
+      "y": 19,
+      "width": 9,
+      "layer": 2,
+      "file": "buildings/watchtower.l1.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "norse_watchtower",
+          "name": "Watchtower",
+          "level": 1,
+          "artAssetId": "town.norse.support.watchtower.l1",
+          "file": "buildings/watchtower.l1.png"
+        }
+      ],
+      "versionId": "norse_watchtower",
+      "frameAspectRatio": 1.0907577019150707
+    },
+    {
+      "id": "artifact_merchant",
+      "name": "Artifact Merchant",
+      "x": 67,
+      "y": 47,
+      "width": 18,
+      "layer": 5,
+      "file": "buildings/artifact_merchant.l1.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "norse_rune_merchant",
+          "name": "Rune Merchant",
+          "level": 1,
+          "artAssetId": "town.norse.support.artifact_merchant.l1",
+          "file": "buildings/artifact_merchant.l1.png"
+        }
+      ],
+      "versionId": "norse_rune_merchant",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "tavern",
+      "name": "Mead Hall / Heroes’ Lodge",
+      "x": 42,
+      "y": 44,
+      "width": 20,
+      "layer": 5,
+      "file": "buildings/tavern.l1.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "norse_mead_hall",
+          "name": "Mead Hall",
+          "level": 1,
+          "artAssetId": "town.norse.support.tavern.l1",
+          "file": "buildings/tavern.l1.png"
+        }
+      ],
+      "versionId": "norse_mead_hall",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "marketplace",
+      "name": "Trading Post",
+      "x": 55,
+      "y": 57,
+      "width": 23,
+      "layer": 6,
+      "file": "buildings/marketplace.l1.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "norse_trading_post",
+          "name": "Trading Post",
+          "level": 1,
+          "artAssetId": "town.norse.support.marketplace.l1",
+          "file": "buildings/marketplace.l1.png"
+        }
+      ],
+      "versionId": "norse_trading_post",
+      "frameAspectRatio": 2
+    },
+    {
+      "id": "training_academy",
+      "name": "Training Ground",
+      "x": 86,
+      "y": 62,
+      "width": 21,
+      "layer": 7,
+      "file": "buildings/training_academy.l1.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "norse_training_ground",
+          "name": "Training Ground",
+          "level": 1,
+          "artAssetId": "town.norse.support.training_academy.l1",
+          "file": "buildings/training_academy.l1.png"
+        }
+      ],
+      "versionId": "norse_training_ground",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "workshop",
+      "name": "Workshop",
+      "x": 28,
+      "y": 68,
+      "width": 16,
+      "layer": 8,
+      "file": "buildings/workshop.l1.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "norse_smithy",
+          "name": "Workshop",
+          "level": 1,
+          "artAssetId": "town.norse.support.workshop.l1",
+          "file": "buildings/workshop.l1.png"
+        }
+      ],
+      "versionId": "norse_smithy",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "resource_depot",
+      "name": "Storehouse",
+      "x": 43,
+      "y": 69,
+      "width": 17,
+      "layer": 8,
+      "file": "buildings/resource_depot.l1.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "norse_storehouse",
+          "name": "Storehouse",
+          "level": 1,
+          "artAssetId": "town.norse.support.resource_depot.l1",
+          "file": "buildings/resource_depot.l1.png"
+        }
+      ],
+      "versionId": "norse_storehouse",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "fortifications",
+      "name": "Fortifications / Gatehouse",
+      "x": 63,
+      "y": 100,
+      "width": 66,
+      "layer": 12,
+      "file": "buildings/fortifications.l3.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "norse_palisade",
+          "name": "Palisade",
+          "level": 1,
+          "artAssetId": "town.norse.support.fortifications.l1",
+          "file": "buildings/fortifications.l1.png"
+        },
+        {
+          "id": "norse_stronghold",
+          "name": "Stronghold",
+          "level": 2,
+          "artAssetId": "town.norse.support.fortifications.l2",
+          "file": "buildings/fortifications.l2.png"
+        },
+        {
+          "id": "norse_fortress",
+          "name": "Fortress",
+          "level": 3,
+          "artAssetId": "town.norse.support.fortifications.l3",
+          "file": "buildings/fortifications.l3.png"
+        }
+      ],
+      "versionId": "norse_fortress",
+      "frameAspectRatio": 2.900815217391304
+    },
+    {
+      "id": "dwelling_t1",
+      "name": "Tier 1 — Draugr Barrow",
+      "x": 65,
+      "y": 73,
+      "width": 20,
+      "layer": 9,
+      "file": "buildings/dwelling_t1.l2.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "norse_barrow",
+          "name": "Draugr Barrow",
+          "level": 1,
+          "artAssetId": "town.norse.dwelling.tier1.base",
+          "file": "buildings/dwelling_t1.l1.png"
+        },
+        {
+          "id": "norse_barrow_up",
+          "name": "Deathless Barrow",
+          "level": 2,
+          "artAssetId": "town.norse.dwelling.tier1.upgraded",
+          "file": "buildings/dwelling_t1.l2.png"
+        }
+      ],
+      "versionId": "norse_barrow_up",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "dwelling_t2",
+      "name": "Tier 2 — Wolf Den",
+      "x": 87,
+      "y": 73,
+      "width": 18,
+      "layer": 10,
+      "file": "buildings/dwelling_t2.l2.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "norse_wolf_den",
+          "name": "Wolf Den",
+          "level": 1,
+          "artAssetId": "town.norse.dwelling.tier2.base",
+          "file": "buildings/dwelling_t2.l1.png"
+        },
+        {
+          "id": "norse_wolf_den_up",
+          "name": "Fenrir Den",
+          "level": 2,
+          "artAssetId": "town.norse.dwelling.tier2.upgraded",
+          "file": "buildings/dwelling_t2.l2.png"
+        }
+      ],
+      "versionId": "norse_wolf_den_up",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "dwelling_t3",
+      "name": "Tier 3 — Troll Cave",
+      "x": 92.5,
+      "y": 45,
+      "width": 11,
+      "layer": 5,
+      "file": "buildings/dwelling_t3.l2.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "norse_troll_cave",
+          "name": "Troll Cave",
+          "level": 1,
+          "artAssetId": "town.norse.dwelling.tier3.base",
+          "file": "buildings/dwelling_t3.l1.png"
+        },
+        {
+          "id": "norse_troll_cave_up",
+          "name": "Ancient Troll Cave",
+          "level": 2,
+          "artAssetId": "town.norse.dwelling.tier3.upgraded",
+          "file": "buildings/dwelling_t3.l2.png"
+        }
+      ],
+      "versionId": "norse_troll_cave_up",
+      "frameAspectRatio": 0.9510108864696734
+    },
+    {
+      "id": "dwelling_t4",
+      "name": "Tier 4 — Valkyrie Aerie",
+      "x": 27,
+      "y": 39,
+      "width": 17,
+      "layer": 4,
+      "file": "buildings/dwelling_t4.l2.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "norse_valkyrie_aerie",
+          "name": "Valkyrie Aerie",
+          "level": 1,
+          "artAssetId": "town.norse.dwelling.tier4.base",
+          "file": "buildings/dwelling_t4.l1.png"
+        },
+        {
+          "id": "norse_valkyrie_aerie_up",
+          "name": "Hall of the Chosen",
+          "level": 2,
+          "artAssetId": "town.norse.dwelling.tier4.upgraded",
+          "file": "buildings/dwelling_t4.l2.png"
+        }
+      ],
+      "versionId": "norse_valkyrie_aerie_up",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "dwelling_t5",
+      "name": "Tier 5 — Lindworm Roost",
+      "x": 14,
+      "y": 40,
+      "width": 13,
+      "layer": 4,
+      "file": "buildings/dwelling_t5.l2.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "norse_lindworm_roost",
+          "name": "Lindworm Roost",
+          "level": 1,
+          "artAssetId": "town.norse.dwelling.tier5.base",
+          "file": "buildings/dwelling_t5.l1.png"
+        },
+        {
+          "id": "norse_lindworm_roost_up",
+          "name": "Storm Roost",
+          "level": 2,
+          "artAssetId": "town.norse.dwelling.tier5.upgraded",
+          "file": "buildings/dwelling_t5.l2.png"
+        }
+      ],
+      "versionId": "norse_lindworm_roost_up",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "dwelling_t6",
+      "name": "Tier 6 — Jotunn Camp",
+      "x": 84,
+      "y": 47,
+      "width": 15,
+      "layer": 5,
+      "file": "buildings/dwelling_t6.l2.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "norse_jotunn_camp",
+          "name": "Jotunn Camp",
+          "level": 1,
+          "artAssetId": "town.norse.dwelling.tier6.base",
+          "file": "buildings/dwelling_t6.l1.png"
+        },
+        {
+          "id": "norse_jotunn_camp_up",
+          "name": "Rune Hall of the Giants",
+          "level": 2,
+          "artAssetId": "town.norse.dwelling.tier6.upgraded",
+          "file": "buildings/dwelling_t6.l2.png"
+        }
+      ],
+      "versionId": "norse_jotunn_camp_up",
+      "frameAspectRatio": 1.5
+    },
+    {
+      "id": "dwelling_t7",
+      "name": "Tier 7 — Serpent Lair",
+      "x": 12,
+      "y": 74,
+      "width": 24,
+      "layer": 7,
+      "file": "buildings/dwelling_t7.l2.png",
+      "visible": true,
+      "variants": [
+        {
+          "id": "norse_serpent_lair",
+          "name": "Serpent Lair",
+          "level": 1,
+          "artAssetId": "town.norse.dwelling.tier7.base",
+          "file": "buildings/dwelling_t7.l1.png"
+        },
+        {
+          "id": "norse_serpent_lair_up",
+          "name": "World-Serpent Lair",
+          "level": 2,
+          "artAssetId": "town.norse.dwelling.tier7.upgraded",
+          "file": "buildings/dwelling_t7.l2.png"
+        }
+      ],
+      "versionId": "norse_serpent_lair_up",
+      "frameAspectRatio": 1.5
+    }
+  ]
+}

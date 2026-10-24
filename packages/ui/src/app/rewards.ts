@@ -132,6 +132,10 @@ export function buildReceipt(
   if (capped) notes.push(xp > 0 ? `${heroId ? heroName(heroId) : 'The hero'} reached this mission’s experience cap: only ${fmt(xp)} experience counted.` : `${heroId ? heroName(heroId) : 'The hero'} is at this mission’s experience cap: no experience was gained.`);
   if (mana > 0) out.push({ kind: 'mana', key: 'mana', iconId: 'icon.stat.mana', amount: `+${fmt(mana)}`, label: 'Mana' });
   if (move > 0) out.push({ kind: 'movement', key: 'move', iconId: 'icon.stat.movement', amount: `+${fmt(move)}`, label: 'Movement today' });
+  if (h1?.landmarkBlessing && !h0?.landmarkBlessing) {
+    const attack = h1.landmarkBlessing.kind === 'courage';
+    out.push({ kind: 'attribute', key: 'landmark-blessing', iconId: `icon.stat.${attack ? 'attack' : 'defense'}`, amount: '+2', label: attack ? 'Attack blessing' : 'Defense blessing', note: 'Next battle only. Consumed when battle begins.' });
+  }
   out.push(...items);
   const costs: ResourceBundle | null = RESOURCE_KEYS.some((k) => spent[k] > 0) ? resources(spent) : null;
   const kinds = new Set(out.map((i) => i.kind));

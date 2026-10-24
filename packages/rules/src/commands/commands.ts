@@ -145,7 +145,7 @@ export type CommandPayload =
   | { kind: 'BattleWait'; stackId: BattleStackId }
   | { kind: 'BattleCastSpell'; spellId: SpellId; targetId: BattleStackId; statusSourceId?: string; destination?: BattleCell; secondTargetId?: BattleStackId; cells?: BattleCell[] }
   | { kind: 'BattleActivateArtifact'; artifactId: string; targetId: BattleStackId; statusSourceId?: string }
-  | { kind: 'BattleUseAbility'; stackId: BattleStackId; abilityId: string; targetId: BattleStackId }
+  | { kind: 'BattleUseAbility'; stackId: BattleStackId; abilityId: string; targetId: BattleStackId; additionalTargetIds?: readonly BattleStackId[] }
   | { kind: 'BattleAttackStructure'; stackId: BattleStackId; structureId: string }
   | { kind: 'BattleSelectDefenders'; picks: number[] }
   /** Before a siege: combine identical defender stacks (garrison and visitor) into one (2026-10-07). */

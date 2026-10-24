@@ -77,3 +77,38 @@ describe('town painting by town hall level (Brief 17, 2026-10-06)', () => {
     expect(townBackground('town.x.background', 2, only(['town.x.background.l2', 'town.x.background.l1'])).id).toBe('town.x.background.l2');
   });
 });
+
+describe('Greek coastal polis artwork', () => {
+  it('keeps the accepted Greek composition and all 33 catalog variants', () => {
+    const greek = catalog.townArchetypes['greek_polis']!;
+    expect(greek.sceneAspectRatio).toBe(1.5);
+    const buildings = greek.slots.flatMap((s) => s.chain.map((id) => catalog.buildings[id]!));
+    expect(buildings).toHaveLength(33);
+    for (const b of buildings) expect(resolveBuildingArt(b.artAssetId).url).toMatch(/^\.\/greek-city-h3-v1\/buildings\//);
+    for (const s of greek.slots) expect(s.placement.artAspectRatio).toBeGreaterThan(0);
+    for (const level of [1, 2, 3, 4]) expect(townBackground(greek.backgroundAssetId, level).url).toBe(`./greek-city-h3-v1/background.l${level}.png`);
+  });
+});
+
+describe('Heroes III inspired pantheon cities', () => {
+  it.each(['norse', 'egyptian', 'japanese', 'celtic', 'mesoamerican'])('%s has its complete independent art set', (p) => {
+    const town = Object.values(catalog.townArchetypes).find(a => a.pantheonId === p)!;
+    expect(town.sceneAspectRatio).toBe(1.5);
+    const prefix = `./pantheon-cities-h3-v1/${p}/`;
+    const buildings = town.slots.flatMap(s => s.chain.map(id => catalog.buildings[id]!));
+    expect(buildings).toHaveLength(33);
+    const files = buildings.map(b => resolveBuildingArt(b.artAssetId).url);
+    expect(new Set(files).size).toBe(33);
+    for (const file of files) {
+      expect(file?.startsWith(prefix + 'buildings/')).toBe(true);
+      expect(onDisk(file)).toBe(true);
+    }
+    for (const s of town.slots) expect(s.placement.artAspectRatio).toBeGreaterThan(0);
+    for (const level of [1, 2, 3, 4]) {
+      expect(townBackground(town.backgroundAssetId, level).url).toBe(`${prefix}background.l${level}.png`);
+    }
+    expect(town.damagedBackgroundAssetId).toBe(`town.${p}.background.damaged`);
+    expect(resolveAsset(town.damagedBackgroundAssetId!).url).toBe(`${prefix}background.damaged.png`);
+    expect(onDisk(resolveAsset(town.damagedBackgroundAssetId!).url)).toBe(true);
+  });
+});

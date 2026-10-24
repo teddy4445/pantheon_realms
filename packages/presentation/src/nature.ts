@@ -17,6 +17,8 @@
 import { AXIAL_DIRECTIONS, TERRAIN_BY_CODE, type HexCoord, type Terrain, type WorldMapDefinition } from '@pr/rules';
 import { axialPoint } from './hexmath';
 import policyJson from './nature-policy.json';
+import { MAP_SCENERY_VARIANTS } from './extraNature';
+import { SCENERY_EXPANSION } from './sceneryExpansion';
 
 export type NatureRole =
   | 'canopy'
@@ -50,6 +52,8 @@ export interface NatureAsset {
   readonly excludedClimates?: readonly string[];
   readonly saltwaterBankAllowed?: boolean;
   readonly requiresWetGroundOrFreshwaterBank?: boolean;
+  /** These paintings must touch actual water, never an inland terrain boundary. */
+  readonly shoreOnly?: boolean;
 }
 
 export interface NaturePolicy {
@@ -66,6 +70,13 @@ export interface NaturePolicy {
 }
 
 export const NATURE_POLICY = policyJson as unknown as NaturePolicy;
+/** Slightly fuller open land, plus new silhouettes; battle obstacle selection retains its existing policy. */
+export const MAP_NATURE_POLICY: NaturePolicy = {
+  ...NATURE_POLICY,
+  ground: { ...NATURE_POLICY.ground, plains: { groundcover: 45, shrub: 18, rock: 20, canopy: 12, deadwood: 5 } },
+  density: { ...NATURE_POLICY.density, plains: { chance: .42, maxPerTile: 1 } },
+  assets: [...NATURE_POLICY.assets, ...MAP_SCENERY_VARIANTS, ...SCENERY_EXPANSION],
+};
 
 /** FNV-1a over the parts joined by `|` (the reference selector's `hash32`). */
 export function natureHash(...parts: readonly (string | number | undefined | null)[]): number {
@@ -129,6 +140,7 @@ const ICE_SAFE_LIFE = new Set(['nature.marine_frozen.water_life.01', 'nature.mar
 
 /** The reference selector (delivery `tools/nature-selector.mjs`) with the game's types; `available` says whether a sprite is imported. */
 export function makeNatureSelector(policy: NaturePolicy = NATURE_POLICY, available: (id: string) => boolean = () => true): NatureSelector {
+  const variedShore=policy.assets.some(a=>a.shoreOnly);
   const byKey = new Map<string, NatureAsset[]>();
   for (const a of policy.assets) {
     const k = `${a.climate}|${a.role}`;
@@ -147,7 +159,7 @@ export function makeNatureSelector(policy: NaturePolicy = NATURE_POLICY, availab
   const land: NatureSelector['land'] = (ctx) => {
     if (!policy.climates.includes(ctx.climate)) return null;
     const role = weighted(policy.ground[ctx.terrain], natureHash(ctx.seed, ctx.q, ctx.r, ctx.slot ?? 0, 'role'));
-    return role ? choose(ctx.climate, role, ctx) : null;
+    return role ? choose(ctx.climate, role, ctx,a=>!a.shoreOnly) : null;
   };
   const edge: NatureSelector['edge'] = (ctx) => {
     if (!policy.climates.includes(ctx.climate) || ctx.a === ctx.b || ctx.a === 'void' || ctx.b === 'void') return null;
@@ -161,7 +173,8 @@ export function makeNatureSelector(policy: NaturePolicy = NATURE_POLICY, availab
       if (ctx.waterKind === 'sea') {
         const saltOk = ctx.climate === 'coast' || ctx.climate === 'jungle';
         role = saltOk ? 'wet_edge' : 'rocky_edge';
-        if (saltOk) filter = (a) => a.saltwaterBankAllowed === true;
+        if(saltOk && variedShore && natureHash(ctx.seed,ctx.q,ctx.r,'shore-material')%3===0)role='rocky_edge';
+        if (role==='wet_edge') filter = (a) => a.saltwaterBankAllowed === true;
       } else role = 'wet_edge';
     } else if (pair.includes('marsh')) {
       role = 'wet_edge';
@@ -176,7 +189,7 @@ export function makeNatureSelector(policy: NaturePolicy = NATURE_POLICY, availab
       role = 'rocky_edge';
       terrain = 'rough';
     } else return null;
-    const asset = choose(ctx.climate, role, ctx, filter);
+    const asset = choose(ctx.climate, role, ctx,a=>filter(a)&&(!a.shoreOnly||(pair.includes('water')&&!!ctx.waterKind&&a.waterKinds.includes(ctx.waterKind))));
     return asset ? { asset, owner: ctx.a === terrain ? 'a' : 'b', upright: true } : null;
   };
   const water: NatureSelector['water'] = (ctx) => {
@@ -375,7 +388,7 @@ const unit = (h: number) => (h % 1_000_003) / 1_000_003;
  * and town entrances stay clear. Deterministic for the same map.
  */
 export function planNatureScenery(map: WorldMapDefinition, opts: NaturePlanOptions = {}): NaturePlan {
-  const policy = opts.policy ?? NATURE_POLICY;
+  const policy = opts.policy ?? MAP_NATURE_POLICY;
   const available = opts.available ?? (() => true);
   const decor = opts.decor ?? 'all';
   const climate = map.biome;
@@ -478,7 +491,7 @@ export function planNatureScenery(map: WorldMapDefinition, opts: NaturePlanOptio
       if (!role || role === 'mountain') continue;
       if (townNear.has(i) && LOW_DRESSING.has(role)) continue;
       if (!lowOk(role)) continue;
-      const asset = sel.choose(climate, role, { climate, seed, q, r, slot, usedNeighborIds: usedNear(i) });
+      const asset = sel.choose(climate, role, { climate, seed, q, r, slot, usedNeighborIds: usedNear(i) },a=>!a.shoreOnly);
       if (!asset) continue;
       if (!LOW_DRESSING.has(role) && !sparseOk()) continue;
       // Out of the hero's way: toward a border no road crosses, a little off the centre.
